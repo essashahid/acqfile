@@ -884,7 +884,7 @@
         "quote": "Signature: e-signed; Date: 2026-08-31"
       },
       "page_start": 1,
-      "page_end": 1,
+      "page_end": 2,
       "doc_type": "FIN_YEAR_END",
       "party_id": "target",
       "period": "2025",
@@ -893,7 +893,7 @@
       "dated": true,
       "signature_date": "2026-08-31",
       "document_date": "2026-08-31",
-      "expected_page_count": 1,
+      "expected_page_count": 2,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1204,7 +1204,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
         "page": 1,
         "source_block": "1919-page-1",
-        "quote": "ownership.members: [{\"name\":\"Abe Welch\",\"percent\":85},{\"name\":\"Terrill Bernier\",\"percent\":15}]"
+        "quote": "members: Abe Welch / 85; Terrill Bernier / 15"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1230,7 +1230,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
         "page": 2,
         "source_block": "id-page-2",
-        "quote": "id.expiry: 2030-12-31"
+        "quote": "expiry: 2030-12-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1256,7 +1256,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 1,
         "source_block": "personal-2023-page-1",
-        "quote": "tax.year: 2023"
+        "quote": "year: 2023"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1288,7 +1288,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 1,
         "source_block": "personal-2023-page-1",
-        "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+        "quote": "identifier: 900-12-3456"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1314,7 +1314,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 2,
         "source_block": "personal-2024-page-2",
-        "quote": "tax.year: 2024"
+        "quote": "year: 2024"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1346,7 +1346,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 2,
         "source_block": "personal-2024-page-2",
-        "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+        "quote": "identifier: 900-12-3456"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1372,7 +1372,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 3,
         "source_block": "personal-2025-page-3",
-        "quote": "tax.year: 2025"
+        "quote": "year: 2025"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1404,7 +1404,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
         "page": 3,
         "source_block": "personal-2025-page-3",
-        "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+        "quote": "identifier: 900-12-3456"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1430,7 +1430,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
         "page": 1,
         "source_block": "bank-aug-page-1",
-        "quote": "party.legal_name: Abe Welch"
+        "quote": "legal name: Abe Welch"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1456,7 +1456,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
         "page": 1,
         "source_block": "bank-aug-page-1",
-        "quote": "bank.ending_balance: 100000"
+        "quote": "ending balance: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1482,7 +1482,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
         "page": 1,
         "source_block": "bank-aug-page-1",
-        "quote": "bank.period_end: 2026-08-31"
+        "quote": "period end: 2026-08-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1508,7 +1508,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
         "page": 1,
         "source_block": "bank-aug-page-1",
-        "quote": "bank.institution: Zelmivar Bank"
+        "quote": "institution: Zelmivar Bank"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1534,7 +1534,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-jul.pdf",
         "page": 1,
         "source_block": "bank-jul-page-1",
-        "quote": "party.legal_name: Abe Welch"
+        "quote": "legal name: Abe Welch"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1560,7 +1560,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-jul.pdf",
         "page": 1,
         "source_block": "bank-jul-page-1",
-        "quote": "bank.ending_balance: 180000"
+        "quote": "ending balance: 180000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1586,7 +1586,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-jul.pdf",
         "page": 1,
         "source_block": "bank-jul-page-1",
-        "quote": "bank.period_end: 2026-07-31"
+        "quote": "period end: 2026-07-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1612,7 +1612,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/bank-jul.pdf",
         "page": 1,
         "source_block": "bank-jul-page-1",
-        "quote": "bank.institution: Zelmivar Bank"
+        "quote": "institution: Zelmivar Bank"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1672,7 +1672,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "funding.sources: [{\"label\":\"Senior loan\",\"amount\":3340000},{\"label\":\"Cash injection\",\"amount\":150000},{\"label\":\"Seller note\",\"amount\":120000},{\"label\":\"Minority investor\",\"amount\":90000}]"
+        "quote": "sources: Senior loan / 3340000; Cash injection / 150000; Seller note / 120000; Minority investor / 90000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1716,7 +1716,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "funding.uses: [{\"label\":\"Purchase\",\"amount\":3600000},{\"label\":\"Working capital\",\"amount\":100000}]"
+        "quote": "uses: Purchase / 3600000; Working capital / 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1742,7 +1742,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "funding.sources_total: 3700000"
+        "quote": "sources total: 3700000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1768,7 +1768,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "funding.uses_total: 3700000"
+        "quote": "uses total: 3700000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1794,7 +1794,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "deal.purchase_price: 3600000"
+        "quote": "purchase price: 3600000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1820,7 +1820,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "deal.seller_note_amount: 120000"
+        "quote": "seller note amount: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1846,7 +1846,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
         "page": 1,
         "source_block": "funding-page-1",
-        "quote": "deal.seller_note_terms: Full lifetime standby"
+        "quote": "seller note terms: Full lifetime standby"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1890,7 +1890,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
         "page": 1,
         "source_block": "operating-page-1",
-        "quote": "ownership.members: [{\"name\":\"Abe Welch\",\"percent\":85},{\"name\":\"Terrill Bernier\",\"percent\":15}]"
+        "quote": "members: Abe Welch / 85; Terrill Bernier / 15"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1922,7 +1922,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
         "page": 2,
         "source_block": "ein-page-2",
-        "quote": "party.identifier: {\"hmac\":\"9f2d0e5ef05f6ccc18f7cc786724a3a736dade119175d484d70506d572866596\",\"last_four\":\"4321\"}"
+        "quote": "identifier: 00-7654321"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1966,7 +1966,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
         "page": 2,
         "source_block": "owners-page-2",
-        "quote": "ownership.members: [{\"name\":\"Abe Welch\",\"percent\":85},{\"name\":\"Terrill Bernier\",\"percent\":15}]"
+        "quote": "members: Abe Welch / 85; Terrill Bernier / 15"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1992,7 +1992,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "page": 1,
         "source_block": "pfs-page-1",
-        "quote": "pfs.as_of_date: 2026-08-31"
+        "quote": "as of date: 2026-08-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2018,7 +2018,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "page": 1,
         "source_block": "pfs-page-1",
-        "quote": "pfs.cash: 100000"
+        "quote": "cash: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2044,7 +2044,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "page": 1,
         "source_block": "pfs-page-1",
-        "quote": "pfs.total_assets: 500000"
+        "quote": "total assets: 500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2070,7 +2070,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "page": 1,
         "source_block": "pfs-page-1",
-        "quote": "pfs.total_liabilities: 100000"
+        "quote": "total liabilities: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2096,7 +2096,7 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "page": 1,
         "source_block": "pfs-page-1",
-        "quote": "pfs.net_worth: 400000"
+        "quote": "net worth: 400000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2122,7 +2122,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/4506.pdf",
         "page": 1,
         "source_block": "4506-page-1",
-        "quote": "party.legal_name: Quenby Grounds Management LLC"
+        "quote": "legal name: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2154,7 +2154,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/4506.pdf",
         "page": 1,
         "source_block": "4506-page-1",
-        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+        "quote": "identifier: 00-1234567"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2180,7 +2180,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/ap.pdf",
         "page": 1,
         "source_block": "ap-page-1",
-        "quote": "aging.as_of_date: 2026-04-18"
+        "quote": "as of date: 2026-04-18"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2206,7 +2206,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/ar.PDF",
         "page": 1,
         "source_block": "ar-page-1",
-        "quote": "aging.as_of_date: 2026-04-18"
+        "quote": "as of date: 2026-04-18"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2232,7 +2232,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/debt.PDF",
         "page": 1,
         "source_block": "debt-page-1",
-        "quote": "debt.as_of_date: 2026-08-31"
+        "quote": "as of date: 2026-08-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2258,7 +2258,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/debt.PDF",
         "page": 1,
         "source_block": "debt-page-1",
-        "quote": "debt.total: 100000"
+        "quote": "total: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2284,7 +2284,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2023.PDF",
         "page": 1,
         "source_block": "fin-2023-page-1",
-        "quote": "financial.revenue: 1200000"
+        "quote": "revenue: 1200000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2310,7 +2310,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2023.PDF",
         "page": 1,
         "source_block": "fin-2023-page-1",
-        "quote": "financial.total_assets: 500000"
+        "quote": "total assets: 500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2336,7 +2336,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2023.PDF",
         "page": 1,
         "source_block": "fin-2023-page-1",
-        "quote": "financial.total_liabilities: 100000"
+        "quote": "total liabilities: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2362,7 +2362,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2023.PDF",
         "page": 1,
         "source_block": "fin-2023-page-1",
-        "quote": "financial.net_income: 120000"
+        "quote": "net income: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2388,7 +2388,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
         "page": 1,
         "source_block": "fin-2024-page-1",
-        "quote": "financial.revenue: 1300000"
+        "quote": "revenue: 1300000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2414,7 +2414,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
         "page": 1,
         "source_block": "fin-2024-page-1",
-        "quote": "financial.total_assets: 500000"
+        "quote": "total assets: 500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2440,7 +2440,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
         "page": 1,
         "source_block": "fin-2024-page-1",
-        "quote": "financial.total_liabilities: 100000"
+        "quote": "total liabilities: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2466,7 +2466,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
         "page": 1,
         "source_block": "fin-2024-page-1",
-        "quote": "financial.net_income: 130000"
+        "quote": "net income: 130000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2492,7 +2492,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
         "page": 1,
         "source_block": "fin-2025-page-1",
-        "quote": "financial.revenue: 1400000"
+        "quote": "revenue: 1400000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2516,9 +2516,9 @@
       "method": "text",
       "locator": {
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-        "page": 1,
-        "source_block": "fin-2025-page-1",
-        "quote": "financial.total_assets: 500000"
+        "page": 2,
+        "source_block": "fin-2025-sheet-2",
+        "quote": "total assets: 500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2542,9 +2542,9 @@
       "method": "text",
       "locator": {
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-        "page": 1,
-        "source_block": "fin-2025-page-1",
-        "quote": "financial.total_liabilities: 100000"
+        "page": 2,
+        "source_block": "fin-2025-sheet-2",
+        "quote": "total liabilities: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2570,7 +2570,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
         "page": 1,
         "source_block": "fin-2025-page-1",
-        "quote": "financial.net_income: 140000"
+        "quote": "net income: 140000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2596,7 +2596,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 1,
         "source_block": "loi-page-1",
-        "quote": "deal.signed_by_both: true"
+        "quote": "signed by both: Yes"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2622,7 +2622,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 1,
         "source_block": "loi-page-1",
-        "quote": "deal.expiry_date: 2026-11-30"
+        "quote": "expiry date: 2026-11-30"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2648,7 +2648,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 1,
         "source_block": "loi-page-1",
-        "quote": "deal.purchase_price: 3600000"
+        "quote": "purchase price: 3600000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2674,7 +2674,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 1,
         "source_block": "loi-page-1",
-        "quote": "deal.seller_note_amount: 120000"
+        "quote": "seller note amount: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2700,7 +2700,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 1,
         "source_block": "loi-page-1",
-        "quote": "deal.seller_note_terms: Full lifetime standby"
+        "quote": "seller note terms: Full lifetime standby"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2726,7 +2726,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.buyer: Quenby Acquisition LLC"
+        "quote": "buyer: Quenby Acquisition LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2752,7 +2752,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.seller: Quenby Grounds Management LLC"
+        "quote": "seller: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2778,7 +2778,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.allocation_present: true"
+        "quote": "allocation present: Yes"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2804,7 +2804,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.purchase_price: 3600000"
+        "quote": "purchase price: 3600000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2830,7 +2830,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.structure: stock"
+        "quote": "structure: stock"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2856,7 +2856,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.outside_date: 2026-11-30"
+        "quote": "outside date: 2026-11-30"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2882,7 +2882,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "party.legal_name: Quenby Grounds Management LLC"
+        "quote": "legal name: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2914,7 +2914,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+        "quote": "identifier: 00-1234567"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2940,7 +2940,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.seller_note_amount: 120000"
+        "quote": "seller note amount: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2966,7 +2966,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
         "page": 2,
         "source_block": "purchase-page-2",
-        "quote": "deal.seller_note_terms: Full lifetime standby"
+        "quote": "seller note terms: Full lifetime standby"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2992,7 +2992,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
         "page": 1,
         "source_block": "interim-page-1",
-        "quote": "financial.period_end: 2026-04-18"
+        "quote": "period end: 2026-04-18"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3018,7 +3018,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
         "page": 1,
         "source_block": "interim-page-1",
-        "quote": "financial.revenue: 900000"
+        "quote": "revenue: 900000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3044,7 +3044,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
         "page": 1,
         "source_block": "interim-page-1",
-        "quote": "financial.total_assets: 500000"
+        "quote": "total assets: 500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3070,7 +3070,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
         "page": 1,
         "source_block": "interim-page-1",
-        "quote": "financial.total_liabilities: 100000"
+        "quote": "total liabilities: 100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3096,7 +3096,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
         "page": 1,
         "source_block": "note-page-1",
-        "quote": "note.principal: 120000"
+        "quote": "principal: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3122,7 +3122,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
         "page": 1,
         "source_block": "note-page-1",
-        "quote": "note.term_months: 120"
+        "quote": "term months: 120"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3148,7 +3148,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
         "page": 1,
         "source_block": "note-page-1",
-        "quote": "note.full_standby: true"
+        "quote": "full standby: Yes"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3174,7 +3174,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
         "page": 1,
         "source_block": "note-page-1",
-        "quote": "deal.seller_note_terms: Full lifetime standby"
+        "quote": "seller note terms: Full lifetime standby"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3200,7 +3200,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "party.legal_name: Quenby Grounds Management LLC"
+        "quote": "legal name: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3232,7 +3232,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+        "quote": "identifier: 00-1234567"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3258,7 +3258,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "tax.gross_receipts: 1200000"
+        "quote": "gross receipts: 1200000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3284,7 +3284,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "tax.net_income: 120000"
+        "quote": "net income: 120000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3310,7 +3310,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "tax.year: 2023"
+        "quote": "year: 2023"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3336,7 +3336,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 1,
         "source_block": "tax-2023-page-1",
-        "quote": "tax.form_type: 1120S"
+        "quote": "form type: 1120S"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3362,7 +3362,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "party.legal_name: Quenby Grounds Management LLC"
+        "quote": "legal name: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3394,7 +3394,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+        "quote": "identifier: 00-1234567"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3420,7 +3420,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "tax.gross_receipts: 1300000"
+        "quote": "gross receipts: 1300000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3446,7 +3446,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "tax.net_income: 130000"
+        "quote": "net income: 130000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3472,7 +3472,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "tax.year: 2024"
+        "quote": "year: 2024"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3498,7 +3498,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 2,
         "source_block": "tax-2024-page-2",
-        "quote": "tax.form_type: 1120S"
+        "quote": "form type: 1120S"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3524,7 +3524,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "party.legal_name: Quenby Grounds Management LLC"
+        "quote": "legal name: Quenby Grounds Management LLC"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3556,7 +3556,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+        "quote": "identifier: 00-1234567"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3582,7 +3582,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "tax.gross_receipts: 1400000"
+        "quote": "gross receipts: 1400000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3608,7 +3608,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "tax.net_income: 140000"
+        "quote": "net income: 140000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3634,7 +3634,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "tax.year: 2025"
+        "quote": "year: 2025"
       },
       "confidence": 1,
       "confidence_components": {
@@ -3660,7 +3660,7 @@
         "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
         "page": 3,
         "source_block": "tax-2025-page-3",
-        "quote": "tax.form_type: 1120S"
+        "quote": "form type: 1120S"
       },
       "confidence": 1,
       "confidence_components": {

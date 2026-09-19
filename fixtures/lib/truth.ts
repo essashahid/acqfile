@@ -5,17 +5,22 @@ import {FactSchema,SegmentSchema,type Fact,type Segment} from '../../src/lib/dom
 import {FACTS} from '../../src/lib/domain/registry';
 import {EngineInputSchema} from '../../src/lib/rules/input';
 import {hashObject} from '../../src/lib/hash';
-import type {Doc,Plan} from '../plans/shared';
+import {fakeId,type Doc,type Plan} from '../plans/shared';
 export const json=(value:unknown)=>JSON.stringify(value,null,2)+'\n';
-export const quote=(attribute:string,value:unknown)=>`${attribute}: ${typeof value==='string'?value:JSON.stringify(value)}`;
+export function display(value:unknown):string {
+ if(value&&typeof value==='object'&&!Array.isArray(value)&&'hmac' in value){for(const clear of ['00-1234567','00-1234568','00-7654321','00-5556789','00-5566789','900-12-3456','901-23-4567'])if(fakeId(clear).hmac===(value as {hmac:string}).hmac)return clear;throw Error('Unknown synthetic identifier');}
+ if(Array.isArray(value))return value.map(v=>typeof v==='object'&&v!==null?Object.values(v).map(display).join(' / '):display(v)).join('; ');
+ return typeof value==='boolean'?(value?'Yes':'No'):String(value);
+}
+export const quote=(attribute:string,value:unknown)=>`${attribute.split('.').at(-1)!.replaceAll('_',' ')}: ${display(value)}`;
 export const metadataQuote=(d:Doc)=>`Signature: ${d.metadata.signed?'e-signed':'________________'}; Date: ${d.metadata.dated?d.metadata.signature_date:'________________'}`;
 export const groups=(p:Plan)=>[...new Set(p.documents.map(d=>d.path))].sort().map(file=>({file,docs:p.documents.filter(d=>d.path===file)}));
 export function documents(p:Plan){return groups(p).map(({file,docs})=>{
  const first=docs[0]!;const segments:Segment[]=[];const facts:Fact[]=[];
  if(!first.unreadable&&!first.duplicate_of)for(const [index,d] of docs.entries()){
   const page=index+1;const locator={file,page,source_block:`${d.id}-page-${page}`,quote:metadataQuote(d)};
-  segments.push(SegmentSchema.parse({id:d.id,document_version_id:file,doc_type:d.type,party_id:d.party,period:d.period??null,file,metadata_locator:locator,page_start:page,page_end:page,expected_page_count:1,form_revision:null,signed:true,dated:true,signature_date:'2026-08-31',document_date:'2026-08-31',account_last_four:null,...d.metadata,classification_method:'manual',classification_confidence:1,status:'confirmed',is_current:true}));
-  for(const [attribute,value] of Object.entries(d.facts))facts.push(FactSchema.parse({id:`${d.id}:${attribute}`,segment_id:d.id,subject_party_id:d.party,attribute,value,normalized_value:value,unit:FACTS[attribute]!.unit,period:d.period??null,method:first.format==='scan_pdf'?'vision':first.format==='acroform_pdf'?'acroform':'text',locator:{...locator,quote:quote(attribute,value)},confidence:1,confidence_components:{authored_fixture:1},validators_passed:true,actor:null,audit_event_id:null,record_version:1,is_current:true}));
+  segments.push(SegmentSchema.parse({id:d.id,document_version_id:file,doc_type:d.type,party_id:d.party,period:d.period??null,file,metadata_locator:locator,page_start:page,page_end:first.format==='xlsx'?2:page,expected_page_count:first.format==='xlsx'?2:1,form_revision:null,signed:true,dated:true,signature_date:'2026-08-31',document_date:'2026-08-31',account_last_four:null,...d.metadata,classification_method:'manual',classification_confidence:1,status:'confirmed',is_current:true}));
+  for(const [attribute,value] of Object.entries(d.facts))facts.push(FactSchema.parse({id:`${d.id}:${attribute}`,segment_id:d.id,subject_party_id:d.party,attribute,value,normalized_value:value,unit:FACTS[attribute]!.unit,period:d.period??null,method:first.format==='scan_pdf'?'vision':first.format==='acroform_pdf'?'acroform':'text',locator:{...locator,...(first.format==='xlsx'&&attribute.startsWith('financial.total_')?{page:2,source_block:`${d.id}-sheet-2`}:{}),quote:quote(attribute,value)},confidence:1,confidence_components:{authored_fixture:1},validators_passed:true,actor:null,audit_event_id:null,record_version:1,is_current:true}));
  }
  return {file,hash:null as string|null,bytes:null as number|null,format:first.format,batch:first.batch,pages:docs.length,segments,facts,planted_items:[...new Set(docs.flatMap(d=>d.tags))].sort((a,b)=>a-b),pipeline:{duplicate_of:first.duplicate_of?p.documents.find(d=>d.id===first.duplicate_of)!.path:null,supersedes:docs.flatMap(d=>d.supersedes?[d.supersedes]:[]),unreadable:!!first.unreadable,bundle:docs.length>1,planned_types:docs.map(d=>d.type)}};
  });}

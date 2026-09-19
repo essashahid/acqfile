@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import {execFileSync} from 'node:child_process';
+import {PDFDocument,StandardFonts,rgb,PDFTextField} from 'pdf-lib';
+import PDFKit from 'pdfkit';
+import {Document,Packer,Paragraph,TextRun,Header,Footer} from 'docx';
+import JSZip from 'jszip';
+import * as XLSX from 'xlsx';
+import type {Doc,Plan} from '../plans/shared';
+import {content,cue,sheetContent} from './content';
+import {display} from './truth';
+export const FIXED_DATE=new Date('2026-09-15T12:00:00.000Z');
+export const PASSWORD='SYNTHETIC-FIXTURE-PASSWORD';
+export async function normalizedZip(bytes:Buffer){const input=await JSZip.loadAsync(bytes);const out=new JSZip();for(const name of Object.keys(input.files).sort()){const f=input.files[name]!;out.file(name,await f.async('nodebuffer'),{date:FIXED_DATE,dir:f.dir,createFolders:false});}return out.generateAsync({type:'nodebuffer',compression:'DEFLATE',compressionOptions:{level:9},platform:'UNIX'});}
+export async function textPdf(p:Plan,docs:Doc[],acro=false){const pdf=await PDFDocument.create();pdf.setCreationDate(FIXED_DATE);pdf.setModificationDate(FIXED_DATE);pdf.setCreator('AcqFile synthetic fixtures');pdf.setProducer('AcqFile synthetic fixtures');const font=await pdf.embedFont(StandardFonts.Helvetica);const bold=await pdf.embedFont(StandardFonts.HelveticaBold);
+ for(const [index,d] of docs.entries()){const page=pdf.addPage([612,792]);page.drawRectangle({x:30,y:714,width:552,height:50,color:rgb(.93,.95,.96)});const lines=content(p,d);let y=748;for(const [lineIndex,line] of lines.entries()){const face=lineIndex<2?bold:font;const size=Math.min(lineIndex===0?16:lineIndex===1?10:10,540/Math.max(1,face.widthOfTextAtSize(line,1)));page.drawText(line,{x:36,y,size,font:face,color:rgb(.12,.16,.2)});
+   if(acro){const entry=Object.entries(d.facts).find(([a])=>line.startsWith(a.split('.').at(-1)!.replaceAll('_',' ')+': '));if(entry){const [attribute,value]=entry;const label=line.slice(0,line.indexOf(':')+1);const x=36+face.widthOfTextAtSize(label,size)+5;const field=pdf.getForm().createTextField(`${d.id}.${attribute}`);field.setText(display(value));field.addToPage(page,{x,y:y-4,width:576-x,height:17,font,backgroundColor:rgb(1,1,1),borderColor:rgb(.7,.75,.77),borderWidth:.5});field.setFontSize(Math.min(10,Math.max(6,(568-x)/Math.max(1,font.widthOfTextAtSize(display(value),1)))));}}
+   y-=lineIndex===1?34:22;}
+  page.drawText(`SYNTHETIC | Page ${index+1} of ${docs.length}`,{x:36,y:25,size:9,font});
+  if(acro)pdf.getForm().updateFieldAppearances(font);
+ }
+ return Buffer.from(await pdf.save({useObjectStreams:false}));}
+export async function protectedPdf(p:Plan,docs:Doc[]){return new Promise<Buffer>((resolve,reject)=>{const doc=new PDFKit({autoFirstPage:false,pdfVersion:'1.4',userPassword:PASSWORD,ownerPassword:'SYNTHETIC-OWNER-ONLY',info:{Title:'Synthetic formation document',Author:'AcqFile',CreationDate:FIXED_DATE,ModDate:FIXED_DATE}});const chunks:Buffer[]=[];doc.on('data',(b:Buffer)=>chunks.push(b));doc.on('error',reject);doc.on('end',()=>resolve(Buffer.concat(chunks)));for(const d of docs){doc.addPage({size:'LETTER',margin:36});for(const line of content(p,d))doc.font('Helvetica').fontSize(10).text(line,{lineGap:9});}doc.end();});}
+export async function docx(p:Plan,docs:Doc[]){const document=new Document({creator:'AcqFile synthetic fixtures',title:cue(docs[0]!),description:'Synthetic training facsimile',sections:docs.map(d=>({properties:{page:{margin:{top:720,bottom:720,left:720,right:720}}},headers:{default:new Header({children:[new Paragraph('SYNTHETIC')]})},footers:{default:new Footer({children:[new Paragraph('SYNTHETIC - For lender review only')]})},children:content(p,d).map(line=>new Paragraph({children:[new TextRun({text:line,size:20})],spacing:{after:100}}))}))});
+ const zip=await JSZip.loadAsync(await Packer.toBuffer(document));const core=zip.file('docProps/core.xml');if(core)zip.file('docProps/core.xml',(await core.async('string')).replace(/(<dcterms:(?:created|modified)[^>]*>)[^<]+/g,`$1${FIXED_DATE.toISOString()}`));return normalizedZip(await zip.generateAsync({type:'nodebuffer'}));}
+export async function xlsx(p:Plan,docs:Doc[]){const book=XLSX.utils.book_new();book.Props={Title:cue(docs[0]!),Author:'AcqFile',CreatedDate:FIXED_DATE,ModifiedDate:FIXED_DATE};for(const name of ['Income Statement','Balance Sheet']){const lines=docs.flatMap(d=>sheetContent(p,d,name));const sheet=XLSX.utils.aoa_to_sheet([['SYNTHETIC',name],...lines.map(l=>[l]),['SYNTHETIC - For lender review only']]);sheet['!cols']=[{wch:120},{wch:25}];XLSX.utils.book_append_sheet(book,sheet,name);}return normalizedZip(XLSX.write(book,{type:'buffer',bookType:'xlsx',compression:true}));}
+// Poppler/fonts can differ by host. Committed image-only PDFs are canonical A22 artifacts.
+export async function rasterPdf(p:Plan,docs:Doc[]){const temp=fs.mkdtempSync(path.join(os.tmpdir(),'acqfile-raster-'));try{fs.writeFileSync(path.join(temp,'text.pdf'),await textPdf(p,docs));execFileSync('pdftoppm',['-png','-r','120',path.join(temp,'text.pdf'),path.join(temp,'page')],{stdio:'pipe'});const pdf=await PDFDocument.create();pdf.setCreationDate(FIXED_DATE);pdf.setModificationDate(FIXED_DATE);pdf.setCreator('AcqFile synthetic raster fixtures');pdf.setProducer('AcqFile synthetic raster fixtures');for(const file of fs.readdirSync(temp).filter(f=>/^page-\d+\.png$/.test(f)).sort((a,b)=>Number(a.match(/\d+/)![0])-Number(b.match(/\d+/)![0]))){const image=await pdf.embedPng(fs.readFileSync(path.join(temp,file)));const page=pdf.addPage([612,792]);page.drawImage(image,{x:0,y:0,width:612,height:792});}return Buffer.from(await pdf.save({useObjectStreams:false}));}finally{fs.rmSync(temp,{recursive:true,force:true});}}
+export async function verifyAcroform(bytes:Buffer,docs:Doc[]){const pdf=await PDFDocument.load(bytes);for(const d of docs)for(const [a,v] of Object.entries(d.facts)){const field=pdf.getForm().getField(`${d.id}.${a}`);if(!(field instanceof PDFTextField)||field.getText()!==display(v))throw Error(`AcroForm readback mismatch ${d.id}/${a}`);}return pdf.getForm().getFields().length;}

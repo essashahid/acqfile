@@ -29,7 +29,7 @@ describe("findQuote", () => {
 
 describe("canonical and tokens", () => {
   it("compares values case and punctuation insensitively", () => {
-    expect(canonical("Northstar Distribution, Inc.")).toBe("northstar distribution inc.");
+    expect(canonical("Zelmivar Equipment, LLC")).toBe("zelmivar equipment llc");
     expect(contentTokens("What is the revised program cost?")).toEqual(["revised", "program", "cost"]);
   });
   it("excerpt returns bounded context", () => {

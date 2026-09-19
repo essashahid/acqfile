@@ -19,7 +19,7 @@ describe("confidence formula", () => {
   it("cross-pass agreement normalizes deterministic fields before comparing", () => {
     expect(agreementScore("publication_date", "2026-03-12", null, "supported")).toBe(1);
     expect(agreementScore("publication_date", "2026-03-12", "2026-03-12", "supported")).toBe(1);
-    expect(agreementScore("report_title", "Northstar Review", "northstar review", "supported")).toBe(0.75);
+    expect(agreementScore("report_title", "Zelmivar Review", "zelmivar review", "supported")).toBe(0.75);
     expect(agreementScore("monetary_amounts[0]", { amount: 1250000, currency: "USD", context: "cost" }, { amount: 1150000, currency: "USD", context: "cost" }, "partially_supported")).toBe(0);
     expect(agreementScore("monetary_amounts[0]", { amount: 1250000, currency: "USD", context: "cost" }, { amount: 1250000, currency: "USD", context: "program cost" }, "supported")).toBe(0);
     expect(agreementScore("report_title", "A", null, "unsupported")).toBe(0);

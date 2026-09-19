@@ -5,7 +5,7 @@ import { createProcessingRun, registerUpload } from "@/lib/pipeline/ingest";
 import { runProcessingRunInline } from "@/lib/pipeline/orchestrate";
 import { llmCallsFor, makePdf, noSleep, runRow, seeded, stepsFor, uploadAndProcess } from "./helpers";
 
-const REPORT = ["Harbor Smoke Operational Review", "Report No. SMK-2026-101", "Issued by Harbor Smoke Authority.", "Published 12 March 2026", "The revised program cost is $1.25 million."];
+const REPORT = ["Harbor Smoke Operational Review", "Report No. SMK-2026-101", "Issued by Zelmivar Equipment LLC.", "Published 12 March 2026", "The revised program cost is $1.25 million."];
 
 describe("durable pipeline", () => {
   it("marks a failed step, retries, resumes without re-parsing, and completes", async () => {
@@ -93,7 +93,7 @@ describe("duplicate and version handling", () => {
 
 it("serializes concurrent uploads and deliveries without duplicate paid calls or inflated counts", async () => {
   const seed = await seeded();
-  const bytes = await makePdf(["Concurrent Delivery Audit", "Report No. CON-2026-001", "Published 12 March 2026", "Issued by the Concurrent Delivery Authority. This review examined inventory records and recommended a documented monthly reconciliation process."]);
+  const bytes = await makePdf(["Concurrent Delivery Audit", "Report No. CON-2026-001", "Published 12 March 2026", "Issued by the Zelmivar Ledgerworks. This review examined inventory records and recommended a documented monthly reconciliation process."]);
   const uploads = await Promise.all([1, 2].map(() => registerUpload({ workspaceId: seed.workspaceId, userId: seed.adminId, filename: "CON-2026-001-audit.pdf", bytes })));
   expect(uploads.filter(u => u.kind === "created")).toHaveLength(1);
   expect(uploads.filter(u => u.kind === "duplicate")).toHaveLength(1);

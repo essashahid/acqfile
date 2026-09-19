@@ -118,4 +118,5 @@ export function layout(p:Plan,targetFiles:number){
   if(grouped.length>1){const first=grouped[0]!;if(first!==d)d.path=first.path;}
   if(d.tags.includes(14))d.path=`incoming/batch-${d.batch}/Phone/scan0007.pdf`;
  }
+ for(const d of p.documents)if(d.duplicate_of)d.format=doc(p,d.duplicate_of).format;
 }

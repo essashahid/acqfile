@@ -5,9 +5,9 @@ import { EMPTY_RECORD, type ReportRecord } from "@/lib/schema/report";
 
 const rec: ReportRecord = {
   ...EMPTY_RECORD,
-  report_title: "Northstar Operational Review",
+  report_title: "Zelmivar Operational Review",
   report_number: "OPS-2026-004",
-  issuing_organization: "Northstar Distribution",
+  issuing_organization: "Zelmivar Equipment",
   publication_date: "2026-03-12",
   document_type: "operational_review",
   key_findings: [
@@ -20,7 +20,7 @@ const rec: ReportRecord = {
 describe("metrics", () => {
   it("scalar comparison is exact for dates/enums and tolerant for free text", () => {
     expect(valuesEqual("publication_date", "2026-03-12", "2026-03-13")).toBe(false);
-    expect(valuesEqual("report_title", "Northstar Operational Review", "northstar operational review.")).toBe(true);
+    expect(valuesEqual("report_title", "Zelmivar Operational Review", "zelmivar operational review.")).toBe(true);
     expect(valuesEqual("amount", 1250000, 1250000.2)).toBe(true);
     expect(valuesEqual("publication_date", null, null)).toBe(true);
     expect(compareScalars(rec, { ...rec, report_number: "OPS-2026-005" }).filter((s) => !s.correct).map((s) => s.field)).toEqual(["report_number"]);

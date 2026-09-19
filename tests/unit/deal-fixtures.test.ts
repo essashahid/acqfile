@@ -18,3 +18,8 @@ describe('independent deal plans',()=>{
  it('invalid fact producer and broken financial models are rejected',()=>{const bad=structuredClone(all[0]!);doc(bad,'license').facts['pfs.cash']=10;expect(()=>checkPlan(bad)).toThrow();const model=structuredClone(all[0]!);model.model.loan++;expect(()=>checkModel(model)).toThrow();});
  it('truth authors cannot import the evaluator, parser or model providers',()=>{for(const f of ['fixtures/plans/shared.ts','fixtures/plans/deal-a.ts','fixtures/plans/deal-b.ts','fixtures/plans/deal-c.ts','fixtures/lib/truth.ts'])expect(fs.readFileSync(f,'utf8')).not.toMatch(/from\s+['"][^'"]*(?:rules\/engine|lib\/parsers|lib\/llm|openai)/);});
 });
+
+describe('rendered fixture proof without the application pipeline',()=>{
+ it('all committed files are readable in their declared format and match truth locators',async()=>{const {verifyFiles}=await import('../../fixtures/lib/verify');const result=await verifyFiles();expect(result.map(r=>r.files)).toEqual([40,28,22]);},60000);
+ it('synthetic lint rejects unsafe identifier/contact ranges and outcome wording',async()=>{const {lintSynthetic}=await import('../../fixtures/lib/verify');for(const text of ['123-45-6789','12-1234567','(202) 555-9999','person@invalid.test','approved'])expect(()=>lintSynthetic(text)).toThrow();expect(()=>lintSynthetic('900-12-3456 00-1234567 (202) 555-0142 fixture@example.com SYNTHETIC')).not.toThrow();});
+});

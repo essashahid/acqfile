@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
   serverExternalPackages: ["pdfjs-dist", "mammoth", "postgres"],
-  outputFileTracingIncludes: { "/*": ["./fixtures/documents/**/*", "./fixtures/truth/**/*", "./eval/baselines/**/*", "./rulepacks/**/*.yaml"] },
+  outputFileTracingIncludes: { "/*": ["./fixtures/legacy/documents/**/*", "./fixtures/legacy/truth/**/*", "./eval/baselines/**/*", "./rulepacks/**/*.yaml"] },
   experimental: {
     serverActions: { bodySizeLimit: "12mb" },
   },

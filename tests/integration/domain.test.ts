@@ -9,7 +9,7 @@ beforeAll(async()=>{
  seed=await seeded();const sql=getSql(),profile=JSON.stringify(fixtureInput().profile);
  const deals=await sql`insert into deals(workspace_id,code,name,profile_json,rule_pack_version,as_of_date) values (${seed.workspaceId},'D1','Synthetic deal',${profile}::jsonb,'sop-50-10-8','2026-09-15'),(${seed.workspaceId},'D2','Other synthetic deal',${profile}::jsonb,'sop-50-10-8','2026-09-15') returning id`;
  deal=deals[0]!.id;otherDeal=deals[1]!.id;
- const parties=await sql`insert into parties(deal_id,kind,roles,legal_name) values (${deal},'entity',array['buyer_entity'],'Synthetic Buyer') returning id`;party=parties[0]!.id;
+ const parties=await sql`insert into parties(deal_id,kind,roles,legal_name) values (${deal},'entity',array['buyer_entity'],'Zelmivar Holdings LLC') returning id`;party=parties[0]!.id;
  const docs=await sql`insert into documents(workspace_id,deal_id,logical_key,display_name) values (${seed.workspaceId},${deal},'DOMAIN-TEST','Domain test') returning id`;
  const versions=await sql`insert into document_versions(workspace_id,document_id,version_number,content_hash,storage_path,mime_type,byte_size,source_filename) values (${seed.workspaceId},${docs[0]!.id},1,${'c'.repeat(64)},'synthetic/domain.pdf','application/pdf',100,'domain.pdf') returning id`;version=versions[0]!.id;
  const segments=await sql`insert into segments(deal_id,document_version_id,metadata_locator,page_start,page_end,doc_type,party_id,classification_method,classification_confidence,status) values (${deal},${version},'{}',1,2,'EIN_LETTER',${party},'manual',1,'confirmed') returning id`;segment=segments[0]!.id;

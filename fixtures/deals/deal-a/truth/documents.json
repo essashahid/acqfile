@@ -1,8 +1,8 @@
 [
   {
     "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "becd77fda6015482ba4120fbc5b01b2dfc22b47568f1ff51cbee9ed05a33fa70",
+    "bytes": 4293,
     "format": "acroform_pdf",
     "batch": 1,
     "pages": 1,
@@ -68,7 +68,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
           "page": 1,
           "source_block": "1919-page-1",
-          "quote": "ownership.members: [{\"name\":\"Kiel McDermott\",\"percent\":60},{\"name\":\"Zelmivar Holdings LLC\",\"percent\":40}]"
+          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
         "confidence": 1,
         "confidence_components": {
@@ -97,8 +97,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "d907b26927e82beb3133f8fefe2abef4718b0d2df3e50c6a60d5a83ac44df7bc",
+    "bytes": 2295,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -146,7 +146,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
           "page": 1,
           "source_block": "affiliate-debt-page-1",
-          "quote": "debt.as_of_date: 2026-08-31"
+          "quote": "as of date: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -172,7 +172,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
           "page": 1,
           "source_block": "affiliate-debt-page-1",
-          "quote": "debt.total: 20000"
+          "quote": "total: 20000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -198,8 +198,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "b1ea5d4dc6e7746d156a2e4fbe8c948cf70c40989f2a313cef33afac2277c33c",
+    "bytes": 5855,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -301,7 +301,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "party.legal_name: Zelmivar Equipment LLC"
+          "quote": "legal name: Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -333,7 +333,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "party.identifier: {\"hmac\":\"4134f4bf37296793a53ab7239e45b324dcd1ed72fa3c948e01ef13e1f09f5037\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -359,7 +359,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "tax.gross_receipts: 100000"
+          "quote": "gross receipts: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -385,7 +385,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "tax.net_income: 10000"
+          "quote": "net income: 10000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -411,7 +411,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "tax.year: 2023"
+          "quote": "year: 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -437,7 +437,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "party.legal_name: Zelmivar Equipment LLC"
+          "quote": "legal name: Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -469,7 +469,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "party.identifier: {\"hmac\":\"4134f4bf37296793a53ab7239e45b324dcd1ed72fa3c948e01ef13e1f09f5037\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -495,7 +495,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "tax.gross_receipts: 100000"
+          "quote": "gross receipts: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -521,7 +521,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "tax.net_income: 10000"
+          "quote": "net income: 10000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -547,7 +547,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "tax.year: 2024"
+          "quote": "year: 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -573,7 +573,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "party.legal_name: Zelmivar Equipment LLC"
+          "quote": "legal name: Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -605,7 +605,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "party.identifier: {\"hmac\":\"4134f4bf37296793a53ab7239e45b324dcd1ed72fa3c948e01ef13e1f09f5037\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -631,7 +631,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "tax.gross_receipts: 100000"
+          "quote": "gross receipts: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -657,7 +657,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "tax.net_income: 10000"
+          "quote": "net income: 10000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -683,7 +683,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "tax.year: 2025"
+          "quote": "year: 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -711,8 +711,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "a7717d6ed738691c08be400f4456e45b1258c5f919cf4e9021faa236ba9a4114",
+    "bytes": 4944,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -814,7 +814,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
           "page": 2,
           "source_block": "id-page-2",
-          "quote": "id.expiry: 2030-12-31"
+          "quote": "expiry: 2030-12-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -844,8 +844,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "c52f93169c444fc8b265aa20cf83054756f6c3f1a106b0ddb42085d4d6251ee0",
+    "bytes": 3832,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -920,7 +920,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "tax.year: 2023"
+          "quote": "year: 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -952,7 +952,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+          "quote": "identifier: 900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -978,7 +978,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 2,
           "source_block": "personal-2025-page-2",
-          "quote": "tax.year: 2025"
+          "quote": "year: 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1010,7 +1010,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 2,
           "source_block": "personal-2025-page-2",
-          "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+          "quote": "identifier: 900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1039,8 +1039,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "edd0cb0ae8b939ccffd03f5772da7daefa985f6984c214ca8d4e6d4172ffe360",
+    "bytes": 2473,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -1088,7 +1088,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "party.legal_name: Kiel McDermott"
+          "quote": "legal name: Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1114,7 +1114,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "bank.ending_balance: 180000"
+          "quote": "ending balance: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1140,7 +1140,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "bank.period_end: 2026-04-30"
+          "quote": "period end: 2026-04-30"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1166,7 +1166,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "bank.institution: Zelmivar Bank"
+          "quote": "institution: Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1192,8 +1192,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "933ad3136c58d713e51c62d2eaa599701a6cbf7081d0d915a28faba863872925",
+    "bytes": 4941,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -1295,7 +1295,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
           "page": 2,
           "source_block": "bea-id-page-2",
-          "quote": "id.expiry: 2030-12-31"
+          "quote": "expiry: 2030-12-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1323,8 +1323,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "b75dc00e0ab7fb22c6ce551e50eb0741c760dbd65f8b214559e72d38fc2413cb",
+    "bytes": 9371,
     "format": "acroform_pdf",
     "batch": 1,
     "pages": 1,
@@ -1372,7 +1372,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
           "page": 1,
           "source_block": "bea-pfs-old-page-1",
-          "quote": "pfs.as_of_date: 2025-01-01"
+          "quote": "as of date: 2025-01-01"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1398,7 +1398,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
           "page": 1,
           "source_block": "bea-pfs-old-page-1",
-          "quote": "pfs.cash: 180000"
+          "quote": "cash: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1424,7 +1424,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
           "page": 1,
           "source_block": "bea-pfs-old-page-1",
-          "quote": "pfs.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1450,7 +1450,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
           "page": 1,
           "source_block": "bea-pfs-old-page-1",
-          "quote": "pfs.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1476,7 +1476,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
           "page": 1,
           "source_block": "bea-pfs-old-page-1",
-          "quote": "pfs.net_worth: 400000"
+          "quote": "net worth: 400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1504,8 +1504,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "1de08899493f0d79e668761e15b9319c622db6f019c81f0036413477a5a6cfc6",
+    "bytes": 9357,
     "format": "acroform_pdf",
     "batch": 1,
     "pages": 1,
@@ -1553,7 +1553,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
           "page": 1,
           "source_block": "bea-pfs-page-1",
-          "quote": "pfs.as_of_date: 2026-08-31"
+          "quote": "as of date: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1579,7 +1579,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
           "page": 1,
           "source_block": "bea-pfs-page-1",
-          "quote": "pfs.cash: 180000"
+          "quote": "cash: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1605,7 +1605,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
           "page": 1,
           "source_block": "bea-pfs-page-1",
-          "quote": "pfs.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1631,7 +1631,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
           "page": 1,
           "source_block": "bea-pfs-page-1",
-          "quote": "pfs.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1657,7 +1657,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
           "page": 1,
           "source_block": "bea-pfs-page-1",
-          "quote": "pfs.net_worth: 400000.5"
+          "quote": "net worth: 400000.5"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1687,8 +1687,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "da76a70b4e4630009f48db0c0b999fce830b7cfa9bb7b63c805902c7e963f18d",
+    "bytes": 5338,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -1790,7 +1790,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 1,
           "source_block": "bea-personal-2023-page-1",
-          "quote": "tax.year: 2023"
+          "quote": "year: 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1822,7 +1822,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 1,
           "source_block": "bea-personal-2023-page-1",
-          "quote": "party.identifier: {\"hmac\":\"f2abd448a7df7916819b8dc5fa73ad0f3ad4e0186ecbfc7378f6285cbe9910c6\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1848,7 +1848,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 2,
           "source_block": "bea-personal-2024-page-2",
-          "quote": "tax.year: 2024"
+          "quote": "year: 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1880,7 +1880,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 2,
           "source_block": "bea-personal-2024-page-2",
-          "quote": "party.identifier: {\"hmac\":\"f2abd448a7df7916819b8dc5fa73ad0f3ad4e0186ecbfc7378f6285cbe9910c6\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1906,7 +1906,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 3,
           "source_block": "bea-personal-2025-page-3",
-          "quote": "tax.year: 2025"
+          "quote": "year: 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1938,7 +1938,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 3,
           "source_block": "bea-personal-2025-page-3",
-          "quote": "party.identifier: {\"hmac\":\"f2abd448a7df7916819b8dc5fa73ad0f3ad4e0186ecbfc7378f6285cbe9910c6\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1966,8 +1966,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/formation.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "d9c5aa20a943198c0c2b9ae64b09481e05dd4aba6b1fdcb5540b4e776c8e5291",
+    "bytes": 3624,
     "format": "protected_pdf",
     "batch": 1,
     "pages": 1,
@@ -1988,8 +1988,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "4cf64cc8703a1b29b076634c4950221d136aafd66a4bfada110b93785dd14b7f",
+    "bytes": 4095,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2064,7 +2064,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "party.legal_name: Jaylan Heller"
+          "quote": "legal name: Jaylan Heller"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2090,7 +2090,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "bank.ending_balance: 180000"
+          "quote": "ending balance: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2116,7 +2116,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "bank.period_end: 2026-07-31"
+          "quote": "period end: 2026-07-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2142,7 +2142,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "bank.institution: Zelmivar Bank"
+          "quote": "institution: Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2168,7 +2168,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "party.legal_name: Jaylan Heller"
+          "quote": "legal name: Jaylan Heller"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2194,7 +2194,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "bank.ending_balance: 180000"
+          "quote": "ending balance: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2220,7 +2220,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "bank.period_end: 2026-08-31"
+          "quote": "period end: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2246,7 +2246,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "bank.institution: Zelmivar Bank"
+          "quote": "institution: Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2273,8 +2273,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "d71f846eba34683f62f5dfdd892facb539eb27bc403f070cc9d3d3c96938e3f1",
+    "bytes": 3782,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2349,7 +2349,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "financial.period_end: 2026-08-31"
+          "quote": "period end: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2375,7 +2375,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "financial.revenue: 70000"
+          "quote": "revenue: 70000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2401,7 +2401,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "financial.total_assets: 100000"
+          "quote": "total assets: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2427,7 +2427,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "financial.total_liabilities: 20000"
+          "quote": "total liabilities: 20000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2454,8 +2454,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "1c3fe9999165a0e48d67cbeec4948635b23aa5eceefd8949fc027fb2cf305d99",
+    "bytes": 4086,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2556,7 +2556,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "funding.sources: [{\"label\":\"Senior loan\",\"amount\":2085000},{\"label\":\"Cash injection\",\"amount\":150000},{\"label\":\"Seller note\",\"amount\":240000}]"
+          "quote": "sources: Senior loan / 2085000; Cash injection / 150000; Seller note / 240000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2600,7 +2600,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "funding.uses: [{\"label\":\"Purchase\",\"amount\":2400000},{\"label\":\"Working capital\",\"amount\":100000}]"
+          "quote": "uses: Purchase / 2400000; Working capital / 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2626,7 +2626,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "funding.sources_total: 2475000"
+          "quote": "sources total: 2475000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2652,7 +2652,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "funding.uses_total: 2500000"
+          "quote": "uses total: 2500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2678,7 +2678,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "deal.purchase_price: 2410000"
+          "quote": "purchase price: 2410000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2704,7 +2704,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "deal.seller_note_amount: 240000"
+          "quote": "seller note amount: 240000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2730,7 +2730,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "deal.seller_note_terms: 24-month standby, then monthly payments"
+          "quote": "seller note terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2774,7 +2774,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 2,
           "source_block": "operating-page-2",
-          "quote": "ownership.members: [{\"name\":\"Kiel McDermott\",\"percent\":55},{\"name\":\"Zelmivar Holdings LLC\",\"percent\":45}]"
+          "quote": "members: Kiel McDermott / 55; Zelmivar Holdings LLC / 45"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2807,8 +2807,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "c112528b86c4159d75ca7e0d5a1fe52df8877b1de403a5aff82c42f827ce1d47",
+    "bytes": 3588,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2889,7 +2889,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
           "page": 1,
           "source_block": "ein-page-1",
-          "quote": "party.identifier: {\"hmac\":\"9f2d0e5ef05f6ccc18f7cc786724a3a736dade119175d484d70506d572866596\",\"last_four\":\"4321\"}"
+          "quote": "identifier: 00-7654321"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2916,8 +2916,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "9753c29565b6fba65b6fd372a6930a9f671cb847b64dfb3a5fa4ded20b65313c",
+    "bytes": 3624,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -3010,7 +3010,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
           "page": 1,
           "source_block": "owners-page-1",
-          "quote": "ownership.members: [{\"name\":\"Kiel McDermott\",\"percent\":60},{\"name\":\"Zelmivar Holdings LLC\",\"percent\":40}]"
+          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3039,8 +3039,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "44a1787e3fd07c403734f7b48bbba58b170cb3e0b36f0c180cc79f68c2562fe0",
+    "bytes": 3814,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -3115,7 +3115,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "party.legal_name: Kiel McDermott"
+          "quote": "legal name: Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3141,7 +3141,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "bank.ending_balance: 180000"
+          "quote": "ending balance: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3167,7 +3167,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "bank.period_end: 2026-07-31"
+          "quote": "period end: 2026-07-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3193,7 +3193,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "bank.institution: Zelmivar Bank"
+          "quote": "institution: Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3220,8 +3220,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "f5f0f047ec5c57a2bddfa0ea2e2e2dba6ea3e4ae3171a6502eeb9d5c6a0c5315",
+    "bytes": 4052,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -3296,7 +3296,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "party.legal_name: Kiel McDermott"
+          "quote": "legal name: Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3322,7 +3322,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "bank.ending_balance: 100000"
+          "quote": "ending balance: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3348,7 +3348,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "bank.period_end: 2026-08-31"
+          "quote": "period end: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3374,7 +3374,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "bank.institution: Zelmivar Bank"
+          "quote": "institution: Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3400,7 +3400,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "financial.revenue: 1200000"
+          "quote": "revenue: 1200000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3426,7 +3426,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "financial.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3452,7 +3452,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "financial.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3478,7 +3478,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "financial.net_income: 120000"
+          "quote": "net income: 120000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3507,8 +3507,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "0922bae8c7590cfa25775fddc08ede34524bc84103dd61a6713611a67d6849f9",
+    "bytes": 2290,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -3556,7 +3556,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
           "page": 1,
           "source_block": "holding-debt-page-1",
-          "quote": "debt.as_of_date: 2026-08-31"
+          "quote": "as of date: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3582,7 +3582,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
           "page": 1,
           "source_block": "holding-debt-page-1",
-          "quote": "debt.total: 0"
+          "quote": "total: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3608,8 +3608,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "df947254f60860ff1814e17c99a3e64d58ec78b23772b2694cc04065ec46caae",
+    "bytes": 2417,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -3657,7 +3657,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "financial.period_end: 2026-08-31"
+          "quote": "period end: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3683,7 +3683,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "financial.revenue: 0"
+          "quote": "revenue: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3709,7 +3709,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "financial.total_assets: 400000"
+          "quote": "total assets: 400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3735,7 +3735,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "financial.total_liabilities: 0"
+          "quote": "total liabilities: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3761,8 +3761,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "b78a1d82ffd2248656d6693d51718e48947b8c6c8ac73ddcfb113462e35b8997",
+    "bytes": 5832,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -3864,7 +3864,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "party.legal_name: Zelmivar Holdings LLC"
+          "quote": "legal name: Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3896,7 +3896,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "party.identifier: {\"hmac\":\"b80671126d9836c6dc0f05434626f8ecb21cc44f3fbad355458833571a6addd1\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3922,7 +3922,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "tax.gross_receipts: 0"
+          "quote": "gross receipts: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3948,7 +3948,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "tax.net_income: 0"
+          "quote": "net income: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3974,7 +3974,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "tax.year: 2023"
+          "quote": "year: 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4000,7 +4000,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "party.legal_name: Zelmivar Holdings LLC"
+          "quote": "legal name: Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4032,7 +4032,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "party.identifier: {\"hmac\":\"b80671126d9836c6dc0f05434626f8ecb21cc44f3fbad355458833571a6addd1\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4058,7 +4058,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "tax.gross_receipts: 0"
+          "quote": "gross receipts: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4084,7 +4084,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "tax.net_income: 0"
+          "quote": "net income: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4110,7 +4110,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "tax.year: 2024"
+          "quote": "year: 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4136,7 +4136,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "party.legal_name: Zelmivar Holdings LLC"
+          "quote": "legal name: Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4168,7 +4168,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "party.identifier: {\"hmac\":\"b80671126d9836c6dc0f05434626f8ecb21cc44f3fbad355458833571a6addd1\",\"last_four\":\"6789\"}"
+          "quote": "identifier: 00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4194,7 +4194,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "tax.gross_receipts: 0"
+          "quote": "gross receipts: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4220,7 +4220,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "tax.net_income: 0"
+          "quote": "net income: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4246,7 +4246,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "tax.year: 2025"
+          "quote": "year: 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4274,8 +4274,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "b257ec4a48f8e973eb3e7108f317b7ceff977fd49197f1a330352b66c6867cb4",
+    "bytes": 9305,
     "format": "acroform_pdf",
     "batch": 1,
     "pages": 1,
@@ -4323,7 +4323,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
           "page": 1,
           "source_block": "pfs-page-1",
-          "quote": "pfs.as_of_date: 2026-04-28"
+          "quote": "as of date: 2026-04-28"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4349,7 +4349,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
           "page": 1,
           "source_block": "pfs-page-1",
-          "quote": "pfs.cash: 180000"
+          "quote": "cash: 180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4375,7 +4375,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
           "page": 1,
           "source_block": "pfs-page-1",
-          "quote": "pfs.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4401,7 +4401,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
           "page": 1,
           "source_block": "pfs-page-1",
-          "quote": "pfs.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4427,7 +4427,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
           "page": 1,
           "source_block": "pfs-page-1",
-          "quote": "pfs.net_worth: 400000"
+          "quote": "net worth: 400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4455,8 +4455,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/plan.docx",
-    "hash": null,
-    "bytes": null,
+    "hash": "a999d8d9f72b47c99e5bf070dfa52b4af9e084d868aed5702da0837f5d3dc360",
+    "bytes": 10440,
     "format": "docx",
     "batch": 1,
     "pages": 1,
@@ -4503,8 +4503,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "16eeeca997926bd63e368fa33d624d622018e7cee840666fd144363671e931a5",
+    "bytes": 2243,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -4553,11 +4553,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF",
-    "hash": null,
-    "bytes": null,
-    "format": "text_pdf",
+    "hash": "c52f93169c444fc8b265aa20cf83054756f6c3f1a106b0ddb42085d4d6251ee0",
+    "bytes": 3832,
+    "format": "bundle_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 2,
     "segments": [],
     "facts": [],
     "planted_items": [
@@ -4575,8 +4575,8 @@
   },
   {
     "file": "incoming/batch-1/Phone/scan0007.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "f04e6422c3255d513664773c75fa7861c3f63f23e4738a5d88f704467de32de5",
+    "bytes": 2467,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -4624,7 +4624,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "party.address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4650,7 +4650,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "lease.tenant: Varnholt Climate Services LLC"
+          "quote": "tenant: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4676,7 +4676,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "lease.landlord: Zelmivar Premises LLC"
+          "quote": "landlord: Zelmivar Premises LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4702,7 +4702,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "lease.expiry: 2029-09-15"
+          "quote": "expiry: 2029-09-15"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4728,7 +4728,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "lease.option_years: 0"
+          "quote": "option years: 0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4757,8 +4757,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/brochure.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "479d5f74d951253da6d716b421627873ddee0f978d1c0c0489ea7acd9c7e9ea2",
+    "bytes": 2284,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -4807,11 +4807,11 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-    "hash": null,
-    "bytes": null,
+    "hash": "332dfcc24a8491f5651417e23b4524adf83eab5c3fe24ee7ae36e74a1b5b8492",
+    "bytes": 7124,
     "format": "xlsx",
     "batch": 1,
-    "pages": 1,
+    "pages": 2,
     "segments": [
       {
         "id": "fin-2025",
@@ -4824,7 +4824,7 @@
           "quote": "Signature: e-signed; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 2,
         "doc_type": "FIN_YEAR_END",
         "party_id": "target",
         "period": "2025",
@@ -4833,7 +4833,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 1,
+        "expected_page_count": 2,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -4856,7 +4856,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "financial.revenue: 1484000"
+          "quote": "revenue: 1484000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4880,9 +4880,9 @@
         "method": "text",
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-          "page": 1,
-          "source_block": "fin-2025-page-1",
-          "quote": "financial.total_assets: 500000"
+          "page": 2,
+          "source_block": "fin-2025-sheet-2",
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4906,9 +4906,9 @@
         "method": "text",
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-          "page": 1,
-          "source_block": "fin-2025-page-1",
-          "quote": "financial.total_liabilities: 100000"
+          "page": 2,
+          "source_block": "fin-2025-sheet-2",
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4934,7 +4934,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "financial.net_income: 140000"
+          "quote": "net income: 140000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4963,8 +4963,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "4c39b2c0d9b443cc5036e29b3fee9086417a76171988f6274910b00dccf0bc7e",
+    "bytes": 4508,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5039,7 +5039,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "deal.signed_by_both: true"
+          "quote": "signed by both: Yes"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5065,7 +5065,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "deal.expiry_date: 2026-09-01"
+          "quote": "expiry date: 2026-09-01"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5091,7 +5091,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "deal.purchase_price: 2425000"
+          "quote": "purchase price: 2425000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5117,7 +5117,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "deal.seller_note_amount: 240000"
+          "quote": "seller note amount: 240000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5143,7 +5143,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "deal.seller_note_terms: 24-month standby, then monthly payments"
+          "quote": "seller note terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5169,7 +5169,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.buyer: Varnholt Acquisition LLC"
+          "quote": "buyer: Varnholt Acquisition LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5195,7 +5195,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.seller: Varn Holt Climate Services L.L.C."
+          "quote": "seller: Varn Holt Climate Services L.L.C."
         },
         "confidence": 1,
         "confidence_components": {
@@ -5221,7 +5221,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.allocation_present: true"
+          "quote": "allocation present: Yes"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5247,7 +5247,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.purchase_price: 2400000"
+          "quote": "purchase price: 2400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5273,7 +5273,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.structure: asset"
+          "quote": "structure: asset"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5299,7 +5299,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.outside_date: 2026-11-30"
+          "quote": "outside date: 2026-11-30"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5325,7 +5325,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "party.legal_name: Varnholt Climate Services LLC"
+          "quote": "legal name: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5357,7 +5357,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5383,7 +5383,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.seller_note_amount: 240000"
+          "quote": "seller note amount: 240000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5409,7 +5409,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "deal.seller_note_terms: 24-month standby, then monthly payments"
+          "quote": "seller note terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5435,7 +5435,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "party.address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5465,8 +5465,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "4199a27fe9087c64b1a90bd814bd81502017790ee2900c290e446043ad085762",
+    "bytes": 3544,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5541,8 +5541,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "cf1efceff819c618b7e93990273115b67a7b354facef1d241e7551547ecd7622",
+    "bytes": 3769,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5617,7 +5617,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "note.principal: 240000"
+          "quote": "principal: 240000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5643,7 +5643,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "note.term_months: 120"
+          "quote": "term months: 120"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5669,7 +5669,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "note.full_standby: false"
+          "quote": "full standby: No"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5695,7 +5695,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "deal.seller_note_terms: 24-month standby, then monthly payments"
+          "quote": "seller note terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5725,8 +5725,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "375aa39cea88c665157f953e978570dcaf0670fcc79ebf9a9747ea83e06e93b0",
+    "bytes": 4013,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5801,7 +5801,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "financial.revenue: 1300000"
+          "quote": "revenue: 1300000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5827,7 +5827,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "financial.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5853,7 +5853,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "financial.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5879,7 +5879,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "financial.net_income: 130000"
+          "quote": "net income: 130000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5905,7 +5905,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "financial.period_end: 2026-04-18"
+          "quote": "period end: 2026-04-18"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5931,7 +5931,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "financial.revenue: 900000"
+          "quote": "revenue: 900000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5957,7 +5957,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "financial.total_assets: 500000"
+          "quote": "total assets: 500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5983,7 +5983,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "financial.total_liabilities: 100000"
+          "quote": "total liabilities: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6012,8 +6012,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "27c35a4094b4472d3cb721945fbac74d2744f87621d12b26788d26eb541b570a",
+    "bytes": 3635,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -6088,7 +6088,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 1,
           "source_block": "ar-page-1",
-          "quote": "aging.as_of_date: 2026-04-18"
+          "quote": "as of date: 2026-04-18"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6114,7 +6114,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 2,
           "source_block": "ap-page-2",
-          "quote": "aging.as_of_date: 2026-04-18"
+          "quote": "as of date: 2026-04-18"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6143,8 +6143,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "336a5af35955cca33b88b5350f357164629767cb68ca53befdbee55d2cdc9800",
+    "bytes": 3805,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -6219,7 +6219,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "debt.as_of_date: 2026-08-31"
+          "quote": "as of date: 2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6245,7 +6245,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "debt.total: 100000"
+          "quote": "total: 100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6271,7 +6271,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "party.legal_name: Varnholt Climate Services LLC"
+          "quote": "legal name: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6303,7 +6303,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "party.identifier: {\"hmac\":\"b94ab5d07d65b7ed66c17845cb598e6c3fb442db29386dd4953d07cab796ee7a\",\"last_four\":\"4568\"}"
+          "quote": "identifier: 00-1234568"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6332,8 +6332,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/lease-consent.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "00ba4bba2f459678832ec7b432f9fb2dd719ab2bca391f57a77f99e2ceee7558",
+    "bytes": 2195,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -6380,11 +6380,11 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/license-resend.PDF",
-    "hash": null,
-    "bytes": null,
-    "format": "text_pdf",
+    "hash": "cf1efceff819c618b7e93990273115b67a7b354facef1d241e7551547ecd7622",
+    "bytes": 3769,
+    "format": "bundle_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 2,
     "segments": [],
     "facts": [],
     "planted_items": [
@@ -6402,8 +6402,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "0f5e679a4ec8fedf83e4e15505414865591575982cedb3bfb067726a31286776",
+    "bytes": 6137,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -6505,7 +6505,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "party.legal_name: Varnholt Climate Services LLC"
+          "quote": "legal name: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6537,7 +6537,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6563,7 +6563,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "tax.gross_receipts: 1200000"
+          "quote": "gross receipts: 1200000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6589,7 +6589,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "tax.net_income: 120000"
+          "quote": "net income: 120000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6615,7 +6615,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "tax.year: 2023"
+          "quote": "year: 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6641,7 +6641,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "tax.form_type: 1120S"
+          "quote": "form type: 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6667,7 +6667,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "party.address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6693,7 +6693,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "party.legal_name: Varnholt Climate Services LLC"
+          "quote": "legal name: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6725,7 +6725,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6751,7 +6751,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "tax.gross_receipts: 1300000"
+          "quote": "gross receipts: 1300000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6777,7 +6777,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "tax.net_income: 130000"
+          "quote": "net income: 130000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6803,7 +6803,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "tax.year: 2024"
+          "quote": "year: 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6829,7 +6829,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "tax.form_type: 1120S"
+          "quote": "form type: 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6855,7 +6855,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "party.address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6881,7 +6881,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "party.legal_name: Varnholt Climate Services LLC"
+          "quote": "legal name: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6913,7 +6913,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+          "quote": "identifier: 00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6939,7 +6939,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "tax.gross_receipts: 1400000"
+          "quote": "gross receipts: 1400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6965,7 +6965,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "tax.net_income: 140000"
+          "quote": "net income: 140000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6991,7 +6991,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "tax.year: 2025"
+          "quote": "year: 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7017,7 +7017,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "tax.form_type: 1120S"
+          "quote": "form type: 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7043,7 +7043,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "party.address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7074,8 +7074,8 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "161284a7c6a8756e0e989bd0a9b96d501e0921cca4dbb0f58a604052ee71653f",
+    "bytes": 4474,
     "format": "acroform_pdf",
     "batch": 2,
     "pages": 1,
@@ -7141,7 +7141,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
           "page": 1,
           "source_block": "1919-fixed-page-1",
-          "quote": "ownership.members: [{\"name\":\"Kiel McDermott\",\"percent\":60},{\"name\":\"Zelmivar Holdings LLC\",\"percent\":40}]"
+          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7169,8 +7169,8 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
-    "hash": null,
-    "bytes": null,
+    "hash": "dc82f3db1b01094f5a976f83755184ef52da547b86781821b24dc7538139ac36",
+    "bytes": 2339,
     "format": "text_pdf",
     "batch": 2,
     "pages": 1,
@@ -7218,7 +7218,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
           "page": 1,
           "source_block": "personal-2024-page-1",
-          "quote": "tax.year: 2024"
+          "quote": "year: 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7250,7 +7250,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
           "page": 1,
           "source_block": "personal-2024-page-1",
-          "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+          "quote": "identifier: 900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7278,8 +7278,8 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/bea-citizen.PDF",
-    "hash": null,
-    "bytes": null,
+    "hash": "7cc1dae25c4d2d6d12a9402b1102f8a911be5c32e45674785a9228711c8482e2",
+    "bytes": 2187,
     "format": "text_pdf",
     "batch": 2,
     "pages": 1,

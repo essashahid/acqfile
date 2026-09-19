@@ -1,10 +1,10 @@
 # AcqFile build plan
 
-Authority: [SPEC.md](SPEC.md), read in full, and the user's instruction to do **Phase 0 only**. Each phase must run its proof, update PROGRESS.md and commit with its number before reporting. Phase 1 requires the user's next instruction.
+Authority: [SPEC.md](SPEC.md), [SPEC_AMENDMENTS.md](SPEC_AMENDMENTS.md), and the current [Phase 2 request](PHASE_2.md). Phase 1 is accepted at 9ae628a. Complete Phase 2 only, commit Step A and Step B separately, push, and stop before Phase 3. Each phase runs its proof and updates PROGRESS.md before reporting.
 
 ## Starting point
 
-Copy EvidenceOps main `9341148348f8535ed0f15981360728da58fd186c` into an independent private AcqFile repository. Read AGENTS.md, CLAUDE.md, README.md, docs/audit.md and docs/deployment.md before edits. Do not reuse deployment resources or credentials. Preserve the installed Next.js 16 conventions, driver pattern, source provenance, immutable review, durable jobs and regression harness.
+Copy EvidenceOps main `9341148348f8535ed0f15981360728da58fd186c` into an independent AcqFile repository with owner-controlled visibility. Read AGENTS.md, CLAUDE.md, README.md, docs/audit.md and docs/deployment.md before edits. Do not reuse deployment resources or credentials. Preserve the installed Next.js 16 conventions, driver pattern, source provenance, immutable review, durable jobs and regression harness.
 
 ## Ordered phases
 

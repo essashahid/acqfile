@@ -5,6 +5,14 @@ import { ADMIN, login, uploadFiles } from "./helpers";
 
 test.describe.configure({ mode: "serial" });
 
+// Resolve retained corpus names from its immutable manifest, never rename legacy bytes.
+function legacyFile(prefix: string): string {
+  const manifest = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "fixtures/legacy/documents/manifest.json"), "utf8")) as { files: { filename: string }[] };
+  const matches = manifest.files.filter(f => f.filename.startsWith(prefix));
+  if(matches.length !== 1) throw new Error(`Ambiguous legacy fixture prefix ${prefix}`);
+  return matches[0]!.filename;
+}
+
 test("unauthenticated users are redirected to login and can sign in", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/login/);
@@ -14,13 +22,13 @@ test("unauthenticated users are redirected to login and can sign in", async ({ p
 
 test("upload processes documents, detects duplicates and links corrected versions", async ({ page }) => {
   await login(page);
-  await uploadFiles(page, ["OPS-2026-004-v1-northstar-operational-review.pdf", "AUD-2026-011-v1-meridian-water-audit-report.pdf", "AUD-2026-003-v1-orchard-valley-audit-report.pdf"]);
+  await uploadFiles(page, [legacyFile("OPS-2026-004-v1-"), legacyFile("AUD-2026-011-v1-"), legacyFile("AUD-2026-003-v1-")]);
   await expect(page.getByText(/OPS-2026-004/).first()).toBeVisible();
   // duplicate
-  await uploadFiles(page, ["copy-of-AUD-2026-011-v1-meridian-water-audit-report.pdf"]);
+  await uploadFiles(page, [legacyFile("copy-of-AUD-2026-011-v1-")]);
   await expect(page.getByText(/duplicate/i).first()).toBeVisible();
   // corrected version
-  await uploadFiles(page, ["OPS-2026-004-v2-northstar-operational-review-corrected.pdf"]);
+  await uploadFiles(page, [legacyFile("OPS-2026-004-v2-")]);
   await expect(page.getByText(/supersed/i).first()).toBeVisible();
 });
 

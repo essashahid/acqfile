@@ -8,7 +8,7 @@ Date: 2026-09-19. Base: accepted Phase 0 commit `b586d9c`. Repository: private `
 - Additive SQL/Drizzle domain schema: deals, parties, ownership_links, segments, facts, rule_pack_snapshots, evaluations, checklist_status, findings and events; nullable documents.deal_id. Same-deal foreign keys/guards, constrained values, indexes and immutable audit/pack records. No findings lifecycle implementation or Phase 5 tables.
 - Two independent SOP YAML packs, Sample Lender A overlay, strict loader, safe AST, canonical hashing and idempotent exact-content snapshot persistence.
 - Pure evaluation with all 12 check types, all eight scopes, calendar/statement periods, three-valued logic, explicit waivers/manual confirmations/tracking, pack selection, inclusive 14-day boundary flag, stable finding keys and result hashes.
-- Authenticated read-only `/rulepacks` viewer with two-configuration comparison, effective parameter differences, source links and unverified labels. [Browser screenshot](screenshots/phase-1-rulepacks.png).
+- Authenticated read-only `/rulepacks` viewer with two-configuration comparison, effective parameter differences, source links and unverified labels. [Browser screenshot](screenshots/phase-2-rulepacks.png).
 - `rules:check` and `rules:export-review`; [XLSX](RULEPACK_REVIEW.xlsx) and [HTML](RULEPACK_REVIEW.html) cover all four resolved configurations, with empty SME correction columns and the required footer.
 
 ## Decisions
@@ -91,3 +91,5 @@ No deployment or hosted Supabase connection is part of this proof; conditional S
 The final GitHub read unexpectedly reported public visibility. Restored the specification’s required private visibility through the GitHub API before committing/pushing, scoped only to `essashahid/acqfile`. No reason for the visibility drift is inferred.
 
 The staged whitespace check reports the final blank line preserved in SPEC_AMENDMENTS.md. It is intentionally retained to keep Section 0 verbatim; the byte-for-byte amendment comparison passes and the original SPEC hash is unchanged.
+
+A19 refresh: the viewer screenshot now uses Sample Lender A and example.com demo contacts. The original Phase 1 capture remains in its accepted Git commit.

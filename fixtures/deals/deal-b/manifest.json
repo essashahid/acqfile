@@ -1,0 +1,342 @@
+{
+  "deal": "deal-b",
+  "as_of": "2026-09-15",
+  "files": [
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/1919.pdf",
+      "sha256": "35ec8812e6631e8df20cf0b0baa693821b54f281c9e0ab8e7c48c049e676d07b",
+      "bytes": 4333,
+      "pages": 1,
+      "format": "acroform_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "1264b99352070feeabc1203eaf4685ccd993fc487d5fc83cdbd2cf8656658a23"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
+      "sha256": "53e8cc5f9eed5dd6a4ac9c9df2fc6f104cfc11856fc237586b05aa9d081c25b3",
+      "bytes": 4925,
+      "pages": 3,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "e6c0bee6347bf4108d85db4eb8ddc296b12ea9b23f9b6f87722d3081f12f14de"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
+      "sha256": "565218544ec3aeae615b7310132ec6ca87ebd8e4ac08212ff8b1ebc893ab3366",
+      "bytes": 5320,
+      "pages": 3,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "99251815c1bd2a57a9b1e12983887dcf98867a4f0d8da037f72d01f3641cb92a"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
+      "sha256": "08b9027bce73b05c938100b611d8f912518540f2b4c7dfdaed60c9a9ddd11034",
+      "bytes": 2458,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [
+        22
+      ],
+      "plan_hash": "cd9afdcdf07a9421316a4e4979d5d31b36aafb734ebc6dd11cd6d07f261565e4"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/bank-jul.pdf",
+      "sha256": "f8b166c4ec6f008e18babf7a3eb84ad5545e6a4906854330f734f6e2fb253e98",
+      "bytes": 2463,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "a445c87463d25b57d2019d7d2cd94b215268cddcab3648d1d1c3d0cfb7c9b01b"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+      "sha256": "45bfbf4b68f7855957adb6a039417603729df216bf1a3cffbc8e9fd449a555f0",
+      "bytes": 4035,
+      "pages": 2,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [
+        22
+      ],
+      "plan_hash": "32bbc2c78dfd4bdbd29da62694170ca0c13c85608021aa6f754992c6c90b06d3"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+      "sha256": "87097440c49983e93bbcce5c4a6f11c357971a3a65632021c7e90fbe368b0ce0",
+      "bytes": 3665,
+      "pages": 2,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "94e2f846755cadaaeb4c1b18970c8043fe587b3ba67c9fbc8d097cd5ba7836d0"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+      "sha256": "3e9c8109727895184af6fb29adfe274928b817f528b7c5aadc7601eea2fa9803",
+      "bytes": 3616,
+      "pages": 2,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "fda90edfd4d56d8fbfe4ffd6e319303bd35532d202c3191858d5b29e2da8bdd2"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+      "sha256": "b4cf490807b82567259c1169e146039a89f638d109ecc87882448695d0da7e95",
+      "bytes": 3517,
+      "pages": 2,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "672db28885ca61ba2bc0032accb40653e35bf610f50661458300fa5da435ec90"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/investor-citizen.PDF",
+      "sha256": "9ba460a1b96b2f934c7f6d991c17f33f4794b78d6f0c42a057eaaccc051f9317",
+      "bytes": 2195,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "3e600559909e9244292ceedff494029706305cd02fde60dd6fc29aa6cbfb5f34"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
+      "sha256": "3c0f2bd53e4f34a23cdde8c661bb842d8c6ca2206cd2cc6607e977a5bb811270",
+      "bytes": 9295,
+      "pages": 1,
+      "format": "acroform_pdf",
+      "batch": 1,
+      "planted_items": [
+        22
+      ],
+      "plan_hash": "ffa20119dace007f9d474dab731e019bb1e9c0ee4473392d1ece3dbe704942f8"
+    },
+    {
+      "path": "incoming/batch-1/Buyer/Attachments/plan.docx",
+      "sha256": "d7e0b41fc750b298cdc4502075c90fab9761893079e0b90e9aae4232d3cd248a",
+      "bytes": 10439,
+      "pages": 1,
+      "format": "docx",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "8b732b2c502af3acc2c478300e356c332c5ed6d7071c9c124ff81327d03ab713"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/4506.pdf",
+      "sha256": "3de04ae562b31904de0affd10dd532a4c8b9b042f21353589bf5ed90945f04c8",
+      "bytes": 2357,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "20b7cbc35b13ffb1e073ebdafeeb3847e8d9846c1e351120f10f3e7a6bf77098"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/addback.PDF",
+      "sha256": "313ac6f4c285cb4c9e707876f1dcf5d64714e45b3de62169377d4087ffd6f4a5",
+      "bytes": 2201,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "6cbb49f72a53b4f12e822a09ef54e7364eb5788fece7c2291070303902cd0bac"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/ap.pdf",
+      "sha256": "419e85fff0ed3978e2a4c76414d17e3f54ff1958c598e3d6f44c6d5810f81a10",
+      "bytes": 2240,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "b2fa51dfe46dbb6ab6ba5c89f403d91dbeadec27a4004c819ae419210413ac82"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/ar.PDF",
+      "sha256": "78a3e1e8de30cd7ace9069df0d9ac40302167e7c0af3ac06a27babdab16b9fe5",
+      "bytes": 2240,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "34ece28dc32e1d5b50cb8097c243d1dab485b223e867b849d6c7c4dc6f797d50"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/debt.PDF",
+      "sha256": "8f5703316f6a142f924fd1967ff088d46f49e23214b782c62be7e6acd09c3c3b",
+      "bytes": 2293,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "e371f4eae81f249b2cfac5b7dffca7c292ac87d9ee3392a11a29e2a21607c7c4"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/equipment.PDF",
+      "sha256": "3c04c132b4add4274d67cb3f3cabb154cc210381067983fd477125c0c92da603",
+      "bytes": 2194,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "87c5e9096976f1b1b1330d1ce91c99815f986c895ab01a8a2bc000f88ee98a92"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/fin-2023.PDF",
+      "sha256": "29e09cabf7f12b88203ee4092128c017b6cb45e4b5e686a49c725760b3318523",
+      "bytes": 2428,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "6cbb94c8c328eb4952f5622741c82a5957e7aa60d2a3dba0bf2c48bfbb56fed8"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
+      "sha256": "a088ef4acf9afc1232de79f7cb5d84fbc32b2aadbbe16c8ae2a563c73785accd",
+      "bytes": 2428,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "05c3ba047368f6a0e6770501daddc9e2fc5bb9a679734a7b4d252699208a0ac9"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
+      "sha256": "905eb7bac670d6a00101a7999f9cd6c7831f795b2328471a65ddd5bbfe3ba7c7",
+      "bytes": 7123,
+      "pages": 2,
+      "format": "xlsx",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "0b36fb54aad237c0dba3322fd1b8c74a82085d20d02e254121976765e8da3222"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
+      "sha256": "174e6ada827309c8ef30cd533407f08b3ae76000252b9fb2f2167c56898110fc",
+      "bytes": 4430,
+      "pages": 2,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "d60a78943ada538f993d64d606fcb05ebbce71fa457972981e3ee84f6db45d63"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
+      "sha256": "df53dce3919e20730311e1244cbacdfdbddab3b6130cf422df781ca61676912a",
+      "bytes": 2423,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "48525ca7e10d1b51d95d18142dba78796ac1847df6103b62daf35649e87f3149"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/inventory.pdf",
+      "sha256": "6cdf375b0664989365294fc04baff9379b1a833df94f71175056458d46c4ba57",
+      "bytes": 2195,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "5aad789cb3cc85e55386bee75b6c5b40453f1d0a2096ac14f14ea1e4e6dfe3d6"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/license.PDF",
+      "sha256": "00b6a45f9344b78aac95b0eabc4a60f3e7c40c6b698d2173f1ea269d98fdcd5f",
+      "bytes": 2185,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "384cda342b8f7a3075965712b9e86ce9e6f487798aae703e2756aa365e140c25"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/noncompete.pdf",
+      "sha256": "747e9c613e2b76a3266a7bb172654f30e8d5a87992146b778d0e383dabf42155",
+      "bytes": 2188,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "56057480a4ada229b7c5eea02ee68d0063a91ed34e0625c576a02931a3fd9fa5"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
+      "sha256": "555b29a600c96464dfbe23a3d7717fc908cb6cb9a14f92f1f8821bedcef55ed9",
+      "bytes": 2414,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "6b02bf2901d0f65e5ba50807aafdaa0738aa293487bdefe76747c60d597e0e56"
+    },
+    {
+      "path": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
+      "sha256": "7f6c272af3006c1fd54842a1f68bca500f503a5fdb120bb213bd5f0a0d0c1d13",
+      "bytes": 5991,
+      "pages": 3,
+      "format": "bundle_pdf",
+      "batch": 1,
+      "planted_items": [],
+      "plan_hash": "548a9c7011733b809d91e44472fade129dc14a49764afbdb3a6e399a77eaada9"
+    }
+  ],
+  "archives": [
+    {
+      "path": "batch-1.zip",
+      "sha256": "25bf1ad83c317f1cd0b253cac2e50a7d07360260870bb1651528eeabce82d991",
+      "bytes": 71573
+    }
+  ],
+  "truth": [
+    {
+      "path": "truth/batch-1/engine_input.json",
+      "sha256": "932cc3d9ba41c3b8505422262d37eedf06b6fb29fe09808df4660c4dbde5bc10",
+      "bytes": 114309
+    },
+    {
+      "path": "truth/batch-1/expected_checklist.json",
+      "sha256": "ce1a5daba205c9728853757ae0c08c9b0526639d80b9f5209252e466a1b6b19f",
+      "bytes": 8388
+    },
+    {
+      "path": "truth/batch-1/expected_findings.json",
+      "sha256": "3570bd8f70ee4b5371ec6783f4d77105ad18e539ae34a113c64a1b1e20683073",
+      "bytes": 649
+    },
+    {
+      "path": "truth/batch-1/resolved_findings.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "truth/deal.json",
+      "sha256": "d034f1f7f84fb3724ff6c705fce4deb0bb0d6393060e94eb4edd2fefa04dd99e",
+      "bytes": 4289
+    },
+    {
+      "path": "truth/documents.json",
+      "sha256": "8bf65ccdd1ace7ba6747c34f73af77add963307dcc249b930e7c9eb41fc529c7",
+      "bytes": 126187
+    },
+    {
+      "path": "truth/expected_review.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    }
+  ]
+}

@@ -210,6 +210,12 @@
     "segment_id": "disclosure"
   },
   {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/license-resend.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "license-resend"
+  },
+  {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
     "batch": 1,
     "type": "vision",
