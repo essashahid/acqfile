@@ -32,3 +32,15 @@ Copy EvidenceOps main `9341148348f8535ed0f15981360728da58fd186c` into an indepen
 ## Verification policy
 
 Capture actual command exits and counts in docs/phase-0-proof.md, then summarize in PROGRESS.md. Do not carry inherited benchmark reports forward as AcqFile results. Check that removed routes, provider methods, SQL tables, configuration and golden fixtures are absent. Preserve meaningful extraction, verifier transport, review, authorization, duplicate/version and recovery tests.
+
+## Phase 1 execution and boundary
+
+Authority: SPEC_AMENDMENTS.md and PHASE_1.md. Phase 0 is accepted at b586d9c.
+
+- Load-validated taxonomy/fact registries; Zod profile, parties, ownership and evidenced inputs.
+- Additive domain SQL/Drizzle schema, same-deal constraints, append-only events and exact pack snapshots.
+- Independently authored SOP 8/8.1 YAML, Northfield required/optional definitions, validated AST, canonical overlay resolution.
+- Pure engine with conservative unknowns, scopes/periods, provenance, stable finding keys and deterministic result hashes.
+- Rule validation command, XLSX/HTML review exports, authenticated read-only comparison viewer.
+- Hand-authored clean/defects/unknowns/traps/packs proofs; invariants; database/browser checks; all retained suites and production build.
+- Write phase-1-proof.md, update PROGRESS.md, commit and push AcqFile with Phase 1 in the message, then stop. The Phase 5 review-sheet entry above now means PDF only; XLSX/HTML moved here under A17.

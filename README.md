@@ -1,6 +1,6 @@
 # AcqFile
 
-Internal SBA 7(a) business-acquisition file preparation workbench. **Phase 0 foundation only**; deal workflows and rule packs are not built yet. Synthetic data only.
+Internal SBA 7(a) business-acquisition file preparation workbench. **Phase 1 domain core**: validated rule packs, deterministic engine and read-only pack viewer. Deal intake and extraction adaptation remain future phases. Synthetic data only.
 
 The independent starting codebase was copied from [EvidenceOps](https://github.com/essashahid/EvidenceOps/tree/9341148348f8535ed0f15981360728da58fd186c). AcqFile has its own Git history, private remote, database names and application identity. No EvidenceOps deployment resources or credentials are used.
 
@@ -38,3 +38,15 @@ pnpm build
 `pnpm typecheck` generates Next.js route types before checking TypeScript, so it works on a clean checkout. `pnpm eval` currently runs the retained extraction regression suite; Section 18 deal metrics arrive in Phase 6.
 
 See [Phase 0 proof](docs/phase-0-proof.md) for measured results and [deployment notes](docs/deployment.md) for current limitations. No AcqFile deployment or live-model evaluation is claimed.
+
+## Phase 1 domain core
+
+Read [the amendments](docs/SPEC_AMENDMENTS.md) and [Phase 1 instructions](docs/PHASE_1.md) with the specification. The `/rulepacks` screen is an authenticated, read-only viewer and comparison tool. Domain tables are additive; the existing extraction workflow remains regression scaffolding until its authorized adaptation phase.
+
+```sh
+pnpm db:migrate
+pnpm rules:check
+pnpm rules:export-review
+```
+
+The review outputs are [HTML](docs/RULEPACK_REVIEW.html) and [XLSX](docs/RULEPACK_REVIEW.xlsx). Every rule is unverified. See [source notes](docs/RULE_SOURCES.md), [candidates and limitations](docs/RULE_CANDIDATES.md), and [decisions](docs/DECISIONS.md). Phase 2 has not started.

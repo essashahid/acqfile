@@ -1,0 +1,182 @@
+[
+  {
+    "name": "pending accepted-looking net worth",
+    "rules": [
+      "GUA-01"
+    ],
+    "changes": [
+      {
+        "op": "pending",
+        "id": "pfs:pfs.net_worth"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-01"
+          ],
+          "scope": "alex",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "GUA-01"
+      ]
+    }
+  },
+  {
+    "name": "unknown applicability dominates absence",
+    "rules": [
+      "TXN-04"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_note.present",
+        "value": "unknown"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-04"
+          ],
+          "scope": "deal",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "TXN-04"
+      ]
+    }
+  },
+  {
+    "name": "null signature is unknown",
+    "rules": [
+      "GUA-06"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "credit",
+        "key": "signed",
+        "value": null
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-06"
+          ],
+          "scope": "alex",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "GUA-06"
+      ]
+    }
+  },
+  {
+    "name": "null signature date is unknown",
+    "rules": [
+      "ENT-01"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "1919",
+        "key": "signature_date",
+        "value": null
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "ENT-01"
+          ],
+          "scope": "buyer",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "ENT-01"
+      ]
+    }
+  },
+  {
+    "name": "pending price never resolves a conflict",
+    "rules": [
+      "CON-03"
+    ],
+    "changes": [
+      {
+        "op": "pending",
+        "id": "purchase:deal.purchase_price"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-03"
+      ]
+    }
+  },
+  {
+    "name": "unknown applies before false conjunct",
+    "rules": [
+      "TXN-05"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_note.present",
+        "value": "unknown"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-05"
+          ],
+          "scope": "deal",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "TXN-05"
+      ]
+    }
+  },
+  {
+    "name": "income statement alone cannot prove a balance sheet",
+    "rules": [
+      "TGT-03"
+    ],
+    "changes": [
+      {
+        "op": "pending",
+        "id": "interim:financial.total_assets"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TGT-03"
+          ],
+          "scope": "target",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "TGT-03"
+      ]
+    }
+  }
+]

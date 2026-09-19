@@ -16,7 +16,7 @@ export const HUE: Record<Hue, { fg: string; soft: string; border: string; solid:
   runs: { fg: "text-[var(--sec-runs)]", soft: "bg-[var(--sec-runs-soft)]", border: "border-[var(--sec-runs-border)]", solid: "bg-[var(--sec-runs)]" },
 };
 
-export type SectionKey = "overview" | "upload" | "documents" | "review" | "evals" | "runs" | "help";
+export type SectionKey = "overview" | "upload" | "documents" | "review" | "evals" | "runs" | "rulepacks" | "help";
 
 export type Section = {
   key: SectionKey;
@@ -35,11 +35,12 @@ export const SECTIONS: Record<SectionKey, Section> = {
   review: { key: "review", label: "Review queue", href: "/review", icon: ListChecks, hue: "review", blurb: "Values the pipeline could not accept on its own, with the evidence to decide." },
   evals: { key: "evals", label: "Evaluations", href: "/evals", icon: BookOpenCheck, hue: "evals", blurb: "The extraction suite that measures quality and blocks regressions." },
   runs: { key: "runs", label: "Run activity", href: "/runs", icon: Activity, hue: "runs", blurb: "Every processing run: steps, retries, failures, tokens and cost." },
+  rulepacks: { key: "rulepacks", label: "Rule packs", href: "/rulepacks", icon: BookOpenCheck, hue: "evals", blurb: "Read and compare the evidence requirements and their sources." },
   help: { key: "help", label: "How it works", href: "/how-it-works", icon: CircleHelp, hue: "accent", blurb: "The flow from upload to evaluation, and where each thing lives." },
 };
 
 /** Navigation follows the order work actually flows through the product. */
-export const NAV_ORDER: SectionKey[] = ["overview", "upload", "documents", "review", "evals", "runs"];
+export const NAV_ORDER: SectionKey[] = ["overview", "upload", "documents", "review", "evals", "runs", "rulepacks"];
 
 /** Which section a pathname belongs to, for highlighting and page identity. */
 export function sectionForPath(pathname: string): SectionKey {

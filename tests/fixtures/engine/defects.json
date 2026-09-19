@@ -1,0 +1,966 @@
+[
+  {
+    "name": "presence fails without formation evidence",
+    "rules": [
+      "ENT-02"
+    ],
+    "changes": [
+      {
+        "op": "remove_segment",
+        "id": "formation"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "ENT-02"
+          ],
+          "scope": "buyer",
+          "status": "missing"
+        }
+      ],
+      "findings": [
+        "ENT-02"
+      ]
+    },
+    "check_type": "presence"
+  },
+  {
+    "name": "freshness flags stale PFS",
+    "rules": [
+      "GUA-01"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "pfs:pfs.as_of_date",
+        "value": "2026-01-01"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-01"
+          ],
+          "scope": "alex",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "GUA-01"
+      ]
+    },
+    "check_type": "freshness"
+  },
+  {
+    "name": "unsigned credit authorization",
+    "rules": [
+      "GUA-06"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "credit",
+        "key": "signed",
+        "value": false
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-06"
+          ],
+          "scope": "alex",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "GUA-06"
+      ]
+    },
+    "check_type": "signed_and_dated"
+  },
+  {
+    "name": "missing annual tax period",
+    "rules": [
+      "GUA-02"
+    ],
+    "changes": [
+      {
+        "op": "remove_segment",
+        "id": "personal-2024"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-02"
+          ],
+          "scope": "alex",
+          "status": "satisfied",
+          "periods": [
+            "2023",
+            "2025"
+          ]
+        },
+        {
+          "ids": [
+            "GUA-02"
+          ],
+          "scope": "alex",
+          "status": "needs_review",
+          "periods": [
+            "2024"
+          ]
+        }
+      ],
+      "findings": [
+        "GUA-02"
+      ]
+    },
+    "check_type": "period_coverage"
+  },
+  {
+    "name": "old form revision",
+    "rules": [
+      "ENT-01"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "1919",
+        "key": "form_revision",
+        "value": "01/2020"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "ENT-01"
+          ],
+          "scope": "buyer",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "ENT-01"
+      ]
+    },
+    "check_type": "form_revision"
+  },
+  {
+    "name": "missing purchase agreement pages",
+    "rules": [
+      "TXN-02"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "purchase",
+        "key": "expected_page_count",
+        "value": 3
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-02"
+          ],
+          "scope": "deal",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "TXN-02"
+      ]
+    },
+    "check_type": "page_completeness"
+  },
+  {
+    "name": "PFS arithmetic does not foot",
+    "rules": [
+      "GUA-01"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "pfs:pfs.net_worth",
+        "value": 199000
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-01"
+          ],
+          "scope": "alex",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "GUA-01"
+      ]
+    },
+    "check_type": "arithmetic"
+  },
+  {
+    "name": "purchase buyer disagrees",
+    "rules": [
+      "TXN-02"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:deal.buyer",
+        "value": "Different Buyer LLC"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-02"
+          ],
+          "scope": "deal",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "TXN-02"
+      ]
+    },
+    "check_type": "fact_agreement"
+  },
+  {
+    "name": "allocation table absent",
+    "rules": [
+      "TXN-02"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:deal.allocation_present",
+        "value": false
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-02"
+          ],
+          "scope": "deal",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "TXN-02"
+      ]
+    },
+    "check_type": "fact_comparison"
+  },
+  {
+    "name": "expired ID",
+    "rules": [
+      "GUA-04"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "id:id.expiry",
+        "value": "2026-01-01"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-04"
+          ],
+          "scope": "alex",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "GUA-04"
+      ]
+    },
+    "check_type": "date_order"
+  },
+  {
+    "name": "manual confirmation records unresolved issue",
+    "rules": [
+      "GUA-05"
+    ],
+    "changes": [
+      {
+        "op": "confirmation",
+        "id": "GUA-05",
+        "value": false
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-05"
+          ],
+          "scope": "alex",
+          "status": "received_with_issues"
+        }
+      ],
+      "findings": [
+        "GUA-05"
+      ]
+    },
+    "check_type": "manual_confirmation"
+  },
+  {
+    "name": "lender item only ordered",
+    "rules": [
+      "TXN-08"
+    ],
+    "changes": [
+      {
+        "op": "tracking",
+        "id": "TXN-08",
+        "value": "ordered"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-08"
+          ],
+          "scope": "deal",
+          "status": "tracking"
+        }
+      ],
+      "findings": [
+        "TXN-08"
+      ]
+    },
+    "check_type": "tracking"
+  },
+  {
+    "name": "CON-01 planted discrepancy",
+    "rules": [
+      "CON-01"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:party.legal_name",
+        "value": "Other Seller LLC"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-01"
+      ]
+    }
+  },
+  {
+    "name": "CON-02 planted discrepancy",
+    "rules": [
+      "CON-02"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "1919:ownership.members",
+        "value": [
+          {
+            "name": "Alex Morgan",
+            "percent": 99
+          }
+        ]
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-02"
+      ]
+    }
+  },
+  {
+    "name": "CON-03 planted discrepancy",
+    "rules": [
+      "CON-03"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:deal.purchase_price",
+        "value": 900010
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-03"
+      ]
+    }
+  },
+  {
+    "name": "CON-04 planted discrepancy",
+    "rules": [
+      "CON-04"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "funding:funding.sources_total",
+        "value": 1000010
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-04"
+      ]
+    }
+  },
+  {
+    "name": "CON-05 planted discrepancy",
+    "rules": [
+      "CON-05"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_note",
+        "value": {
+          "present": "yes",
+          "amount": 50000,
+          "counted_toward_injection": "yes"
+        }
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "note",
+          "doc_type": "SELLER_NOTE",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.principal",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.term_months",
+        "value": 120
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.full_standby",
+        "value": true
+      },
+      {
+        "op": "add_fact",
+        "id": "loi",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "loi",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "funding",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "funding",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "fact",
+        "id": "note:note.principal",
+        "value": 60000
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-05"
+      ]
+    }
+  },
+  {
+    "name": "CON-06 planted discrepancy",
+    "rules": [
+      "CON-06"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_note",
+        "value": {
+          "present": "yes",
+          "amount": 50000,
+          "counted_toward_injection": "yes"
+        }
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "note",
+          "doc_type": "SELLER_NOTE",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.principal",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.term_months",
+        "value": 120
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "note.full_standby",
+        "value": true
+      },
+      {
+        "op": "add_fact",
+        "id": "loi",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "loi",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "funding",
+        "key": "deal.seller_note_amount",
+        "value": 50000
+      },
+      {
+        "op": "add_fact",
+        "id": "funding",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "add_fact",
+        "id": "note",
+        "key": "deal.seller_note_terms",
+        "value": "120 months full lifetime standby"
+      },
+      {
+        "op": "fact",
+        "id": "note:note.full_standby",
+        "value": false
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-06"
+      ]
+    }
+  },
+  {
+    "name": "CON-07 planted discrepancy",
+    "rules": [
+      "CON-07"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "equity_sources",
+        "value": [
+          {
+            "id": "limited",
+            "party": "target",
+            "kind": "seller_standby_note",
+            "amount": 60000,
+            "source_account_last_four": "unknown"
+          }
+        ]
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-07"
+      ]
+    }
+  },
+  {
+    "name": "CON-08 planted discrepancy",
+    "rules": [
+      "CON-08"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "equity_sources",
+        "value": [
+          {
+            "id": "cash-alex",
+            "party": "alex",
+            "kind": "cash",
+            "amount": 90000,
+            "source_account_last_four": "4321"
+          }
+        ]
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-08"
+      ]
+    }
+  },
+  {
+    "name": "CON-09 planted discrepancy",
+    "rules": [
+      "CON-09"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "pfs:pfs.cash",
+        "value": 70000
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-09"
+      ]
+    }
+  },
+  {
+    "name": "CON-10 planted discrepancy",
+    "rules": [
+      "CON-10"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "fin-2025:financial.revenue",
+        "value": 1300000
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-10"
+      ]
+    }
+  },
+  {
+    "name": "CON-11 planted discrepancy",
+    "rules": [
+      "CON-11"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:deal.structure",
+        "value": "stock"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-11"
+      ]
+    }
+  },
+  {
+    "name": "CON-12 planted discrepancy",
+    "rules": [
+      "CON-12"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "premises",
+        "value": "leased"
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "lease",
+          "doc_type": "LEASE",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "lease.expiry",
+        "value": "2040-12-31"
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "lease.option_years",
+        "value": 0
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2023",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2024",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2025",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "fact",
+        "id": "purchase:party.address",
+        "value": "99 Other Lane"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-12"
+      ]
+    }
+  },
+  {
+    "name": "CON-13 planted discrepancy",
+    "rules": [
+      "CON-13"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "premises",
+        "value": "leased"
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "lease",
+          "doc_type": "LEASE",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "lease.expiry",
+        "value": "2040-12-31"
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "lease.option_years",
+        "value": 0
+      },
+      {
+        "op": "add_fact",
+        "id": "lease",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "purchase",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2023",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2024",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "add_fact",
+        "id": "tax-2025",
+        "key": "party.address",
+        "value": "10 Harbor Road"
+      },
+      {
+        "op": "fact",
+        "id": "lease:lease.expiry",
+        "value": "2030-01-01"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-13"
+      ]
+    }
+  },
+  {
+    "name": "CON-14 planted discrepancy",
+    "rules": [
+      "CON-14"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_staying",
+        "value": {
+          "present": "yes",
+          "role": "consultant",
+          "months": 13
+        }
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "consult",
+          "doc_type": "CONSULTING_AGREEMENT",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "consult",
+        "key": "consulting.term_months",
+        "value": 13
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-14"
+      ]
+    }
+  },
+  {
+    "name": "CON-15 planted discrepancy",
+    "rules": [
+      "CON-15"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "loi:deal.expiry_date",
+        "value": "2026-01-01"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-15"
+      ]
+    }
+  },
+  {
+    "name": "CON-16 planted discrepancy",
+    "rules": [
+      "CON-16"
+    ],
+    "changes": [
+      {
+        "op": "segment",
+        "id": "purchase",
+        "key": "party_id",
+        "value": "unmatched"
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": [
+        "CON-16"
+      ]
+    }
+  }
+]

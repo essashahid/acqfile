@@ -1,0 +1,162 @@
+id: northfield-bank
+verified: false
+parameters:
+  interim_days: 60
+index:
+  folders:
+    - 01 Transaction
+    - 02 Buyer
+    - 03 Guarantors
+    - 04 Target
+    - 05 Lender
+  filename_template: NF_{party}_{item_id}_{doc_label}_{period}{original_extension}
+operations:
+  - op: add
+    collection: items
+    rule:
+      id: TXN-10a
+      title: Non-compete agreement
+      description: Non-compete agreement. Evidence preparation check for lender review.
+      scope: deal
+      applies_when: true
+      accepts:
+        - NON_COMPETE
+      required: true
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition:
+          non-compete"
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TGT-11
+      title: Add-back schedule with support
+      description: Add-back schedule with support. Evidence preparation check for lender review.
+      scope: target_business
+      applies_when: true
+      accepts:
+        - ADDBACK_SCHEDULE
+      required: true
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition:
+          add-back support"
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TXN-10b
+      title: Confidential information memorandum
+      description: Confidential information memorandum. Optional definition for later lender configuration.
+      scope: deal
+      applies_when: true
+      accepts:
+        - CIM
+      required: false
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TXN-10c
+      title: Escrow evidence
+      description: Escrow evidence. Optional definition for later lender configuration.
+      scope: deal
+      applies_when: true
+      accepts:
+        - ESCROW_EVIDENCE
+      required: false
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TGT-12a
+      title: Key contracts
+      description: Key contracts. Optional definition for later lender configuration.
+      scope: target_business
+      applies_when: true
+      accepts:
+        - KEY_CONTRACT
+      required: false
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TGT-12b
+      title: Employee roster
+      description: Employee roster. Optional definition for later lender configuration.
+      scope: target_business
+      applies_when: true
+      accepts:
+        - EMPLOYEE_ROSTER
+      required: false
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+      verified: false
+  - op: add
+    collection: items
+    rule:
+      id: TGT-12c
+      title: Seller good standing
+      description: Seller good standing. Optional definition for later lender configuration.
+      scope: target_business
+      applies_when: true
+      accepts:
+        - GOOD_STANDING
+      required: false
+      severity: major
+      responsible: seller
+      checks:
+        - type: presence
+          message: Required evidence and named facts are present
+          facts: []
+      source_ref:
+        class: lender_convention
+        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+      verified: false

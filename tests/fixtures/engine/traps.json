@@ -1,0 +1,72 @@
+[
+  {
+    "name": "entity spelling and suffix normalization",
+    "rules": [
+      "CON-01"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "purchase:party.legal_name",
+        "value": "Harbor View HVAC L.L.C."
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": []
+    }
+  },
+  {
+    "name": "rounding within one dollar",
+    "rules": [
+      "CON-04"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "funding:funding.sources_total",
+        "value": 1000000.5
+      }
+    ],
+    "expected": {
+      "checklist": [],
+      "findings": []
+    }
+  },
+  {
+    "name": "superseded stale statement ignored",
+    "rules": [
+      "GUA-01"
+    ],
+    "changes": [
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "old-pfs",
+          "doc_type": "SBA_413",
+          "party_id": "alex",
+          "period": null,
+          "is_current": false
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "old-pfs",
+        "key": "pfs.as_of_date",
+        "value": "2020-01-01"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "GUA-01"
+          ],
+          "scope": "alex",
+          "status": "satisfied"
+        }
+      ],
+      "findings": []
+    }
+  }
+]

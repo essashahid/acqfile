@@ -1,0 +1,306 @@
+[
+  {
+    "name": "sop-50-10-8 comparison",
+    "pack": "sop-50-10-8",
+    "rules": [
+      "TXN-08",
+      "TXN-09",
+      "CON-07",
+      "CON-14"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_staying",
+        "value": {
+          "present": "yes",
+          "role": "consultant",
+          "months": 13
+        }
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "consult",
+          "doc_type": "CONSULTING_AGREEMENT",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "consult",
+        "key": "consulting.term_months",
+        "value": 13
+      },
+      {
+        "op": "profile",
+        "key": "purchase_price",
+        "value": 3000000
+      },
+      {
+        "op": "profile",
+        "key": "equity_sources",
+        "value": [
+          {
+            "id": "seller",
+            "party": "target",
+            "kind": "seller_standby_note",
+            "amount": 40000,
+            "source_account_last_four": "unknown"
+          },
+          {
+            "id": "investor",
+            "party": "alex",
+            "kind": "minority_investor_equity",
+            "amount": 20000,
+            "source_account_last_four": "unknown"
+          }
+        ]
+      },
+      {
+        "op": "profile",
+        "key": "expected_loan_number_date",
+        "value": "2026-09-15"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-08"
+          ],
+          "scope": "deal",
+          "status": "satisfied"
+        }
+      ],
+      "findings": [
+        "CON-14"
+      ]
+    }
+  },
+  {
+    "name": "sop-50-10-8-1 comparison",
+    "pack": "sop-50-10-8-1",
+    "rules": [
+      "TXN-08",
+      "TXN-09",
+      "CON-07",
+      "CON-14"
+    ],
+    "changes": [
+      {
+        "op": "profile",
+        "key": "seller_staying",
+        "value": {
+          "present": "yes",
+          "role": "consultant",
+          "months": 13
+        }
+      },
+      {
+        "op": "add_segment",
+        "value": {
+          "id": "consult",
+          "doc_type": "CONSULTING_AGREEMENT",
+          "party_id": "target",
+          "period": null
+        }
+      },
+      {
+        "op": "add_fact",
+        "id": "consult",
+        "key": "consulting.term_months",
+        "value": 13
+      },
+      {
+        "op": "profile",
+        "key": "purchase_price",
+        "value": 3000000
+      },
+      {
+        "op": "profile",
+        "key": "equity_sources",
+        "value": [
+          {
+            "id": "seller",
+            "party": "target",
+            "kind": "seller_standby_note",
+            "amount": 40000,
+            "source_account_last_four": "unknown"
+          },
+          {
+            "id": "investor",
+            "party": "alex",
+            "kind": "minority_investor_equity",
+            "amount": 20000,
+            "source_account_last_four": "unknown"
+          }
+        ]
+      },
+      {
+        "op": "profile",
+        "key": "expected_loan_number_date",
+        "value": "2026-11-01"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-08"
+          ],
+          "scope": "deal",
+          "status": "satisfied"
+        },
+        {
+          "ids": [
+            "TXN-09"
+          ],
+          "scope": "deal",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "CON-07",
+        "TXN-09"
+      ]
+    }
+  },
+  {
+    "name": "60 versus 120 days None",
+    "overlay": null,
+    "rules": [
+      "TGT-03",
+      "TXN-10a",
+      "TGT-11"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "interim:financial.period_end",
+        "value": "2026-06-30"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TGT-03"
+          ],
+          "scope": "target",
+          "status": "satisfied"
+        }
+      ],
+      "findings": []
+    }
+  },
+  {
+    "name": "60 versus 120 days northfield-bank",
+    "overlay": "northfield-bank",
+    "rules": [
+      "TGT-03",
+      "TXN-10a",
+      "TGT-11"
+    ],
+    "changes": [
+      {
+        "op": "fact",
+        "id": "interim:financial.period_end",
+        "value": "2026-06-30"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TGT-03"
+          ],
+          "scope": "target",
+          "status": "received_with_issues"
+        },
+        {
+          "ids": [
+            "TXN-10a"
+          ],
+          "scope": "deal",
+          "status": "missing"
+        },
+        {
+          "ids": [
+            "TGT-11"
+          ],
+          "scope": "target",
+          "status": "missing"
+        }
+      ],
+      "findings": [
+        "TGT-03",
+        "TXN-10a",
+        "TGT-11"
+      ]
+    }
+  },
+  {
+    "name": "Valuation confirmation 8",
+    "pack": "sop-50-10-8",
+    "rules": [
+      "TXN-08"
+    ],
+    "changes": [
+      {
+        "op": "remove_confirmation",
+        "id": "TXN-08"
+      },
+      {
+        "op": "profile",
+        "key": "expected_loan_number_date",
+        "value": "2026-09-15"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-08"
+          ],
+          "scope": "deal",
+          "status": "needs_review"
+        }
+      ],
+      "findings": [
+        "TXN-08"
+      ]
+    }
+  },
+  {
+    "name": "Valuation confirmation 8.1",
+    "pack": "sop-50-10-8-1",
+    "rules": [
+      "TXN-08"
+    ],
+    "changes": [
+      {
+        "op": "remove_confirmation",
+        "id": "TXN-08"
+      },
+      {
+        "op": "profile",
+        "key": "expected_loan_number_date",
+        "value": "2026-11-01"
+      }
+    ],
+    "expected": {
+      "checklist": [
+        {
+          "ids": [
+            "TXN-08"
+          ],
+          "scope": "deal",
+          "status": "satisfied"
+        }
+      ],
+      "findings": []
+    }
+  }
+]

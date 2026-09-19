@@ -1,3 +1,5 @@
+import { deals } from "./domain-schema";
+export * from "./domain-schema";
 import {
   pgTable,
   uuid,
@@ -46,6 +48,7 @@ export const workspaceMembers = pgTable(
 );
 
 export const documents = pgTable("documents", {
+  dealId: uuid("deal_id").references(() => deals.id),
   id: uuid("id").primaryKey().defaultRandom(),
   workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
   logicalKey: text("logical_key").notNull(),

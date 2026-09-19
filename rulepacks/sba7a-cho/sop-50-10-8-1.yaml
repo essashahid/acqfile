@@ -1,0 +1,1771 @@
+pack: sba7a-cho
+version: sop-50-10-8-1
+effective:
+  loan_number_on_or_after: 2026-10-01
+verified: false
+parameters:
+  interim_days: 120
+  pfs_days: 90
+  irs_days: 120
+  money_tolerance: 1
+  percent_tolerance: 0.01
+  cash_tolerance: 1
+  revenue_fraction: 0.01
+  consulting_months: 24
+  qoe_threshold: 3000000
+  limited_fraction: 0.05
+  lease_years: 10
+  form_1919_revision: 02/2025
+  price_tolerance: 0
+index:
+  folders:
+    - Transaction
+    - Buyer
+    - Guarantors
+    - Target
+    - Lender
+  filename_template: "{item_id}_{doc_label}_{party}_{period}{original_extension}"
+items:
+  - id: TXN-01
+    title: Signed letter of intent
+    description: Signed letter of intent. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - LOI
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: signed_and_dated
+        message: Signature and date are present
+        signed_only: false
+      - type: fact_comparison
+        message: Both parties signed
+        expr:
+          op: ==
+          args:
+            - fact: deal.signed_by_both
+            - true
+      - type: date_order
+        message: Letter of intent has not expired
+        expr:
+          op: ">="
+          args:
+            - fact: deal.expiry_date
+            - as_of: true
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed letter of intent"
+    verified: false
+  - id: TXN-02
+    title: Purchase agreement with allocation
+    description: Purchase agreement with allocation. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - PURCHASE_AGREEMENT
+    required: true
+    severity: major
+    responsible: buyer attorney
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: fact_agreement
+        message: Buyer and seller names match the deal parties
+        mode: buyer_seller
+      - type: fact_comparison
+        message: Allocation table is present
+        expr:
+          op: ==
+          args:
+            - fact: deal.allocation_present
+            - true
+      - type: page_completeness
+        message: Page X of Y agrees with the supplied page range
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Detailed
+        Purchase Agreement"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: TXN-03
+    title: Sources and uses
+    description: Sources and uses. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - SOURCES_USES
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - funding.sources
+          - funding.uses
+          - funding.sources_total
+          - funding.uses_total
+      - type: arithmetic
+        message: Sources and uses total correctly
+        expr:
+          op: and
+          args:
+            - op: ==
+              args:
+                - op: sum
+                  args:
+                    - fact: funding.sources
+                      field: amount
+                - fact: funding.sources_total
+            - op: ==
+              args:
+                - op: sum
+                  args:
+                    - fact: funding.uses
+                      field: amount
+                - fact: funding.uses_total
+            - op: ==
+              args:
+                - fact: funding.sources_total
+                - fact: funding.uses_total
+        tolerance_param: money_tolerance
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sources and uses"
+    verified: false
+  - id: TXN-04
+    title: Seller note or term sheet
+    description: Seller note or term sheet. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: seller_note.present
+        - yes
+    accepts:
+      - SELLER_NOTE
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - note.principal
+          - note.term_months
+          - note.full_standby
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller note or term sheet"
+    verified: false
+  - id: TXN-05
+    title: Standby agreement
+    description: Standby agreement. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: and
+      args:
+        - op: ==
+          args:
+            - profile: seller_note.present
+            - yes
+        - op: ==
+          args:
+            - profile: seller_note.counted_toward_injection
+            - yes
+    accepts:
+      - SBA_155
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 C, Source of Equity Injections (C begins p.350). Pagination is the section-start
+        page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+  - id: TXN-06
+    title: Seller consulting or transition agreement
+    description: Seller consulting or transition agreement. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: seller_staying.present
+        - yes
+    accepts:
+      - CONSULTING_AGREEMENT
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - consulting.term_months
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller consulting or transition agreement"
+    verified: false
+  - id: TXN-07
+    title: SBA Form 159 for paid agent
+    description: SBA Form 159 for paid agent. Evidence preparation check for lender review.
+    scope: per_paid_agent
+    applies_when: true
+    accepts:
+      - SBA_159
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: signed_and_dated
+        message: Signature and date are present
+        signed_only: false
+      - type: fact_comparison
+        message: Agent and applicant signatures are present
+        expr:
+          op: ==
+          args:
+            - fact: agent.both_signed
+            - true
+    source_ref:
+      class: sba_form
+      citation: SBA Form 159 (08-21), page 3, applicant and agent signature/date blocks; this citation does not assert the
+        current form revision.
+      url: https://legacy.sba.gov/sites/default/files/2022-02/SBA%20Form%20159_2.10.22-508_0.pdf
+    verified: false
+  - id: TXN-08
+    title: Independent business valuation
+    description: Independent business valuation. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - VALUATION
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 C.1.a, Business Valuation Requirements (C begins p.350). Pagination is the
+        section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+  - id: TXN-09
+    title: Quality of earnings report
+    description: Quality of earnings report. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: and
+      args:
+        - op: in
+          args:
+            - profile: transaction_category
+            - - initial_acquisition
+              - business_expansion
+        - op: ">="
+          args:
+            - profile: purchase_price
+            - param: qoe_threshold
+    accepts:
+      - QOE
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 C.1.b, Quality of Earnings (C begins p.350). Pagination is the section-start page
+        in the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+  - id: ENT-01
+    title: SBA Form 1919
+    description: SBA Form 1919. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - SBA_1919
+    required: true
+    severity: blocker
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: form_revision
+        message: Configured form revision is present
+        revision_param: form_1919_revision
+      - type: signed_and_dated
+        message: Signature and date are present
+        signed_only: false
+      - type: fact_agreement
+        message: Ownership totals 100 and every declared owner is listed
+        fact: ownership.members
+        mode: owners
+        across:
+          - SBA_1919
+        tolerance_param: percent_tolerance
+    source_ref:
+      class: secondary
+      citation: "StatementsReady, How to Fill Out SBA Form 1919: revision 02/2025 and owner entries; the 100% ownership total
+        and every-owner comparison are AcqFile seed conventions, stronger than the form’s minimum listing coverage."
+      url: https://statementsready.com/blog/how-to-fill-out-sba-form-1919
+    verified: false
+  - id: ENT-02
+    title: Formation documents
+    description: Formation documents. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - FORMATION_DOC
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
+        Organizational Documents"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: ENT-03
+    title: Operating agreement or bylaws
+    description: Operating agreement or bylaws. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - OPERATING_AGREEMENT
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - ownership.members
+      - type: signed_and_dated
+        message: Signature is present
+        signed_only: true
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
+        Organizational Documents"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: ENT-04
+    title: EIN confirmation letter
+    description: EIN confirmation letter. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - EIN_LETTER
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - party.identifier
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): EIN confirmation letter"
+    verified: false
+  - id: ENT-05
+    title: Certificate of good standing
+    description: Certificate of good standing. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - GOOD_STANDING
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Buyer good standing; no inference from the
+        secondary article citation to 13 CFR 120.420"
+    verified: false
+  - id: ENT-06
+    title: Post-closing ownership chart
+    description: Post-closing ownership chart. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - OWNERSHIP_CHART
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Includes indirect owners; manual facts
+        permitted"
+    verified: false
+  - id: ENT-07a
+    title: Business plan
+    description: Business plan. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - BUSINESS_PLAN
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Business plan"
+    verified: false
+  - id: ENT-07b
+    title: Projections with assumptions
+    description: Projections with assumptions. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - PROJECTIONS
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Projections with assumptions"
+    verified: false
+  - id: GUA-01
+    title: Personal financial statement
+    description: Personal financial statement. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - SBA_413
+    required: true
+    severity: blocker
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: freshness
+        message: Date is within the configured window
+        fact: pfs.as_of_date
+        max_age_param: pfs_days
+      - type: signed_and_dated
+        message: Signature and date are present
+        signed_only: false
+      - type: arithmetic
+        message: Assets less liabilities equal net worth
+        expr:
+          op: ==
+          args:
+            - op: "-"
+              args:
+                - fact: pfs.total_assets
+                - fact: pfs.total_liabilities
+            - fact: pfs.net_worth
+        tolerance_param: money_tolerance
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 20, Owner Financial Statement (Appendix begins p.390). Pagination is the section-start
+        page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+  - id: GUA-02
+    title: Personal federal tax return
+    description: Personal federal tax return. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - TAX_PERSONAL
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: period_coverage
+        message: Required period is present
+      - type: page_completeness
+        message: Page X of Y agrees with the supplied page range
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Personal
+        Tax Returns (Typically 3 Years)"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+    period_requirement: last_three_tax_years
+  - id: GUA-03
+    title: Resume or management profile
+    description: Resume or management profile. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - RESUME
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Resume or management profile"
+    verified: false
+  - id: GUA-04
+    title: Government photo identification
+    description: Government photo identification. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - GOV_ID
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: date_order
+        message: Government ID has not expired
+        expr:
+          op: ">="
+          args:
+            - fact: id.expiry
+            - as_of: true
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Government photo identification"
+    verified: false
+  - id: GUA-05
+    title: Citizenship evidence
+    description: Citizenship evidence. Evidence preparation check for lender review.
+    scope: per_owner_or_guarantor
+    applies_when: true
+    accepts:
+      - CITIZENSHIP_EVIDENCE
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: manual_confirmation
+        message: Rule reported under legal challenge; confirm handling with lender
+        note_key: citizenship_handling
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Evidence and manual lender discussion only;
+        this is not a citizenship determination. Section A Ch.1 F differs between versions and later notices; see
+        RULE_CANDIDATES.md."
+    verified: false
+  - id: GUA-06
+    title: Credit authorization
+    description: Credit authorization. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - CREDIT_AUTH
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: signed_and_dated
+        message: Signature is present
+        signed_only: true
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Credit
+        Report Authorization"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: GUA-07
+    title: Equity source monthly bank statement
+    description: Equity source monthly bank statement. Evidence preparation check for lender review.
+    scope: per_equity_source
+    applies_when:
+      op: ==
+      args:
+        - profile: equity_sources[].kind
+        - cash
+    accepts:
+      - BANK_STATEMENT
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: period_coverage
+        message: Required period is present
+      - type: fact_agreement
+        message: Account holder matches the source party
+        mode: account_holder
+        fact: party.legal_name
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Two latest completed calendar months per
+        declared cash source account; stronger than the cited 30-day evidence practice"
+    verified: false
+    period_requirement: last_two_months
+  - id: GUA-08a
+    title: Gift letter
+    description: Gift letter. Evidence preparation check for lender review.
+    scope: per_equity_source
+    applies_when:
+      op: ==
+      args:
+        - profile: equity_sources[].kind
+        - gift
+    accepts:
+      - GIFT_LETTER
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - gift.amount
+      - type: signed_and_dated
+        message: Signature is present
+        signed_only: true
+      - type: fact_comparison
+        message: Gift has no repayment obligation
+        expr:
+          op: ==
+          args:
+            - fact: gift.no_repayment
+            - true
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+        Funds"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: GUA-08b
+    title: Donor bank statement
+    description: Donor bank statement. Evidence preparation check for lender review.
+    scope: per_equity_source
+    applies_when:
+      op: ==
+      args:
+        - profile: equity_sources[].kind
+        - gift
+    accepts:
+      - BANK_STATEMENT
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: fact_agreement
+        message: Donor account holder matches source party
+        mode: account_holder
+        fact: party.legal_name
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+        Funds"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: GUA-08c
+    title: Gift transfer evidence
+    description: Gift transfer evidence. Evidence preparation check for lender review.
+    scope: per_equity_source
+    applies_when:
+      op: ==
+      args:
+        - profile: equity_sources[].kind
+        - gift
+    accepts:
+      - TRANSFER_EVIDENCE
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+        Funds"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: GUA-09a
+    title: Affiliate business tax return
+    description: Affiliate business tax return. Evidence preparation check for lender review.
+    scope: per_affiliate
+    applies_when: true
+    accepts:
+      - TAX_BUSINESS
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: period_coverage
+        message: Required period is present
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+        Tax Returns"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+    period_requirement: last_three_tax_years
+  - id: GUA-09b
+    title: Affiliate interim financial statements
+    description: Affiliate interim financial statements. Evidence preparation check for lender review.
+    scope: per_affiliate
+    applies_when: true
+    accepts:
+      - FIN_INTERIM
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - financial.revenue
+          - financial.total_assets
+          - financial.total_liabilities
+      - type: freshness
+        message: Date is within the configured window
+        fact: financial.period_end
+        max_age_param: interim_days
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+        Financial Documentation"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: GUA-09c
+    title: Affiliate debt schedule
+    description: Affiliate debt schedule. Evidence preparation check for lender review.
+    scope: per_affiliate
+    applies_when: true
+    accepts:
+      - DEBT_SCHEDULE
+    required: true
+    severity: major
+    responsible: buyer
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - debt.total
+      - type: freshness
+        message: Date is within the configured window
+        fact: debt.as_of_date
+        max_age_param: interim_days
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+        Debt Schedules"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: TGT-01
+    title: Target business tax return
+    description: Target business tax return. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - TAX_BUSINESS
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: period_coverage
+        message: Required period is present
+      - type: fact_agreement
+        message: Entity name matches target party
+        fact: party.legal_name
+        mode: party_name
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - party.identifier
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
+        Years of Business Tax Returns and Financial Statements"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+    period_requirement: last_three_tax_years
+  - id: TGT-02
+    title: Year-end income statement and balance sheet
+    description: Year-end income statement and balance sheet. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - FIN_YEAR_END
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: period_coverage
+        message: Required period is present
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - financial.revenue
+          - financial.total_assets
+          - financial.total_liabilities
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
+        Years of Business Tax Returns and Financial Statements"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+    period_requirement: last_three_fiscal_year_ends
+  - id: TGT-03
+    title: Interim income statement and balance sheet
+    description: Interim income statement and balance sheet. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - FIN_INTERIM
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - financial.revenue
+          - financial.total_assets
+          - financial.total_liabilities
+      - type: freshness
+        message: Date is within the configured window
+        fact: financial.period_end
+        max_age_param: interim_days
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Interim
+        financials dated within 120 days"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: TGT-04a
+    title: Receivables aging
+    description: Receivables aging. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - AGING_AR
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: date_order
+        message: Aging date equals interim statement date
+        expr:
+          op: ==
+          args:
+            - fact: aging.as_of_date
+              types:
+                - AGING_AR
+            - fact: financial.period_end
+              types:
+                - FIN_INTERIM
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Receivables aging"
+    verified: false
+  - id: TGT-04b
+    title: Payables aging
+    description: Payables aging. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - AGING_AP
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: date_order
+        message: Aging date equals interim statement date
+        expr:
+          op: ==
+          args:
+            - fact: aging.as_of_date
+              types:
+                - AGING_AP
+            - fact: financial.period_end
+              types:
+                - FIN_INTERIM
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Payables aging"
+    verified: false
+  - id: TGT-05
+    title: Business debt schedule
+    description: Business debt schedule. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - DEBT_SCHEDULE
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - debt.as_of_date
+          - debt.total
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Current
+        Debt Schedule"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: TGT-06
+    title: IRS Form 4506-C
+    description: IRS Form 4506-C. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - IRS_4506C
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: signed_and_dated
+        message: Signature and date are present
+        signed_only: false
+      - type: freshness
+        message: Seller signature is recent
+        metadata: signature_date
+        max_age_param: irs_days
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed 4506-C; 120-day signature window is a
+        synthetic seed convention, not a claim about IRS validity"
+    verified: false
+  - id: TGT-07a
+    title: Business premises lease
+    description: Business premises lease. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: premises
+        - leased
+    accepts:
+      - LEASE
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts:
+          - lease.expiry
+          - lease.option_years
+    source_ref:
+      class: secondary
+      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Copies of
+        Key Contracts"
+      url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
+    verified: false
+  - id: TGT-07b
+    title: Lease assignment, consent or new terms
+    description: Lease assignment, consent or new terms. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: premises
+        - leased
+    accepts:
+      - LEASE_CONSENT
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Lease assignment, consent or new terms"
+    verified: false
+  - id: TGT-08a
+    title: Equipment list
+    description: Equipment list. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - EQUIPMENT_LIST
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Equipment list"
+    verified: false
+  - id: TGT-08b
+    title: Inventory summary
+    description: Inventory summary. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - INVENTORY_SUMMARY
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Inventory summary"
+    verified: false
+  - id: TGT-09
+    title: Operating licenses and permits
+    description: Operating licenses and permits. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - LICENSE
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: manual_confirmation
+        message: Does the business operate on the seller’s personal license? Record handling with lender
+        note_key: personal_license
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits"
+    verified: false
+  - id: TGT-10a
+    title: Franchise agreement
+    description: Franchise agreement. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: franchise
+        - yes
+    accepts:
+      - FRANCHISE_AGREEMENT
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+      - type: manual_confirmation
+        message: Brand checked against the current SBA Franchise Directory
+        note_key: franchise_directory
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Section A Ch.1 G, Franchises (begins p.30). Pagination is the section-start page in the
+        official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+  - id: TGT-10b
+    title: Franchise disclosure document
+    description: Franchise disclosure document. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: franchise
+        - yes
+    accepts:
+      - FRANCHISE_DISCLOSURE
+    required: true
+    severity: major
+    responsible: seller
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document"
+    verified: false
+  - id: RE-01
+    title: Real estate purchase contract
+    description: Real estate purchase contract. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: real_estate_included
+        - yes
+    accepts:
+      - RE_CONTRACT
+    required: true
+    severity: major
+    responsible: buyer attorney
+    checks:
+      - type: presence
+        message: Required evidence and named facts are present
+        facts: []
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate purchase contract"
+    verified: false
+  - id: RE-02
+    title: Real estate appraisal
+    description: Real estate appraisal. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: real_estate_included
+        - yes
+    accepts:
+      - APPRAISAL
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate appraisal"
+    verified: false
+  - id: RE-03
+    title: Environmental review
+    description: Environmental review. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: real_estate_included
+        - yes
+    accepts:
+      - ENVIRONMENTAL
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Environmental review"
+    verified: false
+  - id: LND-01
+    title: Credit reports
+    description: Credit reports. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        borrower evidence requested"
+    verified: false
+  - id: LND-02
+    title: IRS transcripts
+    description: IRS transcripts. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        borrower evidence requested"
+    verified: false
+  - id: LND-03
+    title: Lien searches
+    description: Lien searches. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        borrower evidence requested"
+    verified: false
+  - id: LND-04
+    title: Insurance
+    description: Insurance. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: lender
+    checks:
+      - type: tracking
+        message: Lender-ordered item received
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        borrower evidence requested"
+    verified: false
+consistency:
+  - id: CON-01
+    title: Seller identity agrees
+    description: Seller identity agrees. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - TAX_BUSINESS
+      - PURCHASE_AGREEMENT
+      - IRS_4506C
+    required: true
+    severity: blocker
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: party.legal_name
+        across:
+          - TAX_BUSINESS
+          - PURCHASE_AGREEMENT
+          - IRS_4506C
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: party.identifier
+        across:
+          - TAX_BUSINESS
+          - PURCHASE_AGREEMENT
+          - IRS_4506C
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-02
+    title: Ownership agrees and totals 100
+    description: Ownership agrees and totals 100. Evidence preparation check for lender review.
+    scope: buyer_entity
+    applies_when: true
+    accepts:
+      - SBA_1919
+      - OPERATING_AGREEMENT
+      - OWNERSHIP_CHART
+    required: true
+    severity: blocker
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Owners and percentages agree with declared post-closing ownership
+        fact: ownership.members
+        mode: owners
+        across:
+          - SBA_1919
+          - OPERATING_AGREEMENT
+          - OWNERSHIP_CHART
+        tolerance_param: percent_tolerance
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-03
+    title: Purchase prices agree
+    description: Purchase prices agree. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - LOI
+      - PURCHASE_AGREEMENT
+      - SOURCES_USES
+    required: true
+    severity: blocker
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: deal.purchase_price
+        across:
+          - LOI
+          - PURCHASE_AGREEMENT
+          - SOURCES_USES
+        profile: purchase_price
+        tolerance_param: price_tolerance
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-04
+    title: Sources total equals uses total
+    description: Sources total equals uses total. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - SOURCES_USES
+    required: true
+    severity: blocker
+    responsible: broker
+    checks:
+      - type: arithmetic
+        message: Sources and uses agree
+        expr:
+          op: ==
+          args:
+            - fact: funding.sources_total
+            - fact: funding.uses_total
+        tolerance_param: money_tolerance
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-05
+    title: Seller note amount and terms agree
+    description: Seller note amount and terms agree. Evidence preparation check for lender review.
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: seller_note.present
+        - yes
+    accepts:
+      - LOI
+      - PURCHASE_AGREEMENT
+      - SELLER_NOTE
+      - SOURCES_USES
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: deal.seller_note_amount
+        across:
+          - LOI
+          - PURCHASE_AGREEMENT
+          - SOURCES_USES
+        tolerance_param: money_tolerance
+      - type: arithmetic
+        message: Note principal equals the stated amount
+        expr:
+          op: ==
+          args:
+            - fact: note.principal
+              types:
+                - SELLER_NOTE
+            - fact: deal.seller_note_amount
+              types:
+                - PURCHASE_AGREEMENT
+        tolerance_param: money_tolerance
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: deal.seller_note_terms
+        across:
+          - LOI
+          - PURCHASE_AGREEMENT
+          - SELLER_NOTE
+          - SOURCES_USES
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-06
+    title: "Seller standby wording: for lender review"
+    description: "Seller standby wording: for lender review. Evidence preparation check for lender review."
+    scope: deal
+    applies_when:
+      op: and
+      args:
+        - op: ==
+          args:
+            - profile: seller_note.present
+            - yes
+        - op: ==
+          args:
+            - profile: seller_note.counted_toward_injection
+            - yes
+    accepts:
+      - SELLER_NOTE
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: fact_comparison
+        message: "Full lifetime standby wording present: for lender review"
+        expr:
+          op: ==
+          args:
+            - fact: note.full_standby
+            - true
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 C, Source of Equity Injections (C begins p.350). Pagination is the section-start
+        page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+    finding_type: conflict
+  - id: CON-07
+    title: "Limited-source arithmetic: for lender review"
+    description: "Limited-source arithmetic: for lender review. Evidence preparation check for lender review."
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: arithmetic
+        message: "Combined limited sources compared with half of 10% of project cost: for lender review"
+        expr:
+          op: <=
+          args:
+            - op: sum
+              args:
+                - profile: equity_sources[].amount
+                  kinds:
+                    - seller_standby_note
+                    - other_standby_debt
+                    - minority_investor_equity
+            - op: "*"
+              args:
+                - profile: total_project_cost
+                - param: limited_fraction
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 C, Limited Equity Injection Sources (C begins p.350); fixed 10% baseline is the
+        AcqFile seed convention. Pagination is the section-start page in the official DOCX table of contents; see
+        docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+    finding_type: conflict
+  - id: CON-08
+    title: Cash injection and account balance
+    description: Cash injection and account balance. Evidence preparation check for lender review.
+    scope: per_equity_source
+    applies_when:
+      op: ==
+      args:
+        - profile: equity_sources[].kind
+        - cash
+    accepts:
+      - BANK_STATEMENT
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: arithmetic
+        message: Claimed cash does not exceed latest source-account balance
+        expr:
+          op: <=
+          args:
+            - profile: equity_sources[].amount
+            - fact: bank.ending_balance
+              select: latest
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-09
+    title: Personal statement cash and bank balances
+    description: Personal statement cash and bank balances. Evidence preparation check for lender review.
+    scope: per_guarantor
+    applies_when: true
+    accepts:
+      - SBA_413
+      - BANK_STATEMENT
+    required: true
+    severity: minor
+    responsible: broker
+    checks:
+      - type: arithmetic
+        message: Cash agrees with balances within the configured date window
+        expr:
+          op: ==
+          args:
+            - fact: pfs.cash
+              types:
+                - SBA_413
+            - fact: bank.ending_balance
+              types:
+                - BANK_STATEMENT
+              select: sum
+              within_days: 45
+              relative_to: pfs.as_of_date
+        tolerance_param: cash_tolerance
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-10
+    title: Tax receipts and year-end revenue
+    description: Tax receipts and year-end revenue. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when: true
+    accepts:
+      - TAX_BUSINESS
+      - FIN_YEAR_END
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: arithmetic
+        message: Same-year gross receipts and revenue differ by at most 1 percent
+        expr:
+          op: <=
+          args:
+            - op: abs
+              args:
+                - op: "-"
+                  args:
+                    - fact: tax.gross_receipts
+                      types:
+                        - TAX_BUSINESS
+                    - fact: financial.revenue
+                      types:
+                        - FIN_YEAR_END
+            - op: "*"
+              args:
+                - op: abs
+                  args:
+                    - fact: tax.gross_receipts
+                      types:
+                        - TAX_BUSINESS
+                - param: revenue_fraction
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+    period_requirement: last_three_tax_years
+  - id: CON-11
+    title: Transaction structure agrees
+    description: Transaction structure agrees. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - PURCHASE_AGREEMENT
+    required: true
+    severity: blocker
+    responsible: broker
+    checks:
+      - type: fact_comparison
+        message: Declared and document structures agree
+        expr:
+          op: ==
+          args:
+            - profile: structure
+            - fact: deal.structure
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-12
+    title: Business addresses agree
+    description: Business addresses agree. Evidence preparation check for lender review.
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: premises
+        - leased
+    accepts:
+      - LEASE
+      - TAX_BUSINESS
+      - PURCHASE_AGREEMENT
+    required: true
+    severity: minor
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Values agree across the named sources
+        fact: party.address
+        across:
+          - LEASE
+          - TAX_BUSINESS
+          - PURCHASE_AGREEMENT
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-13
+    title: "Lease horizon: for lender review"
+    description: "Lease horizon: for lender review. Evidence preparation check for lender review."
+    scope: target_business
+    applies_when:
+      op: ==
+      args:
+        - profile: premises
+        - leased
+    accepts:
+      - LEASE
+    required: true
+    severity: minor
+    responsible: broker
+    checks:
+      - type: date_order
+        message: "Lease and options cover the review horizon: for lender review"
+        expr:
+          op: ">="
+          args:
+            - op: add_years
+              args:
+                - fact: lease.expiry
+                - fact: lease.option_years
+            - op: add_years
+              args:
+                - as_of: true
+                - param: lease_years
+    source_ref:
+      class: lender_convention
+      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Ten-year review horizon; not a universal
+        lease term determination"
+    verified: false
+    finding_type: conflict
+  - id: CON-14
+    title: "Consulting duration: for lender review"
+    description: "Consulting duration: for lender review. Evidence preparation check for lender review."
+    scope: deal
+    applies_when:
+      op: ==
+      args:
+        - profile: seller_staying.present
+        - yes
+    accepts:
+      - CONSULTING_AGREEMENT
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: fact_comparison
+        message: "Consulting term is within the pack window: for lender review"
+        expr:
+          op: <=
+          args:
+            - fact: consulting.term_months
+            - param: consulting_months
+    source_ref:
+      class: sop
+      citation: SOP 50 10 8.1, Appendix 15 A, Seller Participation (A begins p.342). Pagination is the section-start page in
+        the official DOCX table of contents; see docs/RULE_SOURCES.md.
+      url: https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx
+    verified: false
+    finding_type: conflict
+  - id: CON-15
+    title: Transaction dates remain current
+    description: Transaction dates remain current. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts:
+      - LOI
+      - PURCHASE_AGREEMENT
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: date_order
+        message: LOI and purchase outside date remain current
+        expr:
+          op: and
+          args:
+            - op: ">="
+              args:
+                - fact: deal.expiry_date
+                  types:
+                    - LOI
+                - as_of: true
+            - op: ">="
+              args:
+                - fact: deal.outside_date
+                  types:
+                    - PURCHASE_AGREEMENT
+                - profile: target_submission_date
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: conflict
+  - id: CON-16
+    title: Document party assignment
+    description: Document party assignment. Evidence preparation check for lender review.
+    scope: deal
+    applies_when: true
+    accepts: []
+    required: true
+    severity: major
+    responsible: broker
+    checks:
+      - type: fact_agreement
+        message: Every current confirmed segment matches a deal party
+        mode: party_assignment
+    source_ref:
+      class: internal_consistency
+      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+    verified: false
+    finding_type: needs_review
