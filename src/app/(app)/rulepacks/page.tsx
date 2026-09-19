@@ -19,9 +19,9 @@ export default async function RulePacksPage({ searchParams }: { searchParams: Pr
   const query = await searchParams;
   const selected = one(query.pack);
   const version = PACK_VERSIONS.find(v => v === selected) ?? "sop-50-10-8-1";
-  const overlay = one(query.overlay) === "northfield-bank" ? "northfield-bank" : undefined;
+  const overlay = one(query.overlay) === "sample-lender-a" ? "sample-lender-a" : undefined;
   const compareVersion = PACK_VERSIONS.find(v => v === one(query.compare)) ?? "sop-50-10-8";
-  const compareOverlay = one(query.compare_overlay) === "northfield-bank" ? "northfield-bank" : undefined;
+  const compareOverlay = one(query.compare_overlay) === "sample-lender-a" ? "sample-lender-a" : undefined;
   const pack = loadPack(version, overlay), other = loadPack(compareVersion, compareOverlay);
   const changes = comparePacks(other, pack);
   const selectClass = "mt-1 block rounded border border-[var(--line)] bg-[var(--surface)] px-3 py-2";
@@ -29,9 +29,9 @@ export default async function RulePacksPage({ searchParams }: { searchParams: Pr
     <PageHeader section="rulepacks" title="Rule packs" subtitle="Read the evidence requirements and compare versions. Every rule awaits lender review." />
     <form method="get" className="mb-6 flex flex-wrap items-end gap-4">
       <label className="text-sm">Pack<select name="pack" defaultValue={version} className={selectClass}>{PACK_VERSIONS.map(v => <option key={v}>{v}</option>)}</select></label>
-      <label className="text-sm">Overlay<select name="overlay" defaultValue={overlay ?? ""} className={selectClass}><option value="">None</option><option value="northfield-bank">Northfield Bank</option></select></label>
+      <label className="text-sm">Overlay<select name="overlay" defaultValue={overlay ?? ""} className={selectClass}><option value="">None</option><option value="sample-lender-a">Sample Lender A</option></select></label>
       <label className="text-sm">Compare from<select name="compare" defaultValue={compareVersion} className={selectClass}>{PACK_VERSIONS.map(v => <option key={v}>{v}</option>)}</select></label>
-      <label className="text-sm">Compare overlay<select name="compare_overlay" defaultValue={compareOverlay ?? ""} className={selectClass}><option value="">None</option><option value="northfield-bank">Northfield Bank</option></select></label>
+      <label className="text-sm">Compare overlay<select name="compare_overlay" defaultValue={compareOverlay ?? ""} className={selectClass}><option value="">None</option><option value="sample-lender-a">Sample Lender A</option></select></label>
       <button className="rounded bg-[var(--accent)] px-4 py-2 text-white" type="submit">View comparison</button>
     </form>
     <section className="mb-6 rounded-lg border border-[var(--line)] p-4" aria-label="Pack parameters">

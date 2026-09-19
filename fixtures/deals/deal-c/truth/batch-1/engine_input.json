@@ -1,0 +1,3672 @@
+{
+  "profile": {
+    "transaction_category": "initial_acquisition",
+    "structure": "asset",
+    "purchase_price": 850000,
+    "total_project_cost": 950000,
+    "real_estate_included": "no",
+    "premises": "none",
+    "franchise": "yes",
+    "franchise_brand": "Ostrelyva",
+    "seller_note": {
+      "present": "no",
+      "amount": 0,
+      "counted_toward_injection": "no"
+    },
+    "gift_funds": "yes",
+    "minority_investor_equity": "no",
+    "seller_staying": {
+      "present": "no",
+      "role": "none",
+      "months": 0
+    },
+    "target_lender": "Zelmivar Bank",
+    "expected_loan_number_date": "2026-10-30",
+    "target_submission_date": "2026-09-30",
+    "paid_agents": [],
+    "equity_sources": [
+      {
+        "id": "cash-alex",
+        "party": "alex",
+        "kind": "cash",
+        "amount": 150000,
+        "source_account_last_four": "4321"
+      },
+      {
+        "id": "gift-source",
+        "party": "donor",
+        "kind": "gift",
+        "amount": 50000,
+        "source_account_last_four": "8765"
+      }
+    ]
+  },
+  "parties": [
+    {
+      "id": "buyer",
+      "kind": "entity",
+      "roles": [
+        "buyer_entity"
+      ],
+      "legal_name": "Ostrelyva Acquisition LLC",
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no",
+      "affiliates": []
+    },
+    {
+      "id": "target",
+      "kind": "entity",
+      "roles": [
+        "seller_entity"
+      ],
+      "legal_name": "Ostrelyva Fitness LLC",
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no",
+      "affiliates": []
+    },
+    {
+      "id": "alex",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "guarantor"
+      ],
+      "legal_name": "Providenci Glover",
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no",
+      "affiliates": []
+    },
+    {
+      "id": "donor",
+      "kind": "individual",
+      "roles": [
+        "donor"
+      ],
+      "legal_name": "Bradley Wuckert",
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no",
+      "affiliates": []
+    }
+  ],
+  "ownership": [
+    {
+      "owner_party_id": "alex",
+      "owned_party_id": "buyer",
+      "percent": 100,
+      "stage": "post_closing",
+      "origin": "declared"
+    }
+  ],
+  "segments": [
+    {
+      "id": "1919",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/1919.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
+        "page": 1,
+        "source_block": "1919-page-1",
+        "quote": "Signature: ________________; Date: ________________"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "SBA_1919",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": "02/2025",
+      "signed": false,
+      "dated": false,
+      "signature_date": null,
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "resume",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+        "page": 1,
+        "source_block": "resume-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "RESUME",
+      "party_id": "alex",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "id",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+        "page": 2,
+        "source_block": "id-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "GOV_ID",
+      "party_id": "alex",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "credit",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+        "page": 3,
+        "source_block": "credit-page-3",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 3,
+      "page_end": 3,
+      "doc_type": "CREDIT_AUTH",
+      "party_id": "alex",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "personal-2023",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+        "page": 1,
+        "source_block": "personal-2023-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "TAX_PERSONAL",
+      "party_id": "alex",
+      "period": "2023",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "extension",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/extension.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/extension.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/extension.pdf",
+        "page": 1,
+        "source_block": "extension-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "TAX_EXTENSION",
+      "party_id": "alex",
+      "period": "2025",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "gift-letter",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 1,
+        "source_block": "gift-letter-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "GIFT_LETTER",
+      "party_id": "donor",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "donor-bank",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 2,
+        "source_block": "donor-bank-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "BANK_STATEMENT",
+      "party_id": "donor",
+      "period": "2026-08",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": "8765",
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "gift-transfer",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+        "page": 1,
+        "source_block": "gift-transfer-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "TRANSFER_EVIDENCE",
+      "party_id": "donor",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "franchise",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+        "page": 2,
+        "source_block": "franchise-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "FRANCHISE_AGREEMENT",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "ein",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+        "page": 1,
+        "source_block": "ein-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "EIN_LETTER",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "good",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+        "page": 2,
+        "source_block": "good-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "GOOD_STANDING",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "owners",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+        "page": 1,
+        "source_block": "owners-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "OWNERSHIP_CHART",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "projections",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+        "page": 2,
+        "source_block": "projections-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "PROJECTIONS",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "pfs",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "SBA_413",
+      "party_id": "alex",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "citizen",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 2,
+        "source_block": "citizen-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "CITIZENSHIP_EVIDENCE",
+      "party_id": "alex",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "bank-jul",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 1,
+        "source_block": "bank-jul-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "BANK_STATEMENT",
+      "party_id": "alex",
+      "period": "2026-07",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-07-31",
+      "expected_page_count": 1,
+      "account_last_four": "4321",
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "bank-aug",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+      "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 2,
+        "source_block": "bank-aug-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "BANK_STATEMENT",
+      "party_id": "alex",
+      "period": "2026-08",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": "4321",
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "plan",
+      "document_version_id": "incoming/batch-1/Buyer/Attachments/plan.DOCX",
+      "file": "incoming/batch-1/Buyer/Attachments/plan.DOCX",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/plan.DOCX",
+        "page": 1,
+        "source_block": "plan-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "BUSINESS_PLAN",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "fin-2025",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+        "page": 1,
+        "source_block": "fin-2025-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "FIN_YEAR_END",
+      "party_id": "target",
+      "period": "2025",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "loi",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 1,
+        "source_block": "loi-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "LOI",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "purchase",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "PURCHASE_AGREEMENT",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "funding",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 3,
+      "page_end": 3,
+      "doc_type": "SOURCES_USES",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "operating",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 4,
+        "source_block": "operating-page-4",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 4,
+      "page_end": 4,
+      "doc_type": "OPERATING_AGREEMENT",
+      "party_id": "buyer",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "4506",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+        "page": 1,
+        "source_block": "4506-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "IRS_4506C",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "equipment",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+        "page": 2,
+        "source_block": "equipment-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "EQUIPMENT_LIST",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "inventory",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+        "page": 1,
+        "source_block": "inventory-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "INVENTORY_SUMMARY",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "license",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+        "page": 2,
+        "source_block": "license-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "LICENSE",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "disclosure",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+        "page": 1,
+        "source_block": "disclosure-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "FRANCHISE_DISCLOSURE",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "brochure",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+        "page": 2,
+        "source_block": "brochure-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "OTHER_NOT_REQUIRED",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "fin-2023",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 1,
+        "source_block": "fin-2023-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "FIN_YEAR_END",
+      "party_id": "target",
+      "period": "2023",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "fin-2024",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 2,
+        "source_block": "fin-2024-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "FIN_YEAR_END",
+      "party_id": "target",
+      "period": "2024",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "interim",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 1,
+        "source_block": "interim-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "FIN_INTERIM",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "ar",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 2,
+        "source_block": "ar-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "AGING_AR",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "ap",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+        "page": 1,
+        "source_block": "ap-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "AGING_AP",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "debt",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+        "page": 2,
+        "source_block": "debt-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "DEBT_SCHEDULE",
+      "party_id": "target",
+      "period": null,
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "tax-2023",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 1,
+      "page_end": 1,
+      "doc_type": "TAX_BUSINESS",
+      "party_id": "target",
+      "period": "2023",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "tax-2024",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 2,
+      "page_end": 2,
+      "doc_type": "TAX_BUSINESS",
+      "party_id": "target",
+      "period": "2024",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    },
+    {
+      "id": "tax-2025",
+      "document_version_id": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+      "metadata_locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "Signature: e-signed; Date: 2026-08-31"
+      },
+      "page_start": 3,
+      "page_end": 3,
+      "doc_type": "TAX_BUSINESS",
+      "party_id": "target",
+      "period": "2025",
+      "form_revision": null,
+      "signed": true,
+      "dated": true,
+      "signature_date": "2026-08-31",
+      "document_date": "2026-08-31",
+      "expected_page_count": 1,
+      "account_last_four": null,
+      "classification_method": "manual",
+      "classification_confidence": 1,
+      "status": "confirmed",
+      "is_current": true
+    }
+  ],
+  "accepted_facts": [
+    {
+      "id": "1919:ownership.members",
+      "segment_id": "1919",
+      "subject_party_id": "buyer",
+      "attribute": "ownership.members",
+      "value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "normalized_value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "unit": "table",
+      "period": null,
+      "method": "acroform",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
+        "page": 1,
+        "source_block": "1919-page-1",
+        "quote": "ownership.members: [{\"name\":\"Providenci Glover\",\"percent\":100}]"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "id:id.expiry",
+      "segment_id": "id",
+      "subject_party_id": "alex",
+      "attribute": "id.expiry",
+      "value": "2030-12-31",
+      "normalized_value": "2030-12-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+        "page": 2,
+        "source_block": "id-page-2",
+        "quote": "id.expiry: 2030-12-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "personal-2023:tax.year",
+      "segment_id": "personal-2023",
+      "subject_party_id": "alex",
+      "attribute": "tax.year",
+      "value": 2023,
+      "normalized_value": 2023,
+      "unit": "count",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+        "page": 1,
+        "source_block": "personal-2023-page-1",
+        "quote": "tax.year: 2023"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "personal-2023:party.identifier",
+      "segment_id": "personal-2023",
+      "subject_party_id": "alex",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d",
+        "last_four": "3456"
+      },
+      "normalized_value": {
+        "hmac": "d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d",
+        "last_four": "3456"
+      },
+      "unit": "masked_identifier",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+        "page": 1,
+        "source_block": "personal-2023-page-1",
+        "quote": "party.identifier: {\"hmac\":\"d3eb795be4c85df5ad4b1fc45e2a3087402ca14367a144e9235ddc2b98a9013d\",\"last_four\":\"3456\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "gift-letter:gift.amount",
+      "segment_id": "gift-letter",
+      "subject_party_id": "donor",
+      "attribute": "gift.amount",
+      "value": 50000,
+      "normalized_value": 50000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 1,
+        "source_block": "gift-letter-page-1",
+        "quote": "gift.amount: 50000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "gift-letter:gift.no_repayment",
+      "segment_id": "gift-letter",
+      "subject_party_id": "donor",
+      "attribute": "gift.no_repayment",
+      "value": true,
+      "normalized_value": true,
+      "unit": "boolean",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 1,
+        "source_block": "gift-letter-page-1",
+        "quote": "gift.no_repayment: true"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "gift-letter:gift.donor",
+      "segment_id": "gift-letter",
+      "subject_party_id": "donor",
+      "attribute": "gift.donor",
+      "value": "Bradley Wuckert",
+      "normalized_value": "Bradley Wuckert",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 1,
+        "source_block": "gift-letter-page-1",
+        "quote": "gift.donor: Bradley Wuckert"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "gift-letter:gift.recipient",
+      "segment_id": "gift-letter",
+      "subject_party_id": "donor",
+      "attribute": "gift.recipient",
+      "value": "Providenci Glover",
+      "normalized_value": "Providenci Glover",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 1,
+        "source_block": "gift-letter-page-1",
+        "quote": "gift.recipient: Providenci Glover"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "donor-bank:party.legal_name",
+      "segment_id": "donor-bank",
+      "subject_party_id": "donor",
+      "attribute": "party.legal_name",
+      "value": "Bradley Wuckert",
+      "normalized_value": "Bradley Wuckert",
+      "unit": "text",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 2,
+        "source_block": "donor-bank-page-2",
+        "quote": "party.legal_name: Bradley Wuckert"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "donor-bank:bank.ending_balance",
+      "segment_id": "donor-bank",
+      "subject_party_id": "donor",
+      "attribute": "bank.ending_balance",
+      "value": 70000,
+      "normalized_value": 70000,
+      "unit": "USD",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 2,
+        "source_block": "donor-bank-page-2",
+        "quote": "bank.ending_balance: 70000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "donor-bank:bank.period_end",
+      "segment_id": "donor-bank",
+      "subject_party_id": "donor",
+      "attribute": "bank.period_end",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 2,
+        "source_block": "donor-bank-page-2",
+        "quote": "bank.period_end: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "donor-bank:bank.institution",
+      "segment_id": "donor-bank",
+      "subject_party_id": "donor",
+      "attribute": "bank.institution",
+      "value": "Zelmivar Bank",
+      "normalized_value": "Zelmivar Bank",
+      "unit": "text",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+        "page": 2,
+        "source_block": "donor-bank-page-2",
+        "quote": "bank.institution: Zelmivar Bank"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "ein:party.identifier",
+      "segment_id": "ein",
+      "subject_party_id": "buyer",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "9f2d0e5ef05f6ccc18f7cc786724a3a736dade119175d484d70506d572866596",
+        "last_four": "4321"
+      },
+      "normalized_value": {
+        "hmac": "9f2d0e5ef05f6ccc18f7cc786724a3a736dade119175d484d70506d572866596",
+        "last_four": "4321"
+      },
+      "unit": "masked_identifier",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+        "page": 1,
+        "source_block": "ein-page-1",
+        "quote": "party.identifier: {\"hmac\":\"9f2d0e5ef05f6ccc18f7cc786724a3a736dade119175d484d70506d572866596\",\"last_four\":\"4321\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "owners:ownership.members",
+      "segment_id": "owners",
+      "subject_party_id": "buyer",
+      "attribute": "ownership.members",
+      "value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "normalized_value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "unit": "table",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+        "page": 1,
+        "source_block": "owners-page-1",
+        "quote": "ownership.members: [{\"name\":\"Providenci Glover\",\"percent\":100}]"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "pfs:pfs.as_of_date",
+      "segment_id": "pfs",
+      "subject_party_id": "alex",
+      "attribute": "pfs.as_of_date",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "pfs.as_of_date: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "pfs:pfs.cash",
+      "segment_id": "pfs",
+      "subject_party_id": "alex",
+      "attribute": "pfs.cash",
+      "value": 180000,
+      "normalized_value": 180000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "pfs.cash: 180000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "pfs:pfs.total_assets",
+      "segment_id": "pfs",
+      "subject_party_id": "alex",
+      "attribute": "pfs.total_assets",
+      "value": 500000,
+      "normalized_value": 500000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "pfs.total_assets: 500000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "pfs:pfs.total_liabilities",
+      "segment_id": "pfs",
+      "subject_party_id": "alex",
+      "attribute": "pfs.total_liabilities",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "pfs.total_liabilities: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "pfs:pfs.net_worth",
+      "segment_id": "pfs",
+      "subject_party_id": "alex",
+      "attribute": "pfs.net_worth",
+      "value": 400000,
+      "normalized_value": 400000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+        "page": 1,
+        "source_block": "pfs-page-1",
+        "quote": "pfs.net_worth: 400000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-jul:party.legal_name",
+      "segment_id": "bank-jul",
+      "subject_party_id": "alex",
+      "attribute": "party.legal_name",
+      "value": "Providenci Glover",
+      "normalized_value": "Providenci Glover",
+      "unit": "text",
+      "period": "2026-07",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 1,
+        "source_block": "bank-jul-page-1",
+        "quote": "party.legal_name: Providenci Glover"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-jul:bank.ending_balance",
+      "segment_id": "bank-jul",
+      "subject_party_id": "alex",
+      "attribute": "bank.ending_balance",
+      "value": 180000,
+      "normalized_value": 180000,
+      "unit": "USD",
+      "period": "2026-07",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 1,
+        "source_block": "bank-jul-page-1",
+        "quote": "bank.ending_balance: 180000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-jul:bank.period_end",
+      "segment_id": "bank-jul",
+      "subject_party_id": "alex",
+      "attribute": "bank.period_end",
+      "value": "2026-07-31",
+      "normalized_value": "2026-07-31",
+      "unit": "date",
+      "period": "2026-07",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 1,
+        "source_block": "bank-jul-page-1",
+        "quote": "bank.period_end: 2026-07-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-jul:bank.institution",
+      "segment_id": "bank-jul",
+      "subject_party_id": "alex",
+      "attribute": "bank.institution",
+      "value": "Zelmivar Bank",
+      "normalized_value": "Zelmivar Bank",
+      "unit": "text",
+      "period": "2026-07",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 1,
+        "source_block": "bank-jul-page-1",
+        "quote": "bank.institution: Zelmivar Bank"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-aug:party.legal_name",
+      "segment_id": "bank-aug",
+      "subject_party_id": "alex",
+      "attribute": "party.legal_name",
+      "value": "Providenci Glover",
+      "normalized_value": "Providenci Glover",
+      "unit": "text",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 2,
+        "source_block": "bank-aug-page-2",
+        "quote": "party.legal_name: Providenci Glover"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-aug:bank.ending_balance",
+      "segment_id": "bank-aug",
+      "subject_party_id": "alex",
+      "attribute": "bank.ending_balance",
+      "value": 180000,
+      "normalized_value": 180000,
+      "unit": "USD",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 2,
+        "source_block": "bank-aug-page-2",
+        "quote": "bank.ending_balance: 180000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-aug:bank.period_end",
+      "segment_id": "bank-aug",
+      "subject_party_id": "alex",
+      "attribute": "bank.period_end",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 2,
+        "source_block": "bank-aug-page-2",
+        "quote": "bank.period_end: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "bank-aug:bank.institution",
+      "segment_id": "bank-aug",
+      "subject_party_id": "alex",
+      "attribute": "bank.institution",
+      "value": "Zelmivar Bank",
+      "normalized_value": "Zelmivar Bank",
+      "unit": "text",
+      "period": "2026-08",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+        "page": 2,
+        "source_block": "bank-aug-page-2",
+        "quote": "bank.institution: Zelmivar Bank"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2025:financial.revenue",
+      "segment_id": "fin-2025",
+      "subject_party_id": "target",
+      "attribute": "financial.revenue",
+      "value": 1400000,
+      "normalized_value": 1400000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "text",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+        "page": 1,
+        "source_block": "fin-2025-page-1",
+        "quote": "financial.revenue: 1400000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2025:financial.total_assets",
+      "segment_id": "fin-2025",
+      "subject_party_id": "target",
+      "attribute": "financial.total_assets",
+      "value": 500000,
+      "normalized_value": 500000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "text",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+        "page": 1,
+        "source_block": "fin-2025-page-1",
+        "quote": "financial.total_assets: 500000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2025:financial.total_liabilities",
+      "segment_id": "fin-2025",
+      "subject_party_id": "target",
+      "attribute": "financial.total_liabilities",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "text",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+        "page": 1,
+        "source_block": "fin-2025-page-1",
+        "quote": "financial.total_liabilities: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2025:financial.net_income",
+      "segment_id": "fin-2025",
+      "subject_party_id": "target",
+      "attribute": "financial.net_income",
+      "value": 140000,
+      "normalized_value": 140000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "text",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
+        "page": 1,
+        "source_block": "fin-2025-page-1",
+        "quote": "financial.net_income: 140000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "loi:deal.signed_by_both",
+      "segment_id": "loi",
+      "subject_party_id": "target",
+      "attribute": "deal.signed_by_both",
+      "value": true,
+      "normalized_value": true,
+      "unit": "boolean",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 1,
+        "source_block": "loi-page-1",
+        "quote": "deal.signed_by_both: true"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "loi:deal.expiry_date",
+      "segment_id": "loi",
+      "subject_party_id": "target",
+      "attribute": "deal.expiry_date",
+      "value": "2026-11-30",
+      "normalized_value": "2026-11-30",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 1,
+        "source_block": "loi-page-1",
+        "quote": "deal.expiry_date: 2026-11-30"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "loi:deal.purchase_price",
+      "segment_id": "loi",
+      "subject_party_id": "target",
+      "attribute": "deal.purchase_price",
+      "value": 850000,
+      "normalized_value": 850000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 1,
+        "source_block": "loi-page-1",
+        "quote": "deal.purchase_price: 850000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.buyer",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.buyer",
+      "value": "Ostrelyva Acquisition LLC",
+      "normalized_value": "Ostrelyva Acquisition LLC",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.buyer: Ostrelyva Acquisition LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.seller",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.seller",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.seller: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.allocation_present",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.allocation_present",
+      "value": true,
+      "normalized_value": true,
+      "unit": "boolean",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.allocation_present: true"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.purchase_price",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.purchase_price",
+      "value": 850000,
+      "normalized_value": 850000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.purchase_price: 850000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.structure",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.structure",
+      "value": "asset",
+      "normalized_value": "asset",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.structure: asset"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:deal.outside_date",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "deal.outside_date",
+      "value": "2026-11-30",
+      "normalized_value": "2026-11-30",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "deal.outside_date: 2026-11-30"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:party.legal_name",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "party.legal_name",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "party.legal_name: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "purchase:party.identifier",
+      "segment_id": "purchase",
+      "subject_party_id": "target",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "normalized_value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "unit": "masked_identifier",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 2,
+        "source_block": "purchase-page-2",
+        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "funding:funding.sources",
+      "segment_id": "funding",
+      "subject_party_id": "buyer",
+      "attribute": "funding.sources",
+      "value": [
+        {
+          "label": "Senior loan",
+          "amount": 750000
+        },
+        {
+          "label": "Cash injection",
+          "amount": 150000
+        },
+        {
+          "label": "Gift",
+          "amount": 50000
+        }
+      ],
+      "normalized_value": [
+        {
+          "label": "Senior loan",
+          "amount": 750000
+        },
+        {
+          "label": "Cash injection",
+          "amount": 150000
+        },
+        {
+          "label": "Gift",
+          "amount": 50000
+        }
+      ],
+      "unit": "table",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "funding.sources: [{\"label\":\"Senior loan\",\"amount\":750000},{\"label\":\"Cash injection\",\"amount\":150000},{\"label\":\"Gift\",\"amount\":50000}]"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "funding:funding.uses",
+      "segment_id": "funding",
+      "subject_party_id": "buyer",
+      "attribute": "funding.uses",
+      "value": [
+        {
+          "label": "Purchase",
+          "amount": 850000
+        },
+        {
+          "label": "Working capital",
+          "amount": 100000
+        }
+      ],
+      "normalized_value": [
+        {
+          "label": "Purchase",
+          "amount": 850000
+        },
+        {
+          "label": "Working capital",
+          "amount": 100000
+        }
+      ],
+      "unit": "table",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "funding.uses: [{\"label\":\"Purchase\",\"amount\":850000},{\"label\":\"Working capital\",\"amount\":100000}]"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "funding:funding.sources_total",
+      "segment_id": "funding",
+      "subject_party_id": "buyer",
+      "attribute": "funding.sources_total",
+      "value": 950000,
+      "normalized_value": 950000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "funding.sources_total: 950000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "funding:funding.uses_total",
+      "segment_id": "funding",
+      "subject_party_id": "buyer",
+      "attribute": "funding.uses_total",
+      "value": 950000,
+      "normalized_value": 950000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "funding.uses_total: 950000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "funding:deal.purchase_price",
+      "segment_id": "funding",
+      "subject_party_id": "buyer",
+      "attribute": "deal.purchase_price",
+      "value": 850000,
+      "normalized_value": 850000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 3,
+        "source_block": "funding-page-3",
+        "quote": "deal.purchase_price: 850000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "operating:ownership.members",
+      "segment_id": "operating",
+      "subject_party_id": "buyer",
+      "attribute": "ownership.members",
+      "value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "normalized_value": [
+        {
+          "name": "Providenci Glover",
+          "percent": 100
+        }
+      ],
+      "unit": "table",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+        "page": 4,
+        "source_block": "operating-page-4",
+        "quote": "ownership.members: [{\"name\":\"Providenci Glover\",\"percent\":100}]"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "4506:party.legal_name",
+      "segment_id": "4506",
+      "subject_party_id": "target",
+      "attribute": "party.legal_name",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+        "page": 1,
+        "source_block": "4506-page-1",
+        "quote": "party.legal_name: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "4506:party.identifier",
+      "segment_id": "4506",
+      "subject_party_id": "target",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "normalized_value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "unit": "masked_identifier",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+        "page": 1,
+        "source_block": "4506-page-1",
+        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2023:financial.revenue",
+      "segment_id": "fin-2023",
+      "subject_party_id": "target",
+      "attribute": "financial.revenue",
+      "value": 1200000,
+      "normalized_value": 1200000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 1,
+        "source_block": "fin-2023-page-1",
+        "quote": "financial.revenue: 1200000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2023:financial.total_assets",
+      "segment_id": "fin-2023",
+      "subject_party_id": "target",
+      "attribute": "financial.total_assets",
+      "value": 500000,
+      "normalized_value": 500000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 1,
+        "source_block": "fin-2023-page-1",
+        "quote": "financial.total_assets: 500000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2023:financial.total_liabilities",
+      "segment_id": "fin-2023",
+      "subject_party_id": "target",
+      "attribute": "financial.total_liabilities",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 1,
+        "source_block": "fin-2023-page-1",
+        "quote": "financial.total_liabilities: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2023:financial.net_income",
+      "segment_id": "fin-2023",
+      "subject_party_id": "target",
+      "attribute": "financial.net_income",
+      "value": 120000,
+      "normalized_value": 120000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 1,
+        "source_block": "fin-2023-page-1",
+        "quote": "financial.net_income: 120000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2024:financial.revenue",
+      "segment_id": "fin-2024",
+      "subject_party_id": "target",
+      "attribute": "financial.revenue",
+      "value": 1300000,
+      "normalized_value": 1300000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 2,
+        "source_block": "fin-2024-page-2",
+        "quote": "financial.revenue: 1300000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2024:financial.total_assets",
+      "segment_id": "fin-2024",
+      "subject_party_id": "target",
+      "attribute": "financial.total_assets",
+      "value": 500000,
+      "normalized_value": 500000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 2,
+        "source_block": "fin-2024-page-2",
+        "quote": "financial.total_assets: 500000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2024:financial.total_liabilities",
+      "segment_id": "fin-2024",
+      "subject_party_id": "target",
+      "attribute": "financial.total_liabilities",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 2,
+        "source_block": "fin-2024-page-2",
+        "quote": "financial.total_liabilities: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "fin-2024:financial.net_income",
+      "segment_id": "fin-2024",
+      "subject_party_id": "target",
+      "attribute": "financial.net_income",
+      "value": 130000,
+      "normalized_value": 130000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "page": 2,
+        "source_block": "fin-2024-page-2",
+        "quote": "financial.net_income: 130000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "interim:financial.period_end",
+      "segment_id": "interim",
+      "subject_party_id": "target",
+      "attribute": "financial.period_end",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 1,
+        "source_block": "interim-page-1",
+        "quote": "financial.period_end: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "interim:financial.revenue",
+      "segment_id": "interim",
+      "subject_party_id": "target",
+      "attribute": "financial.revenue",
+      "value": 900000,
+      "normalized_value": 900000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 1,
+        "source_block": "interim-page-1",
+        "quote": "financial.revenue: 900000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "interim:financial.total_assets",
+      "segment_id": "interim",
+      "subject_party_id": "target",
+      "attribute": "financial.total_assets",
+      "value": 500000,
+      "normalized_value": 500000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 1,
+        "source_block": "interim-page-1",
+        "quote": "financial.total_assets: 500000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "interim:financial.total_liabilities",
+      "segment_id": "interim",
+      "subject_party_id": "target",
+      "attribute": "financial.total_liabilities",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 1,
+        "source_block": "interim-page-1",
+        "quote": "financial.total_liabilities: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "ar:aging.as_of_date",
+      "segment_id": "ar",
+      "subject_party_id": "target",
+      "attribute": "aging.as_of_date",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+        "page": 2,
+        "source_block": "ar-page-2",
+        "quote": "aging.as_of_date: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "ap:aging.as_of_date",
+      "segment_id": "ap",
+      "subject_party_id": "target",
+      "attribute": "aging.as_of_date",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+        "page": 1,
+        "source_block": "ap-page-1",
+        "quote": "aging.as_of_date: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "debt:debt.as_of_date",
+      "segment_id": "debt",
+      "subject_party_id": "target",
+      "attribute": "debt.as_of_date",
+      "value": "2026-08-31",
+      "normalized_value": "2026-08-31",
+      "unit": "date",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+        "page": 2,
+        "source_block": "debt-page-2",
+        "quote": "debt.as_of_date: 2026-08-31"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "debt:debt.total",
+      "segment_id": "debt",
+      "subject_party_id": "target",
+      "attribute": "debt.total",
+      "value": 100000,
+      "normalized_value": 100000,
+      "unit": "USD",
+      "period": null,
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+        "page": 2,
+        "source_block": "debt-page-2",
+        "quote": "debt.total: 100000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:party.legal_name",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "party.legal_name",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "party.legal_name: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:party.identifier",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "normalized_value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "unit": "masked_identifier",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:tax.gross_receipts",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "tax.gross_receipts",
+      "value": 1200000,
+      "normalized_value": 1200000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "tax.gross_receipts: 1200000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:tax.net_income",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "tax.net_income",
+      "value": 120000,
+      "normalized_value": 120000,
+      "unit": "USD",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "tax.net_income: 120000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:tax.year",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "tax.year",
+      "value": 2023,
+      "normalized_value": 2023,
+      "unit": "count",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "tax.year: 2023"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2023:tax.form_type",
+      "segment_id": "tax-2023",
+      "subject_party_id": "target",
+      "attribute": "tax.form_type",
+      "value": "1120S",
+      "normalized_value": "1120S",
+      "unit": "text",
+      "period": "2023",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 1,
+        "source_block": "tax-2023-page-1",
+        "quote": "tax.form_type: 1120S"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:party.legal_name",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "party.legal_name",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "party.legal_name: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:party.identifier",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "normalized_value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "unit": "masked_identifier",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:tax.gross_receipts",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "tax.gross_receipts",
+      "value": 1300000,
+      "normalized_value": 1300000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "tax.gross_receipts: 1300000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:tax.net_income",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "tax.net_income",
+      "value": 130000,
+      "normalized_value": 130000,
+      "unit": "USD",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "tax.net_income: 130000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:tax.year",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "tax.year",
+      "value": 2024,
+      "normalized_value": 2024,
+      "unit": "count",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "tax.year: 2024"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2024:tax.form_type",
+      "segment_id": "tax-2024",
+      "subject_party_id": "target",
+      "attribute": "tax.form_type",
+      "value": "1120S",
+      "normalized_value": "1120S",
+      "unit": "text",
+      "period": "2024",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 2,
+        "source_block": "tax-2024-page-2",
+        "quote": "tax.form_type: 1120S"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:party.legal_name",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "party.legal_name",
+      "value": "Ostrelyva Fitness LLC",
+      "normalized_value": "Ostrelyva Fitness LLC",
+      "unit": "text",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "party.legal_name: Ostrelyva Fitness LLC"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:party.identifier",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "party.identifier",
+      "value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "normalized_value": {
+        "hmac": "52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93",
+        "last_four": "4567"
+      },
+      "unit": "masked_identifier",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "party.identifier: {\"hmac\":\"52395d990d871182f391f49c67d07cad880b6641aca468af44496588045f8a93\",\"last_four\":\"4567\"}"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:tax.gross_receipts",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "tax.gross_receipts",
+      "value": 1400000,
+      "normalized_value": 1400000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "tax.gross_receipts: 1400000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:tax.net_income",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "tax.net_income",
+      "value": 140000,
+      "normalized_value": 140000,
+      "unit": "USD",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "tax.net_income: 140000"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:tax.year",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "tax.year",
+      "value": 2025,
+      "normalized_value": 2025,
+      "unit": "count",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "tax.year: 2025"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    },
+    {
+      "id": "tax-2025:tax.form_type",
+      "segment_id": "tax-2025",
+      "subject_party_id": "target",
+      "attribute": "tax.form_type",
+      "value": "1120S",
+      "normalized_value": "1120S",
+      "unit": "text",
+      "period": "2025",
+      "method": "vision",
+      "locator": {
+        "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+        "page": 3,
+        "source_block": "tax-2025-page-3",
+        "quote": "tax.form_type: 1120S"
+      },
+      "confidence": 1,
+      "confidence_components": {
+        "authored_fixture": 1
+      },
+      "validators_passed": true,
+      "actor": null,
+      "audit_event_id": null,
+      "record_version": 1,
+      "is_current": true
+    }
+  ],
+  "pending_facts": [],
+  "tracking": [
+    {
+      "rule_id": "TXN-08",
+      "scope_key": "deal",
+      "state": "received",
+      "actor": "synthetic-reviewer",
+      "note": "Receipt recorded for fixture"
+    },
+    {
+      "rule_id": "LND-01",
+      "scope_key": "deal",
+      "state": "received",
+      "actor": "synthetic-reviewer",
+      "note": "Receipt recorded for fixture"
+    },
+    {
+      "rule_id": "LND-02",
+      "scope_key": "deal",
+      "state": "received",
+      "actor": "synthetic-reviewer",
+      "note": "Receipt recorded for fixture"
+    },
+    {
+      "rule_id": "LND-03",
+      "scope_key": "deal",
+      "state": "received",
+      "actor": "synthetic-reviewer",
+      "note": "Receipt recorded for fixture"
+    },
+    {
+      "rule_id": "LND-04",
+      "scope_key": "deal",
+      "state": "received",
+      "actor": "synthetic-reviewer",
+      "note": "Receipt recorded for fixture"
+    }
+  ],
+  "manual_confirmations": [
+    {
+      "rule_id": "TXN-08",
+      "scope_key": "deal",
+      "period": null,
+      "actor": "synthetic-reviewer",
+      "note": "Authored fixture confirmation for lender review",
+      "audit_event_id": "deal-c:TXN-08:deal",
+      "key": "valuation_required",
+      "confirmed": true
+    },
+    {
+      "rule_id": "GUA-05",
+      "scope_key": "alex",
+      "period": null,
+      "actor": "synthetic-reviewer",
+      "note": "Authored fixture confirmation for lender review",
+      "audit_event_id": "deal-c:GUA-05:alex",
+      "key": "citizenship_handling",
+      "confirmed": true
+    },
+    {
+      "rule_id": "TGT-09",
+      "scope_key": "target",
+      "period": null,
+      "actor": "synthetic-reviewer",
+      "note": "Authored fixture confirmation for lender review",
+      "audit_event_id": "deal-c:TGT-09:target",
+      "key": "personal_license",
+      "confirmed": true
+    },
+    {
+      "rule_id": "TGT-10a",
+      "scope_key": "target",
+      "period": null,
+      "actor": "synthetic-reviewer",
+      "note": "Authored fixture confirmation for lender review",
+      "audit_event_id": "deal-c:TGT-10a:target",
+      "key": "franchise_directory",
+      "confirmed": true
+    }
+  ],
+  "waivers": [],
+  "as_of": "2026-09-15",
+  "evidence_inventory": {
+    "segment_ids": [
+      "1919",
+      "resume",
+      "id",
+      "credit",
+      "personal-2023",
+      "extension",
+      "gift-letter",
+      "donor-bank",
+      "gift-transfer",
+      "franchise",
+      "ein",
+      "good",
+      "owners",
+      "projections",
+      "pfs",
+      "citizen",
+      "bank-jul",
+      "bank-aug",
+      "plan",
+      "fin-2025",
+      "loi",
+      "purchase",
+      "funding",
+      "operating",
+      "4506",
+      "equipment",
+      "inventory",
+      "license",
+      "disclosure",
+      "brochure",
+      "fin-2023",
+      "fin-2024",
+      "interim",
+      "ar",
+      "ap",
+      "debt",
+      "tax-2023",
+      "tax-2024",
+      "tax-2025"
+    ],
+    "fact_ids": [
+      "1919:ownership.members",
+      "id:id.expiry",
+      "personal-2023:tax.year",
+      "personal-2023:party.identifier",
+      "gift-letter:gift.amount",
+      "gift-letter:gift.no_repayment",
+      "gift-letter:gift.donor",
+      "gift-letter:gift.recipient",
+      "donor-bank:party.legal_name",
+      "donor-bank:bank.ending_balance",
+      "donor-bank:bank.period_end",
+      "donor-bank:bank.institution",
+      "ein:party.identifier",
+      "owners:ownership.members",
+      "pfs:pfs.as_of_date",
+      "pfs:pfs.cash",
+      "pfs:pfs.total_assets",
+      "pfs:pfs.total_liabilities",
+      "pfs:pfs.net_worth",
+      "bank-jul:party.legal_name",
+      "bank-jul:bank.ending_balance",
+      "bank-jul:bank.period_end",
+      "bank-jul:bank.institution",
+      "bank-aug:party.legal_name",
+      "bank-aug:bank.ending_balance",
+      "bank-aug:bank.period_end",
+      "bank-aug:bank.institution",
+      "fin-2025:financial.revenue",
+      "fin-2025:financial.total_assets",
+      "fin-2025:financial.total_liabilities",
+      "fin-2025:financial.net_income",
+      "loi:deal.signed_by_both",
+      "loi:deal.expiry_date",
+      "loi:deal.purchase_price",
+      "purchase:deal.buyer",
+      "purchase:deal.seller",
+      "purchase:deal.allocation_present",
+      "purchase:deal.purchase_price",
+      "purchase:deal.structure",
+      "purchase:deal.outside_date",
+      "purchase:party.legal_name",
+      "purchase:party.identifier",
+      "funding:funding.sources",
+      "funding:funding.uses",
+      "funding:funding.sources_total",
+      "funding:funding.uses_total",
+      "funding:deal.purchase_price",
+      "operating:ownership.members",
+      "4506:party.legal_name",
+      "4506:party.identifier",
+      "fin-2023:financial.revenue",
+      "fin-2023:financial.total_assets",
+      "fin-2023:financial.total_liabilities",
+      "fin-2023:financial.net_income",
+      "fin-2024:financial.revenue",
+      "fin-2024:financial.total_assets",
+      "fin-2024:financial.total_liabilities",
+      "fin-2024:financial.net_income",
+      "interim:financial.period_end",
+      "interim:financial.revenue",
+      "interim:financial.total_assets",
+      "interim:financial.total_liabilities",
+      "ar:aging.as_of_date",
+      "ap:aging.as_of_date",
+      "debt:debt.as_of_date",
+      "debt:debt.total",
+      "tax-2023:party.legal_name",
+      "tax-2023:party.identifier",
+      "tax-2023:tax.gross_receipts",
+      "tax-2023:tax.net_income",
+      "tax-2023:tax.year",
+      "tax-2023:tax.form_type",
+      "tax-2024:party.legal_name",
+      "tax-2024:party.identifier",
+      "tax-2024:tax.gross_receipts",
+      "tax-2024:tax.net_income",
+      "tax-2024:tax.year",
+      "tax-2024:tax.form_type",
+      "tax-2025:party.legal_name",
+      "tax-2025:party.identifier",
+      "tax-2025:tax.gross_receipts",
+      "tax-2025:tax.net_income",
+      "tax-2025:tax.year",
+      "tax-2025:tax.form_type"
+    ]
+  }
+}

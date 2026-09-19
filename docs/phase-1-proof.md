@@ -6,7 +6,7 @@ Date: 2026-09-19. Base: accepted Phase 0 commit `b586d9c`. Repository: private `
 
 - Load-validated taxonomy and fact catalog; typed profile, parties, ownership, segments, evidence locators and manual facts.
 - Additive SQL/Drizzle domain schema: deals, parties, ownership_links, segments, facts, rule_pack_snapshots, evaluations, checklist_status, findings and events; nullable documents.deal_id. Same-deal foreign keys/guards, constrained values, indexes and immutable audit/pack records. No findings lifecycle implementation or Phase 5 tables.
-- Two independent SOP YAML packs, Northfield overlay, strict loader, safe AST, canonical hashing and idempotent exact-content snapshot persistence.
+- Two independent SOP YAML packs, Sample Lender A overlay, strict loader, safe AST, canonical hashing and idempotent exact-content snapshot persistence.
 - Pure evaluation with all 12 check types, all eight scopes, calendar/statement periods, three-valued logic, explicit waivers/manual confirmations/tracking, pack selection, inclusive 14-day boundary flag, stable finding keys and result hashes.
 - Authenticated read-only `/rulepacks` viewer with two-configuration comparison, effective parameter differences, source links and unverified labels. [Browser screenshot](screenshots/phase-1-rulepacks.png).
 - `rules:check` and `rules:export-review`; [XLSX](RULEPACK_REVIEW.xlsx) and [HTML](RULEPACK_REVIEW.html) cover all four resolved configurations, with empty SME correction columns and the required footer.
@@ -15,7 +15,7 @@ Date: 2026-09-19. Base: accepted Phase 0 commit `b586d9c`. Repository: private `
 
 [DECISIONS.md](DECISIONS.md), entries 12–31, records every new choice and reason. Material choices:
 
-- Northfield requires TXN-10a and TGT-11. TXN-10b/c and TGT-12a/b/c remain defined but not required, per the user's direction. Small implementation choices are decided and recorded without asking.
+- Sample Lender A requires TXN-10a and TGT-11. TXN-10b/c and TGT-12a/b/c remain defined but not required, per the user's direction. Small implementation choices are decided and recorded without asking.
 - Split business plan/projections and AR/AP as well as the explicitly named composites. Shared signatures are segment metadata. Classification-only evidence can carry validated manual facts, without adding extraction.
 - Fixed evidence inventory prevents deletion from becoming silent conflict resolution; missing inventory members conservatively make active rows need review. This additional input is needed to make the unconditional monotonic-removal requirement meaningful.
 - Unknown dominates row dependencies. A received lender tracking state can satisfy a tracking row with actor/note. Optional rows remain not applicable. Conditional QOE/real-estate rows win over the conflicting generic tracking sentence.
@@ -33,7 +33,7 @@ Date: 2026-09-19. Base: accepted Phase 0 commit `b586d9c`. Repository: private `
 | CON-07 limited sources | Seller standby note alone | Seller standby note + other standby debt + minority-investor equity |
 | CON-07 comparator | Half of 10% of project cost, for lender review | Same baseline, for lender review |
 
-Northfield changes interim freshness from 120 to 60 days, adds two required rows and five inactive optional definitions, and uses `NF_{party}_{item_id}_{doc_label}_{period}{original_extension}`. No engine code branches on Northfield or a CON id.
+Sample Lender A changes interim freshness from 120 to 60 days, adds two required rows and five inactive optional definitions, and uses `SLA_{party}_{item_id}_{doc_label}_{period}{original_extension}`. No engine code branches on Sample Lender A or a CON id.
 
 ## Sources and limitations
 
@@ -42,9 +42,9 @@ Northfield changes interim freshness from 120 to 60 days, adds two required rows
 - **Official SOP in both packs:** GUA-01 (financial statement), TGT-10a (franchise), TXN-05 (standby), TXN-08 (valuation), CON-06/07 (standby/equity), CON-14 (consulting). Version 8.1 additionally sources TXN-09 (QOE) to Appendix 15.
 - **Official form:** TXN-07, Form 159 signature/date blocks, PDF p.3. This is the supplied historical form, not a current-revision claim.
 - **Secondary in both:** ENT-01/02/03; GUA-02/06/08a/08b/08c/09a/09b/09c; TGT-01/02/03/05/07a; TXN-02. ENT-01 cites StatementsReady for revision/listing context; the others cite Pioneer Capital Advisory's documentation checklist. Exact numeric conventions beyond these sources are explicitly identified as seed conventions.
-- **Internal consistency:** CON-01/02/03/04/05/08/09/10/11/12/15/16. Remaining base rules and all Northfield definitions are explicitly synthetic lender conventions, not falsely attributed SOP requirements.
+- **Internal consistency:** CON-01/02/03/04/05/08/09/10/11/12/15/16. Remaining base rules and all Sample Lender A definitions are explicitly synthetic lender conventions, not falsely attributed SOP requirements.
 
-[RULE_CANDIDATES.md](RULE_CANDIDATES.md) contains the entire unresolved list: citizenship determination/legal-challenge status/entity-owner handling; the form's minimum ownership-list coverage versus the stricter 100% seed; category-specific equity requirements/exceptions; valuation/ESOP exception handling; fiscal-year tax coverage; purported universal IRS/lease/account-history thresholds; automated license/franchise/signature/citizenship interpretation; and real-lender Northfield policy authenticity. These proposed regulatory determinations are not implemented. The requested preparation checks remain visible and unverified.
+[RULE_CANDIDATES.md](RULE_CANDIDATES.md) contains the entire unresolved list: citizenship determination/legal-challenge status/entity-owner handling; the form's minimum ownership-list coverage versus the stricter 100% seed; category-specific equity requirements/exceptions; valuation/ESOP exception handling; fiscal-year tax coverage; purported universal IRS/lease/account-history thresholds; automated license/franchise/signature/citizenship interpretation; and real-lender Sample Lender A policy authenticity. These proposed regulatory determinations are not implemented. The requested preparation checks remain visible and unverified.
 
 The spec's fixed 10% equity baseline and universal valuation/consulting wording simplify category-dependent SOP provisions. Its 100% Form 1919 comparison is stronger than the cited minimum listing coverage. Its always-listed tracking sentence conflicts with its explicit QOE/real-estate applicability. Its unconditional removal invariant needs an evidence inventory or equivalent retained provenance. These limitations are explicit rather than silently treated as established policy. Fiscal-year filers are out of scope under A13.
 
@@ -54,8 +54,8 @@ The spec's fixed 10% equity baseline and universal valuation/consulting wording 
 | --- | ---: | ---: | ---: | ---: | ---: |
 | SOP 8 | 52 | 79 | 50 | 16 | 66 |
 | SOP 8.1 | 52 | 79 | 51 | 16 | 67 |
-| SOP 8 + Northfield | 52 | 79 | 57 (5 inactive) | 16 | 73 |
-| SOP 8.1 + Northfield | 52 | 79 | 58 (5 inactive) | 16 | 74 |
+| SOP 8 + Sample Lender A | 52 | 79 | 57 (5 inactive) | 16 | 73 |
+| SOP 8.1 + Sample Lender A | 52 | 79 | 58 (5 inactive) | 16 | 74 |
 
 The taxonomy contains 25 extracted and 27 classification-only types. Required definition counts include conditional rules; they are not counts of applicable requirements on an individual deal.
 
@@ -81,7 +81,7 @@ The taxonomy contains 25 extracted and 27 classification-only types. Required de
 | `pnpm test` | 0 | 111 tests, 13 files; includes all 43 retained Phase 0 unit tests |
 | `pnpm test:integration` | 0 | 20 tests, 5 files; includes all 15 retained Phase 0 integration tests |
 | `pnpm test:e2e` | 0 | 7 Chromium tests; includes all 6 retained Phase 0 E2E tests |
-| `pnpm rules:check` | 0 | Both packs and both Northfield resolutions validate; 52 types, 79 fact attributes |
+| `pnpm rules:check` | 0 | Both packs and both Sample Lender A resolutions validate; 52 types, 79 fact attributes |
 | `pnpm rules:export-review` | 0 | XLSX and HTML written for four resolved configurations |
 | `pnpm db:migrate` | 0 | Additive migration applied to local acqfile |
 | `pnpm build` | 0 | Production build passes, including `/rulepacks` |

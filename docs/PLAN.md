@@ -39,7 +39,7 @@ Authority: SPEC_AMENDMENTS.md and PHASE_1.md. Phase 0 is accepted at b586d9c.
 
 - Load-validated taxonomy/fact registries; Zod profile, parties, ownership and evidenced inputs.
 - Additive domain SQL/Drizzle schema, same-deal constraints, append-only events and exact pack snapshots.
-- Independently authored SOP 8/8.1 YAML, Northfield required/optional definitions, validated AST, canonical overlay resolution.
+- Independently authored SOP 8/8.1 YAML, Sample Lender A required/optional definitions, validated AST, canonical overlay resolution.
 - Pure engine with conservative unknowns, scopes/periods, provenance, stable finding keys and deterministic result hashes.
 - Rule validation command, XLSX/HTML review exports, authenticated read-only comparison viewer.
 - Hand-authored clean/defects/unknowns/traps/packs proofs; invariants; database/browser checks; all retained suites and production build.

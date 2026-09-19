@@ -1,0 +1,224 @@
+[
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "loi"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "purchase"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "funding"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/formation.pdf",
+    "batch": 1,
+    "type": "unreadable",
+    "planned_type": "FORMATION_DOC"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "operating"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "ein"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "good"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "owners"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "projections"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "pfs"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "personal-2023"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "resume"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "id"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "citizen"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "credit"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "bank-jul"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "bank-aug"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "tax-2023"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "tax-2024"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "tax-2025"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "fin-2023"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "fin-2024"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "interim"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "ar"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "ap"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "debt"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "4506"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "equipment"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "inventory"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "license"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "gift-letter"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "donor-bank"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "gift-transfer"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "franchise"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "disclosure"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "brochure"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/extension.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "extension"
+  }
+]

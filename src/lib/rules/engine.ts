@@ -38,7 +38,7 @@ function scopeExpansion(rule: Rule, input: EngineInput): Scope[] {
     }
   }
   if (buyer) ancestors(buyer.id, 100, new Set());
-  const guarantors = input.parties.filter(p => p.roles.includes("guarantor") || (weights.get(p.id) ?? 0) >= 20);
+  const guarantors = input.parties.filter(p => p.roles.includes("guarantor") || p.kind === "individual" && (weights.get(p.id) ?? 0) >= 20);
   let parties: Party[] = [];
   switch (rule.scope) {
     case "deal": return [{ key: "deal", party: null, uncertain: false }];

@@ -1,0 +1,231 @@
+{
+  "id": "deal-c",
+  "pack": "sop-50-10-8-1",
+  "overlay": null,
+  "as_of": "2026-09-15",
+  "profile": {
+    "transaction_category": "initial_acquisition",
+    "structure": "asset",
+    "purchase_price": 850000,
+    "total_project_cost": 950000,
+    "real_estate_included": "no",
+    "premises": "none",
+    "franchise": "yes",
+    "franchise_brand": "Ostrelyva",
+    "seller_note": {
+      "present": "no",
+      "amount": 0,
+      "counted_toward_injection": "no"
+    },
+    "gift_funds": "yes",
+    "minority_investor_equity": "no",
+    "seller_staying": {
+      "present": "no",
+      "role": "none",
+      "months": 0
+    },
+    "target_lender": "Zelmivar Bank",
+    "expected_loan_number_date": "2026-10-30",
+    "target_submission_date": "2026-09-30",
+    "paid_agents": [],
+    "equity_sources": [
+      {
+        "id": "cash-alex",
+        "party": "alex",
+        "kind": "cash",
+        "amount": 150000,
+        "source_account_last_four": "4321"
+      },
+      {
+        "id": "gift-source",
+        "party": "donor",
+        "kind": "gift",
+        "amount": 50000,
+        "source_account_last_four": "8765"
+      }
+    ]
+  },
+  "parties": [
+    {
+      "id": "buyer",
+      "kind": "entity",
+      "roles": [
+        "buyer_entity"
+      ],
+      "legal_name": "Ostrelyva Acquisition LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "target",
+      "kind": "entity",
+      "roles": [
+        "seller_entity"
+      ],
+      "legal_name": "Ostrelyva Fitness LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "alex",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "guarantor"
+      ],
+      "legal_name": "Providenci Glover",
+      "jointly_held_assets": "no",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "donor",
+      "kind": "individual",
+      "roles": [
+        "donor"
+      ],
+      "legal_name": "Bradley Wuckert",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    }
+  ],
+  "ownership": [
+    {
+      "owner_party_id": "alex",
+      "owned_party_id": "buyer",
+      "percent": 100,
+      "stage": "post_closing",
+      "origin": "declared"
+    }
+  ],
+  "clean_model": {
+    "price": 850000,
+    "project": 950000,
+    "loan": 750000,
+    "cash": 150000,
+    "note": 0,
+    "gift": 50000,
+    "investor": 0,
+    "years": {
+      "2023": {
+        "revenue": 1200000,
+        "income": 120000
+      },
+      "2024": {
+        "revenue": 1300000,
+        "income": 130000
+      },
+      "2025": {
+        "revenue": 1400000,
+        "income": 140000
+      }
+    },
+    "assets": 500000,
+    "liabilities": 100000,
+    "equity": 400000,
+    "personal": {
+      "cash": 180000,
+      "assets": 500000,
+      "liabilities": 100000,
+      "netWorth": 400000
+    }
+  },
+  "planted_items": [
+    {
+      "item": 1,
+      "description": "2024 personal return missing",
+      "documents": [
+        "personal-2023"
+      ],
+      "batch": 1,
+      "findings": [
+        "GUA-02|alex|2024"
+      ]
+    },
+    {
+      "item": 3,
+      "description": "Unsigned and undated Form 1919",
+      "documents": [
+        "1919"
+      ],
+      "batch": 1,
+      "findings": [
+        "ENT-01|buyer|"
+      ]
+    },
+    {
+      "item": 10,
+      "description": "Exact duplicate under another filename",
+      "documents": [
+        "license",
+        "license-resend"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "duplicate_of license"
+    },
+    {
+      "item": 12,
+      "description": "Signed Form 413 image-only PDF",
+      "documents": [
+        "pfs"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "vision review with visible dated e-sign block"
+    },
+    {
+      "item": 13,
+      "description": "ID, resume and credit authorization bundle",
+      "documents": [
+        "id",
+        "resume",
+        "credit"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "three segments with page boundaries"
+    },
+    {
+      "item": 15,
+      "description": "Irrelevant brochure",
+      "documents": [
+        "brochure"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "not_required"
+    },
+    {
+      "item": 16,
+      "description": "Password-protected formation document",
+      "documents": [
+        "formation"
+      ],
+      "batch": 1,
+      "findings": [
+        "ENT-02|buyer|"
+      ],
+      "pipeline": "unreadable: FORMATION_DOC; zero segments and facts"
+    },
+    {
+      "item": 25,
+      "description": "Latest personal tax year on extension",
+      "documents": [
+        "extension"
+      ],
+      "batch": 1,
+      "findings": [
+        "GUA-02|alex|2025"
+      ]
+    }
+  ],
+  "traps": []
+}

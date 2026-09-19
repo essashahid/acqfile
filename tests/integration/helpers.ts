@@ -23,7 +23,7 @@ export async function makePdf(lines: string[], pages = 1): Promise<Buffer> {
 }
 
 export function fixture(rel: string): Buffer {
-  return fs.readFileSync(path.resolve(process.cwd(), "fixtures", rel));
+  return fs.readFileSync(path.resolve(process.cwd(), "fixtures", "legacy", rel));
 }
 
 export async function seeded() {

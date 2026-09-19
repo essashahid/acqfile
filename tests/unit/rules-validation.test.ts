@@ -34,8 +34,8 @@ describe("rule validation, registries, overlays and review exports",()=>{
   expect(()=>resolvePack(p,{...overlay,operations:[{op:'add',collection:'items',rule:p.items[0]}]})).toThrow();
   expect(hashObject(JSON.parse(canonicalPack(result)))).toBe(result.content_hash);
  });
- it("Northfield has two required additions, five optional definitions and a changed template",()=>{
-  const before=loadPack('sop-50-10-8'),after=loadPack('sop-50-10-8','northfield-bank');
+ it("Sample Lender A has two required additions, five optional definitions and a changed template",()=>{
+  const before=loadPack('sop-50-10-8'),after=loadPack('sop-50-10-8','sample-lender-a');
   expect(after.items.filter(r=>r.required).length-before.items.filter(r=>r.required).length).toBe(2);
   expect(after.items.filter(r=>!r.required).map(r=>r.id)).toEqual(['TGT-12a','TGT-12b','TGT-12c','TXN-10b','TXN-10c']);
   expect(after.parameters.interim_days).toBe(60);expect(after.index.filename_template).not.toBe(before.index.filename_template);
@@ -92,16 +92,16 @@ describe("safe expressions and manual evidence",()=>{
 describe('scope and evidence edge cases',()=>{
  it('expands indirect owners and implicit guarantors without duplicate rows',()=>{
   const input=fixtureInput();
-  input.parties.push({...input.parties[2]!,id:'holding',kind:'entity',roles:['buyer_owner'],legal_name:'Holding LLC'});
+  input.parties.push({...input.parties[2]!,id:'holding',kind:'entity',roles:['buyer_owner'],legal_name:'Zelmivar Holdings LLC'});
   input.ownership=[{owner_party_id:'holding',owned_party_id:'buyer',percent:100,stage:'post_closing',origin:'declared'},{owner_party_id:'alex',owned_party_id:'holding',percent:100,stage:'post_closing',origin:'declared'}];
   input.parties.find(p=>p.id==='alex')!.roles=['buyer_owner'];
   const rows=evaluateDeal(input,loadPack('sop-50-10-8')).checklist;
   expect(rows.filter(r=>r.item_id==='GUA-05').map(r=>r.scope_key).sort()).toEqual(['alex','holding']);
-  expect(rows.filter(r=>r.item_id==='GUA-01').map(r=>r.scope_key).sort()).toEqual(['alex','holding']);
+  expect(rows.filter(r=>r.item_id==='GUA-01').map(r=>r.scope_key).sort()).toEqual(['alex']);
  });
  it('expands affiliates and paid agents; unknown amounts do not invent evidence',()=>{
   const input=fixtureInput();input.parties.push({...input.parties[1]!,id:'affiliate',roles:['affiliate']});input.parties.find(p=>p.id==='alex')!.affiliates=['affiliate'];
-  input.profile.paid_agents=[{id:'agent1',party:'alex',name:'Alex Morgan',role:'broker',paid_by:'buyer',amount:'unknown'}];
+  input.profile.paid_agents=[{id:'agent1',party:'alex',name:'Kiel McDermott',role:'broker',paid_by:'buyer',amount:'unknown'}];
   const rows=evaluateDeal(input,loadPack('sop-50-10-8')).checklist;
   expect(rows.filter(r=>r.item_id==='GUA-09a').map(r=>r.period)).toEqual(['2023','2024','2025']);
   expect(rows.find(r=>r.item_id==='TXN-07')?.scope_key).toBe('agent1');expect(rows.find(r=>r.item_id==='TXN-07')?.status).toBe('needs_review');

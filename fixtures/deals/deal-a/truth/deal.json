@@ -1,0 +1,503 @@
+{
+  "id": "deal-a",
+  "pack": "sop-50-10-8",
+  "overlay": null,
+  "as_of": "2026-09-15",
+  "profile": {
+    "transaction_category": "initial_acquisition",
+    "structure": "asset",
+    "purchase_price": 2400000,
+    "total_project_cost": 2500000,
+    "real_estate_included": "no",
+    "premises": "leased",
+    "franchise": "no",
+    "franchise_brand": "none",
+    "seller_note": {
+      "present": "yes",
+      "amount": 240000,
+      "counted_toward_injection": "yes"
+    },
+    "gift_funds": "no",
+    "minority_investor_equity": "no",
+    "seller_staying": {
+      "present": "no",
+      "role": "none",
+      "months": 0
+    },
+    "target_lender": "Zelmivar Bank",
+    "expected_loan_number_date": "2026-09-29",
+    "target_submission_date": "2026-09-30",
+    "paid_agents": [],
+    "equity_sources": [
+      {
+        "id": "cash-alex",
+        "party": "alex",
+        "kind": "cash",
+        "amount": 150000,
+        "source_account_last_four": "4321"
+      },
+      {
+        "id": "seller-note",
+        "party": "target",
+        "kind": "seller_standby_note",
+        "amount": 240000,
+        "source_account_last_four": "9011"
+      }
+    ]
+  },
+  "parties": [
+    {
+      "id": "buyer",
+      "kind": "entity",
+      "roles": [
+        "buyer_entity"
+      ],
+      "legal_name": "Varnholt Acquisition LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "target",
+      "kind": "entity",
+      "roles": [
+        "seller_entity"
+      ],
+      "legal_name": "Varnholt Climate Services LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "alex",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "guarantor"
+      ],
+      "legal_name": "Kiel McDermott",
+      "jointly_held_assets": "no",
+      "affiliates": [
+        "affiliate"
+      ],
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "bea",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "guarantor"
+      ],
+      "legal_name": "Jaylan Heller",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "holding",
+      "kind": "entity",
+      "roles": [
+        "buyer_owner"
+      ],
+      "legal_name": "Zelmivar Holdings LLC",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "affiliate",
+      "kind": "entity",
+      "roles": [
+        "affiliate"
+      ],
+      "legal_name": "Zelmivar Equipment LLC",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "landlord",
+      "kind": "entity",
+      "roles": [
+        "landlord"
+      ],
+      "legal_name": "Zelmivar Premises LLC",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    }
+  ],
+  "ownership": [
+    {
+      "owner_party_id": "alex",
+      "owned_party_id": "buyer",
+      "percent": 60,
+      "stage": "post_closing",
+      "origin": "declared"
+    },
+    {
+      "owner_party_id": "holding",
+      "owned_party_id": "buyer",
+      "percent": 40,
+      "stage": "post_closing",
+      "origin": "declared"
+    },
+    {
+      "owner_party_id": "bea",
+      "owned_party_id": "holding",
+      "percent": 100,
+      "stage": "post_closing",
+      "origin": "declared"
+    },
+    {
+      "owner_party_id": "alex",
+      "owned_party_id": "affiliate",
+      "percent": 100,
+      "stage": "post_closing",
+      "origin": "declared"
+    }
+  ],
+  "clean_model": {
+    "price": 2400000,
+    "project": 2500000,
+    "loan": 2110000,
+    "cash": 150000,
+    "note": 240000,
+    "gift": 0,
+    "investor": 0,
+    "years": {
+      "2023": {
+        "revenue": 1200000,
+        "income": 120000
+      },
+      "2024": {
+        "revenue": 1300000,
+        "income": 130000
+      },
+      "2025": {
+        "revenue": 1400000,
+        "income": 140000
+      }
+    },
+    "assets": 500000,
+    "liabilities": 100000,
+    "equity": 400000,
+    "personal": {
+      "cash": 180000,
+      "assets": 500000,
+      "liabilities": 100000,
+      "netWorth": 400000
+    }
+  },
+  "planted_items": [
+    {
+      "item": 1,
+      "description": "Guarantor 2024 return absent until batch 2",
+      "documents": [
+        "personal-2024"
+      ],
+      "batch": 1,
+      "findings": [
+        "GUA-02|alex|2024"
+      ]
+    },
+    {
+      "item": 2,
+      "description": "Form 413 is 140 days old",
+      "documents": [
+        "pfs"
+      ],
+      "batch": 1,
+      "findings": [
+        "GUA-01|alex|"
+      ]
+    },
+    {
+      "item": 3,
+      "description": "Unsigned and undated Form 1919",
+      "documents": [
+        "1919"
+      ],
+      "batch": 1,
+      "findings": [
+        "ENT-01|buyer|"
+      ]
+    },
+    {
+      "item": 4,
+      "description": "Same tax year twice; one misleading filename",
+      "documents": [
+        "personal-2023",
+        "personal-wrong-year"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "duplicate; period is 2023 regardless of filename"
+    },
+    {
+      "item": 5,
+      "description": "One-digit EIN conflict",
+      "documents": [
+        "4506",
+        "tax-2023",
+        "tax-2024",
+        "tax-2025"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-01|target|"
+      ]
+    },
+    {
+      "item": 6,
+      "description": "Three conflicting purchase prices",
+      "documents": [
+        "loi",
+        "purchase",
+        "funding"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-03|deal|"
+      ]
+    },
+    {
+      "item": 7,
+      "description": "Sources are 25000 below uses",
+      "documents": [
+        "funding"
+      ],
+      "batch": 1,
+      "findings": [
+        "TXN-03|deal|",
+        "CON-04|deal|"
+      ]
+    },
+    {
+      "item": 8,
+      "description": "Injection includes seller note with only 24 months standby; amount also exceeds seed fraction",
+      "documents": [
+        "note",
+        "funding"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-06|deal|",
+        "CON-07|deal|"
+      ]
+    },
+    {
+      "item": 9,
+      "description": "Operating agreement 55/45 against Form 1919 60/40",
+      "documents": [
+        "operating",
+        "1919"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-02|buyer|"
+      ]
+    },
+    {
+      "item": 10,
+      "description": "Exact duplicate under forwarded filename",
+      "documents": [
+        "license",
+        "license-resend"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "duplicate_of license"
+    },
+    {
+      "item": 11,
+      "description": "Corrected Form 413 replaces stale earlier version",
+      "documents": [
+        "bea-pfs-old",
+        "bea-pfs"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "supersedes bea-pfs-old"
+    },
+    {
+      "item": 13,
+      "description": "Three logical documents in one physical PDF",
+      "documents": [
+        "id",
+        "resume",
+        "credit"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "bundle: GOV_ID, RESUME, CREDIT_AUTH"
+    },
+    {
+      "item": 14,
+      "description": "Lease hidden behind phone-scan filename",
+      "documents": [
+        "lease"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "classify as LEASE"
+    },
+    {
+      "item": 15,
+      "description": "Irrelevant brochure",
+      "documents": [
+        "brochure"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "not_required"
+    },
+    {
+      "item": 16,
+      "description": "Password-protected formation document",
+      "documents": [
+        "formation"
+      ],
+      "batch": 1,
+      "findings": [
+        "ENT-02|buyer|"
+      ],
+      "pipeline": "unreadable: FORMATION_DOC; no segment or fact"
+    },
+    {
+      "item": 17,
+      "description": "Statement revenue 6 percent above return",
+      "documents": [
+        "fin-2025",
+        "tax-2025"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-10|target|2025"
+      ]
+    },
+    {
+      "item": 18,
+      "description": "Interim is 150 days old; aging shares the same period",
+      "documents": [
+        "interim",
+        "ar",
+        "ap"
+      ],
+      "batch": 1,
+      "findings": [
+        "TGT-03|target|"
+      ]
+    },
+    {
+      "item": 19,
+      "description": "Income statement and balance sheet in separate workbook sheets",
+      "documents": [
+        "fin-2025"
+      ],
+      "batch": 1,
+      "findings": [],
+      "pipeline": "xlsx sheets: Income Statement, Balance Sheet"
+    },
+    {
+      "item": 20,
+      "description": "Lease ends in three years with no options",
+      "documents": [
+        "lease"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-13|target|"
+      ]
+    },
+    {
+      "item": 21,
+      "description": "Citizenship evidence absent for indirect 40 percent owner",
+      "documents": [
+        "owners",
+        "bea-citizen"
+      ],
+      "batch": 1,
+      "findings": [
+        "GUA-05|bea|"
+      ]
+    },
+    {
+      "item": 22,
+      "description": "August bank balance 100000 below claimed cash 150000",
+      "documents": [
+        "bank-aug",
+        "funding"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-08|cash-alex|"
+      ]
+    },
+    {
+      "item": 23,
+      "description": "LOI expired before as-of",
+      "documents": [
+        "loi"
+      ],
+      "batch": 1,
+      "findings": [
+        "TXN-01|deal|",
+        "CON-15|deal|"
+      ]
+    },
+    {
+      "item": 24,
+      "description": "Document names a person outside the deal",
+      "documents": [
+        "unmatched"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-16|deal|"
+      ],
+      "pipeline": "unmatched_party"
+    }
+  ],
+  "traps": [
+    {
+      "id": "name-normalization",
+      "documents": [
+        "purchase"
+      ],
+      "rules": [
+        "TXN-02"
+      ],
+      "reason": "Spacing and LLC punctuation do not change the named seller"
+    },
+    {
+      "id": "rounding",
+      "documents": [
+        "bea-pfs"
+      ],
+      "rules": [
+        "GUA-01|bea"
+      ],
+      "reason": "50 cents is within USD 1 arithmetic tolerance"
+    },
+    {
+      "id": "superseded-stale",
+      "documents": [
+        "bea-pfs-old",
+        "bea-pfs"
+      ],
+      "rules": [
+        "GUA-01|bea"
+      ],
+      "reason": "Earlier stale version is excluded from the current inventory"
+    }
+  ]
+}

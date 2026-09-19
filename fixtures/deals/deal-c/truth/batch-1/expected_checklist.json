@@ -1,0 +1,380 @@
+[
+  {
+    "item_id": "TXN-01",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TXN-02",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TXN-03",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TXN-08",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "LND-01",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "LND-02",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "LND-03",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "LND-04",
+    "scope_key": "deal",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TXN-04",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TXN-05",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TXN-06",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "RE-01",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "RE-02",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "RE-03",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TXN-07",
+    "scope_key": "none",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TXN-09",
+    "scope_key": "deal",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "ENT-01",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "needs_review"
+  },
+  {
+    "item_id": "ENT-02",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "missing"
+  },
+  {
+    "item_id": "ENT-03",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "ENT-04",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "ENT-05",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "ENT-06",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "ENT-07a",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "ENT-07b",
+    "scope_key": "buyer",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-01",
+    "scope_key": "alex",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-03",
+    "scope_key": "alex",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-04",
+    "scope_key": "alex",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-06",
+    "scope_key": "alex",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-02",
+    "scope_key": "alex",
+    "period": "2023",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-02",
+    "scope_key": "alex",
+    "period": "2024",
+    "status": "needs_review"
+  },
+  {
+    "item_id": "GUA-02",
+    "scope_key": "alex",
+    "period": "2025",
+    "status": "received_with_issues"
+  },
+  {
+    "item_id": "GUA-05",
+    "scope_key": "alex",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-07",
+    "scope_key": "cash-alex",
+    "period": "2026-07",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-07",
+    "scope_key": "cash-alex",
+    "period": "2026-08",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-08a",
+    "scope_key": "cash-alex",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-08b",
+    "scope_key": "cash-alex",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-08c",
+    "scope_key": "cash-alex",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-07",
+    "scope_key": "gift-source",
+    "period": "2026-07",
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-07",
+    "scope_key": "gift-source",
+    "period": "2026-08",
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-08a",
+    "scope_key": "gift-source",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-08b",
+    "scope_key": "gift-source",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-08c",
+    "scope_key": "gift-source",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "GUA-09a",
+    "scope_key": "none",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-09b",
+    "scope_key": "none",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "GUA-09c",
+    "scope_key": "none",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TGT-01",
+    "scope_key": "target",
+    "period": "2023",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-01",
+    "scope_key": "target",
+    "period": "2024",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-01",
+    "scope_key": "target",
+    "period": "2025",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-02",
+    "scope_key": "target",
+    "period": "2023",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-02",
+    "scope_key": "target",
+    "period": "2024",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-02",
+    "scope_key": "target",
+    "period": "2025",
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-03",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-04a",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-04b",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-05",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-06",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-09",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-07a",
+    "scope_key": "target",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TGT-07b",
+    "scope_key": "target",
+    "period": null,
+    "status": "not_applicable"
+  },
+  {
+    "item_id": "TGT-08a",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-08b",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-10a",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  },
+  {
+    "item_id": "TGT-10b",
+    "scope_key": "target",
+    "period": null,
+    "status": "satisfied"
+  }
+]

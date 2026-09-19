@@ -32,7 +32,7 @@ export type MockTruth = {
 
 let cachedTruths: MockTruth[] | null = null;
 
-export function loadTruths(dir = path.resolve(process.cwd(), "fixtures/truth")): MockTruth[] {
+export function loadTruths(dir = path.resolve(process.cwd(), "fixtures/legacy/truth")): MockTruth[] {
   if (cachedTruths) return cachedTruths;
   cachedTruths = fs.existsSync(dir)
     ? fs

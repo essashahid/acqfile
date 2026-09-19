@@ -45,7 +45,7 @@ test("runs page shows steps, events and cost for the ingest run", async ({ page 
 });
 
 test("review queue lists planted uncertain fields and edit & accept creates a new record version", async ({ page }) => {
-  await login(page, { email: "reviewer@acqfile.local", password: "acqfile-reviewer" });
+  await login(page, { email: "reviewer@example.com", password: "acqfile-reviewer" });
   await page.goto("/review");
   const first = page.locator("tbody tr").filter({ hasText: "AUD-2026-003" }).filter({ hasText: /monetary/i }).locator('a[href^="/review/"]').first();
   await expect(first).toBeVisible();
@@ -65,7 +65,7 @@ test("evals page runs the suite and links the QA report", async ({ page }) => {
   test.setTimeout(600_000);
   await login(page);
   // the extraction suite fails loudly unless every manifest fixture is ingested; upload the full corpus first
-  const manifest = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "fixtures/documents/manifest.json"), "utf8")) as { files: { filename: string }[] };
+  const manifest = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "fixtures/legacy/documents/manifest.json"), "utf8")) as { files: { filename: string }[] };
   await uploadFiles(page, manifest.files.map((f) => f.filename));
   await page.goto("/evals");
   await page.getByRole("button", { name: /run evaluation/i }).click();

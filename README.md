@@ -2,7 +2,7 @@
 
 Internal SBA 7(a) business-acquisition file preparation workbench. **Phase 1 domain core**: validated rule packs, deterministic engine and read-only pack viewer. Deal intake and extraction adaptation remain future phases. Synthetic data only.
 
-The independent starting codebase was copied from [EvidenceOps](https://github.com/essashahid/EvidenceOps/tree/9341148348f8535ed0f15981360728da58fd186c). AcqFile has its own Git history, private remote, database names and application identity. No EvidenceOps deployment resources or credentials are used.
+The independent starting codebase was copied from [EvidenceOps](https://github.com/essashahid/EvidenceOps/tree/9341148348f8535ed0f15981360728da58fd186c). AcqFile has its own Git history, owner-controlled remote, database names and application identity. No EvidenceOps deployment resources or credentials are used.
 
 Read [the full specification](docs/SPEC.md), [plan](docs/PLAN.md), [decisions and specification gaps](docs/DECISIONS.md), and [phase progress](docs/PROGRESS.md).
 

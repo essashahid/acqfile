@@ -1,0 +1,15 @@
+import {base,doc,add,party,checklist,status,finding,plant,key,layout,person} from './shared';
+export function dealC(){const p=base('deal-c');party(p,'donor',person(20260936),['donor']);
+ if(Array.isArray(p.profile.equity_sources))p.profile.equity_sources.push({id:'gift-source',party:'donor',kind:'gift',amount:50000,source_account_last_four:'8765'});
+ add(p,'gift-letter','GIFT_LETTER','donor',{'gift.amount':50000,'gift.no_repayment':true,'gift.donor':p.parties.find(x=>x.id==='donor')!.legal_name,'gift.recipient':p.parties.find(x=>x.id==='alex')!.legal_name});
+ add(p,'donor-bank','BANK_STATEMENT','donor',{'party.legal_name':p.parties.find(x=>x.id==='donor')!.legal_name,'bank.ending_balance':70000,'bank.period_end':'2026-08-31','bank.institution':'Zelmivar Bank'},'2026-08').metadata.account_last_four='8765';
+ add(p,'gift-transfer','TRANSFER_EVIDENCE','donor');add(p,'franchise','FRANCHISE_AGREEMENT','target').notes=['Franchise brand: Ostrelyva'];add(p,'disclosure','FRANCHISE_DISCLOSURE','target').notes=['Franchise brand: Ostrelyva'];p.confirmations.push({rule:'TGT-10a',scope:'target',key:'franchise_directory'});
+ checklist(p,['alex'],['alex'],p.profile.equity_sources as {id:string;kind:string}[]);
+ p.documents=p.documents.filter(d=>d.id!=='personal-2024'&&d.id!=='personal-2025');status(p,'GUA-02','alex','needs_review','2024');finding(p,'GUA-02','alex','2024','needs_review');plant(p,1,'2024 personal return missing',['personal-2023'],[key('GUA-02','alex','2024')]);
+ Object.assign(doc(p,'1919').metadata,{signed:false,dated:false,signature_date:null});status(p,'ENT-01','buyer','needs_review');finding(p,'ENT-01','buyer',null,'needs_review','blocker');plant(p,3,'Unsigned and undated Form 1919',['1919'],[key('ENT-01','buyer')]);
+ const copy=structuredClone(doc(p,'license'));copy.id='license-resend';copy.duplicate_of='license';p.documents.push(copy);plant(p,10,'Exact duplicate under another filename',['license','license-resend'],[],'duplicate_of license');
+ doc(p,'pfs').format='scan_pdf';plant(p,12,'Signed Form 413 image-only PDF',['pfs'],[],'vision review with visible dated e-sign block');plant(p,13,'ID, resume and credit authorization bundle',['id','resume','credit'],[],'three segments with page boundaries');
+ add(p,'brochure','OTHER_NOT_REQUIRED','target').notes=['Synthetic exercise equipment care brochure'];plant(p,15,'Irrelevant brochure',['brochure'],[],'not_required');
+ doc(p,'formation').unreadable=true;doc(p,'formation').format='protected_pdf';status(p,'ENT-02','buyer','missing');finding(p,'ENT-02','buyer',null,'missing');plant(p,16,'Password-protected formation document',['formation'],[key('ENT-02','buyer')],'unreadable: FORMATION_DOC; zero segments and facts');
+ add(p,'extension','TAX_EXTENSION','alex',{},'2025').notes=['Form 4868 - 2025 extension; no 2025 return supplied'];status(p,'GUA-02','alex','received_with_issues','2025');finding(p,'GUA-02','alex','2025','info','info');plant(p,25,'Latest personal tax year on extension',['extension'],[key('GUA-02','alex','2025')]);
+ doc(p,'fin-2025').format='xlsx';doc(p,'plan').format='docx';layout(p,22);return p;}

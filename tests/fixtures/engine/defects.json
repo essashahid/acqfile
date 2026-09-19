@@ -219,7 +219,7 @@
       {
         "op": "fact",
         "id": "purchase:deal.buyer",
-        "value": "Different Buyer LLC"
+        "value": "Quenby Acquisition LLC"
       }
     ],
     "expected": {
@@ -359,7 +359,7 @@
       {
         "op": "fact",
         "id": "purchase:party.legal_name",
-        "value": "Other Seller LLC"
+        "value": "Quenby Grounds Management LLC"
       }
     ],
     "expected": {
@@ -380,7 +380,7 @@
         "id": "1919:ownership.members",
         "value": [
           {
-            "name": "Alex Morgan",
+            "name": "Kiel McDermott",
             "percent": 99
           }
         ]

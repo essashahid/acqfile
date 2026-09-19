@@ -53,11 +53,11 @@ const schema = z.object({
     .string()
     .optional()
     .transform((v) => v === undefined || v === "" || v === "1" || v === "true"),
-  DEMO_ADMIN_EMAIL: z.string().default("admin@acqfile.local"),
+  DEMO_ADMIN_EMAIL: z.string().default("admin@example.com"),
   DEMO_ADMIN_PASSWORD: z.string().default("acqfile-admin"),
-  DEMO_REVIEWER_EMAIL: z.string().default("reviewer@acqfile.local"),
+  DEMO_REVIEWER_EMAIL: z.string().default("reviewer@example.com"),
   DEMO_REVIEWER_PASSWORD: z.string().default("acqfile-reviewer"),
-  DEMO_VIEWER_EMAIL: z.string().default("viewer@acqfile.local"),
+  DEMO_VIEWER_EMAIL: z.string().default("viewer@example.com"),
   DEMO_VIEWER_PASSWORD: z.string().default("acqfile-viewer"),
 
   // Failure injection: "<step>" or "<step>:<attempts>" (applies to every new run; tests use run config instead)

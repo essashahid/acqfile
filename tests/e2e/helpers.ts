@@ -1,8 +1,8 @@
 import path from "node:path";
 import { expect, type Page } from "@playwright/test";
 
-export const ADMIN = { email: "admin@acqfile.local", password: "acqfile-admin" };
-export const REVIEWER = { email: "reviewer@acqfile.local", password: "acqfile-reviewer" };
+export const ADMIN = { email: "admin@example.com", password: "acqfile-admin" };
+export const REVIEWER = { email: "reviewer@example.com", password: "acqfile-reviewer" };
 
 export async function login(page: Page, user = ADMIN) {
   await page.goto("/login");
@@ -13,7 +13,7 @@ export async function login(page: Page, user = ADMIN) {
 }
 
 export function corpusFile(name: string) {
-  return path.resolve(process.cwd(), "fixtures/documents", name);
+  return path.resolve(process.cwd(), "fixtures/legacy/documents", name);
 }
 
 export async function uploadFiles(page: Page, files: string[]) {

@@ -8,7 +8,7 @@
       {
         "op": "fact",
         "id": "purchase:party.legal_name",
-        "value": "Harbor View HVAC L.L.C."
+        "value": "Varn Holt Climate Services L.L.C."
       }
     ],
     "expected": {

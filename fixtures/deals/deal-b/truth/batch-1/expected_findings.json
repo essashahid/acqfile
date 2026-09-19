@@ -1,0 +1,26 @@
+[
+  {
+    "rule_id": "TGT-03",
+    "scope_key": "target",
+    "period": null,
+    "type": "stale",
+    "severity": "major",
+    "finding_key": "654b3e576bb0124970ae9de2f3d0cf3e0be4507910b1034b1927130abab69461"
+  },
+  {
+    "rule_id": "CON-07",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "98fbc27a9312f1ac9bbe56ccaa7de68c9d225616a5be3235ef493545941e4d99"
+  },
+  {
+    "rule_id": "CON-08",
+    "scope_key": "cash-alex",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "bdb00144428d44bca2afb326953631ce361fcdf3ccdde3749477daf2f8003b70"
+  }
+]

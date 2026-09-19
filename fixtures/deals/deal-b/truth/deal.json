@@ -1,0 +1,197 @@
+{
+  "id": "deal-b",
+  "pack": "sop-50-10-8-1",
+  "overlay": "sample-lender-a",
+  "as_of": "2026-09-15",
+  "profile": {
+    "transaction_category": "initial_acquisition",
+    "structure": "stock",
+    "purchase_price": 3600000,
+    "total_project_cost": 3700000,
+    "real_estate_included": "no",
+    "premises": "none",
+    "franchise": "no",
+    "franchise_brand": "none",
+    "seller_note": {
+      "present": "yes",
+      "amount": 120000,
+      "counted_toward_injection": "yes"
+    },
+    "gift_funds": "no",
+    "minority_investor_equity": "yes",
+    "seller_staying": {
+      "present": "no",
+      "role": "none",
+      "months": 0
+    },
+    "target_lender": "Sample Lender A",
+    "expected_loan_number_date": "2026-10-30",
+    "target_submission_date": "2026-09-30",
+    "paid_agents": [],
+    "equity_sources": [
+      {
+        "id": "cash-alex",
+        "party": "alex",
+        "kind": "cash",
+        "amount": 150000,
+        "source_account_last_four": "4321"
+      },
+      {
+        "id": "seller-note",
+        "party": "target",
+        "kind": "seller_standby_note",
+        "amount": 120000,
+        "source_account_last_four": "9011"
+      },
+      {
+        "id": "minority-equity",
+        "party": "investor",
+        "kind": "minority_investor_equity",
+        "amount": 90000,
+        "source_account_last_four": "7654"
+      }
+    ]
+  },
+  "parties": [
+    {
+      "id": "buyer",
+      "kind": "entity",
+      "roles": [
+        "buyer_entity"
+      ],
+      "legal_name": "Quenby Acquisition LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "target",
+      "kind": "entity",
+      "roles": [
+        "seller_entity"
+      ],
+      "legal_name": "Quenby Grounds Management LLC",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null,
+      "jointly_held_assets": "no"
+    },
+    {
+      "id": "alex",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "guarantor"
+      ],
+      "legal_name": "Abe Welch",
+      "jointly_held_assets": "no",
+      "affiliates": [],
+      "name_variants": [],
+      "identifier": null
+    },
+    {
+      "id": "investor",
+      "kind": "individual",
+      "roles": [
+        "buyer_owner",
+        "investor"
+      ],
+      "legal_name": "Terrill Bernier",
+      "affiliates": [],
+      "jointly_held_assets": "no",
+      "name_variants": [],
+      "identifier": null
+    }
+  ],
+  "ownership": [
+    {
+      "owner_party_id": "alex",
+      "owned_party_id": "buyer",
+      "percent": 85,
+      "stage": "post_closing",
+      "origin": "declared"
+    },
+    {
+      "owner_party_id": "investor",
+      "owned_party_id": "buyer",
+      "percent": 15,
+      "stage": "post_closing",
+      "origin": "declared"
+    }
+  ],
+  "clean_model": {
+    "price": 3600000,
+    "project": 3700000,
+    "loan": 3340000,
+    "cash": 150000,
+    "note": 120000,
+    "gift": 0,
+    "investor": 90000,
+    "years": {
+      "2023": {
+        "revenue": 1200000,
+        "income": 120000
+      },
+      "2024": {
+        "revenue": 1300000,
+        "income": 130000
+      },
+      "2025": {
+        "revenue": 1400000,
+        "income": 140000
+      }
+    },
+    "assets": 500000,
+    "liabilities": 100000,
+    "equity": 400000,
+    "personal": {
+      "cash": 180000,
+      "assets": 500000,
+      "liabilities": 100000,
+      "netWorth": 400000
+    }
+  },
+  "planted_items": [
+    {
+      "item": "B-LIMITED",
+      "description": "Seller note plus minority equity 210000 exceeds 185000 seed limit",
+      "documents": [
+        "note",
+        "funding",
+        "owners"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-07|deal|"
+      ]
+    },
+    {
+      "item": 18,
+      "description": "150-day interim exceeds overlay 60-day window",
+      "documents": [
+        "interim",
+        "ar",
+        "ap"
+      ],
+      "batch": 1,
+      "findings": [
+        "TGT-03|target|"
+      ]
+    },
+    {
+      "item": 22,
+      "description": "Cash claim exceeds August bank balance; PFS cash follows statement",
+      "documents": [
+        "bank-aug",
+        "pfs",
+        "funding"
+      ],
+      "batch": 1,
+      "findings": [
+        "CON-08|cash-alex|"
+      ]
+    }
+  ],
+  "traps": []
+}

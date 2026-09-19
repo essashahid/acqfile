@@ -1,4 +1,4 @@
-id: northfield-bank
+id: sample-lender-a
 verified: false
 parameters:
   interim_days: 60
@@ -9,7 +9,7 @@ index:
     - 03 Guarantors
     - 04 Target
     - 05 Lender
-  filename_template: NF_{party}_{item_id}_{doc_label}_{period}{original_extension}
+  filename_template: SLA_{party}_{item_id}_{doc_label}_{period}{original_extension}
 operations:
   - op: add
     collection: items
@@ -30,7 +30,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition:
+        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
           non-compete"
       verified: false
   - op: add
@@ -52,7 +52,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition:
+        citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
           add-back support"
       verified: false
   - op: add

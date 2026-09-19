@@ -4,7 +4,7 @@ import { sql, notInArray } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import type { ReportRecord } from "@/lib/schema/report";
 
-export const FIXTURES_DIR = path.resolve(process.cwd(), "fixtures");
+export const FIXTURES_DIR = path.resolve(process.cwd(), "fixtures", "legacy");
 export const DOCUMENTS_DIR = path.join(FIXTURES_DIR, "documents");
 
 export type ManifestFile = { filename: string; truth: string; expect: "processed" | "new_version" | "duplicate"; supersedes?: string; duplicate_of?: string };

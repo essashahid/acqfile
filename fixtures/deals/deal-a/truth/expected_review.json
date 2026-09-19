@@ -1,0 +1,14 @@
+[
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/formation.PDF",
+    "batch": 1,
+    "type": "unreadable",
+    "planned_type": "FORMATION_DOC"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
+    "batch": 1,
+    "type": "unmatched_party",
+    "segment_id": "unmatched"
+  }
+]

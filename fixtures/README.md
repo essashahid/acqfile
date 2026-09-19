@@ -1,7 +1,10 @@
-# Temporary extraction regression corpus
+# Synthetic fixture corpora
 
-These inherited synthetic operational reports exercise the retained extraction, provenance, review, duplicate and corrected-version behavior during Phase 0. They are not the SBA acquisition fixtures.
+`fixtures/plans` authors the deal profiles, documents, financial models, planted items, traps and expected results. `fixtures/deals` holds truth and, after Phase 2 Step B, incoming files and manifests. Truth generation has no evaluator, parser or model dependency.
 
-`pnpm fixtures:generate` regenerates the 20 source files, manifest, per-version truth and corrupt/unreadable parser examples. PDF metadata and DOCX timestamps are fixed. The question set and its generator are deleted.
+- `pnpm fixtures:check`: validate plans, retained hashes and every deal/batch oracle against saved truth.
+- `pnpm fixtures:generate`: render deal files and write truth/manifests.
+- `pnpm fixtures:generate --check`: regenerate into a temporary directory and compare.
+- `pnpm fixtures:legacy`: regenerate the inherited operational report corpus in `fixtures/legacy`. The original 47 file hashes are retained in `legacy-hashes.json`. The owner exempted only this directory from A19 until Phase 4 replaces its dependent tests.
 
-The mock provider reads truth deliberately. Its scores test implementation behavior, not live model quality. Phase 2 replaces this corpus with the specified three synthetic deals.
+The fixture HMAC key is deliberately fake, committed in plans/shared.ts, and unrelated to application secrets. Phase 2 never loads deals into a database or calls a model.

@@ -22,7 +22,7 @@ export async function ingestCorpus(opts: { workspaceId: string; userId: string |
   let duplicates = 0;
   for (const f of manifest.files) {
     const file = path.join(DOCUMENTS_DIR, f.filename);
-    if (!fs.existsSync(file)) throw new Error(`fixture file missing: ${f.filename} (run pnpm fixtures:generate)`);
+    if (!fs.existsSync(file)) throw new Error(`fixture file missing: ${f.filename} (run pnpm fixtures:legacy)`);
     try {
       const outcome = await registerUpload({ workspaceId: opts.workspaceId, userId: opts.userId, filename: f.filename, bytes: fs.readFileSync(file) });
       if (outcome.kind === "duplicate") {

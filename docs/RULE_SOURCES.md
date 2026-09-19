@@ -2,7 +2,7 @@
 
 Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downloaded from SBA and their acquisition, equity, financial-statement and franchise sections read. Pages below are section-start pages from each file’s table of contents; they are not asserted to be the exact paragraph page. Cached rendered page breaks are inconsistent with that table. Form 159 signature/date blocks were read on PDF page 3; the supplied historic form is not asserted to be the current revision.
 
-## sop-50-10-8 with Northfield definitions
+## sop-50-10-8 with Sample Lender A definitions
 
 | Rule | Source class | Citation |
 | --- | --- | --- |
@@ -64,7 +64,7 @@ Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downl
 | TGT-09 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits |
 | TGT-10a | sop | [SOP 50 10 8, Section A Ch.1 G, Franchises (begins p.31). Pagination is the section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.](https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx) |
 | TGT-10b | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document |
-| TGT-11 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition: add-back support |
+| TGT-11 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition: add-back support |
 | TGT-12a | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TGT-12b | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TGT-12c | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
@@ -76,11 +76,11 @@ Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downl
 | TXN-06 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller consulting or transition agreement |
 | TXN-07 | sba_form | [SBA Form 159 (08-21), page 3, applicant and agent signature/date blocks; this citation does not assert the current form revision.](https://legacy.sba.gov/sites/default/files/2022-02/SBA%20Form%20159_2.10.22-508_0.pdf) |
 | TXN-08 | sop | [SOP 50 10 8, Section B, Ch.1 C.3.d.v, Business Valuation Requirements (C begins p.129). Pagination is the section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.](https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx) |
-| TXN-10a | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition: non-compete |
+| TXN-10a | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition: non-compete |
 | TXN-10b | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TXN-10c | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 
-## sop-50-10-8-1 with Northfield definitions
+## sop-50-10-8-1 with Sample Lender A definitions
 
 | Rule | Source class | Citation |
 | --- | --- | --- |
@@ -142,7 +142,7 @@ Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downl
 | TGT-09 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits |
 | TGT-10a | sop | [SOP 50 10 8.1, Section A Ch.1 G, Franchises (begins p.30). Pagination is the section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.](https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx) |
 | TGT-10b | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document |
-| TGT-11 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition: add-back support |
+| TGT-11 | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition: add-back support |
 | TGT-12a | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TGT-12b | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TGT-12c | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
@@ -155,7 +155,7 @@ Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downl
 | TXN-07 | sba_form | [SBA Form 159 (08-21), page 3, applicant and agent signature/date blocks; this citation does not assert the current form revision.](https://legacy.sba.gov/sites/default/files/2022-02/SBA%20Form%20159_2.10.22-508_0.pdf) |
 | TXN-08 | sop | [SOP 50 10 8.1, Appendix 15 C.1.a, Business Valuation Requirements (C begins p.350). Pagination is the section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.](https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx) |
 | TXN-09 | sop | [SOP 50 10 8.1, Appendix 15 C.1.b, Quality of Earnings (C begins p.350). Pagination is the section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.](https://legacy.sba.gov/sites/default/files/2026-08/SOP%2050%2010%208.1%20effective%2010.1.2026_0.docx) |
-| TXN-10a | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Northfield synthetic lender addition: non-compete |
+| TXN-10a | lender_convention | AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition: non-compete |
 | TXN-10b | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 | TXN-10c | lender_convention | AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it. |
 
@@ -164,4 +164,4 @@ Recorded 2026-09-19. All rules remain unverified. Official DOCX files were downl
 - SOP 8: SHA-256 `bf5cae038c3baeab115daee1ecd0151510426cd13d8dcbf13095fbf70fb17ac1`.
 - SOP 8-1: SHA-256 `166944d5c9f2ec9e4ebfa29c1d66fe5eaba973e4988e75467dfe9eed27439c87`.
 
-Secondary citations cover documentation practices and the configured Form 1919 revision. Exact numeric seed conventions are not claimed as universal SBA policy. The two independent packs keep their own source references; synthetic Northfield definitions have no claim to a real lender’s policy. See RULE_CANDIDATES.md for unresolved regulatory interpretations.
+Secondary citations cover documentation practices and the configured Form 1919 revision. Exact numeric seed conventions are not claimed as universal SBA policy. The two independent packs keep their own source references; synthetic Sample Lender A definitions have no claim to a real lender’s policy. See RULE_CANDIDATES.md for unresolved regulatory interpretations.

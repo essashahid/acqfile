@@ -1,15 +1,15 @@
 /**
  * Deterministic fixture generator for the EvidenceOps corpus (spec sections 10 and 28).
  *
- * 1. Builds every document body from the source-of-truth definitions in fixtures/source/.
+ * 1. Builds every document body from the source-of-truth definitions in fixtures/legacy/source/.
  * 2. Renders PDFs (pdf-lib, fixed dates) and DOCX files (docx), copies the two exact duplicates
  *    within the same run, and writes the "extras" (scanned-like, corrupt).
  * 3. Parses every rendered file with the real pipeline parsers, resolves the locator of every
- *    evidence quote and extractor quote, and emits fixtures/truth/*.json,
- *    fixtures/documents/manifest.json.
+ *    evidence quote and extractor quote, and emits fixtures/legacy/truth/*.json,
+ *    fixtures/legacy/documents/manifest.json.
  * 4. Re-reads everything from disk and verifies it; exits non-zero on any failure.
  *
- * Run with: pnpm fixtures:generate
+ * Run with: pnpm fixtures:legacy
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -21,10 +21,10 @@ import { parsePdf, parseDocx, blockLocator, type ParsedBlock, type ParseResult }
 import { normalizeText } from "@/lib/text";
 import { LIST_FIELDS, SCALAR_FIELDS, reportRecordSchema, type ReportRecord } from "@/lib/schema/report";
 import { sha256 } from "@/lib/hash";
-import type { BodySection, CorrectionSpec, DocSpec, Manifest, ManifestFile, Truth, UncertainField, UncertainKind } from "../fixtures/types";
-import { CORRECTIONS, DOCUMENTS, DUPLICATES, fileName, truthKey } from "../fixtures/source";
+import type { BodySection, CorrectionSpec, DocSpec, Manifest, ManifestFile, Truth, UncertainField, UncertainKind } from "../fixtures/legacy/types";
+import { CORRECTIONS, DOCUMENTS, DUPLICATES, fileName, truthKey } from "../fixtures/legacy/source";
 
-const FIXTURES_DIR = path.resolve(__dirname, "..", "fixtures");
+const FIXTURES_DIR = path.resolve(__dirname, "..", "fixtures", "legacy");
 const DOCS_DIR = path.join(FIXTURES_DIR, "documents");
 const EXTRAS_DIR = path.join(DOCS_DIR, "extras");
 const TRUTH_DIR = path.join(FIXTURES_DIR, "truth");

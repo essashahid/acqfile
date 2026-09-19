@@ -35,7 +35,7 @@ export const extractionOutputSchema = z.object({
 export type ExtractionOutput = z.infer<typeof extractionOutputSchema>;
 export type Provenance = { source_block_ids: string[]; evidence_quotes: string[]; ambiguity: string | null };
 
-/** Plain business record without provenance (record_versions.payload_json, fixtures/truth). */
+/** Plain business record without provenance (record_versions.payload_json, fixtures/legacy/truth). */
 export const subjectEntitySchema = z.object({ name: z.string() });
 export const keyFindingSchema = z.object({ finding: z.string(), severity: z.enum(SEVERITIES) });
 export const recommendationSchema = z.object({ recommendation: z.string(), target_entity: z.string().nullable(), status_if_stated: z.string().nullable() });

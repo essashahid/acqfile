@@ -196,8 +196,8 @@
     }
   },
   {
-    "name": "60 versus 120 days northfield-bank",
-    "overlay": "northfield-bank",
+    "name": "60 versus 120 days sample-lender-a",
+    "overlay": "sample-lender-a",
     "rules": [
       "TGT-03",
       "TXN-10a",

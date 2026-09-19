@@ -1,0 +1,138 @@
+[
+  {
+    "rule_id": "CON-16",
+    "scope_key": "deal",
+    "period": null,
+    "type": "needs_review",
+    "severity": "major",
+    "finding_key": "00220120029760a785fab23d759a5c84c20ea1968a8a4cfa793d6d212792d3cd"
+  },
+  {
+    "rule_id": "TXN-03",
+    "scope_key": "deal",
+    "period": null,
+    "type": "incomplete",
+    "severity": "major",
+    "finding_key": "0cba3ce12014bdc9c92d7d3637595ef46705d6b3afcc23fcfa70f18c3fd09d0e"
+  },
+  {
+    "rule_id": "CON-01",
+    "scope_key": "target",
+    "period": null,
+    "type": "conflict",
+    "severity": "blocker",
+    "finding_key": "341c05a4fae3dff27f2ac70d29f1bda7eca53ced47d2ee69d518afdf9562ae51"
+  },
+  {
+    "rule_id": "CON-15",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "344f1a58fee52955315aac81998f5c3c40fcbc29bd4f4b9afc45bc92cf3e4f62"
+  },
+  {
+    "rule_id": "CON-02",
+    "scope_key": "buyer",
+    "period": null,
+    "type": "conflict",
+    "severity": "blocker",
+    "finding_key": "3c3823eecfe1eda6ca3c4aca58d632e5054196d292b9d81118c816f234c29ad4"
+  },
+  {
+    "rule_id": "PACK-01",
+    "scope_key": "deal",
+    "period": null,
+    "type": "info",
+    "severity": "info",
+    "finding_key": "52c60dfd476dd3f690f7f3f53af01cae20e6cd95f5b254e41ade5acaad6c416a"
+  },
+  {
+    "rule_id": "CON-13",
+    "scope_key": "target",
+    "period": null,
+    "type": "conflict",
+    "severity": "minor",
+    "finding_key": "651e94d5d1b3872817879fafd849d40ae76a454213db567b47d6f39865b19f33"
+  },
+  {
+    "rule_id": "TGT-03",
+    "scope_key": "target",
+    "period": null,
+    "type": "stale",
+    "severity": "major",
+    "finding_key": "654b3e576bb0124970ae9de2f3d0cf3e0be4507910b1034b1927130abab69461"
+  },
+  {
+    "rule_id": "ENT-02",
+    "scope_key": "buyer",
+    "period": null,
+    "type": "missing",
+    "severity": "major",
+    "finding_key": "6f5ead30f402cacfdad90cb356fdcc0f160092553fc51246cb5fb5eae66756e7"
+  },
+  {
+    "rule_id": "CON-04",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "blocker",
+    "finding_key": "7c190a4c8ea50602abc874efa5f815e784a2086550ed344d47ab26fa7db5618f"
+  },
+  {
+    "rule_id": "CON-10",
+    "scope_key": "target",
+    "period": "2025",
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "8e940496ed4d40b9c9f05b59de17113143a7328ae3fd8f56fd7c3c80746fd6f3"
+  },
+  {
+    "rule_id": "GUA-01",
+    "scope_key": "alex",
+    "period": null,
+    "type": "stale",
+    "severity": "blocker",
+    "finding_key": "8fb42f019b56927ae412e2d03db3be0553fd04ba1ca4bc6f77acf7363c6c7c14"
+  },
+  {
+    "rule_id": "CON-06",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "9238902542718842c98c3d43f907e9ef3c0e8b9168e2c8f8702e965f1c03bd75"
+  },
+  {
+    "rule_id": "CON-07",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "98fbc27a9312f1ac9bbe56ccaa7de68c9d225616a5be3235ef493545941e4d99"
+  },
+  {
+    "rule_id": "CON-08",
+    "scope_key": "cash-alex",
+    "period": null,
+    "type": "conflict",
+    "severity": "major",
+    "finding_key": "bdb00144428d44bca2afb326953631ce361fcdf3ccdde3749477daf2f8003b70"
+  },
+  {
+    "rule_id": "TXN-01",
+    "scope_key": "deal",
+    "period": null,
+    "type": "incomplete",
+    "severity": "major",
+    "finding_key": "c71bd2782b7d0b6884f48fa1a00aa48a086cd03412a9749d566faaafc9b55110"
+  },
+  {
+    "rule_id": "CON-03",
+    "scope_key": "deal",
+    "period": null,
+    "type": "conflict",
+    "severity": "blocker",
+    "finding_key": "e56921646c0189246aff8989211537d49e96f6f980c96b40082923277bf59ea4"
+  }
+]

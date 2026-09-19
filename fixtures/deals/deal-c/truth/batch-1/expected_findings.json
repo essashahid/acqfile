@@ -1,0 +1,34 @@
+[
+  {
+    "rule_id": "ENT-02",
+    "scope_key": "buyer",
+    "period": null,
+    "type": "missing",
+    "severity": "major",
+    "finding_key": "6f5ead30f402cacfdad90cb356fdcc0f160092553fc51246cb5fb5eae66756e7"
+  },
+  {
+    "rule_id": "ENT-01",
+    "scope_key": "buyer",
+    "period": null,
+    "type": "needs_review",
+    "severity": "blocker",
+    "finding_key": "940ada930a11a8034c6994c5fe425ec471798797a388f5afadeb2805cb32bbed"
+  },
+  {
+    "rule_id": "GUA-02",
+    "scope_key": "alex",
+    "period": "2025",
+    "type": "info",
+    "severity": "info",
+    "finding_key": "ccea6cfa8bb18fb3abab011957ec8e823d2dbc8e3c100f3d053af49e106bc222"
+  },
+  {
+    "rule_id": "GUA-02",
+    "scope_key": "alex",
+    "period": "2024",
+    "type": "needs_review",
+    "severity": "major",
+    "finding_key": "d4e587e323bfac204e6413b47bff5cff9480c7173b64f942a00329c44f548bfe"
+  }
+]

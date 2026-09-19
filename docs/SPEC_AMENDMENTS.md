@@ -21,3 +21,20 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
 - **A17. The rule-pack review sheet moves from Phase 5 to this phase,** as XLSX and HTML. The PDF version joins in Phase 5.
 - **A18. Tables `requests`, `snapshots` and `work_log`** are created in Phase 5 with their features, not now.
 
+
+
+## Phase 2 rulings (2026-09-19)
+
+- **A19. Names.** "Northfield Bank" is a real FDIC-insured bank. Remove the name everywhere: the overlay file, its display name, the `NF_` filename prefix, tests, scenario fixtures, docs, the viewer and the review exports. The overlay becomes `rulepacks/overlays/sample-lender-a.yaml`, display name "Sample Lender A", prefix `SLA_`. Re-run `pnpm rules:export-review` afterwards so no exported sheet carries the old name. Every organization in fixtures, tests, seeds and screenshots must be invented: businesses, banks, CPA and law firms, landlords, valuation firms, and the franchise brand in Deal C. Use coined words, not plausible real names. Defaults: Deal A "Varnholt Climate Services", Deal B "Quenby Grounds Management", Deal C "Ostrel Fitness" under the invented franchise brand "Ostrel". If you have web access, search each organization name once and replace any that matches a real business or bank. Rename the Phase 1 trap pair to the same kind of variation (spacing, punctuation, suffix style) on the new Deal A name. Person names come from the seeded Faker. Addresses use invented street and town names. Phones use 555-01xx. Emails use example.com.
+- **A20. Arrival batches.** A deal's documents arrive in batches. Deal A has batch 1 (the initial mess) and batch 2 (exactly three fixes). Deals B and C have one batch. Truth states the expected checklist and findings after each batch, and names the three findings that batch 2 resolves.
+- **A21. Truth is independent.** Expected results are authored in the deal plan. They are never produced by calling the evaluation function, the parser or any model. You may reuse schemas, registries, normalizers and the finding-key helper. When the engine and truth disagree, investigate which side is wrong and fix that side. Never copy engine output into truth.
+- **A22. Raster stability.** Text PDFs, DOCX, XLSX and ZIPs must be byte-identical on regeneration. If rasterized scans are not byte-stable across machines, the committed raster files are canonical, verified by manifest hash, and the generator re-rasterizes only with `--rebuild-scans`. Record what you observed.
+- **A23. Planted item 25.** One guarantor's latest tax year is on extension: a `TAX_EXTENSION` segment for 2025 and no 2025 return. Expected: `received_with_issues` and an `info` finding, per A13.
+- **A24. Legacy fixtures.** Move the inherited report corpus (`fixtures/documents`, `fixtures/source`, `fixtures/truth`, `fixtures/types.ts`) under `fixtures/legacy/`, update its scripts and tests, and confirm its file hashes and retained tests are unchanged. Rename its generator command to `pnpm fixtures:legacy`. It stays until Phase 4 replaces the tests that depend on it. From now on `pnpm fixtures:generate` means deal fixtures.
+- **A25. Repository visibility is the owner's call.** The owner sometimes makes the repository public for outside review. Report the visibility you observe. Do not change it.
+- **A26. Unreadable files.** A file that cannot be opened contributes no segment and no fact. Its checklist row is `missing`, and `expected_review.json` carries an `unreadable` item naming what the plan says the file really is.
+
+
+### Owner ruling: A19/A24 legacy exception (2026-09-19)
+
+“Preserve legacy bytes; exempt only fixtures/legacy from A19 until Phase 4.” This exception does not apply to new deal fixtures, scenario tests, seeds or screenshots.

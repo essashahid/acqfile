@@ -5,7 +5,7 @@ import { hashObject, stableStringify } from "@/lib/hash";
 import { FACTS } from "@/lib/domain/registry";
 import { PackSchema, OverlaySchema, type Pack, type Overlay, type ResolvedPack, type Expr, type Rule } from "./schema";
 export const PACK_VERSIONS = ["sop-50-10-8", "sop-50-10-8-1"] as const;
-export const OVERLAY_IDS = ["northfield-bank"] as const;
+export const OVERLAY_IDS = ["sample-lender-a"] as const;
 export const BANNED_TERMS = /\b(eligible|ineligible|qualifies|approved|compliant)\b|meets SBA requirements/i;
 export function parseYaml(text: string): unknown {
   if (text.length > 1000000) throw new Error("Pack exceeds size limit");

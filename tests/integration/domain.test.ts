@@ -21,8 +21,8 @@ describe('additive domain storage',()=>{
   await expect(sql`insert into documents(workspace_id,logical_key,display_name) values (${seed.workspaceId},'LEGACY-NULL','Legacy')`).resolves.toBeDefined();
  });
  it('snapshots exact resolved content idempotently and prevents mutation',async()=>{
-  const pack=loadPack('sop-50-10-8','northfield-bank');const [a,b]=await Promise.all([persistPackSnapshot(pack),persistPackSnapshot(pack)]);
-  expect(a!.id).toBe(b!.id);expect(a!.contentHash).toBe(pack.content_hash);expect(a!.resolvedYaml).toContain('northfield-bank');
+  const pack=loadPack('sop-50-10-8','sample-lender-a');const [a,b]=await Promise.all([persistPackSnapshot(pack),persistPackSnapshot(pack)]);
+  expect(a!.id).toBe(b!.id);expect(a!.contentHash).toBe(pack.content_hash);expect(a!.resolvedYaml).toContain('sample-lender-a');
   const sql=getSql();await expect(sql`update rule_pack_snapshots set version='changed' where id=${a!.id}`).rejects.toThrow('Immutable');
   await expect(sql`delete from rule_pack_snapshots where id=${a!.id}`).rejects.toThrow('Immutable');
  });
