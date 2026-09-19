@@ -1,0 +1,12 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  turbopack: { root: process.cwd() },
+  serverExternalPackages: ["pdfjs-dist", "mammoth", "postgres"],
+  outputFileTracingIncludes: { "/*": ["./fixtures/documents/**/*", "./fixtures/truth/**/*", "./eval/baselines/**/*"] },
+  experimental: {
+    serverActions: { bodySizeLimit: "12mb" },
+  },
+};
+
+export default nextConfig;

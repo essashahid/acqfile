@@ -1,0 +1,79 @@
+{
+  "provider": "mock",
+  "modelConfigHash": "18407dc0d2a4bed6",
+  "corpusVersion": "c6dc84752cdaea3b",
+  "evalRunId": "38d58cc6-4e27-404d-bacf-841fda3ec489",
+  "recordedAt": "2026-09-19T14:20:25.349Z",
+  "metrics": {
+    "extraction": {
+      "scalar_exact_accuracy": 0.9666666666666667,
+      "list_micro_f1": 0.9701149425287356,
+      "classification_accuracy": 1,
+      "provenance_validity": 0.9967741935483871,
+      "documents": 18,
+      "scalar_fields": 90,
+      "provenance_claims": 310,
+      "provenance_valid": 309,
+      "provenance_exact": 309,
+      "provenance_invalid": 1
+    },
+    "review": {
+      "recall": 1,
+      "precision": 1,
+      "planted": 16,
+      "planted_caught": 16,
+      "routed": 16,
+      "below_threshold_missing": 0,
+      "auto_accepted": 294,
+      "review": 3,
+      "blocked": 13
+    },
+    "integrity": {
+      "duplicate_cases_passed": 2,
+      "duplicate_cases": 2,
+      "version_cases_passed": 2,
+      "version_cases": 2,
+      "duplicate_records": 0,
+      "resumability_passed": true,
+      "reprocess_count": 0
+    },
+    "cost": {
+      "estimated_cost_usd": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "latency_p50_ms": 0,
+      "latency_p95_ms": 1
+    },
+    "cases": {
+      "total": 76,
+      "passed": 72,
+      "failed": 4,
+      "by_type": {
+        "extraction": {
+          "total": 18,
+          "passed": 15
+        },
+        "provenance": {
+          "total": 18,
+          "passed": 17
+        },
+        "classification": {
+          "total": 18,
+          "passed": 18
+        },
+        "review_routing": {
+          "total": 18,
+          "passed": 18
+        },
+        "duplicate": {
+          "total": 2,
+          "passed": 2
+        },
+        "version": {
+          "total": 2,
+          "passed": 2
+        }
+      }
+    }
+  }
+}
