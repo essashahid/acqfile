@@ -1,6 +1,6 @@
 # Phase 2 proof — PASS
 
-Date: 2026-09-19. Accepted Phase 1: `9ae628a`. Step A committed as `b505aeb` before any incoming deal files were rendered. This report accompanies the separate Phase 2 Step B commit. No Phase 3 work, live model call, paid service or deal-database loading was performed.
+Date: 2026-09-19. Accepted Phase 1: `9ae628a`. Step A committed as `b505aeb` before any incoming deal files were rendered. Step B is `2d3256b`; a small follow-up Phase 2 commit adds binary Git attributes to protect fixture bytes across checkouts. No Phase 3 work, live model call, paid service or deal-database loading was performed.
 
 GitHub REST reports `essashahid/acqfile` **public**. Visibility was not changed. Remote is exclusively `https://github.com/essashahid/acqfile.git`.
 
@@ -85,7 +85,7 @@ The three traps are seller-name spacing/LLC punctuation in TXN-02, a 50-cent PFS
 
 ## File proof and determinism
 
-- Two separate `pnpm fixtures:generate --check` runs regenerated into temporary directories and matched every manifest, source file, truth artifact and ZIP. They also verified the committed bytes against each recorded SHA-256 and rejected extra/missing files. Text PDF, AcroForm, protected PDF, DOCX, XLSX and ZIP outputs are byte-identical.
+- Two separate `pnpm fixtures:generate --check` runs regenerated into temporary directories and matched every manifest, source file, truth artifact and ZIP. They also verified the committed bytes against each recorded SHA-256 and rejected extra/missing files. Text PDF, AcroForm, protected PDF, DOCX, XLSX and ZIP outputs are byte-identical. Binary Git attributes prevent checkout newline conversion of PDFs that Git would otherwise classify as text.
 - All **47 legacy file hashes** match the pre-move inventory. Git records the moved corpus files as 100% identical. The inherited extraction/review/duplicate/recovery test behavior remains intact; only paths, fixture-organization labels outside the exempt directory and synthetic demo contacts changed. The separate Phase 1 personal-scope assertion correction is described above.
 - Text PDFs expose their type cues, displayed key values and every fact quote on the cited page. There are **24 generated AcroForm fields** (A 17, B 6, C 1); every field reads back through pdf-lib with the exact plan value.
 - Each XLSX opens with `Income Statement` and `Balance Sheet`. Financial asset/liability facts cite the second sheet; revenue/income facts cite the first. DOCX files parse with Mammoth and contain their authored content and watermark.
@@ -105,7 +105,7 @@ Reused pinned pdf-lib 1.17.1 ([AcroForm API](https://pdf-lib.js.org/docs/api/cla
 
 [Name checks](phase-2-name-checks.md) record each query and outcome. The proposed Ostrel brand matched an operating business and became **Ostrelyva**; other selected deal/support organization searches returned no matching business (not a guarantee of worldwide uniqueness). Sample Lender A is an explicit sample label. The legacy Cardinal Fleet Services collision led to the owner's narrow exception: preserve only fixtures/legacy unchanged until Phase 4. No other directory inherits that exception.
 
-[Decisions 32–49](DECISIONS.md) record the choices and one-line reasons: legacy exemption, overlay rename, coined names, public visibility unchanged, semantic oracle comparison, Step A null byte metadata until rendering, exactly three A fixes, fixed Faker/HMAC inputs, individual-only implicit personal scopes, April cash support for the stale PFS, official-form fallback, encryption dependency, canonical scans, reuse of existing render libraries, readable quotes, test/screenshot name refresh and scan content fingerprints.
+[Decisions 32–50](DECISIONS.md) record the choices and one-line reasons: legacy exemption, overlay rename, coined names, public visibility unchanged, semantic oracle comparison, Step A null byte metadata until rendering, exactly three A fixes, fixed Faker/HMAC inputs, individual-only implicit personal scopes, April cash support for the stale PFS, official-form fallback, encryption dependency, canonical scans, reuse of existing render libraries, readable quotes, test/screenshot name refresh, scan content fingerprints and binary Git attributes.
 
 ## Exact command results
 

@@ -1,0 +1,7 @@
+# Preserve exact fixture bytes across checkouts; PDF xref spaces are significant.
+*.[pP][dD][fF] binary
+*.[dD][oO][cC][xX] binary
+*.[xX][lL][sS][xX] binary
+*.[zZ][iI][pP] binary
+*.[pP][nN][gG] binary
+*.tgz binary
