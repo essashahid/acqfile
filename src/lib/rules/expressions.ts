@@ -4,7 +4,7 @@ export const UNKNOWN = Symbol("unknown");
 export type Value = unknown | typeof UNKNOWN;
 export type Truth = "pass" | "fail" | "unknown";
 export function truth(v: Value): Truth { return v === true ? "pass" : v === false ? "fail" : "unknown"; }
-export function allTruth(values: Truth[]): Truth { return values.includes("unknown") ? "unknown" : values.includes("fail") ? "fail" : "pass"; }
+export function allTruth(values: Truth[]): Truth { return values.includes("fail") ? "fail" : values.includes("unknown") ? "unknown" : "pass"; }
 export const daysBetween = (a: string, b: string) => (Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 86400000;
 export function addDays(a: string, n: number) { return new Date(Date.parse(a + "T00:00:00Z") + n * 86400000).toISOString().slice(0, 10); }
 export function addYears(a: string, n: number) {
@@ -26,7 +26,9 @@ export function evaluateExpression(expr: Expr, resolve: Resolve, tolerance = 0):
   if (Array.isArray(expr)) return expr.some(v => v === null || v === "unknown") ? UNKNOWN : expr;
   if (!("op" in expr)) return resolve(expr);
   const args = expr.args.map(a => evaluateExpression(a, resolve, tolerance));
-  // A9 intentionally makes unknown dominate even false AND / true OR.
+  // A28: definite Boolean outcomes dominate irrelevant unknown operands.
+  if (expr.op === "and" && args.includes(false)) return false;
+  if (expr.op === "or" && args.includes(true)) return true;
   if (args.some(a => a === UNKNOWN || a === null || a === undefined || a === "unknown")) return UNKNOWN;
   const [a, b] = args;
   const nums = args.every(v => typeof v === "number" && Number.isFinite(v));

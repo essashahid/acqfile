@@ -54,7 +54,7 @@
     "segment_id": "projections"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
+    "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
     "batch": 1,
     "type": "vision",
     "segment_id": "pfs"
@@ -90,13 +90,13 @@
     "segment_id": "credit"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
     "batch": 1,
     "type": "vision",
     "segment_id": "bank-jul"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "bank-aug"
@@ -120,91 +120,91 @@
     "segment_id": "tax-2025"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "fin-2023"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
     "batch": 1,
     "type": "vision",
     "segment_id": "fin-2024"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
     "batch": 1,
     "type": "vision",
     "segment_id": "interim"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "ar"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "ap"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "debt"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "4506"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "equipment"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "inventory"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "license"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "gift-letter"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "donor-bank"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "gift-transfer"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-13.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "franchise"
   },
   {
-    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-13.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "disclosure"
@@ -222,7 +222,7 @@
     "segment_id": "brochure"
   },
   {
-    "file": "incoming/batch-1/Buyer/Attachments/extension.pdf",
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
     "batch": 1,
     "type": "vision",
     "segment_id": "extension"

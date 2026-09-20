@@ -20,13 +20,13 @@ export function dealA(){
  row(p,['GUA-09a'],'holding','satisfied',YEARS);row(p,['GUA-09b','GUA-09c'],'holding');
  checklist(p,['alex','bea'],['alex','bea','holding'],p.profile.equity_sources as {id:string;kind:string}[],'affiliate');
  doc(p,'personal-2024').batch=2;doc(p,'bea-citizen').batch=2;
- status(p,'GUA-02','alex','needs_review','2024');finding(p,'GUA-02','alex','2024','needs_review');
+ status(p,'GUA-02','alex','missing','2024');finding(p,'GUA-02','alex','2024','missing');
  plant(p,1,'Guarantor 2024 return absent until batch 2',['personal-2024'],[key('GUA-02','alex','2024')]);
  Object.assign(doc(p,'pfs').facts,{'pfs.as_of_date':'2026-04-28'});Object.assign(doc(p,'pfs').metadata,{document_date:'2026-04-28',signature_date:'2026-04-28'});
  add(p,'bank-april','BANK_STATEMENT','alex',{'party.legal_name':p.parties.find(x=>x.id==='alex')!.legal_name,'bank.ending_balance':180000,'bank.period_end':'2026-04-30','bank.institution':'Zelmivar Bank'},'2026-04').metadata={...doc(p,'bank-aug').metadata,document_date:'2026-04-30'};
  status(p,'GUA-01','alex','received_with_issues');finding(p,'GUA-01','alex',null,'stale','blocker');plant(p,2,'Form 413 is 140 days old',['pfs'],[key('GUA-01','alex')]);
- const fixed=structuredClone(doc(p,'1919'));fixed.id='1919-fixed';fixed.batch=2;fixed.supersedes='1919';p.documents.push(fixed);
- Object.assign(doc(p,'1919').metadata,{signed:false,dated:false,signature_date:null});status(p,'ENT-01','buyer','needs_review');finding(p,'ENT-01','buyer',null,'needs_review','blocker');plant(p,3,'Unsigned and undated Form 1919',['1919'],[key('ENT-01','buyer')]);
+ const fixed=structuredClone(doc(p,'1919'));fixed.id='1919-fixed';fixed.batch=2;fixed.supersedes='1919';fixed.metadata.document_date='2026-09-10';fixed.metadata.signature_date='2026-09-10';p.documents.push(fixed);
+ Object.assign(doc(p,'1919').metadata,{signed:false,dated:false,signature_date:null});status(p,'ENT-01','buyer','received_with_issues');finding(p,'ENT-01','buyer',null,'incomplete','blocker');plant(p,3,'Unsigned and undated Form 1919',['1919'],[key('ENT-01','buyer')]);
  const wrong=structuredClone(doc(p,'personal-2023'));wrong.id='personal-wrong-year';wrong.duplicate_of='personal-2023';wrong.group=undefined;wrong.notes=['Filename claims 2024; form tax year is 2023'];p.documents.push(wrong);plant(p,4,'Same tax year twice; one misleading filename',['personal-2023','personal-wrong-year'],[], 'duplicate; period is 2023 regardless of filename');
  doc(p,'4506').facts['party.identifier']=fakeId('00-1234568');finding(p,'CON-01','target',null,'conflict','blocker');plant(p,5,'One-digit EIN conflict',['4506','tax-2023','tax-2024','tax-2025'],[key('CON-01','target')]);
  doc(p,'loi').facts['deal.purchase_price']=2425000;doc(p,'funding').facts['deal.purchase_price']=2410000;finding(p,'CON-03','deal',null,'conflict','blocker');plant(p,6,'Three conflicting purchase prices',['loi','purchase','funding'],[key('CON-03')]);
@@ -53,7 +53,7 @@ export function dealA(){
  doc(p,'bea-pfs').facts['pfs.net_worth']=400000.5;
  p.traps=[{id:'name-normalization',documents:['purchase'],rules:['TXN-02'],reason:'Spacing and LLC punctuation do not change the named seller'}, {id:'rounding',documents:['bea-pfs'],rules:['GUA-01|bea'],reason:'50 cents is within USD 1 arithmetic tolerance'}, {id:'superseded-stale',documents:['bea-pfs-old','bea-pfs'],rules:['GUA-01|bea'],reason:'Earlier stale version is excluded from the current inventory'}];
  const after=structuredClone(p.batches[0]!);after.batch=2;after.resolves=[key('GUA-02','alex','2024'),key('ENT-01','buyer'),key('GUA-05','bea')];after.findings=after.findings.filter(f=>!after.resolves.includes(key(f.rule_id,f.scope_key,f.period)));for(const r of after.checklist)if(after.resolves.includes(key(r.item_id,r.scope_key,r.period)))r.status='satisfied';p.batches.push(after);
- doc(p,'plan').format='docx';layout(p,40);
+ doc(p,'plan').format='docx';doc(p,'lease').format='scan_pdf';doc(p,'pfs').format='scan_pdf';layout(p,40);
  doc(p,'personal-wrong-year').path='incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF';doc(p,'personal-wrong-year').group=undefined;
  // A duplicate of a segment inside a bundle must duplicate the complete physical file.
  doc(p,'personal-wrong-year').duplicate_of='personal-2023';

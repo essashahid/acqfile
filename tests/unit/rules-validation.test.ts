@@ -56,9 +56,9 @@ describe("rule validation, registries, overlays and review exports",()=>{
  });
 });
 describe("safe expressions and manual evidence",()=>{
- it("implements allowed operations with strict unknown propagation and date arithmetic",()=>{
+ it("implements allowed operations with three-valued Boolean logic and date arithmetic",()=>{
   const evaluate=(op:string,...args:Expr[])=>evaluateExpression(ExprSchema.parse({op,args}),()=>UNKNOWN);
-  expect(evaluate('and',false,{fact:'pfs.cash'})).toBe(UNKNOWN);expect(evaluate('or',true,{profile:'structure'})).toBe(UNKNOWN);
+  expect(evaluate('and',false,{fact:'pfs.cash'})).toBe(false);expect(evaluate('or',true,{profile:'structure'})).toBe(true);
   expect(evaluate('/',1,0)).toBe(UNKNOWN);expect(evaluate('not',false)).toBe(true);expect(evaluate('!=',1,2)).toBe(true);
   for(const [op,a,b,expected] of [['+',2,3,5],['-',5,2,3],['*',2,3,6],['/',6,2,3],['<',2,3,true],['<=',3,3,true],['>',3,2,true],['>=',3,3,true],['==',3,3,true]] as const)expect(evaluate(op,a,b)).toBe(expected);
   expect(evaluate('in','asset',['asset','stock'])).toBe(true);expect(evaluate('exists','value')).toBe(true);expect(evaluate('abs',-3)).toBe(3);
@@ -80,7 +80,7 @@ describe("safe expressions and manual evidence",()=>{
   const result=evaluateDeal(input,loadPack('sop-50-10-8'));
   expect(result.checklist.find(r=>r.item_id==='GUA-02'&&r.period==='2025')?.status).toBe('received_with_issues');
   expect(result.findings.find(f=>f.rule_id==='GUA-02'&&f.period==='2025')).toMatchObject({type:'info',message:'latest year on extension'});
-  expect(result.checklist.find(r=>r.item_id==='GUA-02'&&r.period==='2024')?.status).toBe('needs_review');
+  expect(result.checklist.find(r=>r.item_id==='GUA-02'&&r.period==='2024')?.status).toBe('missing');
  });
  it("a documented waiver is explicit and does not change findings into a receipt",()=>{
   const input=fixtureInput();input.waivers.push({rule_id:'ENT-02',scope_key:'buyer',period:null,actor:'reviewer',note:'Lender waived',audit_event_id:'waiver-event'});
@@ -104,7 +104,7 @@ describe('scope and evidence edge cases',()=>{
   input.profile.paid_agents=[{id:'agent1',party:'alex',name:'Kiel McDermott',role:'broker',paid_by:'buyer',amount:'unknown'}];
   const rows=evaluateDeal(input,loadPack('sop-50-10-8')).checklist;
   expect(rows.filter(r=>r.item_id==='GUA-09a').map(r=>r.period)).toEqual(['2023','2024','2025']);
-  expect(rows.find(r=>r.item_id==='TXN-07')?.scope_key).toBe('agent1');expect(rows.find(r=>r.item_id==='TXN-07')?.status).toBe('needs_review');
+  expect(rows.find(r=>r.item_id==='TXN-07')?.scope_key).toBe('agent1');expect(rows.find(r=>r.item_id==='TXN-07')?.status).toBe('missing');
  });
  it('unrelated evidence cannot fill a missing row',()=>{
   const input=fixtureInput();input.segments.find(s=>s.id==='formation')!.doc_type='OTHER_NOT_REQUIRED';

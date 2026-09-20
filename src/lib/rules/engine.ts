@@ -111,7 +111,8 @@ export function evaluateDeal(raw: EngineInput, pack: ResolvedPack, availablePack
         const match = (f: Fact) => f.attribute === ref.fact && (!scope.party || f.subject_party_id === scope.party.id) && (period === null || f.period === period) && (() => { const s = segmentById.get(f.segment_id); return s && matching(s, types); })();
         const awaiting = pending.filter(match); awaiting.forEach(f => used.add(f.id));
         let selected = facts.filter(match); selected.forEach(f => used.add(f.id));
-        if (awaiting.length || !selected.length) return UNKNOWN;
+        if (!selected.length) return UNKNOWN;
+        if (awaiting.length && ref.select !== "list") return UNKNOWN;
         if (ref.within_days !== undefined) {
           const relative = ref.relative_to ? resolveFact({ fact: ref.relative_to, types: FACTS[ref.relative_to]!.producers }) : input.as_of;
           if (typeof relative !== "string") return UNKNOWN;
@@ -130,7 +131,7 @@ export function evaluateDeal(raw: EngineInput, pack: ResolvedPack, availablePack
         let values = selected.map(f => f.normalized_value);
         if (ref.field) values = values.flatMap(v => Array.isArray(v) ? v.map(row => row[ref.field!]) : [UNKNOWN]);
         if (ref.select === "sum") return values.every(v => typeof v === "number") ? values.reduce<number>((a, v) => a + (v as number), 0) : UNKNOWN;
-        if (ref.select === "list" || ref.field) return values;
+        if (ref.select === "list" || ref.field) return [...values, ...(awaiting.length ? [UNKNOWN] : [])];
         return values.every(v => equal(v, values[0])) ? values[0] : UNKNOWN;
       };
       const resolve = (ref: Parameters<typeof evaluateExpression>[1] extends (a: infer R) => unknown ? R : never): unknown => {
@@ -144,37 +145,37 @@ export function evaluateDeal(raw: EngineInput, pack: ResolvedPack, availablePack
       const row: ChecklistRow = { item_id: rule.id, scope_key: scope.key, period, status: "not_applicable", segment_ids: [], reasons: [] };
       if (!rule.required || applies === "fail") { if (!isConsistency) checklist.push(row); continue; }
       const waiver = input.waivers.find(w => w.rule_id === rule.id && w.scope_key === scope.key && w.period === period);
-      if (waiver) { row.status = "waived"; if (!isConsistency) checklist.push(row); continue; }
+      if (waiver && applies === "pass" && !inventoryMissing) { row.status = "waived"; if (!isConsistency) checklist.push(row); continue; }
       function agreement(c: Check): Truth {
         if (c.mode === "party_assignment") return segments.every(s => s.party_id && input.parties.some(p => p.id === s.party_id)) ? "pass" : "fail";
         if (c.mode === "buyer_seller") {
           return allTruth(([['deal.buyer','buyer_entity'],['deal.seller','seller_entity']] as const).map(([attribute, role]) => {
-            const parties = input.parties.filter(p => p.roles.includes(role)); const party = parties.length === 1 ? parties[0] : undefined; const value = resolveFact({ fact: attribute });
-            return !party || value === UNKNOWN || party.legal_name === "unknown" ? "unknown" : equal(value, party.legal_name) ? "pass" : "fail";
+            const parties = input.parties.filter(p => p.roles.includes(role)); const party = parties.length === 1 ? parties[0] : undefined; const value = resolveFact({ fact: attribute, select: "list" });
+            return !party || value === UNKNOWN || party.legal_name === "unknown" ? "unknown" : allTruth((value as unknown[]).map(v => v === UNKNOWN ? "unknown" : equal(v, party.legal_name) ? "pass" : "fail"));
           }));
         }
         if (c.mode === "party_name" || c.mode === "account_holder") {
-          const value = resolveFact({ fact: c.fact! });
+          const value = resolveFact({ fact: c.fact!, select: "list" });
           if (!scope.party || scope.party.legal_name === "unknown" || value === UNKNOWN || scope.source?.source_account_last_four === "unknown") return "unknown";
           if (scope.source?.kind === "gift" && !scope.party.roles.includes("donor")) return "fail";
-          return equal(value, scope.party.legal_name) ? "pass" : "fail";
+          return allTruth((value as unknown[]).map(v => v === UNKNOWN ? "unknown" : equal(v, scope.party!.legal_name) ? "pass" : "fail"));
         }
         const types = c.across ?? rule.accepts;
         const values: unknown[] = types.flatMap(t => { const value = resolveFact({ fact: c.fact!, types: [t], select: "list" }); return value === UNKNOWN ? [UNKNOWN] : value as unknown[]; });
         if (c.profile) values.push(profileValue(c.profile, input, scope));
         if (c.mode === "owners") {
           const links = input.ownership.filter(l => l.stage === "post_closing" && l.owned_party_id === scope.party?.id);
-          if (!links.length || links.some(l => l.percent === "unknown")) return "unknown";
           const declared = links.map(l => ({ name: input.parties.find(p => p.id === l.owner_party_id)?.legal_name ?? "unknown", percent: l.percent }));
-          if (declared.some(d => d.name === "unknown")) return "unknown";
-          values.push(declared);
-          if (values.some(v => v === UNKNOWN)) return "unknown";
-          if (values.some(v => !Array.isArray(v) || Math.abs(v.reduce((sum: number, r: { percent: number }) => sum + r.percent, 0) - 100) > Number(pack.parameters.percent_tolerance))) return "fail";
-          // Titles and optional masked identifiers do not change ownership equality.
-          return values.every(v => equal((v as {name: string; percent: number}[]).map(o => ({ name: o.name, percent: o.percent })), declared)) ? "pass" : "fail";
+          if (!links.length || declared.some(d => d.name === "unknown" || d.percent === "unknown")) values.push(UNKNOWN); else values.push(declared);
+          const known = values.filter(v => v !== UNKNOWN);
+          if (known.some(v => !Array.isArray(v) || Math.abs(v.reduce((sum: number, r: { percent: number }) => sum + r.percent, 0) - 100) > Number(pack.parameters.percent_tolerance))) return "fail";
+          const normalized = known.map(v => (v as {name:string;percent:number}[]).map(o => ({name:o.name,percent:o.percent})));
+          if (!normalized.every(v => equal(v, normalized[0]))) return "fail";
+          return values.some(v => v === UNKNOWN) ? "unknown" : "pass";
         }
-        if (values.some(v => v === UNKNOWN)) return "unknown";
-        return values.every(v => equal(v, values[0], Number(pack.parameters[c.tolerance_param ?? ""] ?? 0))) ? "pass" : "fail";
+        const known = values.filter(v => v !== UNKNOWN);
+        if (!known.every(v => equal(v, known[0], Number(pack.parameters[c.tolerance_param ?? ""] ?? 0)))) return "fail";
+        return values.some(v => v === UNKNOWN) ? "unknown" : "pass";
       }
       function runCheck(c: Check): Truth {
         if (c.when) { const condition = expression(c.when); if (condition !== "pass") return condition === "unknown" ? "unknown" : "pass"; }
@@ -186,11 +187,12 @@ export function evaluateDeal(raw: EngineInput, pack: ResolvedPack, availablePack
           }
           case "period_coverage": return evidence.length ? "pass" : "fail";
           case "freshness": {
-            const dates = c.metadata ? evidence.map(s => s[c.metadata!]) : [resolveFact({ fact: c.fact! })];
-            if (!dates.length || dates.some(d => typeof d !== "string")) return "unknown";
-            return dates.every(d => { const age = daysBetween(d as string, input.as_of); return age >= 0 && age <= Number(pack.parameters[c.max_age_param!]); }) ? "pass" : "fail";
+            const resolved = c.metadata ? UNKNOWN : resolveFact({ fact: c.fact!, select: "list" });
+            const dates = c.metadata ? evidence.map(s => s[c.metadata!]) : resolved === UNKNOWN ? [UNKNOWN] : resolved as unknown[];
+            if (!dates.length) return "unknown";
+            return allTruth(dates.map(d => { if (typeof d !== "string") return "unknown"; const age = daysBetween(d, input.as_of); return age >= 0 && age <= Number(pack.parameters[c.max_age_param!]) ? "pass" : "fail"; }));
           }
-          case "signed_and_dated": return !evidence.length ? "unknown" : allTruth(evidence.map(s => s.signed === null || !c.signed_only && (s.dated === null || !s.signature_date) ? "unknown" : s.signed && (c.signed_only || s.dated) ? "pass" : "fail"));
+          case "signed_and_dated": return !evidence.length ? "unknown" : allTruth(evidence.map(s => s.signed === false || !c.signed_only && s.dated === false ? "fail" : s.signed === null || !c.signed_only && (s.dated === null || !s.signature_date) ? "unknown" : "pass"));
           case "page_completeness": return !evidence.length ? "unknown" : allTruth(evidence.map(s => s.expected_page_count === null ? "unknown" : s.page_end - s.page_start + 1 === s.expected_page_count ? "pass" : "fail"));
           case "form_revision": return !evidence.length ? "unknown" : allTruth(evidence.map(s => s.form_revision === null ? "unknown" : s.form_revision === pack.parameters[c.revision_param!] ? "pass" : "fail"));
           case "arithmetic": case "fact_comparison": case "date_order": return expression(c.expr!, Number(pack.parameters[c.tolerance_param ?? ""] ?? 0));
@@ -199,16 +201,29 @@ export function evaluateDeal(raw: EngineInput, pack: ResolvedPack, availablePack
           case "tracking": { const t = input.tracking.find(t => t.rule_id === rule.id && t.scope_key === scope.key); return t?.state === "received" ? "pass" : t ? "fail" : "unknown"; }
         }
       }
-      row.reasons = rule.checks.map(c => ({ type: c.type, result: runCheck(c), message: c.message }));
+
       const extension = !evidence.length && period === String(Number(input.as_of.slice(0, 4)) - 1) && rule.period_requirement === "last_three_tax_years" && !isConsistency && segments.some(s => s.doc_type === "TAX_EXTENSION" && s.party_id === scope.party?.id && s.period === period);
-      const result = applies === "unknown" || inventoryMissing ? "unknown" : allTruth(row.reasons.map(r => r.result));
+      const waiting = input.segments.some(s => s.is_current && s.status === "proposed" && matching(s));
+      const noEvidence = !isConsistency && rule.accepts.length > 0 && !evidence.length && !rule.checks.some(c => c.type === "tracking");
+      if (applies === "unknown" || inventoryMissing) {
+        row.status = "needs_review"; pushFinding(rule, scope, period, "needs_review", "Evidence or applicability needs review: " + rule.title, used);
+        if (!isConsistency) checklist.push(row); continue;
+      }
+      if (noEvidence && !extension) {
+        row.status = waiting ? "needs_review" : "missing";
+        pushFinding(rule, scope, period, row.status, waiting ? "Proposed evidence awaits confirmation: " + rule.title : "Missing: " + rule.title, used);
+        checklist.push(row); continue;
+      }
+      row.reasons = rule.checks.map(c => ({ type: c.type, result: runCheck(c), message: c.message }));
+      const issues = row.reasons.filter(r => r.result !== "pass").map(r => `${r.result}: ${r.message}`).join("; ");
+      const result = allTruth(row.reasons.map(r => r.result));
       if (extension && applies === "pass" && !inventoryMissing) { row.status = "received_with_issues"; pushFinding(rule, scope, period, "info", "latest year on extension", used, "info"); }
-      else if (result === "unknown") { row.status = "needs_review"; pushFinding(rule, scope, period, "needs_review", "Evidence or applicability needs review: " + rule.title, used); }
+      else if (result === "unknown") { row.status = "needs_review"; pushFinding(rule, scope, period, "needs_review", issues || "Evidence needs review: " + rule.title, used); }
       else if (result === "pass") { row.status = "satisfied"; row.segment_ids = evidence.map(s => s.id).sort(); }
       else {
         row.status = rule.checks.some(c => c.type === "tracking") ? "tracking" : !evidence.length && rule.accepts.length ? "missing" : "received_with_issues";
         const type = rule.finding_type ?? (row.status === "missing" ? "missing" : row.reasons.some(r => r.type === "freshness" && r.result === "fail") ? "stale" : "incomplete");
-        pushFinding(rule, scope, period, type, row.reasons.filter(r => r.result === "fail").map(r => r.message).join("; "), used);
+        pushFinding(rule, scope, period, type, issues, used);
       }
       if (!isConsistency) checklist.push(row);
     }

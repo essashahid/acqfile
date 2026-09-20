@@ -38,3 +38,24 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
 ### Owner ruling: A19/A24 legacy exception (2026-09-19)
 
 “Preserve legacy bytes; exempt only fixtures/legacy from A19 until Phase 4.” This exception does not apply to new deal fixtures, scenario tests, seeds or screenshots.
+
+
+## Phase 3 rulings (2026-09-20)
+
+- **A28. Status precedence. This corrects A9.** A9 said an unknown anywhere makes a row `needs_review`. That was wrong: an absent tax return now reads "needs review" when it should read "missing", and an unsigned Form 1919 reads "needs review" when it should read "incomplete". The missing-item list is a core deliverable and must contain the obvious missing items. New rule: **a definite failure outranks an unknown, an unknown outranks a pass, and only all-pass is `satisfied`.** Evaluate a row in this order:
+  1. `applies_when` false gives `not_applicable`; unknown gives `needs_review`.
+  2. A missing evidence-inventory member gives `needs_review`, as built.
+  3. A waiver gives `waived`. Tracking rows stay as built.
+  4. **No evidence.** If no current confirmed segment of an accepted type exists for the row's scope and period, the row is `missing` with one `missing` finding, and no other check is evaluated. Two exceptions: the A13 extension case; and if a proposed, unconfirmed segment of an accepted type exists for that scope and period, the row is `needs_review`, because we may already hold the document.
+  5. **Evidence exists.** Run every check. Any fail gives `received_with_issues`. No fail but any unknown gives `needs_review`. All pass gives `satisfied`. Keep one finding per row and the existing `finding_key`. Its type follows the precedence missing, stale, incomplete, needs_review. Its message lists every failed check and every unknown check, so nothing is hidden.
+  6. Inside a check over several segments or sources the same precedence applies. `signed: false` or `dated: false` is a definite fail. Only null is unknown.
+  7. **Consistency rules.** Two accepted values that disagree beyond tolerance are a `conflict` even when another source is unknown or pending. No disagreement but a required source unknown gives `needs_review`.
+  8. **Expressions use standard three-valued logic:** false AND unknown is false; true OR unknown is true. A row whose applicability does not depend on the unknown value is not sent to review.
+
+  Both invariants still hold: nothing but all-pass is satisfied, and removing evidence can only move a row to `missing` or `needs_review`.
+- **A29. Guardrail 1 covers words we author,** not documents. It applies to UI strings, rule titles and messages, templates, request drafts and report boilerplate. It does not apply to supplied documents, to fixtures that imitate them, or to verbatim quotes from them shown as evidence. Real SBA forms contain those words and the product must read them. The lint skips fixture documents and quoted-evidence fields. Exports mark quotes as quotes.
+- **A30. Official forms.** Your trial showed the official blank Form 1919 and Form 413 fill, save and reopen. Use them, with the `SYNTHETIC` watermark on every page, for every Form 1919 and Form 413 in all three deals, including the pages that are rasterized. Map the official AcroForm field names to the fact catalog in one config file. That mapping is what a real pilot needs. Timebox three hours. Fall back to facsimiles only for a technical reason, and record it.
+- **A31. Deal A needs scans.** The flagship deal has no image-only file. Make `Phone/scan0007.pdf` (the lease) and one guarantor's Form 413 image-only in Deal A. Truth statuses do not change. Fact methods and locators do.
+- **A32. Supersession.** The taxonomy registry marks which types are `single_instance` per party and period (Form 413, Form 1919, LOI, sources and uses, and similar). When a newly confirmed segment has the same type, party, period and account last four as a current one of a `single_instance` type and carries a strictly later document or signature date, the older segment becomes not current, with an audit event, and the operator can undo it. Anything else with the same identity raises a `version_conflict` review item. Never choose silently.
+- **A33. Image-only pages at runtime.** Do not rasterize on the server. For model input, cut the needed pages into a sub-PDF with pdf-lib and use the provider's native PDF input. For display, render pages in the browser with PDF.js. Fixture rasterization stays a fixture-only tool.
+- **A34. Optional live smoke test.** Only if the owner has put a provider key in the environment: classify and segment Deal C's files once with the live provider, hard cap USD 1, estimate before running. Report accuracy against truth and the cost. It is not a gate. Without a key, skip it and say so.

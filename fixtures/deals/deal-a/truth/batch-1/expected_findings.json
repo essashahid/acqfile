@@ -115,7 +115,7 @@
     "rule_id": "ENT-01",
     "scope_key": "buyer",
     "period": null,
-    "type": "needs_review",
+    "type": "incomplete",
     "severity": "blocker",
     "finding_key": "940ada930a11a8034c6994c5fe425ec471798797a388f5afadeb2805cb32bbed"
   },
@@ -147,7 +147,7 @@
     "rule_id": "GUA-02",
     "scope_key": "alex",
     "period": "2024",
-    "type": "needs_review",
+    "type": "missing",
     "severity": "major",
     "finding_key": "d4e587e323bfac204e6413b47bff5cff9480c7173b64f942a00329c44f548bfe"
   },

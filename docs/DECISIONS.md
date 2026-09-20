@@ -97,3 +97,11 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 48. Rename standalone legacy-era test organization strings outside fixtures/legacy to previously checked coined names while preserving their assertions' meaning; corpus bytes remain unchanged. Refresh the viewer screenshot to show the new overlay and example.com contacts.
 49. Include rendered page content in canonical scan fingerprints so a party-name or other plan-text change cannot silently reuse a stale scan. Physical layout changes require a raster-layout version bump.
 50. Mark PDF/DOCX/XLSX/ZIP/PNG archives as binary in Git attributes: some valid PDF streams contain no NUL byte, so Git otherwise treats mandatory xref spacing as text and could normalize line endings on another checkout.
+
+## Phase 3 decisions (2026-09-20)
+
+51. Implement A28 with explicit applicability/inventory/waiver/absence precedence, then fail-dominant checks; missing evidence must appear in the missing-item list.
+52. Use complete official 1919/413 blanks with mapped fields and one synthetic evidence sheet; preserve government wording and literal locators without squeezing fact quotes into form margins (supersedes decision 43).
+53. Keep official forms standalone when grouping arrival packets; this preserves AcroForm identities and makes scans complete documents.
+54. Date A's corrected 1919 on September 10, after the initial August 31 copy; intended supersession must satisfy A32 rather than depend on filenames.
+55. Apply contact/identifier fixture lint to authored synthetic values, not fixed government agency boilerplate; A30 requires the actual official pages, whose printed agency contacts are not invented fixture parties.

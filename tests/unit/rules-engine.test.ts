@@ -11,7 +11,7 @@ describe("hand-authored engine proof", () => {
  for (const file of ["defects", "unknowns", "traps", "packs"]) {
   for (const c of readFixture(file) as Case[]) it(`${file}: ${c.name}`, () => {
    const cType = c.check_type; const { input, pack } = applyCase(c); const result = evaluateDeal(input, pack);
-   if(c.check_type) expect(result.checklist.some(r => r.reasons.some(c => c.type === cType && c.result === "fail"))).toBe(true);
+   if(c.check_type && !result.checklist.some(r=>r.status === "missing")) expect(result.checklist.some(r => r.reasons.some(c => c.type === cType && c.result === "fail"))).toBe(true);
    expect(actualRows(result.checklist)).toEqual(expectedRows(c.expected.checklist));
    expect(result.findings.map(f => f.rule_id).sort()).toEqual([...c.expected.findings].sort());
   });

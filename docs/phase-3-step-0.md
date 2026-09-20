@@ -1,0 +1,27 @@
+# Phase 3 Step 0 corrections
+
+Expected outcomes were re-authored from A28 before comparison, without deriving truth from engine output.
+
+| Expectation | Before | After | Reason |
+| --- | --- | --- | --- |
+| A batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | No accepted or proposed return for 2024; do not run completeness on absence. |
+| C batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | Same absent-return rule. |
+| A batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Explicit unsigned and undated indicators are definite failures. |
+| C batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Same definite signature failure. |
+| Phase 1 missing annual tax period scenario | needs_review | missing | Absence short-circuits page checks. |
+| Phase 1 false conjunct with unknown applicability | needs_review and finding | not_applicable, no finding | False AND unknown is false. |
+| Expression false AND unknown / true OR unknown | unknown / unknown | false / true | Standard three-valued Boolean logic. |
+| Older 2024 extension test | needs_review | missing | Only the latest completed tax year gets A13's extension exception. |
+| Missing paid-agent Form 159 with unknown fee | needs_review | missing | Fee uncertainty does not replace the absent accepted document. |
+
+The check-coverage assertion now recognizes absence as a short-circuit and does not demand that checks execute for missing documents. The missing-document scenario directly asserts an empty reasons list. Removal, pending-evidence and determinism invariant tests retain their intent. New cases cover absence with signature/page checks, unsigned with null date, known conflict with a pending third source, proposed evidence and inventory precedence over waiver. Failed and unknown checks both appear in messages; their order follows pack order.
+
+Initial comparison mismatches were the old expectations above. A new diagnostic-message test incorrectly assumed failed checks precede unknown checks; corrected the test to require both without imposing order. Fixture readability exposed an official form bundled by the old layout heuristic: corrected the renderer/layout to preserve complete standalone official forms. One check was started before scan regeneration completed and read a mixed generation; reran after generation finished.
+
+Official forms: all nine logical SBA form instances use the cached government blanks, with their original 7/6 pages, filled AcroForm fields, visible signatures/dates where signed, and SYNTHETIC on every page. Each receives one synthetic evidence sheet for exact quoted plan locators. Official field mapping lives in src/lib/config/official-form-fields.ts. Form 1919 owner name/percent rows and all five planned Form 413 financial/date attributes are mapped; names and signature dates are filled from plan metadata. No technical fallback needed. Blank unused questions remain blank: these are synthetic preparation fixtures, not completed applications.
+
+A29: authored UI/report/rule wording lint remains enforced. Fixture document wording is excluded. Identifier/contact lint checks supplied synthetic values; immutable government boilerplate contains agency contact information and is not invented fixture contact data. Evidence-sheet quotes remain literal. Deal A's lease and Alex Form 413 are scans; all statuses other than the four A28 rows above remain unchanged.
+
+A's replacement Form 1919 is dated 2026-09-10, strictly later than the initial 2026-08-31 document, so its intended supersession obeys A32. Its batch, three-fix outcome and finding keys are unchanged.
+
+Proof (2026-09-20): all four oracles PASS (A1 78 rows/20 findings; A2 78/17; B1 76/3; C1 63/4). `pnpm test`: 129 tests in 15 files pass, including the unchanged invariant suite. `pnpm typecheck`, `pnpm lint`, `pnpm fixtures:check`, and `pnpm fixtures:generate --check`: exit 0. All 47 legacy hashes unchanged. Raster proof: 19 unique canonical scan files, 50 pages; every watermark independently read by OCR; two rerasterizations of every file matched canonical bytes on this host. Whole-page OCR mode 6 initially ignored the isolated top watermark on the official form; visual inspection confirmed it was present, and sparse-text OCR mode 11 detects it. Cross-machine byte identity remains unproven; A22 canonical policy retained.

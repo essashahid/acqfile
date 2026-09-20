@@ -6,6 +6,18 @@
     "planned_type": "FORMATION_DOC"
   },
   {
+    "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "pfs"
+  },
+  {
+    "file": "incoming/batch-1/Phone/scan0007.pdf",
+    "batch": 1,
+    "type": "vision",
+    "segment_id": "lease"
+  },
+  {
     "file": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
     "batch": 1,
     "type": "unmatched_party",

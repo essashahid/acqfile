@@ -1,11 +1,11 @@
 [
   {
     "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-    "hash": "becd77fda6015482ba4120fbc5b01b2dfc22b47568f1ff51cbee9ed05a33fa70",
-    "bytes": 4293,
+    "hash": "7f4c5a22878e405cda848ebbd0bd45e824e4ba4553661253e266474d1615e366",
+    "bytes": 632390,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 8,
     "segments": [
       {
         "id": "1919",
@@ -13,12 +13,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 1,
+          "page": 8,
           "source_block": "1919-page-1",
           "quote": "Signature: ________________; Date: ________________"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 8,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
@@ -27,7 +27,7 @@
         "dated": false,
         "signature_date": null,
         "document_date": "2026-08-31",
-        "expected_page_count": 1,
+        "expected_page_count": 8,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -66,7 +66,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 1,
+          "page": 8,
           "source_block": "1919-page-1",
           "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
@@ -1323,11 +1323,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-    "hash": "b75dc00e0ab7fb22c6ce551e50eb0741c760dbd65f8b214559e72d38fc2413cb",
-    "bytes": 9371,
+    "hash": "c937b292eef33b2a71c229d18bbb196a34a91e713ede9f82f1395c31f77872fa",
+    "bytes": 577119,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 7,
     "segments": [
       {
         "id": "bea-pfs-old",
@@ -1335,12 +1335,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "Signature: e-signed; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 7,
         "doc_type": "SBA_413",
         "party_id": "bea",
         "period": null,
@@ -1349,7 +1349,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2025-01-01",
-        "expected_page_count": 1,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1370,7 +1370,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "as of date: 2025-01-01"
         },
@@ -1396,7 +1396,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "cash: 180000"
         },
@@ -1422,7 +1422,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "total assets: 500000"
         },
@@ -1448,7 +1448,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "total liabilities: 100000"
         },
@@ -1474,7 +1474,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-old-page-1",
           "quote": "net worth: 400000"
         },
@@ -1504,11 +1504,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-    "hash": "1de08899493f0d79e668761e15b9319c622db6f019c81f0036413477a5a6cfc6",
-    "bytes": 9357,
+    "hash": "b21a41cf4dece2ef0873b891367eb4262d7be874f4121db5bd1f1945c317d7aa",
+    "bytes": 577124,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 7,
     "segments": [
       {
         "id": "bea-pfs",
@@ -1516,12 +1516,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "Signature: e-signed; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 7,
         "doc_type": "SBA_413",
         "party_id": "bea",
         "period": null,
@@ -1530,7 +1530,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 1,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1551,7 +1551,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "as of date: 2026-08-31"
         },
@@ -1577,7 +1577,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "cash: 180000"
         },
@@ -1603,7 +1603,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "total assets: 500000"
         },
@@ -1629,7 +1629,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "total liabilities: 100000"
         },
@@ -1655,7 +1655,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 1,
+          "page": 7,
           "source_block": "bea-pfs-page-1",
           "quote": "net worth: 400000.5"
         },
@@ -4274,11 +4274,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-    "hash": "b257ec4a48f8e973eb3e7108f317b7ceff977fd49197f1a330352b66c6867cb4",
-    "bytes": 9305,
-    "format": "acroform_pdf",
+    "hash": "f5078afacab63ffac7be8c99f9606d4902223e5fe6ab9621b537f620a98c7a5d",
+    "bytes": 1382710,
+    "format": "scan_pdf",
     "batch": 1,
-    "pages": 1,
+    "pages": 7,
     "segments": [
       {
         "id": "pfs",
@@ -4286,12 +4286,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "Signature: e-signed; Date: 2026-04-28"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 7,
         "doc_type": "SBA_413",
         "party_id": "alex",
         "period": null,
@@ -4300,7 +4300,7 @@
         "dated": true,
         "signature_date": "2026-04-28",
         "document_date": "2026-04-28",
-        "expected_page_count": 1,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -4318,10 +4318,10 @@
         "normalized_value": "2026-04-28",
         "unit": "date",
         "period": null,
-        "method": "acroform",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "as of date: 2026-04-28"
         },
@@ -4344,10 +4344,10 @@
         "normalized_value": 180000,
         "unit": "USD",
         "period": null,
-        "method": "acroform",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "cash: 180000"
         },
@@ -4370,10 +4370,10 @@
         "normalized_value": 500000,
         "unit": "USD",
         "period": null,
-        "method": "acroform",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "total assets: 500000"
         },
@@ -4396,10 +4396,10 @@
         "normalized_value": 100000,
         "unit": "USD",
         "period": null,
-        "method": "acroform",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "total liabilities: 100000"
         },
@@ -4422,10 +4422,10 @@
         "normalized_value": 400000,
         "unit": "USD",
         "period": null,
-        "method": "acroform",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 1,
+          "page": 7,
           "source_block": "pfs-page-1",
           "quote": "net worth: 400000"
         },
@@ -4575,9 +4575,9 @@
   },
   {
     "file": "incoming/batch-1/Phone/scan0007.pdf",
-    "hash": "f04e6422c3255d513664773c75fa7861c3f63f23e4738a5d88f704467de32de5",
-    "bytes": 2467,
-    "format": "text_pdf",
+    "hash": "e68a87c97c195ae7f83e5a50fa82b084e904e1e8ee734f2fdcd455136e9c4b3a",
+    "bytes": 69058,
+    "format": "scan_pdf",
     "batch": 1,
     "pages": 1,
     "segments": [
@@ -4619,7 +4619,7 @@
         "normalized_value": "14 Velnoric Way, Tazmervale, ZZ 00000",
         "unit": "text",
         "period": null,
-        "method": "text",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
@@ -4645,7 +4645,7 @@
         "normalized_value": "Varnholt Climate Services LLC",
         "unit": "text",
         "period": null,
-        "method": "text",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
@@ -4671,7 +4671,7 @@
         "normalized_value": "Zelmivar Premises LLC",
         "unit": "text",
         "period": null,
-        "method": "text",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
@@ -4697,7 +4697,7 @@
         "normalized_value": "2029-09-15",
         "unit": "date",
         "period": null,
-        "method": "text",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
@@ -4723,7 +4723,7 @@
         "normalized_value": 0,
         "unit": "count",
         "period": null,
-        "method": "text",
+        "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
@@ -7074,11 +7074,11 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-    "hash": "161284a7c6a8756e0e989bd0a9b96d501e0921cca4dbb0f58a604052ee71653f",
-    "bytes": 4474,
+    "hash": "a7242e2841702dd3cdeb78e7c23e0ce43f5ec11a370ebed76bb379ccfb328476",
+    "bytes": 632826,
     "format": "acroform_pdf",
     "batch": 2,
-    "pages": 1,
+    "pages": 8,
     "segments": [
       {
         "id": "1919-fixed",
@@ -7086,21 +7086,21 @@
         "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
         "metadata_locator": {
           "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-          "page": 1,
+          "page": 8,
           "source_block": "1919-fixed-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 2026-09-10"
         },
         "page_start": 1,
-        "page_end": 1,
+        "page_end": 8,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
         "form_revision": "02/2025",
         "signed": true,
         "dated": true,
-        "signature_date": "2026-08-31",
-        "document_date": "2026-08-31",
-        "expected_page_count": 1,
+        "signature_date": "2026-09-10",
+        "document_date": "2026-09-10",
+        "expected_page_count": 8,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -7139,7 +7139,7 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-          "page": 1,
+          "page": 8,
           "source_block": "1919-fixed-page-1",
           "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },

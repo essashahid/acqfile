@@ -103,7 +103,7 @@ export function layout(p:Plan,targetFiles:number){
  const fileGroups=()=>new Set(p.documents.map(d=>d.group??d.id)).size;
  let serial=0;
  while(fileGroups()>targetFiles){
-  const candidates=p.documents.filter(d=>!d.group&&d.batch===1&&!d.duplicate_of&&!d.supersedes&&!d.unreadable&&!d.tags.includes(14)&&["text_pdf","scan_pdf"].includes(d.format));
+  const candidates=p.documents.filter(d=>!d.group&&d.batch===1&&!d.duplicate_of&&!d.supersedes&&!d.unreadable&&!d.tags.includes(14)&&!["SBA_1919","SBA_413"].includes(d.type)&&["text_pdf","scan_pdf"].includes(d.format));
   if(candidates.length<2){
    const packets=[...new Set(p.documents.filter(d=>d.group?.startsWith('forwarded-packet-')).map(d=>d.group!))];
    if(packets.length<2)throw Error("Insufficient bundle candidates");

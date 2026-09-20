@@ -127,7 +127,7 @@
     }
   },
   {
-    "name": "unknown applies before false conjunct",
+    "name": "false conjunct makes unknown applicability irrelevant",
     "rules": [
       "TXN-05"
     ],
@@ -145,12 +145,10 @@
             "TXN-05"
           ],
           "scope": "deal",
-          "status": "needs_review"
+          "status": "not_applicable"
         }
       ],
-      "findings": [
-        "TXN-05"
-      ]
+      "findings": []
     }
   },
   {

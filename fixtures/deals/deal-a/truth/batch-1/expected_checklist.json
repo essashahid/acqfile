@@ -123,7 +123,7 @@
     "item_id": "ENT-01",
     "scope_key": "buyer",
     "period": null,
-    "status": "needs_review"
+    "status": "received_with_issues"
   },
   {
     "item_id": "ENT-02",
@@ -201,7 +201,7 @@
     "item_id": "GUA-02",
     "scope_key": "alex",
     "period": "2024",
-    "status": "needs_review"
+    "status": "missing"
   },
   {
     "item_id": "GUA-02",

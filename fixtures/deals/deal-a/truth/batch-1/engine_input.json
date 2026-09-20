@@ -168,12 +168,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 1,
+        "page": 8,
         "source_block": "1919-page-1",
         "quote": "Signature: ________________; Date: ________________"
       },
       "page_start": 1,
-      "page_end": 1,
+      "page_end": 8,
       "doc_type": "SBA_1919",
       "party_id": "buyer",
       "period": null,
@@ -182,7 +182,7 @@
       "dated": false,
       "signature_date": null,
       "document_date": "2026-08-31",
-      "expected_page_count": 1,
+      "expected_page_count": 8,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -546,12 +546,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "Signature: e-signed; Date: 2026-08-31"
       },
       "page_start": 1,
-      "page_end": 1,
+      "page_end": 7,
       "doc_type": "SBA_413",
       "party_id": "bea",
       "period": null,
@@ -560,7 +560,7 @@
       "dated": true,
       "signature_date": "2026-08-31",
       "document_date": "2026-08-31",
-      "expected_page_count": 1,
+      "expected_page_count": 7,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1167,12 +1167,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "Signature: e-signed; Date: 2026-04-28"
       },
       "page_start": 1,
-      "page_end": 1,
+      "page_end": 7,
       "doc_type": "SBA_413",
       "party_id": "alex",
       "period": null,
@@ -1181,7 +1181,7 @@
       "dated": true,
       "signature_date": "2026-04-28",
       "document_date": "2026-04-28",
-      "expected_page_count": 1,
+      "expected_page_count": 7,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1787,7 +1787,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 1,
+        "page": 8,
         "source_block": "1919-page-1",
         "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
       },
@@ -2545,7 +2545,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "as of date: 2026-08-31"
       },
@@ -2571,7 +2571,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "cash: 180000"
       },
@@ -2597,7 +2597,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "total assets: 500000"
       },
@@ -2623,7 +2623,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "total liabilities: 100000"
       },
@@ -2649,7 +2649,7 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 1,
+        "page": 7,
         "source_block": "bea-pfs-page-1",
         "quote": "net worth: 400000.5"
       },
@@ -4380,10 +4380,10 @@
       "normalized_value": "2026-04-28",
       "unit": "date",
       "period": null,
-      "method": "acroform",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "as of date: 2026-04-28"
       },
@@ -4406,10 +4406,10 @@
       "normalized_value": 180000,
       "unit": "USD",
       "period": null,
-      "method": "acroform",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "cash: 180000"
       },
@@ -4432,10 +4432,10 @@
       "normalized_value": 500000,
       "unit": "USD",
       "period": null,
-      "method": "acroform",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "total assets: 500000"
       },
@@ -4458,10 +4458,10 @@
       "normalized_value": 100000,
       "unit": "USD",
       "period": null,
-      "method": "acroform",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "total liabilities: 100000"
       },
@@ -4484,10 +4484,10 @@
       "normalized_value": 400000,
       "unit": "USD",
       "period": null,
-      "method": "acroform",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 1,
+        "page": 7,
         "source_block": "pfs-page-1",
         "quote": "net worth: 400000"
       },
@@ -4510,7 +4510,7 @@
       "normalized_value": "14 Velnoric Way, Tazmervale, ZZ 00000",
       "unit": "text",
       "period": null,
-      "method": "text",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
@@ -4536,7 +4536,7 @@
       "normalized_value": "Varnholt Climate Services LLC",
       "unit": "text",
       "period": null,
-      "method": "text",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
@@ -4562,7 +4562,7 @@
       "normalized_value": "Zelmivar Premises LLC",
       "unit": "text",
       "period": null,
-      "method": "text",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
@@ -4588,7 +4588,7 @@
       "normalized_value": "2029-09-15",
       "unit": "date",
       "period": null,
-      "method": "text",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
@@ -4614,7 +4614,7 @@
       "normalized_value": 0,
       "unit": "count",
       "period": null,
-      "method": "text",
+      "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,

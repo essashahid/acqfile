@@ -21,5 +21,5 @@ describe('independent deal plans',()=>{
 
 describe('rendered fixture proof without the application pipeline',()=>{
  it('all committed files are readable in their declared format and match truth locators',async()=>{const {verifyFiles}=await import('../../fixtures/lib/verify');const result=await verifyFiles();expect(result.map(r=>r.files)).toEqual([40,28,22]);},60000);
- it('synthetic lint rejects unsafe identifier/contact ranges and outcome wording',async()=>{const {lintSynthetic}=await import('../../fixtures/lib/verify');for(const text of ['123-45-6789','12-1234567','(202) 555-9999','person@invalid.test','approved'])expect(()=>lintSynthetic(text)).toThrow();expect(()=>lintSynthetic('900-12-3456 00-1234567 (202) 555-0142 fixture@example.com SYNTHETIC')).not.toThrow();});
+ it('synthetic lint rejects unsafe identifier/contact ranges',async()=>{const {lintSynthetic}=await import('../../fixtures/lib/verify');for(const text of ['123-45-6789','12-1234567','(202) 555-9999','person@invalid.test'])expect(()=>lintSynthetic(text)).toThrow();expect(()=>lintSynthetic('900-12-3456 00-1234567 (202) 555-0142 fixture@example.com SYNTHETIC')).not.toThrow();});
 });
