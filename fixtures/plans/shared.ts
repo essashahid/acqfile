@@ -104,7 +104,13 @@ export type Plan = {
   planted: Plant[];
   traps: Trap[];
   faults: Fault[];
-  batches: { batch: number; checklist: Row[]; findings: ExpectedFinding[]; resolves: string[] }[];
+  batches: {
+    batch: number;
+    profile?: DealProfile;
+    checklist: Row[];
+    findings: ExpectedFinding[];
+    resolves: string[];
+  }[];
 };
 export const key = (rule: string, scope = "deal", period: string | null = null) =>
   [rule, scope, period].join("|");

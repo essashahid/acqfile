@@ -57,7 +57,7 @@ export const SECTIONS: Record<SectionKey, Section> = {
   deals: {
     key: "deals",
     label: "Deals",
-    href: "/deals",
+    href: "/staff/deals",
     icon: FileText,
     hue: "accent",
     blurb: "Acquisition profiles, parties, incoming files, filing and fact review.",
@@ -65,7 +65,7 @@ export const SECTIONS: Record<SectionKey, Section> = {
   rulepacks: {
     key: "rulepacks",
     label: "Rule packs",
-    href: "/rulepacks",
+    href: "/staff/rulepacks",
     icon: BookOpenCheck,
     hue: "evals",
     blurb: "Read and compare the evidence requirements and their sources.",
@@ -73,7 +73,7 @@ export const SECTIONS: Record<SectionKey, Section> = {
   help: {
     key: "help",
     label: "How it works",
-    href: "/how-it-works",
+    href: "/staff/how-it-works",
     icon: CircleHelp,
     hue: "accent",
     blurb: "The flow from intake to evaluation, and where each thing lives.",
@@ -85,7 +85,7 @@ export const NAV_ORDER: SectionKey[] = ["deals", "rulepacks"];
 
 /** Which section a pathname belongs to, for highlighting and page identity. */
 export function sectionForPath(pathname: string): SectionKey {
-  if (pathname.startsWith("/how-it-works")) return "help";
+  if (pathname.startsWith("/staff/how-it-works")) return "help";
   for (const key of NAV_ORDER) {
     const href = SECTIONS[key].href;
     if (href !== "/" && (pathname === href || pathname.startsWith(`${href}/`))) return key;

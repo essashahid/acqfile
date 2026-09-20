@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { getDb, schema } from "@/lib/db/client";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth/session";
 
-export type WorkspaceRole = "admin" | "reviewer" | "viewer";
+export type WorkspaceRole = "admin" | "reviewer" | "viewer" | "adviser";
 
 /** Fixed identity of the anonymous public demo visitor; never a workspace member and cannot sign in. */
 export const PUBLIC_VISITOR_ID = "00000000-0000-0000-0000-000000000000";
@@ -63,4 +63,11 @@ export function canReview(role: WorkspaceRole): boolean {
 
 export function isAdmin(role: WorkspaceRole): boolean {
   return role === "admin";
+}
+
+/** Staff endpoints never accept a customer session or the anonymous demo visitor. */
+export async function requireStaff(): Promise<SessionContext> {
+  const context = await requireWorkspace();
+  if (context.isPublic || context.workspace.role === "adviser") redirect("/deals");
+  return context;
 }

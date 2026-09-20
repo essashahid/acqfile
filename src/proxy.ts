@@ -67,6 +67,13 @@ async function verifyLocalSession(token: string | undefined, secret: string): Pr
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  if (pathname === "/p" || pathname.startsWith("/p/")) {
+    const response = NextResponse.next();
+    response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("X-Robots-Tag", "noindex");
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
+  }
   if (isPublic(pathname) && pathname !== "/login") return NextResponse.next();
   let response = NextResponse.next({ request: req });
   let authed = false;

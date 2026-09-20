@@ -9,8 +9,12 @@ import { resetEnvCache } from "@/lib/env";
 import { makePdf, seeded } from "./helpers";
 import type { SessionContext, WorkspaceRole } from "@/lib/workspace";
 let workspaceId: string, dealId: string, versionId: string;
-const users: Record<WorkspaceRole, string> = { admin: "", reviewer: "", viewer: "" };
-const ctx = (role: WorkspaceRole, isPublic = false): SessionContext => ({
+const users: Record<Exclude<WorkspaceRole, "adviser">, string> = {
+  admin: "",
+  reviewer: "",
+  viewer: "",
+};
+const ctx = (role: Exclude<WorkspaceRole, "adviser">, isPublic = false): SessionContext => ({
   user: {
     id: isPublic ? "00000000-0000-0000-0000-000000000000" : users[role],
     email: `${role}@example.com`,

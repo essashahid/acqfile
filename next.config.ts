@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
+  logging: { incomingRequests: { ignore: [/^\/p(?:\/|$)/] } },
   turbopack: { root: process.cwd() },
   serverExternalPackages: ["pdfjs-dist", "mammoth", "postgres"],
   outputFileTracingIncludes: {

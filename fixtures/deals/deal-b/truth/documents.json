@@ -4286,5 +4286,611 @@
         "TAX_BUSINESS"
       ]
     }
+  },
+  {
+    "file": "incoming/batch-2/Corrections/ap-fixed.pdf",
+    "hash": "d05ce1d0573b4ccabf5dea3b67448e062c8c63640085f371cf63fcb36e66cd41",
+    "bytes": 2290,
+    "format": "text_pdf",
+    "batch": 2,
+    "pages": 1,
+    "segments": [
+      {
+        "id": "ap-fixed",
+        "document_version_id": "incoming/batch-2/Corrections/ap-fixed.pdf",
+        "file": "incoming/batch-2/Corrections/ap-fixed.pdf",
+        "metadata_locator": {
+          "file": "incoming/batch-2/Corrections/ap-fixed.pdf",
+          "page": 1,
+          "source_block": "ap-fixed-page-1",
+          "quote": "Signature: e-signed; Date: 2026-09-14"
+        },
+        "page_start": 1,
+        "page_end": 1,
+        "doc_type": "AGING_AP",
+        "party_id": "target",
+        "period": null,
+        "form_revision": null,
+        "signed": true,
+        "dated": true,
+        "signature_date": "2026-09-14",
+        "document_date": "2026-09-14",
+        "expected_page_count": 1,
+        "account_last_four": null,
+        "classification_method": "manual",
+        "classification_confidence": 1,
+        "status": "confirmed",
+        "is_current": true
+      }
+    ],
+    "facts": [
+      {
+        "id": "ap-fixed:aging.as_of_date",
+        "segment_id": "ap-fixed",
+        "subject_party_id": "target",
+        "attribute": "aging.as_of_date",
+        "value": "2026-08-31",
+        "normalized_value": "2026-08-31",
+        "unit": "date",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/ap-fixed.pdf",
+          "page": 1,
+          "source_block": "ap-fixed-page-1",
+          "quote": "as of date: 2026-08-31"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      }
+    ],
+    "planted_items": [
+      18
+    ],
+    "faults": [],
+    "pipeline": {
+      "duplicate_of": null,
+      "supersedes": [
+        "ap"
+      ],
+      "unreadable": false,
+      "bundle": false,
+      "planned_types": [
+        "AGING_AP"
+      ]
+    }
+  },
+  {
+    "file": "incoming/batch-2/Corrections/ar-fixed.pdf",
+    "hash": "43fd94fcfe445f9dd4a69badee3bc079c8ed09c6792acf7653b0dbfe9117a969",
+    "bytes": 2290,
+    "format": "text_pdf",
+    "batch": 2,
+    "pages": 1,
+    "segments": [
+      {
+        "id": "ar-fixed",
+        "document_version_id": "incoming/batch-2/Corrections/ar-fixed.pdf",
+        "file": "incoming/batch-2/Corrections/ar-fixed.pdf",
+        "metadata_locator": {
+          "file": "incoming/batch-2/Corrections/ar-fixed.pdf",
+          "page": 1,
+          "source_block": "ar-fixed-page-1",
+          "quote": "Signature: e-signed; Date: 2026-09-14"
+        },
+        "page_start": 1,
+        "page_end": 1,
+        "doc_type": "AGING_AR",
+        "party_id": "target",
+        "period": null,
+        "form_revision": null,
+        "signed": true,
+        "dated": true,
+        "signature_date": "2026-09-14",
+        "document_date": "2026-09-14",
+        "expected_page_count": 1,
+        "account_last_four": null,
+        "classification_method": "manual",
+        "classification_confidence": 1,
+        "status": "confirmed",
+        "is_current": true
+      }
+    ],
+    "facts": [
+      {
+        "id": "ar-fixed:aging.as_of_date",
+        "segment_id": "ar-fixed",
+        "subject_party_id": "target",
+        "attribute": "aging.as_of_date",
+        "value": "2026-08-31",
+        "normalized_value": "2026-08-31",
+        "unit": "date",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/ar-fixed.pdf",
+          "page": 1,
+          "source_block": "ar-fixed-page-1",
+          "quote": "as of date: 2026-08-31"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      }
+    ],
+    "planted_items": [
+      18
+    ],
+    "faults": [],
+    "pipeline": {
+      "duplicate_of": null,
+      "supersedes": [
+        "ar"
+      ],
+      "unreadable": false,
+      "bundle": false,
+      "planned_types": [
+        "AGING_AR"
+      ]
+    }
+  },
+  {
+    "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+    "hash": "0794277c8b5701daeb136356501792a3222370e7e267f060f884222530376012",
+    "bytes": 2707,
+    "format": "text_pdf",
+    "batch": 2,
+    "pages": 1,
+    "segments": [
+      {
+        "id": "funding-fixed",
+        "document_version_id": "incoming/batch-2/Corrections/funding-fixed.pdf",
+        "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+        "metadata_locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "Signature: e-signed; Date: 2026-09-14"
+        },
+        "page_start": 1,
+        "page_end": 1,
+        "doc_type": "SOURCES_USES",
+        "party_id": "buyer",
+        "period": null,
+        "form_revision": null,
+        "signed": true,
+        "dated": true,
+        "signature_date": "2026-09-14",
+        "document_date": "2026-09-14",
+        "expected_page_count": 1,
+        "account_last_four": null,
+        "classification_method": "manual",
+        "classification_confidence": 1,
+        "status": "confirmed",
+        "is_current": true
+      }
+    ],
+    "facts": [
+      {
+        "id": "funding-fixed:funding.sources",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "funding.sources",
+        "value": [
+          {
+            "label": "Senior loan",
+            "amount": 3420000
+          },
+          {
+            "label": "Cash injection",
+            "amount": 100000
+          },
+          {
+            "label": "Seller note",
+            "amount": 120000
+          },
+          {
+            "label": "Minority investor",
+            "amount": 60000
+          }
+        ],
+        "normalized_value": [
+          {
+            "label": "Senior loan",
+            "amount": 3420000
+          },
+          {
+            "label": "Cash injection",
+            "amount": 100000
+          },
+          {
+            "label": "Seller note",
+            "amount": 120000
+          },
+          {
+            "label": "Minority investor",
+            "amount": 60000
+          }
+        ],
+        "unit": "table",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "sources: Senior loan / 3420000; Cash injection / 100000; Seller note / 120000; Minority investor / 60000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:funding.uses",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "funding.uses",
+        "value": [
+          {
+            "label": "Purchase",
+            "amount": 3600000
+          },
+          {
+            "label": "Working capital",
+            "amount": 100000
+          }
+        ],
+        "normalized_value": [
+          {
+            "label": "Purchase",
+            "amount": 3600000
+          },
+          {
+            "label": "Working capital",
+            "amount": 100000
+          }
+        ],
+        "unit": "table",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "uses: Purchase / 3600000; Working capital / 100000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:funding.sources_total",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "funding.sources_total",
+        "value": 3700000,
+        "normalized_value": 3700000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "sources total: 3700000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:funding.uses_total",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "funding.uses_total",
+        "value": 3700000,
+        "normalized_value": 3700000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "uses total: 3700000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:deal.purchase_price",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "deal.purchase_price",
+        "value": 3600000,
+        "normalized_value": 3600000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "purchase price: 3600000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:deal.seller_note_amount",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "deal.seller_note_amount",
+        "value": 120000,
+        "normalized_value": 120000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "seller note amount: 120000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "funding-fixed:deal.seller_note_terms",
+        "segment_id": "funding-fixed",
+        "subject_party_id": "buyer",
+        "attribute": "deal.seller_note_terms",
+        "value": "Full lifetime standby",
+        "normalized_value": "Full lifetime standby",
+        "unit": "text",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/funding-fixed.pdf",
+          "page": 1,
+          "source_block": "funding-fixed-page-1",
+          "quote": "seller note terms: Full lifetime standby"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      }
+    ],
+    "planted_items": [
+      22
+    ],
+    "faults": [],
+    "pipeline": {
+      "duplicate_of": null,
+      "supersedes": [
+        "funding"
+      ],
+      "unreadable": false,
+      "bundle": false,
+      "planned_types": [
+        "SOURCES_USES"
+      ]
+    }
+  },
+  {
+    "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+    "hash": "9cdfa713ef944ad0d0cfdc549feef0c6cc3335831a8a5ab9bfe21e236e7addea",
+    "bytes": 2474,
+    "format": "text_pdf",
+    "batch": 2,
+    "pages": 1,
+    "segments": [
+      {
+        "id": "interim-fixed",
+        "document_version_id": "incoming/batch-2/Corrections/interim-fixed.pdf",
+        "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+        "metadata_locator": {
+          "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+          "page": 1,
+          "source_block": "interim-fixed-page-1",
+          "quote": "Signature: e-signed; Date: 2026-09-14"
+        },
+        "page_start": 1,
+        "page_end": 1,
+        "doc_type": "FIN_INTERIM",
+        "party_id": "target",
+        "period": null,
+        "form_revision": null,
+        "signed": true,
+        "dated": true,
+        "signature_date": "2026-09-14",
+        "document_date": "2026-09-14",
+        "expected_page_count": 1,
+        "account_last_four": null,
+        "classification_method": "manual",
+        "classification_confidence": 1,
+        "status": "confirmed",
+        "is_current": true
+      }
+    ],
+    "facts": [
+      {
+        "id": "interim-fixed:financial.period_end",
+        "segment_id": "interim-fixed",
+        "subject_party_id": "target",
+        "attribute": "financial.period_end",
+        "value": "2026-08-31",
+        "normalized_value": "2026-08-31",
+        "unit": "date",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+          "page": 1,
+          "source_block": "interim-fixed-page-1",
+          "quote": "period end: 2026-08-31"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "interim-fixed:financial.revenue",
+        "segment_id": "interim-fixed",
+        "subject_party_id": "target",
+        "attribute": "financial.revenue",
+        "value": 900000,
+        "normalized_value": 900000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+          "page": 1,
+          "source_block": "interim-fixed-page-1",
+          "quote": "revenue: 900000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "interim-fixed:financial.total_assets",
+        "segment_id": "interim-fixed",
+        "subject_party_id": "target",
+        "attribute": "financial.total_assets",
+        "value": 500000,
+        "normalized_value": 500000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+          "page": 1,
+          "source_block": "interim-fixed-page-1",
+          "quote": "total assets: 500000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      },
+      {
+        "id": "interim-fixed:financial.total_liabilities",
+        "segment_id": "interim-fixed",
+        "subject_party_id": "target",
+        "attribute": "financial.total_liabilities",
+        "value": 100000,
+        "normalized_value": 100000,
+        "unit": "USD",
+        "period": null,
+        "method": "text",
+        "locator": {
+          "file": "incoming/batch-2/Corrections/interim-fixed.pdf",
+          "page": 1,
+          "source_block": "interim-fixed-page-1",
+          "quote": "total liabilities: 100000"
+        },
+        "confidence": 1,
+        "confidence_components": {
+          "authored_fixture": 1
+        },
+        "validators_passed": true,
+        "actor": null,
+        "audit_event_id": null,
+        "record_version": 1,
+        "is_current": true
+      }
+    ],
+    "planted_items": [
+      18
+    ],
+    "faults": [],
+    "pipeline": {
+      "duplicate_of": null,
+      "supersedes": [
+        "interim"
+      ],
+      "unreadable": false,
+      "bundle": false,
+      "planned_types": [
+        "FIN_INTERIM"
+      ]
+    }
   }
 ]

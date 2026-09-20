@@ -1,0 +1,13 @@
+# Seven-minute walkthrough
+
+Prepare with `pnpm demo:seed`; save the fresh links and start `pnpm dev`. Use a 390px phone viewport for recipients and a separate adviser browser. The names and numbers below come from the authored fixtures, not the reference HTML. Contact Annetta Langworth is seeded presentation metadata. No CPA party exists in the accepted deal plans.
+
+- **0:00–1:00 — Kiel's home.** Open Kiel McDermott's Deal A link. Four things need attention. Explain “To do”, “With us for review” and “Done”; show the date and ability to leave and return.
+- **1:00–2:00 — The wrong year.** Open the 2024 personal tax return task. Choose the initial personal-return file in `fixtures/deals/deal-a/incoming/batch-1/` (the file whose truth entry has Kiel's 2023/2025 returns). The year is read from the document; the gentle note offers another copy or a person checking it. Staff can demonstrate a single extracted 2023 page too.
+- **2:00–3:00 — The correction.** Send the 2024 personal return from `fixtures/deals/deal-a/incoming/batch-2/`. Show the wait, capped at 20 seconds, and return to the list. “With us” means saved and being checked. The other two A corrections remain untouched.
+- **3:00–4:00 — The adviser.** Sign in as `adviser@example.com` / `acqfile-adviser`. Open Varnholt Climate Services. Show Questions, People and The lender file. A reminder opens email; it receives a date only after “I sent it”.
+- **4:00–5:00 — Purchase price.** Open “Which purchase price is right?” Read the cited source pages and the three distinct choices: 2,400,000, 2,410,000 and 2,425,000. Choose 2,400,000. The answer is audited; the other logical documents need corrected copies. No source fact is overwritten.
+- **5:00–6:00 — Staff review.** In the separate staff browser, open `/staff/deals`, Varnholt, and Jaylan's scanned personal financial statement. Inspect the source page and a pending value; accept only what the page shows. Customer pages never link to this workspace. Show Abe Welch's waiting home and Terrill Bernier's all-done home using their Deal B links.
+- **6:00–7:00 — A ready lender file.** Run `pnpm demo:b-ready`. This processes the four B correction files and uses authored truth for the remaining audited review, including the corrected funding profile. Open Quenby Grounds Management in the adviser browser and download the ready file. The lender's decision remains separate.
+
+The [screenshots](screenshots/phase-7/README.md) preserve all eleven reference structures at desktop and phone widths. There is no prototype Alex/Bea identity, no forced “three tasks”, and no claim that A becomes ready after its three fixes. Live scan accuracy remains unproven without an owner key.

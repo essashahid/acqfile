@@ -137,5 +137,39 @@ export function dealB() {
   doc(p, "plan").format = "docx";
   doc(p, "fin-2025").format = "xlsx";
   layout(p, 28);
+  // A91: authored corrections, independent of evaluation. Senior debt replaces
+  // 50,000 of claimed cash and 30,000 of limited investor equity; sources still total 3.7m.
+  const after = structuredClone(p.batches[0]!);
+  after.batch = 2;
+  after.profile = structuredClone(p.profile);
+  if (Array.isArray(after.profile.equity_sources)) {
+    after.profile.equity_sources.find((s) => s.id === "cash-alex")!.amount = 100000;
+    after.profile.equity_sources.find((s) => s.id === "minority-equity")!.amount = 60000;
+  }
+  after.resolves = [key("CON-07"), key("TGT-03", "target"), key("CON-08", "cash-alex")];
+  after.findings = [];
+  after.checklist.find((r) => r.item_id === "TGT-03" && r.scope_key === "target")!.status =
+    "satisfied";
+  p.batches.push(after);
+  for (const id of ["funding", "interim", "ar", "ap"]) {
+    const fixed = structuredClone(doc(p, id));
+    fixed.id = `${id}-fixed`;
+    fixed.batch = 2;
+    fixed.path = `incoming/batch-2/Corrections/${id}-fixed.pdf`;
+    fixed.format = "text_pdf";
+    fixed.group = undefined;
+    fixed.supersedes = id;
+    fixed.metadata.document_date = "2026-09-14";
+    fixed.metadata.signature_date = "2026-09-14";
+    if (id === "funding")
+      fixed.facts["funding.sources"] = [
+        { label: "Senior loan", amount: 3420000 },
+        { label: "Cash injection", amount: 100000 },
+        { label: "Seller note", amount: 120000 },
+        { label: "Minority investor", amount: 60000 },
+      ];
+    else fixed.facts[id === "interim" ? "financial.period_end" : "aging.as_of_date"] = "2026-08-31";
+    p.documents.push(fixed);
+  }
   return p;
 }

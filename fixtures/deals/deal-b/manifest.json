@@ -293,6 +293,54 @@
       "batch": 1,
       "planted_items": [],
       "plan_hash": "99931c436cde48749fccc7144bdbc8d7cd57acdfc429beca837628858ba6a46c"
+    },
+    {
+      "path": "incoming/batch-2/Corrections/ap-fixed.pdf",
+      "sha256": "d05ce1d0573b4ccabf5dea3b67448e062c8c63640085f371cf63fcb36e66cd41",
+      "bytes": 2290,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 2,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "019abdf17801b88d7015ef04d25baa7c4616ebbfa58a1df11361c6a95677ef4f"
+    },
+    {
+      "path": "incoming/batch-2/Corrections/ar-fixed.pdf",
+      "sha256": "43fd94fcfe445f9dd4a69badee3bc079c8ed09c6792acf7653b0dbfe9117a969",
+      "bytes": 2290,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 2,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "9ab523d5ad9a7f998b1a5d00798b3fe5f9caf4a0b7be04d83a9aacba5e8b9b8c"
+    },
+    {
+      "path": "incoming/batch-2/Corrections/funding-fixed.pdf",
+      "sha256": "0794277c8b5701daeb136356501792a3222370e7e267f060f884222530376012",
+      "bytes": 2707,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 2,
+      "planted_items": [
+        22
+      ],
+      "plan_hash": "0b1ebcae19a2730d782447405342dfd32b47a20216733ae893da0ddceb6f13d8"
+    },
+    {
+      "path": "incoming/batch-2/Corrections/interim-fixed.pdf",
+      "sha256": "9cdfa713ef944ad0d0cfdc549feef0c6cc3335831a8a5ab9bfe21e236e7addea",
+      "bytes": 2474,
+      "pages": 1,
+      "format": "text_pdf",
+      "batch": 2,
+      "planted_items": [
+        18
+      ],
+      "plan_hash": "d9486b8bb74b6d5f73c5b47e1dfacbda55eee6206f1fd92d6186f51a45d60710"
     }
   ],
   "archives": [
@@ -300,6 +348,11 @@
       "path": "batch-1.zip",
       "sha256": "1e9bcc221331f160beecb28394020adf45ec298bbe60d154f62ec6e44106bdf7",
       "bytes": 832199
+    },
+    {
+      "path": "batch-2.zip",
+      "sha256": "ec5b4da4d23aaabc1e42c96f0927cd0cbd934660145f61e15ad1c2199b47ac98",
+      "bytes": 6880
     }
   ],
   "truth": [
@@ -324,14 +377,34 @@
       "bytes": 3
     },
     {
+      "path": "truth/batch-2/engine_input.json",
+      "sha256": "11f54a7b419ac87a14d1d12a797e6849a7e7aeb3481f9f632de832e13d321280",
+      "bytes": 114537
+    },
+    {
+      "path": "truth/batch-2/expected_checklist.json",
+      "sha256": "2909cb4bf0b77c88ebc787be5aac700c228d4e22d9c44b4286ef44191e1a57d2",
+      "bytes": 8377
+    },
+    {
+      "path": "truth/batch-2/expected_findings.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "truth/batch-2/resolved_findings.json",
+      "sha256": "1106493906fe204cf2091de5887581b3cd001dc4bba5d44da75bb7d773950dc0",
+      "bytes": 64
+    },
+    {
       "path": "truth/deal.json",
       "sha256": "1dd07b77f37f8b2d21f90abe0f1ec17a2e12ad75b69a8f93141fe79a72100e1c",
       "bytes": 6436
     },
     {
       "path": "truth/documents.json",
-      "sha256": "5b0bfbc3189b5621211663f1e3299b4e910c350bcc6b7876103e6b15c684cfea",
-      "bytes": 129050
+      "sha256": "d1f96614efee7c6a620cb2fa03e1bf65b4bc3827cdea600bd545c44dc1639989",
+      "bytes": 146377
     },
     {
       "path": "truth/expected_review.json",

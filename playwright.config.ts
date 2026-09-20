@@ -1,3 +1,4 @@
+import { FIXTURE_HMAC_KEY } from "./fixtures/plans/shared";
 import { defineConfig, devices } from "@playwright/test";
 
 const port = Number(process.env.E2E_PORT ?? 3100);
@@ -28,7 +29,7 @@ export default defineConfig({
       AUTH_DRIVER: "local",
       PUBLIC_DEMO_MODE: "false",
       DEMO_MUTATIONS_ENABLED: "true",
-      PII_HMAC_KEY: "SYNTHETIC-E2E-HMAC-KEY-ONLY-NOT-PRODUCTION",
+      PII_HMAC_KEY: FIXTURE_HMAC_KEY,
     },
   },
 });

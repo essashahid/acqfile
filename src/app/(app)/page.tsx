@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
-/** The workspace opens on its deals (Phase 4: the inherited report dashboard was retired under A42). */
-export default function OverviewPage() {
-  redirect("/deals");
+import { requireWorkspace } from "@/lib/workspace";
+export default async function OverviewPage() {
+  const ctx = await requireWorkspace();
+  if (ctx.isPublic) redirect("/login");
+  redirect(ctx.workspace.role === "adviser" ? "/deals" : "/staff/deals");
 }

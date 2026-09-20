@@ -189,7 +189,7 @@ export function engineInput(p: Plan, batch: number) {
   const ids = new Set(segments.map((s) => s.id));
   const facts = files.flatMap((d) => d.facts).filter((f) => ids.has(f.segment_id));
   return EngineInputSchema.parse({
-    profile: p.profile,
+    profile: p.batches.filter((b) => b.batch <= batch && b.profile).at(-1)?.profile ?? p.profile,
     parties: p.parties,
     ownership: p.ownership,
     as_of: p.as_of,

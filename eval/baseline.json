@@ -1,12 +1,12 @@
 {
   "mode": "mock",
-  "recordedAt": "2026-09-20T09:36:34.429Z",
+  "recordedAt": "2026-09-20T17:11:15.074Z",
   "disclaimer": "Mock results say nothing about model quality.",
   "gates": [
     {
       "label": "Segment type",
-      "correct": 141,
-      "total": 141,
+      "correct": 145,
+      "total": 145,
       "measured": 100,
       "required": ">= 95%",
       "passed": true
@@ -21,8 +21,8 @@
     },
     {
       "label": "Party and period",
-      "correct": 141,
-      "total": 141,
+      "correct": 145,
+      "total": 145,
       "measured": 100,
       "required": ">= 90%",
       "passed": true
@@ -37,24 +37,24 @@
     },
     {
       "label": "Rule-feeding text facts",
-      "correct": 172,
-      "total": 177,
-      "measured": 97.17514124293785,
+      "correct": 185,
+      "total": 190,
+      "measured": 97.36842105263158,
       "required": ">= 95%",
       "passed": true
     },
     {
       "label": "Quote in cited block",
-      "correct": 194,
-      "total": 196,
-      "measured": 98.9795918367347,
+      "correct": 207,
+      "total": 209,
+      "measured": 99.04306220095694,
       "required": ">= 98%",
       "passed": true
     },
     {
       "label": "Checklist status after review",
-      "correct": 295,
-      "total": 295,
+      "correct": 371,
+      "total": 371,
       "measured": 100,
       "required": ">= 95%",
       "passed": true
@@ -150,6 +150,17 @@
       "batch": 1,
       "checklistRows": 76,
       "findings": 3,
+      "beforeFalseSatisfied": [],
+      "afterFalseSatisfied": [],
+      "mismatchedRows": [],
+      "unexpectedFindings": [],
+      "missingFindings": []
+    },
+    {
+      "deal": "deal-b",
+      "batch": 2,
+      "checklistRows": 76,
+      "findings": 0,
       "beforeFalseSatisfied": [],
       "afterFalseSatisfied": [],
       "mismatchedRows": [],
@@ -661,7 +672,7 @@
       "reviewItems": 15,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 9040
+      "wallClockMs": 14891
     },
     {
       "deal": "deal-b",
@@ -671,8 +682,8 @@
           6
         ],
         "text": [
-          63,
-          65
+          76,
+          78
         ],
         "vision": [
           0,
@@ -686,7 +697,7 @@
       "reviewItems": 4,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 3593
+      "wallClockMs": 4793
     },
     {
       "deal": "deal-c",
@@ -711,7 +722,7 @@
       "reviewItems": 60,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 6704
+      "wallClockMs": 7439
     }
   ],
   "facts": {
@@ -720,8 +731,8 @@
       14
     ],
     "text": [
-      172,
-      177
+      185,
+      190
     ],
     "vision": [
       59,

@@ -11,7 +11,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . && tsx scripts/check-customer-copy.ts",
     "typecheck": "next typegen && tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -29,7 +29,9 @@
     "rules:check": "tsx scripts/check-rules.ts",
     "rules:export-review": "tsx scripts/export-rules-review.ts",
     "fixtures:check": "tsx scripts/check-deal-fixtures.ts",
-    "eval:live": "tsx scripts/run-live-evals.ts"
+    "eval:live": "tsx scripts/run-live-evals.ts",
+    "demo:seed": "tsx scripts/seed-demo.ts",
+    "demo:b-ready": "tsx scripts/demo-b-ready.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.3.3",

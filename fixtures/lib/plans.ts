@@ -144,6 +144,7 @@ export const PlanSchema = z.object({
         }),
       ),
       resolves: z.array(z.string()),
+      profile: DealProfileSchema.optional(),
     }),
   ),
 });

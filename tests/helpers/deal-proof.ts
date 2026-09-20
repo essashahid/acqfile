@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { and, eq } from "drizzle-orm";
 import { getDb, getSql, schema } from "@/lib/db/client";
-import { saveDeal } from "@/lib/deals/service";
+import { saveDeal, requireDeal } from "@/lib/deals/service";
 import { intake } from "@/lib/deals/intake";
 import { processDealRun, extractAfterReview } from "@/lib/deals/process";
 import { reviewFile, type FilingRecord } from "@/lib/deals/filing";
@@ -64,6 +64,18 @@ export async function attestTruth(
   }
 }
 export async function uploadFixture(ctx: SessionContext, d: FixtureDeal, batch: number) {
+  const authored = readTruth(d.code, `batch-${batch}/engine_input`);
+  const deal = await requireDeal(ctx, d.id);
+  if (batch > 1 && d.code === "deal-b") {
+    await unlimited();
+    await saveDeal(
+      ctx,
+      { ...readTruth(d.code, "deal"), code: deal.code, name: deal.name, profile: authored.profile },
+      d.id,
+      deal.revision,
+    );
+  }
+
   await unlimited();
   const upload = await intake(ctx, d.id, [
     {

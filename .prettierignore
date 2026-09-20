@@ -3,3 +3,6 @@ fixtures/deals
 docs/RULEPACK_REVIEW.html
 /eval/
 .next
+
+# Supplied reference HTML is retained verbatim.
+docs/design/*.html

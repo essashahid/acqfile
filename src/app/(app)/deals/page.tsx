@@ -1,50 +1,49 @@
 import Link from "next/link";
-import { eq, desc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
-import { requireWorkspace } from "@/lib/workspace";
-import { mutationAllowed } from "@/lib/access";
-export default async function DealsPage() {
-  const ctx = await requireWorkspace();
+import { adviserContext, portalData } from "@/lib/portal/service";
+import { Shell, adviserStages } from "@/components/portal/Shell";
+export default async function Deals() {
+  const ctx = await adviserContext();
   const deals = await getDb()
     .select()
     .from(schema.deals)
-    .where(eq(schema.deals.workspaceId, ctx.workspace.workspaceId))
-    .orderBy(desc(schema.deals.createdAt));
+    .where(eq(schema.deals.workspaceId, ctx.workspace.workspaceId));
+  const all = await Promise.all(deals.map((d) => portalData(d.id)));
   return (
-    <div className="space-y-5">
-      <div className="flex justify-between">
-        <h1 className="text-2xl font-semibold">Deals</h1>
-        {mutationAllowed(ctx) && (
-          <Link className="underline" href="/deals/new">
-            Create deal
-          </Link>
-        )}
-      </div>
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr>
-            <th>Deal</th>
-            <th>Status</th>
-            <th>Rule pack (unverified)</th>
-            <th>Overlay</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deals.map((d) => (
-            <tr key={d.id} className="border-b">
-              <td className="py-3">
-                <Link className="underline" href={`/deals/${d.id}`}>
-                  {d.code} · {d.name}
-                </Link>
-              </td>
-              <td>{d.status}</td>
-              <td>{d.rulePackVersion}</td>
-              <td>{d.overlayId ?? "Base"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {!deals.length && <p>No deals yet.</p>}
-    </div>
+    <Shell
+      firm={all[0]?.workspace.firmName ?? "Your adviser"}
+      contact={all[0]?.data.deal.contactName ?? ctx.user.displayName}
+      email={all[0]?.data.deal.contactEmail ?? ctx.user.email}
+      stages={adviserStages()}
+    >
+      <h1>Your deals</h1>
+      <p className="mb-9">See who needs your help and what happens next.</p>
+      {all.map((p) => {
+        const people = p.data.parties.filter((person) =>
+          p.mapped.tasks.some((t) => t.partyId === person.id && t.state === "To do"),
+        );
+        return (
+          <div
+            className="row flex flex-col justify-between gap-4 sm:flex-row sm:items-center"
+            key={p.data.deal.id}
+          >
+            <div>
+              <h3>{p.data.deal.name}</h3>
+              <p>
+                {people.length
+                  ? `Waiting on ${people.map((p) => p.legalName).join(", ")}.`
+                  : p.mapped.ready
+                    ? "The lender file is ready."
+                    : "We're checking the documents."}
+              </p>
+            </div>
+            <Link className="button primary" href={`/deals/${p.data.deal.id}`}>
+              Open deal
+            </Link>
+          </div>
+        );
+      })}
+    </Shell>
   );
 }

@@ -36,6 +36,29 @@ describe("independent deal plans", () => {
         );
       });
   }
+  it("B's authored correction model ties before the oracle reads it", () => {
+    const p = all.find((p) => p.id === "deal-b")!,
+      after = p.batches.find((b) => b.batch === 2)!;
+    const funding = doc(p, "funding-fixed");
+    const sources = funding.facts["funding.sources"] as { amount: number }[];
+    expect(sources.reduce((n, s) => n + s.amount, 0)).toBe(funding.facts["funding.uses_total"]);
+    const equity = after.profile!.equity_sources;
+    expect(Array.isArray(equity)).toBe(true);
+    if (Array.isArray(equity)) {
+      expect(equity.find((s) => s.id === "cash-alex")!.amount).toBe(
+        doc(p, "bank-aug").facts["bank.ending_balance"],
+      );
+      expect(
+        Number(equity.find((s) => s.id === "minority-equity")!.amount) + 120000,
+      ).toBeLessThanOrEqual(Number(funding.facts["funding.uses_total"]) * 0.05);
+    }
+    expect(doc(p, "ar-fixed").facts["aging.as_of_date"]).toBe(
+      doc(p, "interim-fixed").facts["financial.period_end"],
+    );
+    expect(doc(p, "ap-fixed").facts["aging.as_of_date"]).toBe(
+      doc(p, "interim-fixed").facts["financial.period_end"],
+    );
+  });
   it("three and only three A fixes arrive in batch 2", () => {
     const p = all[0]!;
     expect(new Set(p.documents.filter((d) => d.batch === 2).map((d) => d.path)).size).toBe(3);
@@ -100,7 +123,7 @@ describe("rendered fixture proof without the application pipeline", () => {
   it("all committed files are readable in their declared format and match truth locators", async () => {
     const { verifyFiles } = await import("../../fixtures/lib/verify");
     const result = await verifyFiles();
-    expect(result.map((r) => r.files)).toEqual([40, 28, 22]);
+    expect(result.map((r) => r.files)).toEqual([40, 32, 22]);
   }, 60000);
   it("synthetic lint rejects unsafe identifier/contact ranges", async () => {
     const { lintSynthetic } = await import("../../fixtures/lib/verify");

@@ -342,3 +342,126 @@ mark {
   color: var(--accent);
   animation: eo-blink 1s steps(1) infinite;
 }
+
+/* Phase 7 presentation: shared palette; staff retains its working layout. */
+:root {
+  --bg: #f7f6f2;
+  --surface: #fff;
+  --surface-sunken: #f0eee8;
+  --line: #e4e1d8;
+  --fg: #14202b;
+  --muted: #5a6875;
+  --accent: #12355b;
+  --accent-hover: #0d2948;
+  --warn: #8a5a00;
+  --warn-soft: #fbf3df;
+  --ok: #1e6b45;
+  --ok-soft: #e8f3ec;
+}
+body {
+  font-family: var(--font-public), sans-serif;
+}
+.portal {
+  color: #2c3a47;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.portal h1,
+.portal h2.headline,
+.portal .firm {
+  font-family: var(--font-headline), serif;
+  color: #14202b;
+}
+.portal h1 {
+  font-size: clamp(32px, 3vw, 42px);
+  font-weight: 650;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  margin: 18px 0;
+}
+.portal h2 {
+  font-size: 18px;
+  font-weight: 650;
+  color: #14202b;
+}
+.portal h3 {
+  font-size: 19px;
+  font-weight: 650;
+  color: #14202b;
+}
+.portal button,
+.portal input,
+.portal select,
+.portal textarea {
+  font: inherit;
+}
+.portal button,
+.portal .button {
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 11px 22px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 650;
+  cursor: pointer;
+}
+.portal .primary {
+  background: #12355b;
+  color: white;
+  border: 1px solid #12355b;
+}
+.portal .secondary {
+  background: white;
+  color: #14202b;
+  border: 1px solid #c3c0b8;
+}
+.portal .text-link {
+  color: #12355b;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.portal input:not([type="radio"]):not([type="checkbox"]):not([type="file"]),
+.portal textarea,
+.portal select {
+  border: 1px solid #b7b3aa;
+  border-radius: 10px;
+  background: white;
+  min-height: 48px;
+  padding: 10px 12px;
+  width: 100%;
+}
+.portal input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #12355b;
+}
+.portal :focus-visible {
+  outline: 3px solid #12355b;
+  outline-offset: 4px;
+}
+.portal .muted {
+  color: #5a6875;
+  font-size: 15px;
+}
+.portal .row {
+  border-top: 1px solid #e4e1d8;
+  padding: 24px 0;
+}
+.portal .notice {
+  padding: 24px 28px;
+  border-radius: 14px;
+  background: #fbf3df;
+}
+.portal .aside-panel {
+  background: white;
+  border: 1px solid #e4e1d8;
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+
+.portal form:has(input[type="file"]:focus-visible) label[for="upload-files"] {
+  outline: 3px solid #12355b;
+  outline-offset: 4px;
+}

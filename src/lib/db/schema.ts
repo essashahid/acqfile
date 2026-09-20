@@ -26,6 +26,7 @@ export const workspaces = pgTable("workspaces", {
   id: uuid("id").primaryKey().defaultRandom(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
+  firmName: text("firm_name").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -38,7 +39,7 @@ export const workspaceMembers = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => appUsers.id),
-    role: text("role", { enum: ["admin", "reviewer", "viewer"] }).notNull(),
+    role: text("role", { enum: ["admin", "reviewer", "viewer", "adviser"] }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.workspaceId, t.userId] })],

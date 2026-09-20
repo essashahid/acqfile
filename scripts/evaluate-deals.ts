@@ -89,7 +89,7 @@ export async function runEvaluation(live = false) {
       [];
     const scans = empty(),
       dealFacts: Record<string, Tally> = { acroform: empty(), text: empty(), vision: empty() };
-    for (let batch = 1; batch <= (d.code === "deal-a" && !live ? 2 : 1); batch++) {
+    for (let batch = 1; batch <= (live ? 1 : plan.batches.length); batch++) {
       await attestTruth(ctx, d, batch);
       const upload = await uploadFixture(ctx, d, batch);
       // Measure classification before the truth operator changes any boundaries.

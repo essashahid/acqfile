@@ -23,6 +23,9 @@ export const deals = pgTable("deals", {
   profileJson: jsonb("profile_json").$type<DealProfile>().notNull(),
   rulePackVersion: text("rule_pack_version").notNull(),
   overlayId: text("overlay_id"),
+  contactName: text("contact_name").notNull().default(""),
+  contactEmail: text("contact_email").notNull().default(""),
+  sendBy: date("send_by"),
   asOfDate: date("as_of_date").notNull(),
   targetSubmissionDate: date("target_submission_date"),
   expectedLoanNumberDate: date("expected_loan_number_date"),
@@ -252,6 +255,29 @@ export const attestations = pgTable("attestations", {
   confirmed: boolean("confirmed"),
   note: text("note").notNull(),
   actorId: uuid("actor_id").notNull(),
+  auditEventId: uuid("audit_event_id").notNull(),
+  createdAt: created(),
+});
+
+// A93: token plaintext is never stored; responses include upload/task associations and human messages.
+export const portalLinks = pgTable("portal_links", {
+  id: id(),
+  dealId: uuid("deal_id").notNull(),
+  partyId: uuid("party_id").notNull(),
+  tokenHash: text("token_hash").notNull().unique(),
+  createdBy: uuid("created_by").notNull(),
+  created: date("created").notNull(),
+  revoked: date("revoked"),
+  lastSeen: date("last_seen"),
+});
+export const portalResponses = pgTable("portal_responses", {
+  id: id(),
+  dealId: uuid("deal_id").notNull(),
+  partyId: uuid("party_id"),
+  linkId: uuid("link_id"),
+  taskKey: text("task_key").notNull(),
+  kind: text("kind").notNull(),
+  payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
   auditEventId: uuid("audit_event_id").notNull(),
   createdAt: created(),
 });
