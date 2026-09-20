@@ -9,7 +9,7 @@ export function IntakeForm({ dealId }: { dealId: string }) {
   const [message, setMessage] = useState("");
   return (
     <form
-      className="rounded border p-4 space-y-3"
+      className="space-y-3"
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
@@ -30,8 +30,8 @@ export function IntakeForm({ dealId }: { dealId: string }) {
         }
       }}
     >
-      <label className="block">
-        Files or ZIP
+      <label className="flex flex-col gap-1">
+        <span className="eyebrow">Files or ZIP</span>
         <input
           aria-label="Files or ZIP"
           type="file"
@@ -39,8 +39,8 @@ export function IntakeForm({ dealId }: { dealId: string }) {
           onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
         />
       </label>
-      <label className="block">
-        Folder
+      <label className="flex flex-col gap-1">
+        <span className="eyebrow">Folder</span>
         <input
           aria-label="Folder"
           type="file"
@@ -49,11 +49,13 @@ export function IntakeForm({ dealId }: { dealId: string }) {
           onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
         />
       </label>
-      <p>{files.length} selected. Up to 200 files, 10 MB each, 100 MB expanded.</p>
-      <button disabled={busy || !files.length} className="rounded bg-teal-800 text-white px-3 py-2">
+      <p className="meta">{files.length} selected. Up to 200 files, 10 MB each, 100 MB expanded.</p>
+      <button disabled={busy || !files.length} className="btn btn-primary">
         {busy ? "Processing batch…" : "Upload batch"}
       </button>
-      <p role="status">{message}</p>
+      <p role="status" className="meta min-h-[1.2em]" aria-live="polite">
+        {message}
+      </p>
     </form>
   );
 }

@@ -8,6 +8,7 @@ import { sourceUrl } from "@/lib/deals/source-url";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import type { FilingRecord } from "@/lib/deals/filing";
 import { FileReview } from "../../../FileReview";
+import { PageHead, Pill } from "@/components/staff";
 export default async function FilePage({
   params,
   searchParams,
@@ -47,12 +48,22 @@ export default async function FilePage({
       ),
     );
   return (
-    <div className="space-y-5">
-      <Link href={`/staff/deals/${dealId}`} className="underline">
-        Back to deal
-      </Link>
-      <h1 className="text-xl font-semibold">{version.sourceFilename}</h1>
-      <p className="text-sm font-mono break-all">SHA-256 {version.contentHash}</p>
+    <div>
+      <PageHead
+        eyebrow={
+          <Link href={`/staff/deals/${dealId}`} className="link">
+            Back to the deal
+          </Link>
+        }
+        title={version.sourceFilename}
+        subtitle={
+          <>
+            {version.pageCount ?? 1} {version.pageCount === 1 ? "page" : "pages"} · SHA-256{" "}
+            {version.contentHash.slice(0, 16)}…
+          </>
+        }
+        actions={<Pill value={version.parseStatus} />}
+      />
       <FileReview
         initialPage={Math.max(
           1,

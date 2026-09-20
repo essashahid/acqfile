@@ -1,8 +1,7 @@
 import { PRODUCT_NAME } from "@/lib/product";
 import Link from "next/link";
 import { GitBranch, Lock, ShieldCheck, UserCheck } from "lucide-react";
-import { PageHeader } from "@/components/PageHeader";
-import { Panel, PanelBody, PanelHeader } from "@/components/ui/panel";
+import { Card, PageHead } from "@/components/staff";
 
 const PRINCIPLES = [
   {
@@ -56,15 +55,14 @@ const STEPS = [
 
 export default function HowItWorksPage() {
   return (
-    <div className="space-y-6">
-      <PageHeader
+    <>
+      <PageHead
         title="How it works"
         subtitle={`${PRODUCT_NAME} prepares an acquisition loan file from supplied documents. Flags are preparation aids for lender review, not determinations.`}
       />
-      <Panel>
-        <PanelHeader title="From intake to evaluation" />
-        <PanelBody>
-          <ol className="space-y-3 text-sm">
+      <div className="space-y-5">
+        <Card title="From intake to evaluation">
+          <ol className="space-y-3">
             {STEPS.map(([title, body], i) => (
               <li key={title}>
                 <span className="font-semibold">
@@ -74,33 +72,31 @@ export default function HowItWorksPage() {
               </li>
             ))}
           </ol>
-        </PanelBody>
-      </Panel>
-      <div className="grid gap-4 md:grid-cols-2">
-        {PRINCIPLES.map(({ icon: Icon, title, body }) => (
-          <Panel key={title}>
-            <PanelBody>
+        </Card>
+        <div className="grid gap-5 md:grid-cols-2">
+          {PRINCIPLES.map(({ icon: Icon, title, body }) => (
+            <Card key={title}>
               <div className="flex items-start gap-3">
-                <Icon size={18} aria-hidden className="mt-0.5 shrink-0" />
+                <Icon size={18} aria-hidden className="mt-0.5 shrink-0 text-[var(--accent)]" />
                 <div>
-                  <p className="font-semibold">{title}</p>
-                  <p className="text-sm text-[var(--muted)]">{body}</p>
+                  <h3>{title}</h3>
+                  <p className="meta mt-1">{body}</p>
                 </div>
               </div>
-            </PanelBody>
-          </Panel>
-        ))}
+            </Card>
+          ))}
+        </div>
+        <p>
+          <Link href="/staff/deals" className="link">
+            Open the deals
+          </Link>{" "}
+          or{" "}
+          <Link href="/staff/rulepacks" className="link">
+            read the rule packs
+          </Link>
+          .
+        </p>
       </div>
-      <p className="text-sm">
-        <Link href="/staff/deals" className="underline">
-          Open the deals
-        </Link>{" "}
-        or{" "}
-        <Link href="/staff/rulepacks" className="underline">
-          read the rule packs
-        </Link>
-        .
-      </p>
-    </div>
+    </>
   );
 }

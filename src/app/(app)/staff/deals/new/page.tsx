@@ -1,14 +1,28 @@
 import { requireStaff } from "@/lib/workspace";
 import { mutationAllowed } from "@/lib/access";
 import { DealEditor } from "../DealEditor";
+import { Card, PageHead } from "@/components/staff";
+
 export default async function NewDeal() {
   const ctx = await requireStaff();
-  if (!mutationAllowed(ctx)) return <p>This workspace is read-only.</p>;
+  if (!mutationAllowed(ctx))
+    return (
+      <>
+        <PageHead title="Create deal" />
+        <Card>
+          <p className="meta">This workspace is read-only.</p>
+        </Card>
+      </>
+    );
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-semibold">Create deal</h1>
-      <p>Enter known details. Use unknown where information has not been supplied.</p>
-      <DealEditor />
-    </div>
+    <>
+      <PageHead
+        title="Create deal"
+        subtitle="Enter known details. Use unknown where information has not been supplied."
+      />
+      <Card>
+        <DealEditor />
+      </Card>
+    </>
   );
 }

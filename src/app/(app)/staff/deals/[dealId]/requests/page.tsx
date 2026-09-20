@@ -4,36 +4,78 @@ import { mutationAllowed } from "@/lib/access";
 import { buildDrafts, listRequests, ageInDays } from "@/lib/deliverables/requests";
 import { sentAction } from "../../deliverable-actions";
 import { CopyDraft } from "../../CopyDraft";
-import { DeliverableNav } from "../DeliverableNav";
+import { Card, DealTabs, Empty, PageHead } from "@/components/staff";
+
 export default async function Page({ params }: { params: Promise<{ dealId: string }> }) {
   const { dealId } = await params;
   const ctx = await requireStaff();
-  await requireDeal(ctx, dealId);
+  const deal = await requireDeal(ctx, dealId);
   const drafts = await buildDrafts(ctx, dealId);
   const sent = await listRequests(dealId);
+  const editable = mutationAllowed(ctx);
   return (
     <>
-      <DeliverableNav dealId={dealId} />
-      <h1>Requests</h1>
-      <p>Drafts only. Nothing is sent by the system.</p>
-      {drafts.map((d) => (
-        <section className="border-b py-3" key={d.responsible}>
-          <h2>{d.responsible}</h2>
-          <pre className="whitespace-pre-wrap">{d.body}</pre>
-          <CopyDraft body={d.body} />
-          {mutationAllowed(ctx) && (
-            <form action={sentAction.bind(null, dealId, d.responsible)}>
-              <button>Mark as sent</button>
-            </form>
+      <PageHead
+        eyebrow={deal.code}
+        title="Requests"
+        subtitle="Drafts you copy and send yourself. The system never sends anything."
+      />
+      <DealTabs dealId={dealId} current="requests" />
+      <div className="space-y-5">
+        {drafts.map((d) => (
+          <Card
+            key={d.responsible}
+            title={d.responsible}
+            description={`${d.findingKeys.length} open ${d.findingKeys.length === 1 ? "item" : "items"}`}
+            actions={
+              <>
+                <CopyDraft body={d.body} />
+                {editable ? (
+                  <form action={sentAction.bind(null, dealId, d.responsible)}>
+                    <button className="btn btn-primary btn-sm">Mark as sent</button>
+                  </form>
+                ) : null}
+              </>
+            }
+          >
+            <pre className="max-h-[26rem] overflow-auto whitespace-pre-wrap rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6">
+              {d.body}
+            </pre>
+          </Card>
+        ))}
+        {!drafts.length ? (
+          <Card>
+            <Empty>No open findings, so there is nothing to ask for.</Empty>
+          </Card>
+        ) : null}
+
+        <Card title="Sent history" flush={sent.length > 0}>
+          {sent.length ? (
+            <table className="grid">
+              <thead>
+                <tr>
+                  <th>Party</th>
+                  <th>Marked sent</th>
+                  <th>Age</th>
+                  <th>Items</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sent.map((r) => (
+                  <tr key={r.id}>
+                    <td className="font-medium">{r.responsible}</td>
+                    <td className="num">{r.sentAt?.toISOString().slice(0, 10) ?? "—"}</td>
+                    <td className="num">{ageInDays(r.sentAt)} days</td>
+                    <td className="num">{r.findingKeys.length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <Empty>Nothing marked as sent yet.</Empty>
           )}
-        </section>
-      ))}
-      <h2>Sent history</h2>
-      {sent.map((r) => (
-        <p key={r.id}>
-          {r.responsible} · {ageInDays(r.sentAt)} days · {r.findingKeys.length} findings
-        </p>
-      ))}
+        </Card>
+      </div>
     </>
   );
 }

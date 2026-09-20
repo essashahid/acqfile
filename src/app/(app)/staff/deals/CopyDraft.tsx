@@ -4,6 +4,7 @@ export function CopyDraft({ body }: { body: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
+      className="btn btn-sm"
       onClick={async () => {
         await navigator.clipboard.writeText(body);
         setCopied(true);

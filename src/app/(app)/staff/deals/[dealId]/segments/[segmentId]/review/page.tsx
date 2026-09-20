@@ -8,6 +8,7 @@ import { parsedVersion } from "@/lib/deals/blocks";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import { PENDING } from "@/lib/evaluation/run";
 import { FactReview, type ReviewFact, type ReviewGap } from "../../../../FactReview";
+import { PageHead, Pill } from "@/components/staff";
 export default async function SegmentReviewPage({
   params,
 }: {
@@ -82,23 +83,35 @@ export default async function SegmentReviewPage({
     attribute: g.attribute,
     reason: g.reason,
   }));
+  const pending = rows.filter((r) => (PENDING as readonly string[]).includes(r.routing)).length;
   return (
-    <div className="space-y-5">
-      <Link href={`/staff/deals/${dealId}`} className="underline">
-        Back to deal
-      </Link>
-      <h1 className="text-xl font-semibold">
-        {segment.docType} · {party?.legalName ?? "No party"} · {segment.period ?? "No period"}
-      </h1>
-      <p className="text-sm">
-        {version?.sourceFilename} · pages {segment.pageStart}–{segment.pageEnd} ·{" "}
-        <Link
-          className="underline"
-          href={`/staff/deals/${dealId}/files/${segment.documentVersionId}`}
-        >
-          Filing
-        </Link>
-      </p>
+    <div>
+      <PageHead
+        eyebrow={
+          <Link href={`/staff/deals/${dealId}`} className="link">
+            Back to the deal
+          </Link>
+        }
+        title={`${segment.docType} · ${party?.legalName ?? "No party"}`}
+        subtitle={
+          <>
+            {segment.period ?? "No period"} · {version?.sourceFilename} · pages {segment.pageStart}–
+            {segment.pageEnd} ·{" "}
+            <Link
+              className="link"
+              href={`/staff/deals/${dealId}/files/${segment.documentVersionId}`}
+            >
+              Filing
+            </Link>
+          </>
+        }
+        actions={
+          <>
+            <Pill value={segment.status} />
+            {pending ? <span className="pill pill-warn">{pending} pending</span> : null}
+          </>
+        }
+      />
       <FactReview
         dealId={dealId}
         segmentId={segmentId}

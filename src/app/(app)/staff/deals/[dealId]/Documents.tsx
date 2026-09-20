@@ -86,69 +86,111 @@ export async function DealDocuments({
       });
   }
   return (
-    <section className="space-y-5">
-      <h2 className="text-xl font-semibold">Documents</h2>
-      <h3 className="font-semibold">Inbox · needs review</h3>
-      <ul className="divide-y">
-        {reviews.map((r) => (
-          <li key={r.id} className="py-2">
-            <Link
-              className="underline"
-              href={`/staff/deals/${dealId}/files/${r.documentVersionId}`}
-            >
-              {versions.find((v) => v.id === r.documentVersionId)?.sourceFilename} · {r.type}
-            </Link>
-            <span className="ml-3 text-sm">
-              {r.priority === "high" ? "High priority · " : ""}
-              {r.reason}
-            </span>
-          </li>
-        ))}
-      </ul>
-      {!reviews.length && <p>No open filing reviews.</p>}
-      <h3 className="font-semibold">Filed documents</h3>
-      {[...new Set(filed.map((f) => f.folder))].sort().map((folder) => (
-        <details key={folder} open>
-          <summary className="font-medium">{folder}</summary>
-          <ul>
-            {filed
-              .filter((f) => f.folder === folder)
-              .map((f) => (
-                <li className="py-1 pl-4 text-sm" key={f.id}>
-                  <Link className="underline" href={`/staff/deals/${dealId}/files/${f.versionId}`}>
-                    {f.label}
+    <section className="card">
+      <div className="card-head">
+        <h2 className="text-[17px]">Documents</h2>
+        <div className="flex flex-wrap items-center gap-2">
+          {reviews.length ? (
+            <span className="pill pill-warn">{reviews.length} need review</span>
+          ) : null}
+          <span className="pill pill-quiet">{filed.length} filed</span>
+        </div>
+      </div>
+
+      <div className="card-body flush">
+        <div className="rowline">
+          <h3 className="mb-2">Inbox · needs review</h3>
+          {reviews.length ? (
+            <ul className="space-y-2">
+              {reviews.map((r) => (
+                <li key={r.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  {r.priority === "high" ? (
+                    <span className="pill pill-bad">High</span>
+                  ) : (
+                    <span className="pill pill-quiet">{r.type.replaceAll("_", " ")}</span>
+                  )}
+                  <Link
+                    className="link"
+                    href={`/staff/deals/${dealId}/files/${r.documentVersionId}`}
+                  >
+                    {versions.find((v) => v.id === r.documentVersionId)?.sourceFilename}
                   </Link>
+                  <span className="meta">{r.reason}</span>
                 </li>
               ))}
-          </ul>
-        </details>
-      ))}
-      {events.length > 0 && (
-        <div>
-          <h3 className="font-semibold">Supersession history</h3>
-          {events.map((e) => {
-            const newer = segments.find((s) => s.id === e.entityId);
-            return (
-              <div key={e.id} className="flex gap-3 py-2">
-                <span>{newer?.docType} · earlier segment superseded</span>
-                {editable && newer?.isCurrent && (
-                  <form action={undoAction.bind(null, dealId, e.id)}>
-                    <button className="underline">Undo supersession</button>
-                  </form>
-                )}
-              </div>
-            );
-          })}
+            </ul>
+          ) : (
+            <p className="meta">No open filing reviews.</p>
+          )}
         </div>
-      )}
-      {editable &&
-        runs
-          .filter((r) => r.configJson.dealId === dealId)
-          .map((r) => (
-            <form key={r.id} action={retryDealRunAction.bind(null, dealId, r.id)}>
-              <button className="underline">Retry incomplete batch</button>
-            </form>
-          ))}
+
+        <div className="rowline">
+          <h3 className="mb-2">Filed documents</h3>
+          {filed.length ? (
+            <div className="space-y-2">
+              {[...new Set(filed.map((f) => f.folder))].sort().map((folder) => (
+                <details key={folder} open>
+                  <summary className="cursor-pointer font-medium">
+                    {folder}{" "}
+                    <span className="meta">
+                      ({filed.filter((f) => f.folder === folder).length})
+                    </span>
+                  </summary>
+                  <ul className="mt-1.5 space-y-1 pl-4">
+                    {filed
+                      .filter((f) => f.folder === folder)
+                      .map((f) => (
+                        <li key={f.id}>
+                          <Link
+                            className="link"
+                            href={`/staff/deals/${dealId}/files/${f.versionId}`}
+                          >
+                            {f.label}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                </details>
+              ))}
+            </div>
+          ) : (
+            <p className="meta">Nothing filed yet.</p>
+          )}
+        </div>
+
+        {events.length > 0 ? (
+          <div className="rowline">
+            <h3 className="mb-2">Supersession history</h3>
+            <ul className="space-y-2">
+              {events.map((e) => {
+                const newer = segments.find((s) => s.id === e.entityId);
+                return (
+                  <li key={e.id} className="flex flex-wrap items-center gap-3">
+                    <span>{newer?.docType} · earlier segment superseded</span>
+                    {editable && newer?.isCurrent ? (
+                      <form action={undoAction.bind(null, dealId, e.id)}>
+                        <button className="btn btn-sm">Undo supersession</button>
+                      </form>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
+
+        {editable && runs.filter((r) => r.configJson.dealId === dealId).length ? (
+          <div className="rowline flex flex-wrap gap-2">
+            {runs
+              .filter((r) => r.configJson.dealId === dealId)
+              .map((r) => (
+                <form key={r.id} action={retryDealRunAction.bind(null, dealId, r.id)}>
+                  <button className="btn btn-sm">Retry incomplete batch</button>
+                </form>
+              ))}
+          </div>
+        ) : null}
+      </div>
     </section>
   );
 }

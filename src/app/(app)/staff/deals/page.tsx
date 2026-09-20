@@ -3,6 +3,8 @@ import { eq, desc } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { requireStaff } from "@/lib/workspace";
 import { mutationAllowed } from "@/lib/access";
+import { Card, Empty, PageHead, Pill } from "@/components/staff";
+
 export default async function DealsPage() {
   const ctx = await requireStaff();
   const deals = await getDb()
@@ -11,40 +13,55 @@ export default async function DealsPage() {
     .where(eq(schema.deals.workspaceId, ctx.workspace.workspaceId))
     .orderBy(desc(schema.deals.createdAt));
   return (
-    <div className="space-y-5">
-      <div className="flex justify-between">
-        <h1 className="text-2xl font-semibold">Deals</h1>
-        {mutationAllowed(ctx) && (
-          <Link className="underline" href="/staff/deals/new">
-            Create deal
-          </Link>
+    <>
+      <PageHead
+        title="Deals"
+        subtitle={`${deals.length} ${deals.length === 1 ? "deal" : "deals"} in ${ctx.workspace.name}. Every rule is unverified.`}
+        actions={
+          mutationAllowed(ctx) ? (
+            <Link className="btn btn-primary" href="/staff/deals/new">
+              Create deal
+            </Link>
+          ) : null
+        }
+      />
+      <Card flush>
+        {deals.length ? (
+          <table className="grid">
+            <thead>
+              <tr>
+                <th>Deal</th>
+                <th>Status</th>
+                <th>Rule pack</th>
+                <th>Overlay</th>
+                <th>As of</th>
+              </tr>
+            </thead>
+            <tbody>
+              {deals.map((d) => (
+                <tr key={d.id}>
+                  <td>
+                    <Link className="link font-semibold" href={`/staff/deals/${d.id}`}>
+                      {d.code}
+                    </Link>
+                    <p className="meta">{d.name}</p>
+                  </td>
+                  <td>
+                    <Pill value={d.status} />
+                  </td>
+                  <td className="num">{d.rulePackVersion}</td>
+                  <td>{d.overlayId ?? "Base"}</td>
+                  <td className="num">{d.asOfDate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="p-5">
+            <Empty>No deals yet. Create one to begin collecting documents.</Empty>
+          </div>
         )}
-      </div>
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr>
-            <th>Deal</th>
-            <th>Status</th>
-            <th>Rule pack (unverified)</th>
-            <th>Overlay</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deals.map((d) => (
-            <tr key={d.id} className="border-b">
-              <td className="py-3">
-                <Link className="underline" href={`/staff/deals/${d.id}`}>
-                  {d.code} · {d.name}
-                </Link>
-              </td>
-              <td>{d.status}</td>
-              <td>{d.rulePackVersion}</td>
-              <td>{d.overlayId ?? "Base"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {!deals.length && <p>No deals yet.</p>}
-    </div>
+      </Card>
+    </>
   );
 }

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { LogOut, ShieldCheck } from "lucide-react";
 import { StatusBadge } from "@/components/ui/badge";
 import { FormButton } from "@/components/FormButton";
-import { HUE, NAV_ORDER, SECTIONS, sectionForPath } from "@/lib/sections";
+import { NAV_ORDER, SECTIONS, sectionForPath } from "@/lib/sections";
 import { cn } from "@/lib/utils";
 
 export function AppNav({
@@ -25,6 +25,7 @@ export function AppNav({
   const pathname = usePathname();
   const current = sectionForPath(pathname);
   const help = SECTIONS.help;
+  // A81 keeps one accent; the section hues of the old workbench are retired.
 
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--surface)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--surface)]/80">
@@ -35,7 +36,7 @@ export function AppNav({
         Skip to content
       </a>
 
-      <div className="mx-auto flex h-14 max-w-[1520px] items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-7">
         <Link
           href="/"
           className="flex items-center gap-2.5 rounded-[var(--r-md)] text-[15px] font-semibold tracking-[-0.015em]"
@@ -98,16 +99,14 @@ export function AppNav({
         </div>
       </div>
 
-      {/* Tabs follow the order work flows: overview, upload, documents, review, ask, evaluate, runs. */}
       <nav
         aria-label="Main"
-        className="scroll-thin scroll-x-fade mx-auto max-w-[1520px] overflow-x-auto px-4 sm:px-6 lg:[mask-image:none]"
+        className="scroll-thin scroll-x-fade mx-auto max-w-[1400px] overflow-x-auto px-5 sm:px-7 lg:[mask-image:none]"
       >
         <ul className="flex min-w-max gap-0.5">
           {NAV_ORDER.map((key) => {
             const s = SECTIONS[key];
             const active = current === key;
-            const h = HUE[s.hue];
             return (
               <li key={key}>
                 <Link
@@ -115,25 +114,13 @@ export function AppNav({
                   aria-current={active ? "page" : undefined}
                   title={s.blurb}
                   className={cn(
-                    "group -mb-px flex items-center gap-1.5 border-b-2 px-2.5 py-2.5 text-[13px] font-medium transition-colors",
+                    "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-2.5 text-[14px] font-semibold transition-colors",
                     active
-                      ? "border-current text-[var(--fg)]"
-                      : "border-transparent text-[var(--muted)] hover:border-[var(--line-strong)] hover:text-[var(--fg)]",
+                      ? "border-[var(--accent)] text-[var(--accent)]"
+                      : "border-transparent text-[var(--muted)] hover:text-[var(--fg)]",
                   )}
-                  style={
-                    active
-                      ? {
-                          borderBottomColor: `var(--${s.hue === "accent" ? "accent" : `sec-${s.hue}`})`,
-                        }
-                      : undefined
-                  }
                 >
-                  <s.icon
-                    size={15}
-                    aria-hidden
-                    strokeWidth={active ? 2.2 : 1.9}
-                    className={cn("transition-colors", active && h.fg)}
-                  />
+                  <s.icon size={15} aria-hidden strokeWidth={active ? 2.2 : 1.9} />
                   {s.label}
                 </Link>
               </li>

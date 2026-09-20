@@ -10,7 +10,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   const { user, workspace, isPublic } = await requireStaff();
   const e = env();
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="staff flex min-h-screen flex-col">
       <AppNav
         isPublic={isPublic}
         email={user.email}
@@ -20,7 +20,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-[1520px] flex-1 px-4 py-6 sm:px-6 sm:py-7"
+        className="mx-auto w-full max-w-[1400px] flex-1 px-5 py-7 sm:px-7 sm:py-9"
       >
         <Notice tone="accent" title="Synthetic data only" className="mb-5">
           Real-data processing is disabled. This workspace uses invented people and organizations.
