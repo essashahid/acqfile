@@ -6,9 +6,9 @@ const text = knownOrUnknown(z.string().min(1));
 const amount = knownOrUnknown(z.number().nonnegative().finite());
 const yesNo = z.enum(["yes", "no", "unknown"]);
 export const IdentifierSchema = z.strictObject({ hmac: z.string().regex(/^[a-f0-9]{64}$/), last_four: z.string().regex(/^\d{4}$/) });
-export const PARTY_ROLES = ["buyer_owner", "guarantor", "buyer_entity", "seller_entity", "seller_owner", "affiliate", "donor", "investor", "landlord", "cpa", "attorney", "broker", "lender_contact"] as const;
-export const PartySchema = z.strictObject({ id: z.string().min(1), kind: z.enum(["individual", "entity"]), roles: z.array(z.enum(PARTY_ROLES)).min(1), legal_name: text, name_variants: z.array(z.string()).default([]), identifier: IdentifierSchema.nullable().default(null), jointly_held_assets: yesNo.default("unknown"), affiliates: knownOrUnknown(z.array(z.string())).default("unknown") });
-export const OwnershipSchema = z.strictObject({ owner_party_id: z.string().min(1), owned_party_id: z.string().min(1), percent: knownOrUnknown(z.number().min(0).max(100)), stage: z.enum(["pre_closing", "post_closing"]), origin: z.enum(["declared", "extracted"]) });
+export const PARTY_ROLES = ["buyer_owner", "guarantor", "buyer_entity", "seller_entity", "seller_owner", "affiliate", "donor", "investor", "landlord", "cpa", "attorney", "broker", "lender_contact", "unknown"] as const;
+export const PartySchema = z.strictObject({ id: z.string().min(1), kind: z.enum(["individual", "entity", "unknown"]), roles: z.array(z.enum(PARTY_ROLES)).min(1), legal_name: text, name_variants: z.array(z.string()).default([]), identifier: IdentifierSchema.nullable().default(null), jointly_held_assets: yesNo.default("unknown"), affiliates: knownOrUnknown(z.array(z.string())).default("unknown") });
+export const OwnershipSchema = z.strictObject({ owner_party_id: z.string().min(1), owned_party_id: z.string().min(1), percent: knownOrUnknown(z.number().min(0).max(100)), stage: z.enum(["pre_closing", "post_closing", "unknown"]), origin: z.enum(["declared", "extracted", "unknown"]) });
 export const DealProfileSchema = z.strictObject({
   transaction_category: knownOrUnknown(z.enum(["initial_acquisition", "business_expansion", "owner_buyout", "esop_cooperative", "other"])),
   structure: knownOrUnknown(z.enum(["asset", "stock"])), purchase_price: amount, total_project_cost: amount,

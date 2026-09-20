@@ -13,7 +13,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <AppNav isPublic={isPublic} email={user.email} role={workspace.role} workspaceName={workspace.name} signOutAction={signOutAction} />
       <main id="main-content" className="mx-auto w-full max-w-[1520px] flex-1 px-4 py-6 sm:px-6 sm:py-7">
-        <Notice tone="accent" title="Synthetic data only" className="mb-5">Real-data processing is disabled. This build contains preparation infrastructure; deal workflows are pending.</Notice>
+        <Notice tone="accent" title="Synthetic data only" className="mb-5">Real-data processing is disabled. This workspace uses invented people and organizations.</Notice>
         {e.PUBLIC_DEMO_MODE ? (
           <Notice
             tone="accent"

@@ -16,7 +16,7 @@ export const HUE: Record<Hue, { fg: string; soft: string; border: string; solid:
   runs: { fg: "text-[var(--sec-runs)]", soft: "bg-[var(--sec-runs-soft)]", border: "border-[var(--sec-runs-border)]", solid: "bg-[var(--sec-runs)]" },
 };
 
-export type SectionKey = "overview" | "upload" | "documents" | "review" | "evals" | "runs" | "rulepacks" | "help";
+export type SectionKey = "deals" | "overview" | "upload" | "documents" | "review" | "evals" | "runs" | "rulepacks" | "help";
 
 export type Section = {
   key: SectionKey;
@@ -29,6 +29,7 @@ export type Section = {
 };
 
 export const SECTIONS: Record<SectionKey, Section> = {
+  deals: {key:"deals",label:"Deals",href:"/deals",icon:FileText,hue:"accent",blurb:"Acquisition profiles, parties and incoming files."},
   overview: { key: "overview", label: "Overview", href: "/", icon: LayoutDashboard, hue: "accent", blurb: "Where the workspace stands and what needs you next." },
   upload: { key: "upload", label: "Upload", href: "/upload", icon: Upload, hue: "accent", blurb: "Add PDF or DOCX files. They are hashed, versioned and processed automatically." },
   documents: { key: "documents", label: "Documents", href: "/documents", icon: FileText, hue: "docs", blurb: "Every edition of every document, with each extracted value linked to its source." },
@@ -40,7 +41,7 @@ export const SECTIONS: Record<SectionKey, Section> = {
 };
 
 /** Navigation follows the order work actually flows through the product. */
-export const NAV_ORDER: SectionKey[] = ["overview", "upload", "documents", "review", "evals", "runs", "rulepacks"];
+export const NAV_ORDER: SectionKey[] = ["deals", "overview", "upload", "documents", "review", "evals", "runs", "rulepacks"];
 
 /** Which section a pathname belongs to, for highlighting and page identity. */
 export function sectionForPath(pathname: string): SectionKey {

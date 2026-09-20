@@ -26,7 +26,7 @@ function scopeExpansion(rule: Rule, input: EngineInput): Scope[] {
   const buyers = input.parties.filter(p => p.roles.includes("buyer_entity")).sort((a,b) => a.id.localeCompare(b.id));
   const buyer = buyers[0];
   const links = input.ownership.filter(l => l.stage === "post_closing").sort((a,b) => stableStringify(a).localeCompare(stableStringify(b)));
-  let uncertain = buyers.length !== 1;
+  let uncertain = buyers.length !== 1 || input.parties.some(p => p.kind === "unknown" || p.roles.includes("unknown")) || input.ownership.some(o => o.stage === "unknown");
   const weights = new Map<string, number>();
   function ancestors(id: string, weight: number, visited: Set<string>) {
     if (visited.has(id)) { uncertain = true; return; }

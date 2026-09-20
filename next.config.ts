@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfjs-dist", "mammoth", "postgres"],
   outputFileTracingIncludes: { "/*": ["./fixtures/legacy/documents/**/*", "./fixtures/legacy/truth/**/*", "./eval/baselines/**/*", "./rulepacks/**/*.yaml"] },
   experimental: {
-    serverActions: { bodySizeLimit: "12mb" },
+    serverActions: { bodySizeLimit: "110mb" },
   },
 };
 

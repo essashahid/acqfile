@@ -67,6 +67,7 @@ export const PROCESSING_STATUSES = [
 ] as const;
 
 export const documentVersions = pgTable("document_versions", {
+  dealId: uuid("deal_id"),
   id: uuid("id").primaryKey().defaultRandom(),
   workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
   documentId: uuid("document_id").notNull().references(() => documents.id),

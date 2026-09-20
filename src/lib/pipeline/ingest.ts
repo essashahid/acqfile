@@ -76,7 +76,7 @@ export async function registerUpload(input: UploadInput): Promise<UploadOutcome>
   const existing = await db
     .select({ id: schema.documentVersions.id, documentId: schema.documentVersions.documentId })
     .from(schema.documentVersions)
-    .where(and(eq(schema.documentVersions.workspaceId, input.workspaceId), eq(schema.documentVersions.contentHash, contentHash)))
+    .where(and(eq(schema.documentVersions.workspaceId, input.workspaceId), eq(schema.documentVersions.contentHash, contentHash), sql`${schema.documentVersions.dealId} is null`))
     .limit(1);
   if (existing[0]) {
     return { kind: "duplicate", existingVersionId: existing[0].id, documentId: existing[0].documentId, contentHash };
@@ -91,7 +91,7 @@ export async function registerUpload(input: UploadInput): Promise<UploadOutcome>
 
   return db.transaction(async (tx) => {
     await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${input.workspaceId}, 0))`);
-    const [duplicate] = await tx.select().from(schema.documentVersions).where(and(eq(schema.documentVersions.workspaceId, input.workspaceId), eq(schema.documentVersions.contentHash, contentHash))).limit(1);
+    const [duplicate] = await tx.select().from(schema.documentVersions).where(and(eq(schema.documentVersions.workspaceId, input.workspaceId), eq(schema.documentVersions.contentHash, contentHash), sql`${schema.documentVersions.dealId} is null`)).limit(1);
     if (duplicate) return { kind: "duplicate" as const, existingVersionId: duplicate.id, documentId: duplicate.documentId, contentHash };
 
     let [doc] = await tx

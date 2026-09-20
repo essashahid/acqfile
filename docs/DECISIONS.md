@@ -105,3 +105,10 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 53. Keep official forms standalone when grouping arrival packets; this preserves AcroForm identities and makes scans complete documents.
 54. Date A's corrected 1919 on September 10, after the initial August 31 copy; intended supersession must satisfy A32 rather than depend on filenames.
 55. Apply contact/identifier fixture lint to authored synthetic values, not fixed government agency boilerplate; A30 requires the actual official pages, whose printed agency contacts are not invented fixture parties.
+56. Preserve existing party IDs on profile edits; record the full masked before/after profile and reject stale revisions so evidence links remain stable.
+57. Extend unknown to party kind/roles and ownership stage/origin; structural IDs still identify records, and unknown ownership makes affected engine scopes uncertain.
+58. Scope content-hash uniqueness to each deal (legacy documents retain workspace scope); the same bytes may legitimately belong to two separate deals.
+59. Use bounded ZIP store/deflate parsing with central/local-header validation, CRC checks, traversal/symlink/encryption/nesting rejection and expansion limits. Verify Node's maxOutputLength in https://nodejs.org/docs/latest-v22.x/api/zlib.html; no new ZIP dependency.
+60. Promote the already pinned pdf-lib 1.17.1 to runtime dependencies for AcroForm parsing and A33 PDF slicing (API verified at https://pdf-lib.js.org/docs/api/classes/pdfdocument); no version change or new package.
+61. Keep source originals in private storage; scrub every parsed block, field value, event and persisted step payload, and require an explicit PII_HMAC_KEY for intake. Repeated AcroForm widgets get distinct locators.
+62. Retain the inherited durable-step runner with an explicit deal-pipeline namespace and safe error messages; generic database errors must not expose source text in run events.
