@@ -1,22 +1,12 @@
 import fs from "node:fs";
-import path from "node:path";
-import type { AggregateMetrics } from "./regression";
-
-export const BASELINE_DIR = path.resolve(process.cwd(), "eval/baselines");
-
-export type BaselineFile = { provider: string; corpusVersion?: string; modelConfigHash: string; evalRunId: string | null; recordedAt: string; metrics: AggregateMetrics };
-
-export function baselinePath(provider: string): string {
-  return path.join(BASELINE_DIR, `${provider}.json`);
+import type { RegressionMetrics } from "./regression";
+export function readBaseline(): RegressionMetrics | null {
+  return fs.existsSync("eval/baseline.json")
+    ? JSON.parse(fs.readFileSync("eval/baseline.json", "utf8")).regressionMetrics
+    : null;
 }
-
-export function readBaselineFile(provider: string): BaselineFile | null {
-  const p = baselinePath(provider);
-  if (!fs.existsSync(p)) return null;
-  return JSON.parse(fs.readFileSync(p, "utf8")) as BaselineFile;
-}
-
-export function writeBaselineFile(file: BaselineFile) {
-  fs.mkdirSync(BASELINE_DIR, { recursive: true });
-  fs.writeFileSync(baselinePath(file.provider), `${JSON.stringify(file, null, 2)}\n`);
+export function savePassingBaseline(report: { passed: boolean }, replace = false) {
+  if (!report.passed) throw Error("A failing run cannot become the baseline");
+  if (replace || !fs.existsSync("eval/baseline.json"))
+    fs.writeFileSync("eval/baseline.json", JSON.stringify(report, null, 2) + "\n");
 }

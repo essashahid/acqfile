@@ -1,0 +1,10 @@
+{
+  "mode": "live",
+  "status": "skipped",
+  "reason": "No owner-supplied provider key in the environment",
+  "estimateUsd": 0,
+  "capUsd": 5,
+  "costUsd": 0,
+  "recordedAt": "2026-09-20T09:34:18.771Z",
+  "releaseBlockers": []
+}

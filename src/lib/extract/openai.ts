@@ -1,3 +1,4 @@
+import { reserveLiveCall } from "@/lib/eval/live-budget";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { env } from "@/lib/env";
@@ -33,6 +34,12 @@ export function createOpenAiExtractionProvider(): ExtractionProvider {
         filename: "pages.pdf",
         file_data: `data:application/pdf;base64,${pdf.toString("base64")}`,
       });
+    await reserveLiveCall(
+      model,
+      system + user + JSON.stringify(zodTextFormat(format, name)),
+      pdf,
+      8000,
+    );
     const response = await client.responses.create({
       model,
       input: [

@@ -91,9 +91,22 @@ export async function confirmBoundaries(ctx: SessionContext, d: FixtureDeal) {
         ),
       );
     const filed = (record?.payloadJson as FilingRecord | undefined)?.segments ?? [];
-    if (!filed.some((s) => s.status === "proposed")) continue;
     const expected = d.truth.find((t) => t.hash === version.contentHash);
     if (!expected || !expected.segments.length) continue;
+    const agrees =
+      filed.length === expected.segments.length &&
+      filed.every((s, i) => {
+        const t = expected.segments[i]!;
+        return (
+          s.status === "confirmed" &&
+          s.doc_type === t.doc_type &&
+          s.page_start === t.page_start &&
+          s.page_end === t.page_end &&
+          s.period === t.period &&
+          s.party_id === (t.party_id === "outside-party" ? null : d.internal(t.party_id!))
+        );
+      });
+    if (agrees) continue;
     // Truth is the simulated operator, not the parser's expected result.
     const candidates = expected.segments.map((t) => ({
       ...(filed.find((s) => s.page_start === t.page_start) ?? filed[0]!),

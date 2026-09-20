@@ -28,7 +28,8 @@
     "deploy:production": "tsx scripts/deploy-production.ts",
     "rules:check": "tsx scripts/check-rules.ts",
     "rules:export-review": "tsx scripts/export-rules-review.ts",
-    "fixtures:check": "tsx scripts/check-deal-fixtures.ts"
+    "fixtures:check": "tsx scripts/check-deal-fixtures.ts",
+    "eval:live": "tsx scripts/run-live-evals.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.3.3",

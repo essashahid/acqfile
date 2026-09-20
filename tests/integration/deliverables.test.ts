@@ -1,5 +1,7 @@
+import { BANNED_TERMS } from "@/lib/rules/loader";
+import { ACCEPTED } from "@/lib/evaluation/run";
 import fs from "node:fs";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { reviewFact } from "@/lib/extract/review";
 import { it, expect } from "vitest";
 import JSZip from "jszip";
@@ -112,6 +114,7 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     expect(sha256(await zip.file(f.package_path)!.async("nodebuffer"))).toBe(f.sha256);
   const html = await zip.file("00_Package_Report.html")!.async("string");
   expect(html).toContain(content.footer);
+  expect(html).not.toMatch(BANNED_TERMS);
   expect(html).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/);
   const book = XLSX.read(await zip.file("00_Package_Workbook.xlsx")!.async("nodebuffer"));
   expect(book.SheetNames).toEqual([
@@ -124,10 +127,27 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
   for (const name of book.SheetNames) {
     const rows = XLSX.utils.sheet_to_json(book.Sheets[name]!, { header: 1 }) as unknown[][];
     expect(rows.at(-1)![0]).toBe(content.footer);
+    const quoteColumn = rows[0]!.indexOf("Quote");
+    expect(JSON.stringify(rows.map((row) => row.filter((_, i) => i !== quoteColumn)))).not.toMatch(
+      BANNED_TERMS,
+    );
     expect(JSON.stringify(rows)).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/);
   }
   expect(content.index.length).toBe(result.rows.length);
-  expect(content.source_record.length).toBe((await buildIndex(d.id)).sourceRecord.length);
+  const currentAccepted = await getDb()
+    .select({ id: schema.facts.id })
+    .from(schema.facts)
+    .innerJoin(schema.segments, eq(schema.segments.id, schema.facts.segmentId))
+    .where(
+      and(
+        eq(schema.facts.dealId, d.id),
+        eq(schema.facts.isCurrent, true),
+        eq(schema.segments.isCurrent, true),
+        eq(schema.segments.status, "confirmed"),
+        inArray(schema.facts.routingStatus, [...ACCEPTED]),
+      ),
+    );
+  expect(content.source_record.length).toBe(currentAccepted.length);
   const finding = (await buildIndex(d.id)).findings.find(
     (f) => f.status === "open" && f.ruleId === "TXN-01",
   )!;

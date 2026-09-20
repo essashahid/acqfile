@@ -1,0 +1,733 @@
+{
+  "mode": "mock",
+  "recordedAt": "2026-09-20T09:40:09.296Z",
+  "disclaimer": "Mock results say nothing about model quality.",
+  "gates": [
+    {
+      "label": "Segment type",
+      "correct": 141,
+      "total": 141,
+      "measured": 100,
+      "required": ">= 95%",
+      "passed": true
+    },
+    {
+      "label": "Bundle boundaries",
+      "correct": 99,
+      "total": 99,
+      "measured": 100,
+      "required": ">= 90%",
+      "passed": true
+    },
+    {
+      "label": "Party and period",
+      "correct": 141,
+      "total": 141,
+      "measured": 100,
+      "required": ">= 90%",
+      "passed": true
+    },
+    {
+      "label": "Rule-feeding acroform facts",
+      "correct": 14,
+      "total": 14,
+      "measured": 100,
+      "required": ">= 95%",
+      "passed": true
+    },
+    {
+      "label": "Rule-feeding text facts",
+      "correct": 172,
+      "total": 177,
+      "measured": 97.17514124293785,
+      "required": ">= 95%",
+      "passed": true
+    },
+    {
+      "label": "Quote in cited block",
+      "correct": 194,
+      "total": 196,
+      "measured": 98.9795918367347,
+      "required": ">= 98%",
+      "passed": true
+    },
+    {
+      "label": "Checklist status after review",
+      "correct": 295,
+      "total": 295,
+      "measured": 100,
+      "required": ">= 95%",
+      "passed": true
+    },
+    {
+      "label": "Missing/stale/incomplete plants",
+      "correct": 12,
+      "total": 12,
+      "measured": 100,
+      "required": ">= 95%",
+      "passed": true
+    },
+    {
+      "label": "Conflict plants",
+      "correct": 11,
+      "total": 11,
+      "measured": 100,
+      "required": ">= 90%",
+      "passed": true
+    },
+    {
+      "label": "Finding precision",
+      "correct": 44,
+      "total": 44,
+      "measured": 100,
+      "required": ">= 80%",
+      "passed": true
+    },
+    {
+      "label": "Traps raised",
+      "measured": 0,
+      "required": "0",
+      "passed": true
+    },
+    {
+      "label": "False satisfied before review",
+      "measured": 0,
+      "required": "0",
+      "passed": true
+    },
+    {
+      "label": "False satisfied after review",
+      "measured": 0,
+      "required": "0",
+      "passed": true
+    },
+    {
+      "label": "Deterministic evaluation hash",
+      "measured": "pass",
+      "required": "pass",
+      "passed": true
+    },
+    {
+      "label": "Overlay checklist and package",
+      "measured": "pass",
+      "required": "pass",
+      "passed": true
+    }
+  ],
+  "regressionMetrics": {
+    "statusAccuracy": 100,
+    "plantedRecall": 100,
+    "falseSatisfiedBefore": 0,
+    "falseSatisfiedAfter": 0,
+    "trapsRaised": 0
+  },
+  "regressionFailures": [],
+  "batches": [
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "checklistRows": 78,
+      "findings": 20,
+      "beforeFalseSatisfied": [],
+      "afterFalseSatisfied": [],
+      "mismatchedRows": [],
+      "unexpectedFindings": [],
+      "missingFindings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 2,
+      "checklistRows": 78,
+      "findings": 17,
+      "beforeFalseSatisfied": [],
+      "afterFalseSatisfied": [],
+      "mismatchedRows": [],
+      "unexpectedFindings": [],
+      "missingFindings": []
+    },
+    {
+      "deal": "deal-b",
+      "batch": 1,
+      "checklistRows": 76,
+      "findings": 3,
+      "beforeFalseSatisfied": [],
+      "afterFalseSatisfied": [],
+      "mismatchedRows": [],
+      "unexpectedFindings": [],
+      "missingFindings": []
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "checklistRows": 63,
+      "findings": 4,
+      "beforeFalseSatisfied": [],
+      "afterFalseSatisfied": [],
+      "mismatchedRows": [],
+      "unexpectedFindings": [],
+      "missingFindings": []
+    }
+  ],
+  "planted": [
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 1,
+      "description": "Guarantor 2024 return absent until batch 2",
+      "files": [],
+      "expected": "GUA-02|alex|2024",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 2,
+      "description": "Form 413 is 140 days old",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/pfs.pdf"
+      ],
+      "expected": "GUA-01|alex|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 3,
+      "description": "Unsigned and undated Form 1919",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/1919.pdf"
+      ],
+      "expected": "ENT-01|buyer|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 4,
+      "description": "Same tax year twice; one misleading filename",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
+        "incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF"
+      ],
+      "expected": "duplicate; period is 2023 regardless of filename",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 5,
+      "description": "One-digit EIN conflict",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF"
+      ],
+      "expected": "CON-01|target|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 6,
+      "description": "Three conflicting purchase prices",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF"
+      ],
+      "expected": "CON-03|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 7,
+      "description": "Sources are 25000 below uses",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF"
+      ],
+      "expected": "TXN-03|deal|, CON-04|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 8,
+      "description": "Injection includes seller note with only 24 months standby; amount also exceeds seed fraction",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF"
+      ],
+      "expected": "CON-06|deal|, CON-07|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 9,
+      "description": "Operating agreement 55/45 against Form 1919 60/40",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/1919.pdf",
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF"
+      ],
+      "expected": "CON-02|buyer|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 10,
+      "description": "Exact duplicate under forwarded filename",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
+        "incoming/batch-1/Seller/Fwd - closing docs/license-resend.PDF"
+      ],
+      "expected": "duplicate_of license",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 11,
+      "description": "Corrected Form 413 replaces stale earlier version",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
+        "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf"
+      ],
+      "expected": "supersedes bea-pfs-old",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 13,
+      "description": "Three logical documents in one physical PDF",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/alex-identity.pdf"
+      ],
+      "expected": "bundle: GOV_ID, RESUME, CREDIT_AUTH",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 14,
+      "description": "Lease hidden behind phone-scan filename",
+      "files": [
+        "incoming/batch-1/Phone/scan0007.pdf"
+      ],
+      "expected": "classify as LEASE",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 15,
+      "description": "Irrelevant brochure",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/brochure.PDF"
+      ],
+      "expected": "not_required",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 16,
+      "description": "Password-protected formation document",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/formation.PDF"
+      ],
+      "expected": "ENT-02|buyer|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 17,
+      "description": "Statement revenue 6 percent above return",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX"
+      ],
+      "expected": "CON-10|target|2025",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 18,
+      "description": "Interim is 150 days old; aging shares the same period",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF"
+      ],
+      "expected": "TGT-03|target|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 19,
+      "description": "Income statement and balance sheet in separate workbook sheets",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX"
+      ],
+      "expected": "xlsx sheets: Income Statement, Balance Sheet",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 20,
+      "description": "Lease ends in three years with no options",
+      "files": [
+        "incoming/batch-1/Phone/scan0007.pdf"
+      ],
+      "expected": "CON-13|target|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 21,
+      "description": "Citizenship evidence absent for indirect 40 percent owner",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF"
+      ],
+      "expected": "GUA-05|bea|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 22,
+      "description": "August bank balance 100000 below claimed cash 150000",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF"
+      ],
+      "expected": "CON-08|cash-alex|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 23,
+      "description": "LOI expired before as-of",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF"
+      ],
+      "expected": "TXN-01|deal|, CON-15|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "item": 24,
+      "description": "Document names a person outside the deal",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/unmatched.pdf"
+      ],
+      "expected": "CON-16|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-b",
+      "batch": 1,
+      "item": "B-LIMITED",
+      "description": "Seller note plus minority equity 210000 exceeds 185000 seed limit",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/note.pdf"
+      ],
+      "expected": "CON-07|deal|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-b",
+      "batch": 1,
+      "item": 18,
+      "description": "150-day interim exceeds overlay 60-day window",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/interim.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/ar.PDF",
+        "incoming/batch-1/Seller/Fwd - closing docs/ap.pdf"
+      ],
+      "expected": "TGT-03|target|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-b",
+      "batch": 1,
+      "item": 22,
+      "description": "Cash claim exceeds August bank balance; PFS cash follows statement",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+        "incoming/batch-1/Buyer/Attachments/pfs.pdf",
+        "incoming/batch-1/Buyer/Attachments/bank-aug.PDF"
+      ],
+      "expected": "CON-08|cash-alex|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 1,
+      "description": "2024 personal return missing",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf"
+      ],
+      "expected": "GUA-02|alex|2024",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 3,
+      "description": "Unsigned and undated Form 1919",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/1919.PDF"
+      ],
+      "expected": "ENT-01|buyer|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 10,
+      "description": "Exact duplicate under another filename",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
+        "incoming/batch-1/Seller/Fwd - closing docs/license-resend.pdf"
+      ],
+      "expected": "duplicate_of license",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 12,
+      "description": "Signed Form 413 image-only PDF",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/pfs.PDF"
+      ],
+      "expected": "vision review with visible dated e-sign block",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 13,
+      "description": "ID, resume and credit authorization bundle",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/alex-identity.PDF"
+      ],
+      "expected": "three segments with page boundaries",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 15,
+      "description": "Irrelevant brochure",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF"
+      ],
+      "expected": "not_required",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 16,
+      "description": "Password-protected formation document",
+      "files": [
+        "incoming/batch-1/Buyer/Attachments/formation.pdf"
+      ],
+      "expected": "ENT-02|buyer|",
+      "result": "caught",
+      "pipeline": true
+    },
+    {
+      "deal": "deal-c",
+      "batch": 1,
+      "item": 25,
+      "description": "Latest personal tax year on extension",
+      "files": [
+        "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF"
+      ],
+      "expected": "GUA-02|alex|2025",
+      "result": "caught",
+      "pipeline": true
+    }
+  ],
+  "traps": [
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "id": "name-normalization",
+      "result": "clear",
+      "findings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "id": "rounding",
+      "result": "clear",
+      "findings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 1,
+      "id": "superseded-stale",
+      "result": "clear",
+      "findings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 2,
+      "id": "name-normalization",
+      "result": "clear",
+      "findings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 2,
+      "id": "rounding",
+      "result": "clear",
+      "findings": []
+    },
+    {
+      "deal": "deal-a",
+      "batch": 2,
+      "id": "superseded-stale",
+      "result": "clear",
+      "findings": []
+    }
+  ],
+  "deals": [
+    {
+      "deal": "deal-a",
+      "facts": {
+        "acroform": [
+          7,
+          7
+        ],
+        "text": [
+          106,
+          109
+        ],
+        "vision": [
+          8,
+          8
+        ]
+      },
+      "scanClassification": [
+        2,
+        2
+      ],
+      "reviewItems": 15,
+      "falseAccepts": [],
+      "costUsd": 0,
+      "wallClockMs": 8431
+    },
+    {
+      "deal": "deal-b",
+      "facts": {
+        "acroform": [
+          6,
+          6
+        ],
+        "text": [
+          63,
+          65
+        ],
+        "vision": [
+          0,
+          0
+        ]
+      },
+      "scanClassification": [
+        0,
+        0
+      ],
+      "reviewItems": 4,
+      "falseAccepts": [],
+      "costUsd": 0,
+      "wallClockMs": 3335
+    },
+    {
+      "deal": "deal-c",
+      "facts": {
+        "acroform": [
+          1,
+          1
+        ],
+        "text": [
+          3,
+          3
+        ],
+        "vision": [
+          51,
+          59
+        ]
+      },
+      "scanClassification": [
+        36,
+        36
+      ],
+      "reviewItems": 60,
+      "falseAccepts": [],
+      "costUsd": 0,
+      "wallClockMs": 7090
+    }
+  ],
+  "facts": {
+    "acroform": [
+      14,
+      14
+    ],
+    "text": [
+      172,
+      177
+    ],
+    "vision": [
+      59,
+      67
+    ]
+  },
+  "passed": true,
+  "releaseBlockers": []
+}

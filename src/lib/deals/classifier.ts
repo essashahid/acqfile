@@ -1,3 +1,4 @@
+import { reserveLiveCall } from "@/lib/eval/live-budget";
 import fs from "node:fs";
 import path from "node:path";
 import { PDFDocument } from "pdf-lib";
@@ -152,6 +153,12 @@ export async function classifyFile(
       file_data: `data:application/pdf;base64,${pdf.toString("base64")}`,
     });
   }
+  await reserveLiveCall(
+    model,
+    CLASSIFIER_PROMPT + JSON.stringify(content),
+    needsPdf ? bytes : null,
+    5000,
+  );
   const response = await client.responses.create({
     model,
     input: [
