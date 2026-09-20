@@ -7,28 +7,32 @@ import { getSql, closeDb } from "@/lib/db/client";
 async function main() {
   const baseURL = process.env.STAFF_SCREENS_URL ?? "http://localhost:3000";
   const sql = getSql();
-  const [deal] = await sql`select id from deals order by created_at limit 1`;
+  const [deal] = await sql`select id from deals where code='Portal-deal-c'`;
   const [segment] =
-    await sql`select id from segments where deal_id=${deal!.id} and is_current and status='confirmed' order by created_at limit 1`;
+    await sql`select id, document_version_id from segments where deal_id=${deal!.id} and is_current and status='confirmed' order by created_at limit 1`;
   const [version] =
     await sql`select id from document_versions where deal_id=${deal!.id} order by created_at limit 1`;
+  const d = `/staff/deals/${deal!.id}`;
   const routes: [string, string][] = [
     ["deals", "/staff/deals"],
-    ["deal-overview", `/staff/deals/${deal!.id}`],
-    ["checklist", `/staff/deals/${deal!.id}/checklist`],
-    ["findings", `/staff/deals/${deal!.id}/findings`],
-    ["requests", `/staff/deals/${deal!.id}/requests`],
-    ["package", `/staff/deals/${deal!.id}/package`],
-    ["fact-review", `/staff/deals/${deal!.id}/segments/${segment!.id}/review`],
-    ["file-review", `/staff/deals/${deal!.id}/files/${version!.id}`],
+    ["overview", d],
+    ["documents", `${d}/documents`],
+    ["requirements", `${d}/requirements`],
+    ["requirements-all", `${d}/requirements?show=all`],
+    ["review", `${d}/review`],
+    ["review-history", `${d}/review?show=history`],
+    ["follow-ups", `${d}/follow-ups`],
+    ["lender-file", `${d}/lender-file`],
+    ["profile", `${d}/profile`],
+    ["document-detail", `${d}/documents/${version!.id}`],
+    ["values-review", `${d}/documents/${segment!.document_version_id}/values/${segment!.id}`],
     ["rulepacks", "/staff/rulepacks"],
-    ["how-it-works", "/staff/how-it-works"],
   ];
   const out = "docs/screenshots/staff";
   await fs.mkdir(out, { recursive: true });
   const browser = await chromium.launch();
   try {
-    const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+    const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await page.goto(`${baseURL}/login`);
     await page.getByLabel(/email/i).fill(process.env.DEMO_ADMIN_EMAIL ?? "admin@example.com");
     await page.getByLabel(/password/i).fill(process.env.DEMO_ADMIN_PASSWORD ?? "acqfile-admin");

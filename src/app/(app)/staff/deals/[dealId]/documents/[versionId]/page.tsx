@@ -51,8 +51,8 @@ export default async function FilePage({
     <div>
       <PageHead
         eyebrow={
-          <Link href={`/staff/deals/${dealId}`} className="link">
-            Back to the deal
+          <Link href={`/staff/deals/${dealId}/documents`} className="link">
+            Back to documents
           </Link>
         }
         title={version.sourceFilename}

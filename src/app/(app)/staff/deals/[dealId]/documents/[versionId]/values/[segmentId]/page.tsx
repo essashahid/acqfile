@@ -7,12 +7,12 @@ import { sourceUrl } from "@/lib/deals/source-url";
 import { parsedVersion } from "@/lib/deals/blocks";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import { PENDING } from "@/lib/evaluation/run";
-import { FactReview, type ReviewFact, type ReviewGap } from "../../../../FactReview";
+import { FactReview, type ReviewFact, type ReviewGap } from "../../../../../FactReview";
 import { PageHead, Pill } from "@/components/staff";
 export default async function SegmentReviewPage({
   params,
 }: {
-  params: Promise<{ dealId: string; segmentId: string }>;
+  params: Promise<{ dealId: string; versionId: string; segmentId: string }>;
 }) {
   const { dealId, segmentId } = await params;
   const ctx = await requireStaff();
@@ -88,8 +88,8 @@ export default async function SegmentReviewPage({
     <div>
       <PageHead
         eyebrow={
-          <Link href={`/staff/deals/${dealId}`} className="link">
-            Back to the deal
+          <Link href={`/staff/deals/${dealId}/documents`} className="link">
+            Back to documents
           </Link>
         }
         title={`${segment.docType} · ${party?.legalName ?? "No party"}`}
@@ -99,7 +99,7 @@ export default async function SegmentReviewPage({
             {segment.pageEnd} ·{" "}
             <Link
               className="link"
-              href={`/staff/deals/${dealId}/files/${segment.documentVersionId}`}
+              href={`/staff/deals/${dealId}/documents/${segment.documentVersionId}`}
             >
               Filing
             </Link>

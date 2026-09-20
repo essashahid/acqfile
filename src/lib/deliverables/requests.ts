@@ -5,6 +5,8 @@ import { assertMutation } from "@/lib/access";
 import { requireDeal } from "@/lib/deals/service";
 import type { SessionContext } from "@/lib/workspace";
 import { buildIndex } from "./index-build";
+import type { Rule } from "@/lib/rules/schema";
+import { documentName, factValue } from "@/lib/staff/labels";
 
 type Finding = typeof schema.findings.$inferSelect;
 type Detail = {
@@ -14,50 +16,118 @@ type Detail = {
   page: number | null;
   quote: string;
 };
-const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
-
 /**
- * A49: one deterministic draft per responsible party. A conflict shows both values with their file
- * and page and asks which is correct. Nothing states which side is right and nothing is ever sent.
+ * A49: one deterministic draft per responsible party, written for the person who receives it.
+ * Internal identifiers, file paths, rule parameters and enum names never reach this text; the
+ * operator reads that detail on the Review screen instead.
  */
-export function draftBody(
-  deal: { code: string; name: string },
-  responsible: string,
+export type DraftItem = {
+  /** What the recipient must do, in their words. */
+  ask: string;
+  /** Why we are asking, from the evidence we hold. */
+  because: string;
+  /** Each side of a disagreement, named and sourced. */
+  sides: { value: string; source: string }[];
+};
+
+export function draftItems(
   findings: Finding[],
-  fileOf: (id: string) => string,
-  partyOf: (id: string) => string = (id) => id,
-) {
-  const lines = [
-    `Document request for ${deal.code} · ${deal.name}`,
-    `Responsible party: ${responsible}`,
-    "",
-    "We are preparing the loan file from the documents supplied so far. The items below are outstanding. Please reply with the documents or the correction.",
-    "",
-  ];
-  let n = 0;
-  for (const f of findings) {
-    n++;
+  rules: Map<string, Rule>,
+  partyOf: (id: string) => string,
+  documentOf: (versionId: string, page: number | null) => string,
+): DraftItem[] {
+  return findings.map((f) => {
+    const rule = rules.get(f.ruleId);
     const details = (f.detailsJson as { message: string; details: Detail[] }) ?? {
       message: "",
       details: [],
     };
-    lines.push(
-      `${n}. ${details.message || f.ruleId} (${partyOf(f.scopeKey)}, ${f.period ?? "no period"}; ${f.type}, ${f.severity})`,
+    const subject = partyOf(f.scopeKey);
+    const who = subject && subject !== "deal" ? ` for ${subject}` : "";
+    const named = midSentence(
+      rule?.accepts?.length
+        ? documentName(rule.accepts[0]!)
+        : (rule?.title ?? "outstanding document"),
     );
-    const cited = details.details;
-    if (f.type === "conflict" && cited.length > 1) {
-      lines.push(
-        "   The supplied documents give different values. Please tell us which is correct.",
-      );
-      for (const d of cited)
-        lines.push(`   - ${show(d.value)} — ${fileOf(d.file)}, page ${d.page}: "${d.quote}"`);
-    } else {
-      for (const d of cited.slice(0, 3))
-        lines.push(`   - ${fileOf(d.file)}, page ${d.page}: "${d.quote}"`);
-    }
+    const what = `${f.period ? `${f.period} ` : ""}${named}`;
+    const condition = lowerFirst(conditionOf(details.message));
+    if (f.type === "conflict")
+      return {
+        ask: `Please confirm which value is correct${who}.`,
+        because:
+          "The documents supplied give different values, so we do not know which one to use.",
+        // Only a conflict needs both sides; every other type is a single clear request.
+        sides: details.details
+          .filter((d) => d.page !== null)
+          .map((d) => ({
+            value: factValue("", "text", d.value),
+            source: documentOf(d.file, d.page),
+          }))
+          .filter((s, i, all) => all.findIndex((o) => o.value === s.value) === i),
+      };
+    if (f.type === "missing")
+      return {
+        ask: `Please send the ${what}${who}.`,
+        because: "We do not have this yet.",
+        sides: [],
+      };
+    if (f.type === "stale")
+      return {
+        ask: `Please send a more recent ${what}${who}.`,
+        because: "The copy we hold is older than this file allows.",
+        sides: [],
+      };
+    if (f.type === "incomplete")
+      return {
+        ask: `Please send a complete ${what}${who}.`,
+        because: `We have a copy, but we could not confirm that ${condition}.`,
+        sides: [],
+      };
+    return {
+      ask: `Please check the ${what}${who}.`,
+      because: `We could not confirm that ${condition}.`,
+      sides: [],
+    };
+  });
+}
+
+/** A document name inside a sentence: proper form numbers keep their capitals, prose does not. */
+const midSentence = (name: string) =>
+  /^(SBA|IRS|EIN|QOE|CIM)\b/.test(name) ? name : name.charAt(0).toLowerCase() + name.slice(1);
+
+const conditionOf = (message: string) => message.replace(/^(fail|pass|unknown):\s*/i, "").trim();
+const lowerFirst = (t: string) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : "the requirement");
+
+export function draftBody(
+  deal: { code: string; name: string },
+  responsible: string,
+  findings: Finding[],
+  rules: Map<string, Rule>,
+  partyOf: (id: string) => string,
+  documentOf: (versionId: string, page: number | null) => string,
+) {
+  // An informational finding is context, not a request. It is never turned into a demand.
+  const asks = findings.filter((f) => f.type !== "info" && f.severity !== "info");
+  const items = draftItems(asks, rules, partyOf, documentOf);
+  const lines = [
+    `Documents needed for ${deal.name}`,
+    "",
+    "Hello,",
+    "",
+    items.length === 1
+      ? "We are preparing the loan file and need one more thing from you."
+      : `We are preparing the loan file and need ${items.length} things from you.`,
+    "",
+  ];
+  items.forEach((item, i) => {
+    lines.push(`${i + 1}. ${item.ask}`);
+    if (item.because) lines.push(`   ${item.because}`);
+    for (const side of item.sides) lines.push(`   - ${side.value} (${side.source})`);
     lines.push("");
-  }
+  });
   lines.push(
+    "If you have already sent one of these, please reply and we will check our records.",
+    "",
     "Prepared from documents supplied by the parties. Flags are preparation aids for lender review. They are not credit, legal, tax or eligibility determinations.",
   );
   return scrubPayload(lines.join("\n"));
@@ -66,9 +136,18 @@ export function draftBody(
 /** Rebuild one draft per responsible party from the currently open findings. */
 export async function buildDrafts(context: SessionContext, dealId: string) {
   await requireDeal(context, dealId);
-  const { deal, findings, versions, originalPath, partyName, rules } = await buildIndex(dealId);
-  const fileOf = (versionId: string) =>
-    versions.some((v) => v.id === versionId) ? originalPath(versionId) : versionId;
+  const { deal, findings, versions, partyName, rules } = await buildIndex(dealId);
+  const { segments } = await buildIndex(dealId);
+  // A recipient recognises "SBA Form 1919, page 2", never an internal path or an identifier.
+  const documentOf = (versionId: string, page: number | null) => {
+    const segment = segments.find((s) => s.documentVersionId === versionId);
+    const name = segment ? documentName(segment.docType) : null;
+    if (!name)
+      return versions.some((v) => v.id === versionId)
+        ? `supplied document, page ${page}`
+        : "the deal profile";
+    return page === null ? name : `${name}, page ${page}`;
+  };
   const open = findings
     .filter((f) => f.status === "open")
     .sort((a, b) => a.findingKey.localeCompare(b.findingKey));
@@ -84,7 +163,9 @@ export async function buildDrafts(context: SessionContext, dealId: string) {
     return {
       responsible,
       findingKeys: mine.map((f) => f.findingKey),
-      body: draftBody(deal, responsible, mine, fileOf, partyName),
+      body: draftBody(deal, responsible, mine, rules, partyName, documentOf),
+      /** Informational findings travel with the group but never become a demand. */
+      informational: mine.filter((f) => f.type === "info" || f.severity === "info").length,
     };
   });
 }
