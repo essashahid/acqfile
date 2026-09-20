@@ -1,3 +1,7 @@
+import { buildIndex, readiness } from "@/lib/deliverables/index-build";
+import { listRequests, ageInDays } from "@/lib/deliverables/requests";
+import { DeliverableNav } from "./DeliverableNav";
+import { retryFileAction } from "../deliverable-actions";
 import Link from "next/link";
 import { DealDocuments } from "./Documents";
 import { and, eq, desc } from "drizzle-orm";
@@ -18,6 +22,13 @@ export default async function DealPage({ params }: { params: Promise<{ dealId: s
     .from(schema.segments)
     .where(eq(schema.segments.dealId, dealId));
   const counts = await dealCounts(dealId);
+  const built = deal.rulePackVersion !== "unknown" ? await buildIndex(dealId) : null;
+  const ready = built ? readiness(built.index, built.rules) : null;
+  const requests = await listRequests(dealId);
+  const outstanding = requests.filter((r) =>
+    built?.findings.some((f) => r.findingKeys.includes(f.findingKey) && f.status === "requested"),
+  );
+  const oldest = outstanding[0];
   const parties = await getDb()
     .select()
     .from(schema.parties)
@@ -71,6 +82,27 @@ export default async function DealPage({ params }: { params: Promise<{ dealId: s
       <h1 className="text-2xl font-semibold">
         {deal.code} · {deal.name}
       </h1>
+      <DeliverableNav dealId={dealId} />
+      <section aria-label="Readiness">
+        <h2>Readiness</h2>
+        <p>
+          {ready
+            ? `${ready.satisfied} of ${ready.applicable} applicable required rows satisfied or waived`
+            : "Rule pack not selected"}
+        </p>
+        <h3>Blockers</h3>
+        {built?.findings
+          .filter((f) => f.severity === "blocker" && ["open", "requested"].includes(f.status))
+          .map((f) => (
+            <p key={f.id}>
+              {f.ruleId} · {(f.detailsJson as { message: string }).message}
+            </p>
+          ))}
+        <p>
+          Oldest outstanding request:{" "}
+          {oldest ? `${oldest.responsible} · ${ageInDays(oldest.sentAt)} days` : "none"}
+        </p>
+      </section>
       <p>
         Rule pack: {deal.rulePackVersion} · Overlay: {deal.overlayId ?? "Base"} · Rules unverified
       </p>
@@ -131,6 +163,23 @@ export default async function DealPage({ params }: { params: Promise<{ dealId: s
         ))}
       </ul>
       {!reviewSegments.length && <p className="text-sm">No values await review.</p>}
+      <h2>Files needing retry</h2>
+      {rows
+        .filter(
+          (r) =>
+            r.version.parseStatus === "failed" ||
+            ["failed", "dead_letter"].includes(r.version.processingStatus),
+        )
+        .map((r) => (
+          <div key={r.arrival.id}>
+            {r.arrival.originalPath}
+            {mutationAllowed(ctx) && (
+              <form action={retryFileAction.bind(null, dealId, r.version.id)}>
+                <button>Retry file</button>
+              </form>
+            )}
+          </div>
+        ))}
       <h2 className="text-xl font-semibold">Intake</h2>
       <table className="w-full text-left text-sm">
         <thead>

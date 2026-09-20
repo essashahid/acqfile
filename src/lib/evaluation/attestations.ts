@@ -1,3 +1,5 @@
+import { scrubPayload } from "@/lib/deals/identifiers";
+import { and, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "@/lib/db/client";
 import { assertMutation } from "@/lib/access";
@@ -10,7 +12,7 @@ const AttestationSchema = z.discriminatedUnion("kind", [
     rule_id: z.string().min(1),
     scope_key: z.string().min(1),
     state: z.enum(["not_started", "ordered", "received"]),
-    note: z.string().min(1),
+    note: z.string().trim().min(1),
   }),
   z.object({
     kind: z.literal("manual_confirmation"),
@@ -19,21 +21,21 @@ const AttestationSchema = z.discriminatedUnion("kind", [
     period: z.string().nullable().default(null),
     key: z.string().min(1),
     confirmed: z.boolean(),
-    note: z.string().min(1),
+    note: z.string().trim().min(1),
   }),
   z.object({
     kind: z.literal("waiver"),
     rule_id: z.string().min(1),
     scope_key: z.string().min(1),
     period: z.string().nullable().default(null),
-    note: z.string().min(1),
+    note: z.string().trim().min(1),
   }),
 ]);
 /** Operator attestations feed tracking, manual confirmation and waiver checks; each is audited and re-evaluates the deal. */
 export async function recordAttestation(context: SessionContext, dealId: string, raw: unknown) {
   await assertMutation(context, "deal-attest");
   await requireDeal(context, dealId);
-  const input = AttestationSchema.parse(raw);
+  const input = AttestationSchema.parse(scrubPayload(raw));
   const db = getDb();
   await db.transaction(async (tx) => {
     const [event] = await tx
@@ -47,6 +49,20 @@ export async function recordAttestation(context: SessionContext, dealId: string,
         maskedAfter: input,
       })
       .returning();
+    if (input.kind === "waiver")
+      await tx
+        .update(schema.findings)
+        .set({ status: "waived", reason: input.note, actorId: context.user.id })
+        .where(
+          and(
+            eq(schema.findings.dealId, dealId),
+            eq(schema.findings.ruleId, input.rule_id),
+            eq(schema.findings.scopeKey, input.scope_key),
+            input.period === null
+              ? isNull(schema.findings.period)
+              : eq(schema.findings.period, input.period),
+          ),
+        );
     const values = {
       dealId,
       kind: input.kind,

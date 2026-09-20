@@ -32,6 +32,9 @@ importers:
       inngest:
         specifier: 4.20.0
         version: 4.20.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(next@16.3.4(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@22.20.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(zod@4.5.4)
+      jszip:
+        specifier: 3.10.2
+        version: 3.10.2
       lucide-react:
         specifier: 1.44.0
         version: 1.44.0(react@19.3.0)
@@ -105,9 +108,6 @@ importers:
       eslint-config-next:
         specifier: 16.3.4
         version: 16.3.4(@typescript-eslint/parser@8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
-      jszip:
-        specifier: 3.10.2
-        version: 3.10.2
       pdfkit:
         specifier: 0.20.2
         version: 0.20.2

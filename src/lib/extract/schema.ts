@@ -19,7 +19,7 @@ function walk(expr: Expr | undefined, into: Set<string>) {
   }
   if ("op" in expr) for (const arg of expr.args) walk(arg, into);
 }
-function checkAttributes(check: Check, into: Set<string>) {
+export function checkAttributes(check: Check, into: Set<string>) {
   walk(check.expr, into);
   walk(check.when, into);
   if (check.fact) into.add(check.fact);

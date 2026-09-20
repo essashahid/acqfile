@@ -10,8 +10,10 @@ import type { FilingRecord } from "@/lib/deals/filing";
 import { FileReview } from "../../../FileReview";
 export default async function FilePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ dealId: string; versionId: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { dealId, versionId } = await params;
   const ctx = await requireWorkspace();
@@ -52,6 +54,10 @@ export default async function FilePage({
       <h1 className="text-xl font-semibold">{version.sourceFilename}</h1>
       <p className="text-sm font-mono break-all">SHA-256 {version.contentHash}</p>
       <FileReview
+        initialPage={Math.max(
+          1,
+          Math.min(version.pageCount ?? 1, Number((await searchParams).page) || 1),
+        )}
         dealId={dealId}
         versionId={versionId}
         recordId={record?.id ?? null}

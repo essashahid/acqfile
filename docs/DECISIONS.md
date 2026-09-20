@@ -161,3 +161,10 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 
 101. A46: Prettier 3.6.2 as a dev dependency with print width 100, `pnpm format` and `pnpm format:check`, and one formatting pass over the repository. `fixtures/deals`, `eval` output and the generated rule-pack review HTML are ignored. Long lines that remain are string literals and SQL templates, which Prettier does not break. Every gate passes unchanged, which is the behaviour proof.
 102. Removed nine dependencies nothing imports: the six unused Radix packages (checkbox, dialog, label, select, tabs, tooltip), TanStack Table, Recharts and MSW. Kept `@radix-ui/react-slot`, `class-variance-authority`, `clsx` and `tailwind-merge`, which the retained button and badge components use.
+
+103. A47 report is a single printable A3 landscape sheet with compact row/issue summaries; the workbook holds full titles, paths, both conflict values and quoted evidence, source records and detailed changes. Originals retain their exact extensions and bytes.
+104. Reuse JSZip 3.10.2 at runtime for the package ZIP (promoted from dev dependencies without a version change); do not add a PDF or UI dependency.
+105. Snapshot changes compare saved event IDs rather than timestamps, so events in the same clock tick are included. Filename collisions append the original hash prefix so neither copy is lost.
+106. Requests use the responsible role, with the named subject for owner/guarantor/source scopes; unspecified professional contacts remain role recipients. Nothing sends a message.
+107. A50 gaps come from applicable row checks and the facts available across that row's current segments; no per-document required-field list is added.
+108. Package downloads contain originals, so they inherit original-access role checks, short-lived signed links and per-original audit events. Viewer downloads are refused.

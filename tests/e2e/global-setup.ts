@@ -17,4 +17,5 @@ export default async function globalSetup() {
     env,
     stdio: "inherit",
   });
+  execFileSync("pnpm", ["exec", "tsx", "tests/e2e/prepare.ts"], { env, stdio: "inherit" });
 }

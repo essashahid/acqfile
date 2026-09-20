@@ -182,6 +182,33 @@ export const findings = pgTable("findings", {
   resolutionNote: text("resolution_note"),
   resolverId: uuid("resolver_id"),
   createdAt: created(),
+  resolvedByJson: jsonb("resolved_by_json"),
+  reason: text("reason"),
+  requestId: uuid("request_id"),
+  requestedAt: timestamp("requested_at", { withTimezone: true }),
+  resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+  actorId: uuid("actor_id"),
+});
+export const requests = pgTable("requests", {
+  id: id(),
+  dealId: uuid("deal_id").notNull(),
+  responsible: text("responsible").notNull(),
+  body: text("body").notNull(),
+  findingKeys: text("finding_keys").array().notNull(),
+  status: text("status").notNull().default("draft"),
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  actorId: uuid("actor_id").notNull(),
+  createdAt: created(),
+});
+export const snapshots = pgTable("snapshots", {
+  id: id(),
+  dealId: uuid("deal_id").notNull(),
+  number: integer("number").notNull(),
+  evaluationId: uuid("evaluation_id").notNull(),
+  contentJson: jsonb("content_json").notNull(),
+  diffJson: jsonb("diff_json").notNull(),
+  actorId: uuid("actor_id").notNull(),
+  createdAt: created(),
 });
 export const dealBatches = pgTable("deal_batches", {
   id: id(),

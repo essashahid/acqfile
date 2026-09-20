@@ -40,6 +40,7 @@ export function FileReview({
   blocks,
   editable,
   conflict,
+  initialPage = 1,
 }: {
   dealId: string;
   versionId: string;
@@ -53,10 +54,11 @@ export function FileReview({
   blocks: { locator: string; rawText: string }[];
   editable: boolean;
   conflict: boolean;
+  initialPage?: number;
 }) {
   const router = useRouter();
   const [rows, setRows] = useState(initial.length ? initial : [empty]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPage);
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);

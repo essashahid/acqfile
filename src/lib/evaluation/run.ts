@@ -1,3 +1,5 @@
+import { checkAttributes } from "@/lib/extract/schema";
+import { FACTS } from "@/lib/domain/registry";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { hashObject } from "@/lib/hash";
@@ -201,7 +203,49 @@ export async function evaluateDealNow(dealId: string) {
           reasonsJson: r.reasons,
         })),
       );
-    for (const f of result.findings)
+    // A50: missing facts are derived from each applicable row's checks, across its accepted types.
+    for (const row of result.checklist.filter(
+      (r) => !["not_applicable", "waived", "missing"].includes(r.status),
+    )) {
+      const rule = pack.items.find((r) => r.id === row.item_id);
+      if (!rule) continue;
+      const attributes = new Set<string>();
+      rule.checks.forEach((c) => checkAttributes(c, attributes));
+      const rowSegments = input.segments.filter((s) => row.segment_ids.includes(s.id));
+      for (const attribute of attributes) {
+        if (
+          [...input.accepted_facts, ...input.pending_facts].some(
+            (f) => row.segment_ids.includes(f.segment_id) && f.attribute === attribute,
+          )
+        )
+          continue;
+        const segment = rowSegments.find((s) =>
+          FACTS[attribute as keyof typeof FACTS]?.producers.includes(s.doc_type),
+        );
+        if (!segment) continue;
+        await tx
+          .insert(schema.intakeReviews)
+          .values({
+            dealId,
+            documentVersionId: segment.document_version_id,
+            segmentId: segment.id,
+            attribute,
+            type: "extraction_gap",
+            reason: `${row.item_id} requires ${attribute}; the current document has no extracted value.`,
+          })
+          .onConflictDoNothing();
+      }
+    }
+    const existing = await tx
+      .select()
+      .from(schema.findings)
+      .where(eq(schema.findings.dealId, dealId));
+    const byKey = new Map(existing.map((f) => [f.findingKey, f]));
+    for (const f of result.findings) {
+      const prior = byKey.get(f.finding_key);
+      const details = { message: f.message, details: f.details };
+      // A48: a finding that returns reopens; dismissed and waived decisions stand until the owner changes them.
+      const reopen = prior && prior.status === "resolved";
       await tx
         .insert(schema.findings)
         .values({
@@ -212,7 +256,7 @@ export async function evaluateDealNow(dealId: string) {
           severity: f.severity,
           scopeKey: f.scope_key,
           period: f.period,
-          detailsJson: { message: f.message, details: f.details },
+          detailsJson: details,
           responsibleRole: f.responsible,
           firstSeenEvaluationId: evaluation!.id,
           lastSeenEvaluationId: evaluation!.id,
@@ -223,9 +267,56 @@ export async function evaluateDealNow(dealId: string) {
             lastSeenEvaluationId: evaluation!.id,
             type: f.type,
             severity: f.severity,
-            detailsJson: { message: f.message, details: f.details },
+            detailsJson: details,
+            ...(reopen
+              ? { status: "open", resolvedAt: null, resolvedByJson: null, resolutionNote: null }
+              : {}),
           },
         });
+    }
+    // A48: the system resolves a finding when its condition disappears and records what resolved it.
+    const raised = new Set(result.findings.map((f) => f.finding_key));
+    const gone = existing.filter(
+      (f) => !raised.has(f.findingKey) && ["open", "requested"].includes(f.status),
+    );
+    if (gone.length) {
+      for (const f of gone) {
+        const row = result.checklist.find(
+          (r) => r.item_id === f.ruleId && r.scope_key === f.scopeKey && r.period === f.period,
+        );
+        const segmentIds =
+          row?.segment_ids ??
+          input.segments
+            .filter((s) => s.party_id === f.scopeKey || f.scopeKey === "deal")
+            .map((s) => s.id);
+        const resolvedBy = {
+          segment_ids: segmentIds,
+          fact_ids: input.accepted_facts
+            .filter((x) => segmentIds.includes(x.segment_id))
+            .map((x) => x.id),
+          evaluation_id: evaluation!.id,
+        };
+        await tx
+          .update(schema.findings)
+          .set({
+            status: "resolved",
+            resolvedAt: new Date(),
+            resolvedByJson: resolvedBy,
+            resolutionNote: "The condition no longer holds with the cited current evidence.",
+          })
+          .where(eq(schema.findings.id, f.id));
+        await tx.insert(schema.events).values({
+          dealId,
+          actorId: (
+            await tx.select().from(schema.events).where(eq(schema.events.dealId, dealId)).limit(1)
+          )[0]!.actorId,
+          action: "finding_resolved",
+          entityType: "finding",
+          entityId: f.id,
+          maskedAfter: resolvedBy,
+        });
+      }
+    }
     return { evaluationId: evaluation!.id, result };
   });
 }
