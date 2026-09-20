@@ -21,6 +21,7 @@ export type StepContext = {
   modelConfigHash: string;
   provider: string;
   pipelineVersion?: string;
+  unregistered?: boolean;
   injectFailure?: { step: string; attempts: number };
 };
 
@@ -39,11 +40,12 @@ export function idempotencyKey(ctx: StepContext, stepName: string): string {
  */
 async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () => Promise<T>): Promise<{ output: T; reused: boolean }> {
   const db = getDb();
+  const persistedVersionId = ctx.unregistered ? null : ctx.documentVersionId;
   const key = idempotencyKey(ctx, stepName);
   const [existing] = await db.select().from(schema.runSteps).where(eq(schema.runSteps.idempotencyKey, key)).limit(1);
   if (existing?.status === "succeeded") {
     if (existing.processingRunId !== ctx.processingRunId) {
-      await logEvent(ctx.processingRunId, ctx.documentVersionId, "info", "step.reused", `${stepName}: reused output from run ${existing.processingRunId}`, { stepName, key });
+      await logEvent(ctx.processingRunId, persistedVersionId, "info", "step.reused", `${stepName}: reused output from run ${existing.processingRunId}`, { stepName, key });
     }
     return { output: existing.outputJson as T, reused: true };
   }
@@ -57,7 +59,7 @@ async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () =
   } else {
     await db.insert(schema.runSteps).values({
       processingRunId: ctx.processingRunId,
-      documentVersionId: ctx.documentVersionId,
+      documentVersionId: persistedVersionId,
       stepName,
       idempotencyKey: key,
       status: "running",
@@ -69,7 +71,7 @@ async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () =
   if (attempt > 1) {
     await db.update(schema.processingRuns).set({ retries: sql`${schema.processingRuns.retries} + 1` }).where(eq(schema.processingRuns.id, ctx.processingRunId));
   }
-  await logEvent(ctx.processingRunId, ctx.documentVersionId, "debug", "step.started", `${stepName}: attempt ${attempt}`, { stepName, attempt });
+  await logEvent(ctx.processingRunId, persistedVersionId, "debug", "step.started", `${stepName}: attempt ${attempt}`, { stepName, attempt });
 
   try {
     if (ctx.injectFailure && ctx.injectFailure.step === stepName && attempt <= ctx.injectFailure.attempts) {
@@ -81,7 +83,7 @@ async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () =
       .set({ status: "succeeded", completedAt: new Date(), latencyMs: Date.now() - started, outputJson: output as unknown as object, errorCode: null, errorMessage: null })
       .where(eq(schema.runSteps.idempotencyKey, key));
     await db.update(schema.deadLetters).set({ status: "resolved", resolvedAt: new Date() }).where(and(eq(schema.deadLetters.documentVersionId, ctx.documentVersionId), eq(schema.deadLetters.failedStep, stepName), eq(schema.deadLetters.status, "retrying")));
-    await logEvent(ctx.processingRunId, ctx.documentVersionId, "info", "step.succeeded", `${stepName}: succeeded in ${Date.now() - started} ms`, { stepName, attempt, latencyMs: Date.now() - started });
+    await logEvent(ctx.processingRunId, persistedVersionId, "info", "step.succeeded", `${stepName}: succeeded in ${Date.now() - started} ms`, { stepName, attempt, latencyMs: Date.now() - started });
     return { output, reused: false };
   } catch (err) {
     const failure = err instanceof StepFailure ? err : new StepFailure(ctx.pipelineVersion ? "Deal processing step failed; retry or review the source." : err instanceof Error ? err.message : String(err), (err as { code?: string })?.code ?? "step_error", isRetryable(err));
@@ -90,9 +92,12 @@ async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () =
       .update(schema.runSteps)
       .set({ status: exhausted ? "dead_letter" : "failed", completedAt: new Date(), latencyMs: Date.now() - started, errorCode: failure.code, errorMessage: failure.message })
       .where(eq(schema.runSteps.idempotencyKey, key));
-    await logEvent(ctx.processingRunId, ctx.documentVersionId, "error", "step.failed", `${stepName}: ${failure.message}`, { stepName, attempt, code: failure.code, retryable: failure.retryable, exhausted });
+    await logEvent(ctx.processingRunId, persistedVersionId, "error", "step.failed", `${stepName}: ${failure.message}`, { stepName, attempt, code: failure.code, retryable: failure.retryable, exhausted });
     if (exhausted) {
-      await db.insert(schema.deadLetters).values({
+      // Upload failures can precede version registration. The failed durable step and run
+      // retain the retry state; version-backed failures also enter the dead-letter queue.
+      const versionExists = !ctx.pipelineVersion || (await db.select({id:schema.documentVersions.id}).from(schema.documentVersions).where(eq(schema.documentVersions.id,ctx.documentVersionId)).limit(1)).length > 0;
+      if (versionExists) await db.insert(schema.deadLetters).values({
         processingRunId: ctx.processingRunId,
         documentVersionId: ctx.documentVersionId,
         failedStep: stepName,

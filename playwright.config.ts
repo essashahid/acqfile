@@ -19,6 +19,6 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
-    env: { ...process.env, ACQFILE_DB: "test", LLM_PROVIDER: "mock", JOB_DRIVER: "inline", STORAGE_DRIVER: "local", AUTH_DRIVER: "local", PUBLIC_DEMO_MODE: "false", DEMO_MUTATIONS_ENABLED: "true" },
+    env: { ...process.env, ACQFILE_DB: "test", LLM_PROVIDER: "mock", JOB_DRIVER: "inline", STORAGE_DRIVER: "local", AUTH_DRIVER: "local", PUBLIC_DEMO_MODE: "false", DEMO_MUTATIONS_ENABLED: "true", PII_HMAC_KEY:"SYNTHETIC-E2E-HMAC-KEY-ONLY-NOT-PRODUCTION" },
   },
 });

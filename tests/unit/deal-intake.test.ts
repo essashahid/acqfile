@@ -1,13 +1,112 @@
-import fs from 'node:fs';
-import JSZip from 'jszip';
-import {it,expect} from 'vitest';
-import {arrivalFiles,readZip,safePath,sniff} from '@/lib/deals/zip';
-import {parseArrival} from '@/lib/deals/parse';
-import {protectText} from '@/lib/deals/identifiers';
-import {plans} from '../../fixtures/lib/plans';
-import {groups} from '../../fixtures/lib/truth';
-const key='SYNTHETIC-INTAKE-TEST-HMAC-KEY-ONLY-2026';
-it('rejects unsafe ZIP paths, nested archives, bombs, symlinks and dishonest sizes',async()=>{for(const p of ['../a.pdf','/a.pdf','a\\b.pdf','C:/a.pdf','a/../b','a\0b'])expect(()=>safePath(p)).toThrow();const zip=new JSZip();zip.file('inner.zip',await new JSZip().file('x','x').generateAsync({type:'nodebuffer'}));expect(()=>readZip(Buffer.from([]))).toThrow();expect(()=>readZip(Buffer.from('bad'))).toThrow();expect(()=>arrivalFiles([{path:'outer.zip',bytes:Buffer.from('bad')}])).not.toThrow();
- const nested=await zip.generateAsync({type:'nodebuffer'});expect(()=>readZip(nested)).toThrow('Nested');const bomb=await new JSZip().file('huge.pdf','x'.repeat(1_000_000)).generateAsync({type:'nodebuffer',compression:'DEFLATE'});expect(()=>readZip(bomb)).toThrow('Unsafe');const link=await new JSZip().file('link','target',{unixPermissions:0o120777}).generateAsync({type:'nodebuffer',platform:'UNIX'});expect(()=>readZip(link)).toThrow('Unsafe');const good=await new JSZip().file('mixed.PdF','%PDF-test').generateAsync({type:'nodebuffer'});expect(readZip(good)[0]!.path).toBe('mixed.PdF');const corrupt=Buffer.from(good);corrupt[40]=corrupt[40]!^1;expect(()=>readZip(corrupt)).toThrow();});
-it('sniffs bytes and masks identifiers before persistence',()=>{expect(sniff(Buffer.from('%PDF-1.7'))).toBe('pdf');expect(sniff(Buffer.from('not a PDF'))).toBe('unsupported');const out=protectText('SSN 900-12-3456 EIN 00-1234567 account: 987654321012 ID number AB1234567',1,key);expect(out.identifiers).toHaveLength(3);expect(out.text).not.toMatch(/900-12-3456|00-1234567|987654321012|AB1234567/);expect(out.identifiers.map(i=>i.last_four)).toEqual(['3456','4567','1012']);});
-it('parses every unique deal file with page fields, paragraph and sheet/cell locators',async()=>{let fields=0,cells=0,paragraphs=0,images=0;for(const p of plans())for(const g of groups(p).filter(g=>!g.docs[0]!.duplicate_of)){const first=g.docs[0]!;const parsed=await parseArrival(fs.readFileSync(`fixtures/deals/${p.id}/${g.file}`),key);expect(parsed.status,g.file).toBe(first.unreadable?'unreadable':'parsed');if(first.unreadable){expect(parsed.blocks).toEqual([]);continue;}expect(JSON.stringify(parsed)).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/);fields+=parsed.blocks.filter(b=>b.kind==='field').length;cells+=parsed.blocks.filter(b=>b.kind==='cell'&&b.locator.includes('!')).length;paragraphs+=parsed.blocks.filter(b=>b.kind==='paragraph').length;images+=parsed.blocks.filter(b=>b.image_only).length;}expect(fields).toBeGreaterThan(100);expect(cells).toBeGreaterThan(10);expect(paragraphs).toBeGreaterThan(3);expect(images).toBe(50);},60000);
+import fs from "node:fs";
+import JSZip from "jszip";
+import { PDFDocument } from "pdf-lib";
+import { it, expect } from "vitest";
+import { arrivalFiles, readZip, safePath, sniff } from "@/lib/deals/zip";
+import { parseArrival } from "@/lib/deals/parse";
+import { protectText } from "@/lib/deals/identifiers";
+import { plans } from "../../fixtures/lib/plans";
+import { groups } from "../../fixtures/lib/truth";
+const key = "SYNTHETIC-INTAKE-TEST-HMAC-KEY-ONLY-2026";
+it("rejects unsafe ZIP paths, nested archives, bombs, symlinks and dishonest sizes", async () => {
+  for (const p of [
+    "../a.pdf",
+    "/a.pdf",
+    "a\\b.pdf",
+    "C:/a.pdf",
+    "a/../b",
+    "a\0b",
+  ])
+    expect(() => safePath(p)).toThrow();
+  const zip = new JSZip();
+  zip.file(
+    "inner.zip",
+    await new JSZip().file("x", "x").generateAsync({ type: "nodebuffer" }),
+  );
+  expect(() => readZip(Buffer.from([]))).toThrow();
+  expect(() => readZip(Buffer.from("bad"))).toThrow();
+  expect(() =>
+    arrivalFiles([{ path: "outer.zip", bytes: Buffer.from("bad") }]),
+  ).not.toThrow();
+  const nested = await zip.generateAsync({ type: "nodebuffer" });
+  expect(() => readZip(nested)).toThrow("Nested");
+  const bomb = await new JSZip()
+    .file("huge.pdf", "x".repeat(1_000_000))
+    .generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
+  expect(() => readZip(bomb)).toThrow("Unsafe");
+  const link = await new JSZip()
+    .file("link", "target", { unixPermissions: 0o120777 })
+    .generateAsync({ type: "nodebuffer", platform: "UNIX" });
+  expect(() => readZip(link)).toThrow("Unsafe");
+  const good = await new JSZip()
+    .file("mixed.PdF", "%PDF-test")
+    .generateAsync({ type: "nodebuffer" });
+  expect(readZip(good)[0]!.path).toBe("mixed.PdF");
+  const corrupt = Buffer.from(good);
+  corrupt[40] = corrupt[40]! ^ 1;
+  expect(() => readZip(corrupt)).toThrow();
+});
+it("sniffs bytes and masks identifiers before persistence", () => {
+  expect(sniff(Buffer.from("%PDF-1.7"))).toBe("pdf");
+  expect(sniff(Buffer.from("not a PDF"))).toBe("unsupported");
+  const out = protectText(
+    "SSN 900-12-3456 EIN 00-1234567 account: 987654321012 ID number AB1234567",
+    1,
+    key,
+  );
+  expect(out.identifiers).toHaveLength(3);
+  expect(out.text).not.toMatch(/900-12-3456|00-1234567|987654321012|AB1234567/);
+  expect(out.identifiers.map((i) => i.last_four)).toEqual([
+    "3456",
+    "4567",
+    "1012",
+  ]);
+});
+it("parses every unique deal file with page fields, paragraph and sheet/cell locators", async () => {
+  let fields = 0,
+    cells = 0,
+    paragraphs = 0,
+    images = 0;
+  for (const p of plans())
+    for (const g of groups(p).filter((g) => !g.docs[0]!.duplicate_of)) {
+      const first = g.docs[0]!;
+      const parsed = await parseArrival(
+        fs.readFileSync(`fixtures/deals/${p.id}/${g.file}`),
+        key,
+      );
+      expect(parsed.status, g.file).toBe(
+        first.unreadable ? "unreadable" : "parsed",
+      );
+      if (first.unreadable) {
+        expect(parsed.blocks).toEqual([]);
+        continue;
+      }
+      expect(JSON.stringify(parsed)).not.toMatch(
+        /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/,
+      );
+      fields += parsed.blocks.filter((b) => b.kind === "field").length;
+      cells += parsed.blocks.filter(
+        (b) => b.kind === "cell" && b.locator.includes("!"),
+      ).length;
+      paragraphs += parsed.blocks.filter((b) => b.kind === "paragraph").length;
+      images += parsed.blocks.filter((b) => b.image_only).length;
+    }
+  expect(fields).toBeGreaterThan(100);
+  expect(cells).toBeGreaterThan(10);
+  expect(paragraphs).toBeGreaterThan(3);
+  expect(images).toBe(50);
+}, 60000);
+
+it("redacts passport AcroForm values even without a printed label", async () => {
+  const pdf = await PDFDocument.create();
+  const page = pdf.addPage();
+  const field = pdf.getForm().createTextField("passport_number");
+  field.setText("AB1234567");
+  field.addToPage(page);
+  const parsed = await parseArrival(Buffer.from(await pdf.save()), key);
+  expect(parsed.blocks.find((b) => b.kind === "field")?.text).toBe(
+    "[redacted]",
+  );
+  // The same unlabeled value in the text layer must also be redacted.
+  expect(JSON.stringify(parsed)).not.toContain("AB1234567");
+});

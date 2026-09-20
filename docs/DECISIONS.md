@@ -112,3 +112,24 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 60. Promote the already pinned pdf-lib 1.17.1 to runtime dependencies for AcroForm parsing and A33 PDF slicing (API verified at https://pdf-lib.js.org/docs/api/classes/pdfdocument); no version change or new package.
 61. Keep source originals in private storage; scrub every parsed block, field value, event and persisted step payload, and require an explicit PII_HMAC_KEY for intake. Repeated AcroForm widgets get distinct locators.
 62. Retain the inherited durable-step runner with an explicit deal-pipeline namespace and safe error messages; generic database errors must not expose source text in run events.
+
+63. Classify and bound recognizable text/AcroForm documents without a model; all multi-segment files still require boundary confirmation, so deterministic routing does not bypass human bundle review.
+64. Keep mock truth access inside the explicitly selected mock classifier branch; deterministic code never reads truth, and mock accuracy is reported separately from model quality.
+65. Add explicit document dates and restart page numbering per logical fixture document; preserve official page totals and order originals before duplicate ZIP entries so intended arrival/version expectations are unambiguous. Expected checklist statuses do not change.
+66. Persist metadata quotes with their actual page and per-field evidence locators; official signatures on the appended evidence page must not point to page one.
+67. An unreadable file may be manually indexed but creates no segment or fact; this reconciles manual filing with A26 without manufacturing evidence.
+68. Equal-date or undated same-identity submissions remain proposed with version_conflict; an explicit selection needs a review note and audit event. Strictly later automatic supersession has a stale-safe undo.
+69. Keep classification confidence at zero for unscored classifier proposals because Phase 4 owns confidence; deterministic/manual metadata retains the schema's exact-method marker. No invented model probability is used.
+70. Persist upload and dedupe steps before a document version exists using nullable version links, then backfill them after registration; retries must include the actual storage/database operation rather than only record a completed marker.
+71. Preserve structurally valid UUIDs and HMACs during payload scrubbing; masking an all-digit UUID component would break existing party identity. Redact identifier field values and their repeated page-text appearances, including unlabeled passport fields.
+72. Skip A34 because no owner provider key is configured; no live calls, cost estimate or model-accuracy claim is made.
+73. Keep the existing pinned runtime stack and add no new package. Use Prettier 3.6.2 only as an ephemeral source formatter (official 3.6 release documentation and package resolution checked); it is not a project dependency.
+
+74. Restrict the retained report evaluator and legacy document queries to versions without a deal ID; the production E2E run exposed its attempt to interpret new filing records as old report schemas. Keep both workflows usable until Phase 4 replaces the legacy tests.
+75. Treat a conflicting page title inside an official AcroForm packet as inconclusive and route it to the classifier; matching form fields must not silently absorb a second document.
+
+76. Record owner ruling A35 (originals may be viewed unmasked; derived data stays masked). The `operator` role of the specification is this codebase's `reviewer` membership role. A signed-in `viewer` is refused and sees masked source blocks instead; a public demo visitor may open originals only while `PUBLIC_DEMO_MODE` is on, because every file is synthetic and watermarked.
+77. Write the `original_opened` audit event in the source route, once per signed link (link expiry identifies the mint), so page flips, browser range requests and the download link for the same open do not multiply events. The browser loads each PDF once per link and renders pages from that document.
+78. Remove the client-side partial masking overlay from the page preview: A35 allows the unmasked original, image-only pages could never be masked, and a partial overlay would contradict the mandated notice. Parsed blocks, fields, events and payloads remain scrubbed.
+79. Keep `REAL_DATA_MODE=true` unaccepted at startup until the Phase 7 pilot runbook implements real-data handling; the A35 refusal of `REAL_DATA_MODE=true` with `PUBLIC_DEMO_MODE=true` is checked first and names both variables.
+80. Audit public demo opens under the visitor's fixed zero identity, created on first use as an `app_users` row with no password and no workspace membership; the audit table's actor foreign key stays mandatory rather than becoming nullable.

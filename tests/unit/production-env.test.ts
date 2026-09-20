@@ -23,3 +23,23 @@ describe("hosted configuration", () => {
   it("rejects ephemeral production storage", () => { production(); vi.stubEnv("STORAGE_DRIVER", "local"); expect(() => env()).toThrow("persistent storage"); });
   it("requires a Blob credential", () => { production(); vi.stubEnv("BLOB_READ_WRITE_TOKEN", ""); expect(() => env()).toThrow("BLOB_READ_WRITE_TOKEN"); });
 });
+describe("A35 real data and public demo", () => {
+  it("refuses to start with REAL_DATA_MODE=true and PUBLIC_DEMO_MODE=true together", () => {
+    vi.stubEnv("REAL_DATA_MODE", "true");
+    vi.stubEnv("PUBLIC_DEMO_MODE", "true");
+    resetEnvCache();
+    expect(() => env()).toThrow("REAL_DATA_MODE=true cannot be combined with PUBLIC_DEMO_MODE=true");
+  });
+  it("keeps the synthetic public demo available", () => {
+    vi.stubEnv("REAL_DATA_MODE", "false");
+    vi.stubEnv("PUBLIC_DEMO_MODE", "true");
+    resetEnvCache();
+    expect(env().PUBLIC_DEMO_MODE).toBe(true);
+  });
+  it("does not accept real-data mode before the pilot runbook exists", () => {
+    vi.stubEnv("REAL_DATA_MODE", "true");
+    vi.stubEnv("PUBLIC_DEMO_MODE", "false");
+    resetEnvCache();
+    expect(() => env()).toThrow("Invalid environment");
+  });
+});

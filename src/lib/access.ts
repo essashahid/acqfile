@@ -20,3 +20,9 @@ export async function assertMutation(context: SessionContext, action: string, ro
   `);
   if (Number(rows[0]?.hits) > limit) throw new Error("Too many requests. Please wait a minute and try again.");
 }
+
+/** A35: originals are unmasked, so only admin and operator (this repo's reviewer role) open them. Public demo visitors may because every file is synthetic. */
+export function originalAccessAllowed(context: SessionContext): boolean {
+  if (context.isPublic) return env().PUBLIC_DEMO_MODE;
+  return context.workspace.role === "admin" || context.workspace.role === "reviewer";
+}

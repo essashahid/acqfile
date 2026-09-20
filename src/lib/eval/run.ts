@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { getLlm, modelConfigHash } from "@/lib/llm";
 import { SUCCESS_TARGETS, ROUTING_THRESHOLDS } from "@/lib/config";
@@ -63,7 +63,7 @@ async function loadCorpus(workspaceId: string): Promise<Map<string, VersionInfo>
     .select({ v: schema.documentVersions, d: schema.documents })
     .from(schema.documentVersions)
     .innerJoin(schema.documents, eq(schema.documents.id, schema.documentVersions.documentId))
-    .where(eq(schema.documentVersions.workspaceId, workspaceId));
+    .where(and(eq(schema.documentVersions.workspaceId, workspaceId), isNull(schema.documentVersions.dealId)));
   const out = new Map<string, VersionInfo>();
   for (const { v, d } of versions) {
     const [modelRecord] = await db

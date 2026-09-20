@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 vi.mock("@/lib/env", () => ({ env: () => ({ PUBLIC_DEMO_MODE: true, DEMO_MUTATIONS_ENABLED: false }), jobsConfigured: () => false }));
-import { assertMutation, mutationAllowed } from "@/lib/access";
+import { assertMutation, mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import type { SessionContext, WorkspaceRole } from "@/lib/workspace";
 const context = (role: WorkspaceRole, isPublic=false): SessionContext => ({user:{id:"u",email:"test@example.test",displayName:"Test"},workspace:{workspaceId:"w",slug:"demo",name:"Demo",role},isPublic});
 describe("public demo authorization",()=>{
@@ -17,5 +17,17 @@ describe("public demo authorization",()=>{
   it("allows signed-in admins to manage the demo",()=>{
     expect(mutationAllowed(context("admin"))).toBe(true);
     expect(mutationAllowed(context("admin",true))).toBe(false);
+  });
+});
+describe("A35 original document access",()=>{
+  it("allows admin and operator (reviewer) roles to open unmasked originals",()=>{
+    expect(originalAccessAllowed(context("admin"))).toBe(true);
+    expect(originalAccessAllowed(context("reviewer"))).toBe(true);
+  });
+  it("refuses the viewer role",()=>{
+    expect(originalAccessAllowed(context("viewer"))).toBe(false);
+  });
+  it("lets public demo visitors preview synthetic originals only while the demo is on",()=>{
+    expect(originalAccessAllowed(context("viewer",true))).toBe(true);
   });
 });

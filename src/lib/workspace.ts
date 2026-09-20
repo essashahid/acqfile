@@ -6,6 +6,9 @@ import { getCurrentUser, type CurrentUser } from "@/lib/auth/session";
 
 export type WorkspaceRole = "admin" | "reviewer" | "viewer";
 
+/** Fixed identity of the anonymous public demo visitor; never a workspace member and cannot sign in. */
+export const PUBLIC_VISITOR_ID = "00000000-0000-0000-0000-000000000000";
+
 export type WorkspaceContext = { workspaceId: string; slug: string; name: string; role: WorkspaceRole };
 
 /** First workspace membership for the user (this demo has a single "default" workspace). */
@@ -32,7 +35,7 @@ export async function requireWorkspace(): Promise<SessionContext> {
   const user = await getCurrentUser();
   if (!user && env().PUBLIC_DEMO_MODE) {
     const [ws] = await getDb().select().from(schema.workspaces).where(eq(schema.workspaces.slug, "default")).limit(1);
-    if (ws) return { user: { id: "00000000-0000-0000-0000-000000000000", email: "Public demo", displayName: "Visitor" }, workspace: { workspaceId: ws.id, slug: ws.slug, name: ws.name, role: "viewer" }, isPublic: true };
+    if (ws) return { user: { id: PUBLIC_VISITOR_ID, email: "Public demo", displayName: "Visitor" }, workspace: { workspaceId: ws.id, slug: ws.slug, name: ws.name, role: "viewer" }, isPublic: true };
   }
   if (!user) redirect("/login");
   const workspace = await getWorkspaceForUser(user.id);

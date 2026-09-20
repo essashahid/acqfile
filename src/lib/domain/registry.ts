@@ -5,8 +5,8 @@ export const CLASSIFICATION_TYPES = ["RESUME", "CREDIT_AUTH", "FORMATION_DOC", "
 export const DOCUMENT_TYPES = [...EXTRACTED_TYPES, ...CLASSIFICATION_TYPES] as const;
 export const DocumentTypeSchema = z.enum(DOCUMENT_TYPES);
 export type DocumentType = z.infer<typeof DocumentTypeSchema>;
-const TaxonomyEntry = z.strictObject({ id: DocumentTypeSchema, extraction: z.boolean(), label: z.string().min(1) });
-export const TAXONOMY = z.array(TaxonomyEntry).parse(DOCUMENT_TYPES.map(id => ({ id, extraction: (EXTRACTED_TYPES as readonly string[]).includes(id), label: id.replaceAll("_", " ") })));
+const TaxonomyEntry = z.strictObject({ id: DocumentTypeSchema, extraction: z.boolean(), single_instance:z.boolean(), label: z.string().min(1) });
+export const TAXONOMY = z.array(TaxonomyEntry).parse(DOCUMENT_TYPES.map(id => ({ id, single_instance: !["OTHER_NOT_REQUIRED","UNREADABLE","KEY_CONTRACT","LICENSE","EQUIPMENT_LIST","INVENTORY_SUMMARY","TRANSFER_EVIDENCE"].includes(id), extraction: (EXTRACTED_TYPES as readonly string[]).includes(id), label: id.replaceAll("_", " ") })));
 
 const FactDefinition = z.strictObject({
   attribute: z.string().regex(/^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$/),

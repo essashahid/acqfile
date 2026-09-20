@@ -59,3 +59,17 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
 - **A32. Supersession.** The taxonomy registry marks which types are `single_instance` per party and period (Form 413, Form 1919, LOI, sources and uses, and similar). When a newly confirmed segment has the same type, party, period and account last four as a current one of a `single_instance` type and carries a strictly later document or signature date, the older segment becomes not current, with an audit event, and the operator can undo it. Anything else with the same identity raises a `version_conflict` review item. Never choose silently.
 - **A33. Image-only pages at runtime.** Do not rasterize on the server. For model input, cut the needed pages into a sub-PDF with pdf-lib and use the provider's native PDF input. For display, render pages in the browser with PDF.js. Fixture rasterization stays a fixture-only tool.
 - **A34. Optional live smoke test.** Only if the owner has put a provider key in the environment: classify and segment Deal C's files once with the live provider, hard cap USD 1, estimate before running. Report accuracy against truth and the cost. It is not a gate. Without a key, skip it and say so.
+
+### Owner ruling: original documents (2026-09-20)
+
+Ruling: allow. Guardrail 7 governs derived and stored data.
+
+- **A35. Guardrail 7 governs derived and stored data:** database values, tables, side-panel fields, quoted evidence, logs, run events, model payloads and generated exports. All of that stays masked. Original documents, in any format, may be viewed unmasked by authenticated users who need them for review, under these conditions:
+  1. Roles admin and operator only. The viewer role cannot open originals in v1.
+  2. Opening or downloading an original writes an audit event: user, document version, time. One event per document open, not per page.
+  3. Originals are served through short-lived signed URLs with `Cache-Control: private, no-store`. No server-side thumbnails or cached page images, consistent with A33.
+  4. The app refuses to start if `REAL_DATA_MODE=true` and `PUBLIC_DEMO_MODE=true` together. Public visitors may preview originals only because every file is synthetic and watermarked.
+  5. The review screen shows a short notice beside an unmasked original: "Original document. Identifiers are not masked here."
+  6. Screenshots in docs and tests use synthetic files only.
+
+  Tests cover conditions 1, 2 and 4.

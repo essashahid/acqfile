@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 
 export type DocumentListRow = {
@@ -28,7 +28,7 @@ export async function listDocuments(workspaceId: string, limit?: number): Promis
     .select({ doc: schema.documents, version: schema.documentVersions })
     .from(schema.documents)
     .leftJoin(schema.documentVersions, and(eq(schema.documentVersions.documentId, schema.documents.id), eq(schema.documentVersions.isCurrent, true)))
-    .where(eq(schema.documents.workspaceId, workspaceId))
+    .where(and(eq(schema.documents.workspaceId, workspaceId), isNull(schema.documents.dealId)))
     .orderBy(desc(schema.documentVersions.createdAt), desc(schema.documents.createdAt));
   const rows = limit ? await base.limit(limit) : await base;
 
@@ -87,7 +87,7 @@ export async function getDocument(workspaceId: string, documentId: string) {
   const [doc] = await getDb()
     .select()
     .from(schema.documents)
-    .where(and(eq(schema.documents.workspaceId, workspaceId), eq(schema.documents.id, documentId)))
+    .where(and(eq(schema.documents.workspaceId, workspaceId), eq(schema.documents.id, documentId), isNull(schema.documents.dealId)))
     .limit(1);
   return doc ?? null;
 }
@@ -96,7 +96,7 @@ export async function listVersionsForDocument(workspaceId: string, documentId: s
   return getDb()
     .select()
     .from(schema.documentVersions)
-    .where(and(eq(schema.documentVersions.workspaceId, workspaceId), eq(schema.documentVersions.documentId, documentId)))
+    .where(and(eq(schema.documentVersions.workspaceId, workspaceId), eq(schema.documentVersions.documentId, documentId), isNull(schema.documentVersions.dealId)))
     .orderBy(desc(schema.documentVersions.versionNumber));
 }
 
@@ -105,7 +105,7 @@ export async function getVersion(workspaceId: string, versionId: string) {
     .select({ version: schema.documentVersions, document: schema.documents })
     .from(schema.documentVersions)
     .innerJoin(schema.documents, eq(schema.documents.id, schema.documentVersions.documentId))
-    .where(and(eq(schema.documentVersions.workspaceId, workspaceId), eq(schema.documentVersions.id, versionId)))
+    .where(and(eq(schema.documentVersions.workspaceId, workspaceId), eq(schema.documentVersions.id, versionId), isNull(schema.documentVersions.dealId)))
     .limit(1);
   return row ?? null;
 }

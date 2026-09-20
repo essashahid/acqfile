@@ -80,6 +80,9 @@ let cached: Env | null = null;
 /** Parse and cache the environment. Throws with a readable message on invalid values. */
 export function env(): Env {
   if (cached) return cached;
+  // A35: a public demo may only show originals because every file is synthetic.
+  if (["1", "true"].includes(process.env.REAL_DATA_MODE ?? "") && ["1", "true"].includes(process.env.PUBLIC_DEMO_MODE ?? ""))
+    throw new Error("REAL_DATA_MODE=true cannot be combined with PUBLIC_DEMO_MODE=true: public visitors may only preview synthetic originals (A35).");
   const parsed = schema.safeParse(process.env);
   if (!parsed.success) throw new Error(`Invalid environment: ${parsed.error.message}`);
   const e = parsed.data;
