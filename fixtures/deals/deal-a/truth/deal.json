@@ -561,7 +561,7 @@
       "attribute": "tax.gross_receipts",
       "kind": "verifier_corrects",
       "expected": "review",
-      "description": "Extractor misreads receipts; the verifier corrects from the cited line: 0.30+0.20+0.125+0.15+0.075 = 0.85, review with a suggested correction.",
+      "description": "Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.",
       "extractor": {
         "value": 1030000,
         "quote": "gross receipts: 1300000"

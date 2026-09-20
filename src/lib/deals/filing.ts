@@ -288,6 +288,16 @@ export async function reviewFile(
       .update(schema.segments)
       .set({ isCurrent: false })
       .where(eq(schema.segments.documentVersionId, versionId));
+    // Facts of replaced segments are no longer current; reprocessing supersedes old pending items.
+    await tx
+      .update(schema.facts)
+      .set({ isCurrent: false })
+      .where(
+        and(
+          eq(schema.facts.documentVersionId, versionId),
+          eq(schema.facts.isCurrent, true),
+        ),
+      );
     await tx
       .update(schema.intakeReviews)
       .set({ status: "resolved" })

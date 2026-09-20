@@ -17,8 +17,10 @@ import {
   assignParty,
   type Classified,
 } from "./classification";
-import { finalizeSegments } from "./filing";
+import { finalizeSegments, type FilingRecord } from "./filing";
 import { requireDeal } from "./service";
+import type { DocumentType } from "@/lib/domain/registry";
+import { extractSegment, extractionConfigHash, EXTRACTION_PIPELINE, type ExtractionSummary } from "@/lib/extract/run";
 export async function processDealVersion(
   context: SessionContext,
   dealId: string,
@@ -43,7 +45,7 @@ export async function processDealVersion(
   if (!version) throw Error("File not found");
   const parsed = await parseVersion(context, dealId, versionId, runId, opts);
   if (parsed.status === "unreadable")
-    return { segments: [], deterministic: 0, classifier: 0 };
+    return { segments: [], deterministic: 0, classifier: 0, extraction: [] as ExtractionSummary[] };
   const ctx: StepContext = {
     workspaceId: context.workspace.workspaceId,
     documentVersionId: versionId,
@@ -131,8 +133,11 @@ export async function processDealVersion(
   const result = await retry("finalize_segment", () =>
     finalizeSegments(context, dealId, versionId, assigned),
   );
+  // Phase 4: read every confirmed segment through the six A39 steps.
+  const extraction = await extractConfirmed(context, dealId, version, parsed, result.segments, runId, opts);
   return {
     ...result,
+    extraction,
     deterministic:
       classified.method === "signature" ? result.segments.length : 0,
     classifier: classified.method === "llm" ? result.segments.length : 0,
@@ -192,4 +197,63 @@ export async function processDealRun(
     })
     .where(eq(schema.processingRuns.id, runId));
   return { completed, failed };
+}
+
+/** Extract facts for the confirmed segments of a version. Called after filing and after an operator confirms segments. */
+export async function extractConfirmed(
+  context: SessionContext,
+  dealId: string,
+  version: { id: string; contentHash: string; storagePath: string },
+  parsed: Awaited<ReturnType<typeof parseVersion>>,
+  segments: { id: string; status: string; doc_type: string; page_start: number; page_end: number; party_id: string | null; period: string | null }[],
+  runId: string,
+  opts: { injectFailure?: { step: string; attempts: number }; sleep?: (ms: number) => Promise<void> } = {},
+) {
+  if (parsed.status !== "parsed") return [];
+  const ctx: StepContext = {
+    workspaceId: context.workspace.workspaceId,
+    documentVersionId: version.id,
+    processingRunId: runId,
+    modelConfigHash: extractionConfigHash(),
+    provider: env().LLM_PROVIDER,
+    pipelineVersion: EXTRACTION_PIPELINE,
+    injectFailure: opts.injectFailure ?? failureInjectionFromEnv(),
+  };
+  const out: ExtractionSummary[] = [];
+  let bytes: Buffer | null = null;
+  const load = async () => (bytes ??= await getStorage().get(version.storagePath));
+  for (const s of segments.filter((s) => s.status === "confirmed"))
+    out.push(
+      await extractSegment(context, ctx, dealId, version.contentHash, parsed, load, { id: s.id, docType: s.doc_type as DocumentType, pageStart: s.page_start, pageEnd: s.page_end, partyId: s.party_id, period: s.period }, opts.sleep),
+    );
+  return out;
+}
+
+/** After an operator confirms or re-files segments, read the confirmed ones in a reprocess run. Parse is reused; completed steps are never repeated. */
+export async function extractAfterReview(
+  context: SessionContext,
+  dealId: string,
+  versionId: string,
+  opts: { injectFailure?: { step: string; attempts: number }; sleep?: (ms: number) => Promise<void> } = {},
+) {
+  await requireDeal(context, dealId);
+  const db = getDb();
+  const [version] = await db.select().from(schema.documentVersions).where(and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)));
+  if (!version) throw Error("File not found");
+  const [record] = await db.select().from(schema.recordVersions).where(and(eq(schema.recordVersions.documentVersionId, versionId), eq(schema.recordVersions.isCurrent, true)));
+  const segments = ((record?.payloadJson as FilingRecord | undefined)?.segments ?? []).filter((s) => s.status === "confirmed");
+  if (!segments.length || version.parseStatus === "failed") return { runId: null, extraction: [] as ExtractionSummary[] };
+  const [run] = await db
+    .insert(schema.processingRuns)
+    .values({ workspaceId: context.workspace.workspaceId, runType: "reprocess", pipelineVersion: EXTRACTION_PIPELINE, provider: env().LLM_PROVIDER, modelConfigHash: extractionConfigHash(), initiatedBy: context.user.id, documentsTotal: 1, configJson: { dealId, documentVersionIds: [versionId] }, status: "running", startedAt: new Date() })
+    .returning();
+  try {
+    const parsed = await parseVersion(context, dealId, versionId, run!.id, opts);
+    const extraction = await extractConfirmed(context, dealId, version, parsed, segments, run!.id, opts);
+    await db.update(schema.processingRuns).set({ status: "completed", documentsCompleted: 1, completedAt: new Date() }).where(eq(schema.processingRuns.id, run!.id));
+    return { runId: run!.id, extraction };
+  } catch (e) {
+    await db.update(schema.processingRuns).set({ status: "failed", documentsFailed: 1, completedAt: new Date(), errorMessage: "Extraction needs retry." }).where(eq(schema.processingRuns.id, run!.id));
+    throw e;
+  }
 }

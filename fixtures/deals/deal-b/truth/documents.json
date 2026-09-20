@@ -2568,7 +2568,7 @@
         "attribute": "financial.total_assets",
         "kind": "verifier_corrects",
         "expected": "review",
-        "description": "Extractor drops a zero; the verifier corrects from the cited line: 0.85, review.",
+        "description": "Extractor drops a zero; the verifier corrects from the cited line and the passes disagree: 0.70, review.",
         "extractor": {
           "value": 50000,
           "quote": "total assets: 500000"

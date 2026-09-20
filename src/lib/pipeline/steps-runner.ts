@@ -23,10 +23,12 @@ export type StepContext = {
   pipelineVersion?: string;
   unregistered?: boolean;
   injectFailure?: { step: string; attempts: number };
+  /** Sub-document scope (a segment id) so per-segment steps get their own keys. */
+  scope?: string;
 };
 
 export function idempotencyKey(ctx: StepContext, stepName: string): string {
-  if (ctx.pipelineVersion) return `${ctx.workspaceId}:${ctx.documentVersionId}:${stepName}:${ctx.pipelineVersion}:${ctx.modelConfigHash}`;
+  if (ctx.pipelineVersion) return `${ctx.workspaceId}:${ctx.documentVersionId}:${stepName}:${ctx.pipelineVersion}:${ctx.modelConfigHash}${ctx.scope ? `:${ctx.scope}` : ""}`;
   if (stepName === "finalize") return `${ctx.processingRunId}:${ctx.documentVersionId}:finalize`;
   if (stepName === "parse") return `${ctx.workspaceId}:${ctx.documentVersionId}:parse:parser-v1`;
   return `${ctx.workspaceId}:${ctx.documentVersionId}:${stepName}:${PIPELINE_VERSION}:${ctx.modelConfigHash}`;
@@ -86,6 +88,8 @@ async function runStepUnlocked<T>(ctx: StepContext, stepName: string, body: () =
     await logEvent(ctx.processingRunId, persistedVersionId, "info", "step.succeeded", `${stepName}: succeeded in ${Date.now() - started} ms`, { stepName, attempt, latencyMs: Date.now() - started });
     return { output, reused: false };
   } catch (err) {
+    // Diagnostics stay on the console; persisted run events never carry source text.
+    if (process.env.ACQFILE_DEBUG === "1" || process.env.ACQFILE_DEBUG === "true") console.error(`[acqfile] ${stepName} failed:`, err);
     const failure = err instanceof StepFailure ? err : new StepFailure(ctx.pipelineVersion ? "Deal processing step failed; retry or review the source." : err instanceof Error ? err.message : String(err), (err as { code?: string })?.code ?? "step_error", isRetryable(err));
     const exhausted = attempt >= MAX_ATTEMPTS || !failure.retryable;
     await db

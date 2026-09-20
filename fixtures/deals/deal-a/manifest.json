@@ -516,13 +516,13 @@
     },
     {
       "path": "truth/deal.json",
-      "sha256": "d6dc36fea18dffbb5e5ed7faae7e7a8e4ab3987ae2a8eea625728d8be6a1e637",
-      "bytes": 13871
+      "sha256": "a3bfed0d50d0e2d84a51d1beb7c7c671d335657b42fede37714c66683bef819a",
+      "bytes": 13892
     },
     {
       "path": "truth/documents.json",
-      "sha256": "f27a17e2c7d548e3f6a4e590aa10146c757b4c3778a8938270f8685c6d46836a",
-      "bytes": 228932
+      "sha256": "2ef5db74497b5d967cfdfd622a0b47a97a05064552c1a0bb97c25ff038f7dad6",
+      "bytes": 228953
     },
     {
       "path": "truth/expected_review.json",

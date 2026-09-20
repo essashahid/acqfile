@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { requireWorkspace } from "@/lib/workspace";
 import { saveDeal } from "@/lib/deals/service";
-import { processDealRun } from "@/lib/deals/process";
+import { processDealRun, extractAfterReview } from "@/lib/deals/process";
 import { reviewFile, undoSupersession } from "@/lib/deals/filing";
 import { assertMutation } from "@/lib/access";
 import { intake } from "@/lib/deals/intake";
@@ -44,6 +44,7 @@ export async function reviewFileAction(
 ) {
   const ctx = await requireWorkspace();
   await reviewFile(ctx, dealId, versionId, input);
+  await extractAfterReview(ctx, dealId, versionId);
   revalidatePath(`/deals/${dealId}`);
 }
 export async function undoAction(dealId: string, eventId: string) {
