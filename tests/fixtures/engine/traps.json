@@ -1,9 +1,7 @@
 [
   {
     "name": "entity spelling and suffix normalization",
-    "rules": [
-      "CON-01"
-    ],
+    "rules": ["CON-01"],
     "changes": [
       {
         "op": "fact",
@@ -18,9 +16,7 @@
   },
   {
     "name": "rounding within one dollar",
-    "rules": [
-      "CON-04"
-    ],
+    "rules": ["CON-04"],
     "changes": [
       {
         "op": "fact",
@@ -35,9 +31,7 @@
   },
   {
     "name": "superseded stale statement ignored",
-    "rules": [
-      "GUA-01"
-    ],
+    "rules": ["GUA-01"],
     "changes": [
       {
         "op": "add_segment",
@@ -59,9 +53,7 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-01"
-          ],
+          "ids": ["GUA-01"],
           "scope": "alex",
           "status": "satisfied"
         }

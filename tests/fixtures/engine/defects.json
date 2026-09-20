@@ -1,9 +1,7 @@
 [
   {
     "name": "presence fails without formation evidence",
-    "rules": [
-      "ENT-02"
-    ],
+    "rules": ["ENT-02"],
     "changes": [
       {
         "op": "remove_segment",
@@ -13,24 +11,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "ENT-02"
-          ],
+          "ids": ["ENT-02"],
           "scope": "buyer",
           "status": "missing"
         }
       ],
-      "findings": [
-        "ENT-02"
-      ]
+      "findings": ["ENT-02"]
     },
     "check_type": "presence"
   },
   {
     "name": "freshness flags stale PFS",
-    "rules": [
-      "GUA-01"
-    ],
+    "rules": ["GUA-01"],
     "changes": [
       {
         "op": "fact",
@@ -41,24 +33,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-01"
-          ],
+          "ids": ["GUA-01"],
           "scope": "alex",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "GUA-01"
-      ]
+      "findings": ["GUA-01"]
     },
     "check_type": "freshness"
   },
   {
     "name": "unsigned credit authorization",
-    "rules": [
-      "GUA-06"
-    ],
+    "rules": ["GUA-06"],
     "changes": [
       {
         "op": "segment",
@@ -70,24 +56,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-06"
-          ],
+          "ids": ["GUA-06"],
           "scope": "alex",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "GUA-06"
-      ]
+      "findings": ["GUA-06"]
     },
     "check_type": "signed_and_dated"
   },
   {
     "name": "missing annual tax period",
-    "rules": [
-      "GUA-02"
-    ],
+    "rules": ["GUA-02"],
     "changes": [
       {
         "op": "remove_segment",
@@ -97,38 +77,25 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-02"
-          ],
+          "ids": ["GUA-02"],
           "scope": "alex",
           "status": "satisfied",
-          "periods": [
-            "2023",
-            "2025"
-          ]
+          "periods": ["2023", "2025"]
         },
         {
-          "ids": [
-            "GUA-02"
-          ],
+          "ids": ["GUA-02"],
           "scope": "alex",
           "status": "missing",
-          "periods": [
-            "2024"
-          ]
+          "periods": ["2024"]
         }
       ],
-      "findings": [
-        "GUA-02"
-      ]
+      "findings": ["GUA-02"]
     },
     "check_type": "period_coverage"
   },
   {
     "name": "old form revision",
-    "rules": [
-      "ENT-01"
-    ],
+    "rules": ["ENT-01"],
     "changes": [
       {
         "op": "segment",
@@ -140,24 +107,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "ENT-01"
-          ],
+          "ids": ["ENT-01"],
           "scope": "buyer",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "ENT-01"
-      ]
+      "findings": ["ENT-01"]
     },
     "check_type": "form_revision"
   },
   {
     "name": "missing purchase agreement pages",
-    "rules": [
-      "TXN-02"
-    ],
+    "rules": ["TXN-02"],
     "changes": [
       {
         "op": "segment",
@@ -169,24 +130,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-02"
-          ],
+          "ids": ["TXN-02"],
           "scope": "deal",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "TXN-02"
-      ]
+      "findings": ["TXN-02"]
     },
     "check_type": "page_completeness"
   },
   {
     "name": "PFS arithmetic does not foot",
-    "rules": [
-      "GUA-01"
-    ],
+    "rules": ["GUA-01"],
     "changes": [
       {
         "op": "fact",
@@ -197,24 +152,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-01"
-          ],
+          "ids": ["GUA-01"],
           "scope": "alex",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "GUA-01"
-      ]
+      "findings": ["GUA-01"]
     },
     "check_type": "arithmetic"
   },
   {
     "name": "purchase buyer disagrees",
-    "rules": [
-      "TXN-02"
-    ],
+    "rules": ["TXN-02"],
     "changes": [
       {
         "op": "fact",
@@ -225,24 +174,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-02"
-          ],
+          "ids": ["TXN-02"],
           "scope": "deal",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "TXN-02"
-      ]
+      "findings": ["TXN-02"]
     },
     "check_type": "fact_agreement"
   },
   {
     "name": "allocation table absent",
-    "rules": [
-      "TXN-02"
-    ],
+    "rules": ["TXN-02"],
     "changes": [
       {
         "op": "fact",
@@ -253,24 +196,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-02"
-          ],
+          "ids": ["TXN-02"],
           "scope": "deal",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "TXN-02"
-      ]
+      "findings": ["TXN-02"]
     },
     "check_type": "fact_comparison"
   },
   {
     "name": "expired ID",
-    "rules": [
-      "GUA-04"
-    ],
+    "rules": ["GUA-04"],
     "changes": [
       {
         "op": "fact",
@@ -281,24 +218,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-04"
-          ],
+          "ids": ["GUA-04"],
           "scope": "alex",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "GUA-04"
-      ]
+      "findings": ["GUA-04"]
     },
     "check_type": "date_order"
   },
   {
     "name": "manual confirmation records unresolved issue",
-    "rules": [
-      "GUA-05"
-    ],
+    "rules": ["GUA-05"],
     "changes": [
       {
         "op": "confirmation",
@@ -309,24 +240,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-05"
-          ],
+          "ids": ["GUA-05"],
           "scope": "alex",
           "status": "received_with_issues"
         }
       ],
-      "findings": [
-        "GUA-05"
-      ]
+      "findings": ["GUA-05"]
     },
     "check_type": "manual_confirmation"
   },
   {
     "name": "lender item only ordered",
-    "rules": [
-      "TXN-08"
-    ],
+    "rules": ["TXN-08"],
     "changes": [
       {
         "op": "tracking",
@@ -337,24 +262,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-08"
-          ],
+          "ids": ["TXN-08"],
           "scope": "deal",
           "status": "tracking"
         }
       ],
-      "findings": [
-        "TXN-08"
-      ]
+      "findings": ["TXN-08"]
     },
     "check_type": "tracking"
   },
   {
     "name": "CON-01 planted discrepancy",
-    "rules": [
-      "CON-01"
-    ],
+    "rules": ["CON-01"],
     "changes": [
       {
         "op": "fact",
@@ -364,16 +283,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-01"
-      ]
+      "findings": ["CON-01"]
     }
   },
   {
     "name": "CON-02 planted discrepancy",
-    "rules": [
-      "CON-02"
-    ],
+    "rules": ["CON-02"],
     "changes": [
       {
         "op": "fact",
@@ -388,16 +303,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-02"
-      ]
+      "findings": ["CON-02"]
     }
   },
   {
     "name": "CON-03 planted discrepancy",
-    "rules": [
-      "CON-03"
-    ],
+    "rules": ["CON-03"],
     "changes": [
       {
         "op": "fact",
@@ -407,16 +318,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-03"
-      ]
+      "findings": ["CON-03"]
     }
   },
   {
     "name": "CON-04 planted discrepancy",
-    "rules": [
-      "CON-04"
-    ],
+    "rules": ["CON-04"],
     "changes": [
       {
         "op": "fact",
@@ -426,16 +333,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-04"
-      ]
+      "findings": ["CON-04"]
     }
   },
   {
     "name": "CON-05 planted discrepancy",
-    "rules": [
-      "CON-05"
-    ],
+    "rules": ["CON-05"],
     "changes": [
       {
         "op": "profile",
@@ -523,16 +426,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-05"
-      ]
+      "findings": ["CON-05"]
     }
   },
   {
     "name": "CON-06 planted discrepancy",
-    "rules": [
-      "CON-06"
-    ],
+    "rules": ["CON-06"],
     "changes": [
       {
         "op": "profile",
@@ -620,16 +519,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-06"
-      ]
+      "findings": ["CON-06"]
     }
   },
   {
     "name": "CON-07 planted discrepancy",
-    "rules": [
-      "CON-07"
-    ],
+    "rules": ["CON-07"],
     "changes": [
       {
         "op": "profile",
@@ -647,16 +542,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-07"
-      ]
+      "findings": ["CON-07"]
     }
   },
   {
     "name": "CON-08 planted discrepancy",
-    "rules": [
-      "CON-08"
-    ],
+    "rules": ["CON-08"],
     "changes": [
       {
         "op": "profile",
@@ -674,16 +565,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-08"
-      ]
+      "findings": ["CON-08"]
     }
   },
   {
     "name": "CON-09 planted discrepancy",
-    "rules": [
-      "CON-09"
-    ],
+    "rules": ["CON-09"],
     "changes": [
       {
         "op": "fact",
@@ -693,16 +580,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-09"
-      ]
+      "findings": ["CON-09"]
     }
   },
   {
     "name": "CON-10 planted discrepancy",
-    "rules": [
-      "CON-10"
-    ],
+    "rules": ["CON-10"],
     "changes": [
       {
         "op": "fact",
@@ -712,16 +595,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-10"
-      ]
+      "findings": ["CON-10"]
     }
   },
   {
     "name": "CON-11 planted discrepancy",
-    "rules": [
-      "CON-11"
-    ],
+    "rules": ["CON-11"],
     "changes": [
       {
         "op": "fact",
@@ -731,16 +610,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-11"
-      ]
+      "findings": ["CON-11"]
     }
   },
   {
     "name": "CON-12 planted discrepancy",
-    "rules": [
-      "CON-12"
-    ],
+    "rules": ["CON-12"],
     "changes": [
       {
         "op": "profile",
@@ -806,16 +681,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-12"
-      ]
+      "findings": ["CON-12"]
     }
   },
   {
     "name": "CON-13 planted discrepancy",
-    "rules": [
-      "CON-13"
-    ],
+    "rules": ["CON-13"],
     "changes": [
       {
         "op": "profile",
@@ -881,16 +752,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-13"
-      ]
+      "findings": ["CON-13"]
     }
   },
   {
     "name": "CON-14 planted discrepancy",
-    "rules": [
-      "CON-14"
-    ],
+    "rules": ["CON-14"],
     "changes": [
       {
         "op": "profile",
@@ -919,16 +786,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-14"
-      ]
+      "findings": ["CON-14"]
     }
   },
   {
     "name": "CON-15 planted discrepancy",
-    "rules": [
-      "CON-15"
-    ],
+    "rules": ["CON-15"],
     "changes": [
       {
         "op": "fact",
@@ -938,16 +801,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-15"
-      ]
+      "findings": ["CON-15"]
     }
   },
   {
     "name": "CON-16 planted discrepancy",
-    "rules": [
-      "CON-16"
-    ],
+    "rules": ["CON-16"],
     "changes": [
       {
         "op": "segment",
@@ -958,9 +817,7 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-16"
-      ]
+      "findings": ["CON-16"]
     }
   }
 ]

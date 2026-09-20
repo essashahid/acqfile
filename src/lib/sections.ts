@@ -9,11 +9,36 @@ export type Hue = "accent" | "docs" | "review" | "evals" | "runs";
 
 /** Complete class strings, so Tailwind sees them at build time. */
 export const HUE: Record<Hue, { fg: string; soft: string; border: string; solid: string }> = {
-  accent: { fg: "text-[var(--accent)]", soft: "bg-[var(--accent-soft)]", border: "border-[var(--accent-border)]", solid: "bg-[var(--accent)]" },
-  docs: { fg: "text-[var(--sec-docs)]", soft: "bg-[var(--sec-docs-soft)]", border: "border-[var(--sec-docs-border)]", solid: "bg-[var(--sec-docs)]" },
-  review: { fg: "text-[var(--sec-review)]", soft: "bg-[var(--sec-review-soft)]", border: "border-[var(--sec-review-border)]", solid: "bg-[var(--sec-review)]" },
-  evals: { fg: "text-[var(--sec-evals)]", soft: "bg-[var(--sec-evals-soft)]", border: "border-[var(--sec-evals-border)]", solid: "bg-[var(--sec-evals)]" },
-  runs: { fg: "text-[var(--sec-runs)]", soft: "bg-[var(--sec-runs-soft)]", border: "border-[var(--sec-runs-border)]", solid: "bg-[var(--sec-runs)]" },
+  accent: {
+    fg: "text-[var(--accent)]",
+    soft: "bg-[var(--accent-soft)]",
+    border: "border-[var(--accent-border)]",
+    solid: "bg-[var(--accent)]",
+  },
+  docs: {
+    fg: "text-[var(--sec-docs)]",
+    soft: "bg-[var(--sec-docs-soft)]",
+    border: "border-[var(--sec-docs-border)]",
+    solid: "bg-[var(--sec-docs)]",
+  },
+  review: {
+    fg: "text-[var(--sec-review)]",
+    soft: "bg-[var(--sec-review-soft)]",
+    border: "border-[var(--sec-review-border)]",
+    solid: "bg-[var(--sec-review)]",
+  },
+  evals: {
+    fg: "text-[var(--sec-evals)]",
+    soft: "bg-[var(--sec-evals-soft)]",
+    border: "border-[var(--sec-evals-border)]",
+    solid: "bg-[var(--sec-evals)]",
+  },
+  runs: {
+    fg: "text-[var(--sec-runs)]",
+    soft: "bg-[var(--sec-runs-soft)]",
+    border: "border-[var(--sec-runs-border)]",
+    solid: "bg-[var(--sec-runs)]",
+  },
 };
 
 export type SectionKey = "deals" | "rulepacks" | "help";
@@ -29,9 +54,30 @@ export type Section = {
 };
 
 export const SECTIONS: Record<SectionKey, Section> = {
-  deals: { key: "deals", label: "Deals", href: "/deals", icon: FileText, hue: "accent", blurb: "Acquisition profiles, parties, incoming files, filing and fact review." },
-  rulepacks: { key: "rulepacks", label: "Rule packs", href: "/rulepacks", icon: BookOpenCheck, hue: "evals", blurb: "Read and compare the evidence requirements and their sources." },
-  help: { key: "help", label: "How it works", href: "/how-it-works", icon: CircleHelp, hue: "accent", blurb: "The flow from intake to evaluation, and where each thing lives." },
+  deals: {
+    key: "deals",
+    label: "Deals",
+    href: "/deals",
+    icon: FileText,
+    hue: "accent",
+    blurb: "Acquisition profiles, parties, incoming files, filing and fact review.",
+  },
+  rulepacks: {
+    key: "rulepacks",
+    label: "Rule packs",
+    href: "/rulepacks",
+    icon: BookOpenCheck,
+    hue: "evals",
+    blurb: "Read and compare the evidence requirements and their sources.",
+  },
+  help: {
+    key: "help",
+    label: "How it works",
+    href: "/how-it-works",
+    icon: CircleHelp,
+    hue: "accent",
+    blurb: "The flow from intake to evaluation, and where each thing lives.",
+  },
 };
 
 /** Navigation follows the order work actually flows through the product. */

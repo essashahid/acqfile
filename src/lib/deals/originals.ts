@@ -25,10 +25,7 @@ export async function openOriginal(
     .select()
     .from(schema.documentVersions)
     .where(
-      and(
-        eq(schema.documentVersions.id, versionId),
-        eq(schema.documentVersions.dealId, dealId),
-      ),
+      and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
     );
   if (!version) return null;
   const [opened] = await db

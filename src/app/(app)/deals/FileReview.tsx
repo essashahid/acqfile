@@ -77,11 +77,7 @@ export function FileReview({
               max={pages || 1}
               className="w-16 border"
               value={page}
-              onChange={(e) =>
-                setPage(
-                  Math.min(pages || 1, Math.max(1, Number(e.target.value))),
-                )
-              }
+              onChange={(e) => setPage(Math.min(pages || 1, Math.max(1, Number(e.target.value))))}
             />
           </label>
           {url ? (
@@ -96,24 +92,21 @@ export function FileReview({
           </p>
         ) : (
           <p role="note" className="text-sm">
-            Original documents are available to admin and operator roles only.
-            Parsed text below is masked.
+            Original documents are available to admin and operator roles only. Parsed text below is
+            masked.
           </p>
         )}
         {url && pdf && !unreadable ? (
           <PdfPage url={url} page={page} />
         ) : unreadable ? (
           <p>
-            This file could not be opened. Manual filing records its place in
-            the index; it supplies no evidence.
+            This file could not be opened. Manual filing records its place in the index; it supplies
+            no evidence.
           </p>
         ) : (
           <div className="max-h-[750px] overflow-auto space-y-2">
             {blocks.map((b, i) => (
-              <blockquote
-                key={i}
-                className="border-l-2 pl-3 whitespace-pre-wrap text-sm"
-              >
+              <blockquote key={i} className="border-l-2 pl-3 whitespace-pre-wrap text-sm">
                 <small>{b.locator}</small>
                 <p>{b.rawText}</p>
               </blockquote>
@@ -144,9 +137,7 @@ export function FileReview({
           }
         }}
       >
-        <h2 className="font-semibold">
-          {unreadable ? "Manual filing" : "Segments and filing"}
-        </h2>
+        <h2 className="font-semibold">{unreadable ? "Manual filing" : "Segments and filing"}</h2>
         {rows.map((r, i) => (
           <fieldset
             disabled={!editable}
@@ -163,9 +154,7 @@ export function FileReview({
                 min={1}
                 max={pages || 100}
                 value={r.page_start}
-                onChange={(e) =>
-                  update(i, { page_start: Number(e.target.value) })
-                }
+                onChange={(e) => update(i, { page_start: Number(e.target.value) })}
               />
             </label>
             <label>
@@ -177,9 +166,7 @@ export function FileReview({
                 min={1}
                 max={pages || 100}
                 value={r.page_end}
-                onChange={(e) =>
-                  update(i, { page_end: Number(e.target.value) })
-                }
+                onChange={(e) => update(i, { page_end: Number(e.target.value) })}
               />
             </label>
             <label>
@@ -188,9 +175,7 @@ export function FileReview({
                 aria-label={`Segment ${i + 1} type`}
                 className="w-full border rounded p-1"
                 value={r.doc_type}
-                onChange={(e) =>
-                  update(i, { doc_type: e.target.value as Row["doc_type"] })
-                }
+                onChange={(e) => update(i, { doc_type: e.target.value as Row["doc_type"] })}
               >
                 {DOCUMENT_TYPES.map((t) => (
                   <option key={t}>{t}</option>
@@ -203,9 +188,7 @@ export function FileReview({
                 aria-label={`Segment ${i + 1} party`}
                 className="w-full border rounded p-1"
                 value={r.party_id ?? ""}
-                onChange={(e) =>
-                  update(i, { party_id: e.target.value || null })
-                }
+                onChange={(e) => update(i, { party_id: e.target.value || null })}
               >
                 <option value="">Unknown / outside deal</option>
                 {parties.map((p) => (
@@ -239,10 +222,7 @@ export function FileReview({
                   value={r[key] === null ? "unknown" : String(r[key])}
                   onChange={(e) =>
                     update(i, {
-                      [key]:
-                        e.target.value === "unknown"
-                          ? null
-                          : e.target.value === "true",
+                      [key]: e.target.value === "unknown" ? null : e.target.value === "true",
                     })
                   }
                 >
@@ -253,12 +233,7 @@ export function FileReview({
               </label>
             ))}
             {(
-              [
-                "signature_date",
-                "document_date",
-                "form_revision",
-                "account_last_four",
-              ] as const
+              ["signature_date", "document_date", "form_revision", "account_last_four"] as const
             ).map((key) => (
               <label key={key}>
                 {key.replaceAll("_", " ")}
@@ -269,21 +244,12 @@ export function FileReview({
                 />
               </label>
             ))}
-            <blockquote className="col-span-2 border-l-2 pl-2">
-              “{r.quote}”
-            </blockquote>
-            <button
-              type="button"
-              className="underline"
-              onClick={() => setPage(r.page_start)}
-            >
+            <blockquote className="col-span-2 border-l-2 pl-2">“{r.quote}”</blockquote>
+            <button type="button" className="underline" onClick={() => setPage(r.page_start)}>
               Show page {r.page_start}
             </button>
             {rows.length > 1 && (
-              <button
-                type="button"
-                onClick={() => setRows(rows.filter((_, j) => j !== i))}
-              >
+              <button type="button" onClick={() => setRows(rows.filter((_, j) => j !== i))}>
                 Remove segment
               </button>
             )}
@@ -330,15 +296,8 @@ export function FileReview({
                 onChange={(e) => setNote(e.target.value)}
               />
             </label>
-            <button
-              disabled={busy}
-              className="rounded bg-teal-800 text-white px-4 py-2"
-            >
-              {busy
-                ? "Saving…"
-                : unreadable
-                  ? "File manually"
-                  : "Confirm segments"}
+            <button disabled={busy} className="rounded bg-teal-800 text-white px-4 py-2">
+              {busy ? "Saving…" : unreadable ? "File manually" : "Confirm segments"}
             </button>
           </>
         )}

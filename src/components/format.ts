@@ -69,7 +69,9 @@ export function fmtCompact(value: number | string | null | undefined): string {
   const n = typeof value === "string" ? Number(value) : (value ?? 0);
   if (!Number.isFinite(n)) return "0";
   if (Math.abs(n) < 1000) return String(n);
-  return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+  return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(
+    n,
+  );
 }
 
 export function fmtDuration(ms: number | null | undefined): string {
@@ -95,12 +97,19 @@ export function fmtConfidence(value: number | string | null | undefined): string
 }
 
 /** Currency amount in its own currency, without cents for whole values. */
-export function fmtMoney(amount: number | string | null | undefined, currency: string | null | undefined): string {
+export function fmtMoney(
+  amount: number | string | null | undefined,
+  currency: string | null | undefined,
+): string {
   const n = typeof amount === "string" ? Number(amount) : (amount ?? 0);
   if (!Number.isFinite(n)) return "";
   const code = (currency ?? "USD").toUpperCase();
   try {
-    return new Intl.NumberFormat("en-US", { style: "currency", currency: code, maximumFractionDigits: Number.isInteger(n) ? 0 : 2 }).format(n);
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: code,
+      maximumFractionDigits: Number.isInteger(n) ? 0 : 2,
+    }).format(n);
   } catch {
     return `${fmtNumber(n)} ${code}`;
   }
@@ -147,7 +156,10 @@ export function qualifyFieldValue(fieldPath: string, value: unknown): string | n
   const v = value as Record<string, unknown>;
   if (root === "key_findings" && v.severity) return `Severity ${String(v.severity)}`;
   if (root === "recommendations") {
-    const parts = [v.target_entity ? `Target: ${String(v.target_entity)}` : null, v.status_if_stated ? `Status: ${String(v.status_if_stated)}` : null].filter(Boolean);
+    const parts = [
+      v.target_entity ? `Target: ${String(v.target_entity)}` : null,
+      v.status_if_stated ? `Status: ${String(v.status_if_stated)}` : null,
+    ].filter(Boolean);
     return parts.length ? parts.join(" · ") : null;
   }
   return null;

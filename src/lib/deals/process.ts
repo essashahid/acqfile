@@ -5,23 +5,20 @@ import { env, failureInjectionFromEnv } from "@/lib/env";
 import { MAX_ATTEMPTS, RETRY_SCHEDULE_MS } from "@/lib/config";
 import { getStorage } from "@/lib/storage";
 import type { SessionContext } from "@/lib/workspace";
-import {
-  runStep,
-  StepFailure,
-  type StepContext,
-} from "@/lib/pipeline/steps-runner";
+import { runStep, StepFailure, type StepContext } from "@/lib/pipeline/steps-runner";
 import { DEAL_PIPELINE, parseVersion } from "./intake";
 import { classifyFile } from "./classifier";
-import {
-  deterministicSegments,
-  assignParty,
-  type Classified,
-} from "./classification";
+import { deterministicSegments, assignParty, type Classified } from "./classification";
 import { finalizeSegments, type FilingRecord } from "./filing";
 import { requireDeal } from "./service";
 import { requestEvaluation } from "@/lib/evaluation/run";
 import type { DocumentType } from "@/lib/domain/registry";
-import { extractSegment, extractionConfigHash, EXTRACTION_PIPELINE, type ExtractionSummary } from "@/lib/extract/run";
+import {
+  extractSegment,
+  extractionConfigHash,
+  EXTRACTION_PIPELINE,
+  type ExtractionSummary,
+} from "@/lib/extract/run";
 export async function processDealVersion(
   context: SessionContext,
   dealId: string,
@@ -38,10 +35,7 @@ export async function processDealVersion(
     .select()
     .from(schema.documentVersions)
     .where(
-      and(
-        eq(schema.documentVersions.id, versionId),
-        eq(schema.documentVersions.dealId, dealId),
-      ),
+      and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
     );
   if (!version) throw Error("File not found");
   const parsed = await parseVersion(context, dealId, versionId, runId, opts);
@@ -67,12 +61,7 @@ export async function processDealVersion(
       try {
         return (await runStep(ctx, name, body)).output;
       } catch (e) {
-        if (
-          !(e instanceof StepFailure) ||
-          !e.retryable ||
-          i >= MAX_ATTEMPTS - 1
-        )
-          throw e;
+        if (!(e instanceof StepFailure) || !e.retryable || i >= MAX_ATTEMPTS - 1) throw e;
         await (opts.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms))))(
           RETRY_SCHEDULE_MS[i] ?? 0,
         );
@@ -81,8 +70,7 @@ export async function processDealVersion(
   };
   const classified = await retry("segment_classify", async () => {
     const deterministic = deterministicSegments(parsed);
-    if (deterministic)
-      return { segments: deterministic, method: "signature" as const };
+    if (deterministic) return { segments: deterministic, method: "signature" as const };
     const call = await classifyFile(
       version.contentHash,
       parsed,
@@ -112,10 +100,7 @@ export async function processDealVersion(
     return { segments: call.segments, method: "llm" as const };
   });
   const assigned = await retry("assign_party_period", async () => {
-    const parties = await db
-      .select()
-      .from(schema.parties)
-      .where(eq(schema.parties.dealId, dealId));
+    const parties = await db.select().from(schema.parties).where(eq(schema.parties.dealId, dealId));
     return classified.segments.map((s) => {
       const assigned = assignParty(s, parsed, parties);
       return {
@@ -123,9 +108,7 @@ export async function processDealVersion(
         ...assigned,
         classification_method: classified.method,
         status:
-          classified.segments.length > 1 ||
-          s.uncertain ||
-          assigned.assignment !== "matched"
+          classified.segments.length > 1 || s.uncertain || assigned.assignment !== "matched"
             ? "proposed"
             : "confirmed",
       } as Classified;
@@ -135,12 +118,19 @@ export async function processDealVersion(
     finalizeSegments(context, dealId, versionId, assigned),
   );
   // Phase 4: read every confirmed segment through the six A39 steps.
-  const extraction = await extractConfirmed(context, dealId, version, parsed, result.segments, runId, opts);
+  const extraction = await extractConfirmed(
+    context,
+    dealId,
+    version,
+    parsed,
+    result.segments,
+    runId,
+    opts,
+  );
   return {
     ...result,
     extraction,
-    deterministic:
-      classified.method === "signature" ? result.segments.length : 0,
+    deterministic: classified.method === "signature" ? result.segments.length : 0,
     classifier: classified.method === "llm" ? result.segments.length : 0,
   };
 }
@@ -175,13 +165,7 @@ export async function processDealRun(
     failed = 0;
   for (const f of files.filter((f) => !f.duplicate)) {
     try {
-      await processDealVersion(
-        context,
-        dealId,
-        f.documentVersionId,
-        runId,
-        opts,
-      );
+      await processDealVersion(context, dealId, f.documentVersionId, runId, opts);
       completed++;
     } catch {
       failed++;
@@ -207,9 +191,20 @@ export async function extractConfirmed(
   dealId: string,
   version: { id: string; contentHash: string; storagePath: string },
   parsed: Awaited<ReturnType<typeof parseVersion>>,
-  segments: { id: string; status: string; doc_type: string; page_start: number; page_end: number; party_id: string | null; period: string | null }[],
+  segments: {
+    id: string;
+    status: string;
+    doc_type: string;
+    page_start: number;
+    page_end: number;
+    party_id: string | null;
+    period: string | null;
+  }[],
   runId: string,
-  opts: { injectFailure?: { step: string; attempts: number }; sleep?: (ms: number) => Promise<void> } = {},
+  opts: {
+    injectFailure?: { step: string; attempts: number };
+    sleep?: (ms: number) => Promise<void>;
+  } = {},
 ) {
   if (parsed.status !== "parsed") return [];
   const ctx: StepContext = {
@@ -226,7 +221,23 @@ export async function extractConfirmed(
   const load = async () => (bytes ??= await getStorage().get(version.storagePath));
   for (const s of segments.filter((s) => s.status === "confirmed"))
     out.push(
-      await extractSegment(context, ctx, dealId, version.contentHash, parsed, load, { id: s.id, docType: s.doc_type as DocumentType, pageStart: s.page_start, pageEnd: s.page_end, partyId: s.party_id, period: s.period }, opts.sleep),
+      await extractSegment(
+        context,
+        ctx,
+        dealId,
+        version.contentHash,
+        parsed,
+        load,
+        {
+          id: s.id,
+          docType: s.doc_type as DocumentType,
+          pageStart: s.page_start,
+          pageEnd: s.page_end,
+          partyId: s.party_id,
+          period: s.period,
+        },
+        opts.sleep,
+      ),
     );
   return out;
 }
@@ -236,27 +247,76 @@ export async function extractAfterReview(
   context: SessionContext,
   dealId: string,
   versionId: string,
-  opts: { injectFailure?: { step: string; attempts: number }; sleep?: (ms: number) => Promise<void> } = {},
+  opts: {
+    injectFailure?: { step: string; attempts: number };
+    sleep?: (ms: number) => Promise<void>;
+  } = {},
 ) {
   await requireDeal(context, dealId);
   const db = getDb();
-  const [version] = await db.select().from(schema.documentVersions).where(and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)));
+  const [version] = await db
+    .select()
+    .from(schema.documentVersions)
+    .where(
+      and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
+    );
   if (!version) throw Error("File not found");
-  const [record] = await db.select().from(schema.recordVersions).where(and(eq(schema.recordVersions.documentVersionId, versionId), eq(schema.recordVersions.isCurrent, true)));
-  const segments = ((record?.payloadJson as FilingRecord | undefined)?.segments ?? []).filter((s) => s.status === "confirmed");
-  if (!segments.length || version.parseStatus === "failed") return { runId: null, extraction: [] as ExtractionSummary[] };
+  const [record] = await db
+    .select()
+    .from(schema.recordVersions)
+    .where(
+      and(
+        eq(schema.recordVersions.documentVersionId, versionId),
+        eq(schema.recordVersions.isCurrent, true),
+      ),
+    );
+  const segments = ((record?.payloadJson as FilingRecord | undefined)?.segments ?? []).filter(
+    (s) => s.status === "confirmed",
+  );
+  if (!segments.length || version.parseStatus === "failed")
+    return { runId: null, extraction: [] as ExtractionSummary[] };
   const [run] = await db
     .insert(schema.processingRuns)
-    .values({ workspaceId: context.workspace.workspaceId, runType: "reprocess", pipelineVersion: EXTRACTION_PIPELINE, provider: env().LLM_PROVIDER, modelConfigHash: extractionConfigHash(), initiatedBy: context.user.id, documentsTotal: 1, configJson: { dealId, documentVersionIds: [versionId] }, status: "running", startedAt: new Date() })
+    .values({
+      workspaceId: context.workspace.workspaceId,
+      runType: "reprocess",
+      pipelineVersion: EXTRACTION_PIPELINE,
+      provider: env().LLM_PROVIDER,
+      modelConfigHash: extractionConfigHash(),
+      initiatedBy: context.user.id,
+      documentsTotal: 1,
+      configJson: { dealId, documentVersionIds: [versionId] },
+      status: "running",
+      startedAt: new Date(),
+    })
     .returning();
   try {
     const parsed = await parseVersion(context, dealId, versionId, run!.id, opts);
-    const extraction = await extractConfirmed(context, dealId, version, parsed, segments, run!.id, opts);
-    await db.update(schema.processingRuns).set({ status: "completed", documentsCompleted: 1, completedAt: new Date() }).where(eq(schema.processingRuns.id, run!.id));
+    const extraction = await extractConfirmed(
+      context,
+      dealId,
+      version,
+      parsed,
+      segments,
+      run!.id,
+      opts,
+    );
+    await db
+      .update(schema.processingRuns)
+      .set({ status: "completed", documentsCompleted: 1, completedAt: new Date() })
+      .where(eq(schema.processingRuns.id, run!.id));
     await requestEvaluation(dealId);
     return { runId: run!.id, extraction };
   } catch (e) {
-    await db.update(schema.processingRuns).set({ status: "failed", documentsFailed: 1, completedAt: new Date(), errorMessage: "Extraction needs retry." }).where(eq(schema.processingRuns.id, run!.id));
+    await db
+      .update(schema.processingRuns)
+      .set({
+        status: "failed",
+        documentsFailed: 1,
+        completedAt: new Date(),
+        errorMessage: "Extraction needs retry.",
+      })
+      .where(eq(schema.processingRuns.id, run!.id));
     throw e;
   }
 }

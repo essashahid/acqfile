@@ -20,10 +20,7 @@ export type Parsed = {
   identifiers: ReadIdentifier[];
   reason?: string;
 };
-export async function parseArrival(
-  bytes: Buffer,
-  key: string,
-): Promise<Parsed> {
+export async function parseArrival(bytes: Buffer, key: string): Promise<Parsed> {
   const kind = sniff(bytes),
     blocks: Source[] = [],
     identifiers: ReadIdentifier[] = [],
@@ -102,9 +99,7 @@ export async function parseArrival(
             : field instanceof PDFCheckBox
               ? String(field.isChecked())
               : "";
-        for (const [widgetIndex, widget] of field.acroField
-          .getWidgets()
-          .entries()) {
+        for (const [widgetIndex, widget] of field.acroField.getWidgets().entries()) {
           const index = doc.getPages().findIndex((p) => p.ref === widget.P());
           add({
             page: index < 0 ? 1 : index + 1,
@@ -151,8 +146,7 @@ export async function parseArrival(
     } else throw Error("Unsupported format");
     if (!blocks.length) throw Error("Empty document");
     for (const value of forbiddenValues)
-      for (const block of blocks)
-        block.text = block.text.replaceAll(value, "[redacted]");
+      for (const block of blocks) block.text = block.text.replaceAll(value, "[redacted]");
     return { status: "parsed", kind, pages, blocks, identifiers };
   } catch {
     return {

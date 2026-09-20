@@ -101,19 +101,19 @@ Rules:
 
 ## 5. Proof, in mock mode, all three deals and every batch
 
-| Measure | Gate |
-| --- | --- |
-| Rule-feeding fact accuracy, `acroform` and `text`, before review | at least 95% |
-| Rule-feeding fact accuracy, `vision`, before review | report only |
-| Provenance validity on text-layer facts | at least 98% |
-| Every planted extraction fault routed as its plan expects | 100% |
-| Vision rule-feeding facts auto-accepted | 0 |
-| **Before review:** rows `satisfied` where truth says otherwise | 0 |
+| Measure                                                                                                                                           | Gate                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Rule-feeding fact accuracy, `acroform` and `text`, before review                                                                                  | at least 95%                |
+| Rule-feeding fact accuracy, `vision`, before review                                                                                               | report only                 |
+| Provenance validity on text-layer facts                                                                                                           | at least 98%                |
+| Every planted extraction fault routed as its plan expects                                                                                         | 100%                        |
+| Vision rule-feeding facts auto-accepted                                                                                                           | 0                           |
+| **Before review:** rows `satisfied` where truth says otherwise                                                                                    | 0                           |
 | **After simulated review** (a test operator resolves every open item with truth values): engine result equals the expected checklist and findings | exact, every deal and batch |
-| A correction creates a new version and triggers a new evaluation whose result changes as expected | pass |
-| Injected failure at `extract` and at `independent_verify` resumes with no repeated call | pass |
-| Identifier patterns in the database, logs and stored payloads | none |
-| Phase 3 gates on the regenerated fixtures | still pass |
+| A correction creates a new version and triggers a new evaluation whose result changes as expected                                                 | pass                        |
+| Injected failure at `extract` and at `independent_verify` resumes with no repeated call                                                           | pass                        |
+| Identifier patterns in the database, logs and stored payloads                                                                                     | none                        |
+| Phase 3 gates on the regenerated fixtures                                                                                                         | still pass                  |
 
 Report the split of facts by method, and how many review items an operator faces per deal. If A44 ran, report it apart from everything else.
 

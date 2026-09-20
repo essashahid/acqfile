@@ -49,13 +49,8 @@ export function IntakeForm({ dealId }: { dealId: string }) {
           onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
         />
       </label>
-      <p>
-        {files.length} selected. Up to 200 files, 10 MB each, 100 MB expanded.
-      </p>
-      <button
-        disabled={busy || !files.length}
-        className="rounded bg-teal-800 text-white px-3 py-2"
-      >
+      <p>{files.length} selected. Up to 200 files, 10 MB each, 100 MB expanded.</p>
+      <button disabled={busy || !files.length} className="rounded bg-teal-800 text-white px-3 py-2">
         {busy ? "Processing batch…" : "Upload batch"}
       </button>
       <p role="status">{message}</p>

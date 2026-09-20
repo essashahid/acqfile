@@ -7,9 +7,7 @@ const run = (input: ReturnType<typeof fixtureInput>) =>
 it("absence short circuits signature and page checks; proposed evidence waits", () => {
   const input = fixtureInput();
   input.segments = input.segments.filter((s) => s.id !== "1919");
-  input.accepted_facts = input.accepted_facts.filter(
-    (f) => f.segment_id !== "1919",
-  );
+  input.accepted_facts = input.accepted_facts.filter((f) => f.segment_id !== "1919");
   input.evidence_inventory = {
     segment_ids: input.segments.map((s) => s.id),
     fact_ids: input.accepted_facts.map((f) => f.id),
@@ -27,9 +25,7 @@ it("absence short circuits signature and page checks; proposed evidence waits", 
     ...fixtureInput().segments.find((s) => s.id === "1919")!,
     status: "proposed",
   });
-  expect(run(input).checklist.find((r) => r.item_id === "ENT-01")?.status).toBe(
-    "needs_review",
-  );
+  expect(run(input).checklist.find((r) => r.item_id === "ENT-01")?.status).toBe("needs_review");
 });
 it("unsigned with a null date is incomplete; reports failed and unknown checks", () => {
   const input = fixtureInput();
@@ -39,9 +35,7 @@ it("unsigned with a null date is incomplete; reports failed and unknown checks",
     form_revision: null,
   });
   const out = run(input);
-  expect(out.checklist.find((r) => r.item_id === "ENT-01")?.status).toBe(
-    "received_with_issues",
-  );
+  expect(out.checklist.find((r) => r.item_id === "ENT-01")?.status).toBe("received_with_issues");
   expect(out.findings.find((f) => f.rule_id === "ENT-01")).toMatchObject({
     type: "incomplete",
     message: expect.stringMatching(/(?=.*fail:)(?=.*unknown:)/),
@@ -49,18 +43,12 @@ it("unsigned with a null date is incomplete; reports failed and unknown checks",
 });
 it("two accepted conflicting prices survive a third pending source", () => {
   const input = fixtureInput();
-  const f = input.accepted_facts.find(
-    (f) => f.id === "purchase:deal.purchase_price",
-  )!;
+  const f = input.accepted_facts.find((f) => f.id === "purchase:deal.purchase_price")!;
   input.accepted_facts = input.accepted_facts.filter((x) => x !== f);
   input.pending_facts.push(f);
-  const loi = input.accepted_facts.find(
-    (f) => f.id === "loi:deal.purchase_price",
-  )!;
+  const loi = input.accepted_facts.find((f) => f.id === "loi:deal.purchase_price")!;
   loi.value = loi.normalized_value = 2500001;
-  expect(run(input).findings.find((f) => f.rule_id === "CON-03")?.type).toBe(
-    "conflict",
-  );
+  expect(run(input).findings.find((f) => f.rule_id === "CON-03")?.type).toBe("conflict");
 });
 it("missing inventory outranks a waiver", () => {
   const input = fixtureInput();
@@ -73,7 +61,5 @@ it("missing inventory outranks a waiver", () => {
     note: "Waived for test",
     audit_event_id: "waiver-test",
   });
-  expect(run(input).checklist.find((r) => r.item_id === "ENT-02")?.status).toBe(
-    "needs_review",
-  );
+  expect(run(input).checklist.find((r) => r.item_id === "ENT-02")?.status).toBe("needs_review");
 });

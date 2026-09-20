@@ -6,7 +6,13 @@ export async function parsedVersion(versionId: string): Promise<Parsed | null> {
   const [step] = await getDb()
     .select()
     .from(schema.runSteps)
-    .where(and(eq(schema.runSteps.documentVersionId, versionId), eq(schema.runSteps.stepName, "parse"), eq(schema.runSteps.status, "succeeded")))
+    .where(
+      and(
+        eq(schema.runSteps.documentVersionId, versionId),
+        eq(schema.runSteps.stepName, "parse"),
+        eq(schema.runSteps.status, "succeeded"),
+      ),
+    )
     .orderBy(desc(schema.runSteps.completedAt))
     .limit(1);
   return (step?.outputJson as Parsed | undefined) ?? null;

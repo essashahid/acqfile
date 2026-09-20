@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  DocumentTypeSchema,
-  DOCUMENT_TYPES,
-  type DocumentType,
-} from "@/lib/domain/registry";
+import { DocumentTypeSchema, DOCUMENT_TYPES, type DocumentType } from "@/lib/domain/registry";
 import { DOCUMENT_SIGNATURES } from "@/lib/config/document-signatures";
 import { officialForm } from "@/lib/config/official-form-fields";
 import { normalizeName } from "@/lib/rules/expressions";
@@ -51,11 +47,7 @@ export function validateBoundaries(segments: Candidate[], pages: number) {
   const sorted = [...segments].sort((a, b) => a.page_start - b.page_start);
   let end = 0;
   for (const s of sorted) {
-    if (
-      s.page_start !== end + 1 ||
-      s.page_end < s.page_start ||
-      s.page_end > pages
-    )
+    if (s.page_start !== end + 1 || s.page_end < s.page_start || s.page_end > pages)
       throw Error("Segments must cover every page exactly once");
     end = s.page_end;
   }
@@ -76,13 +68,10 @@ function signature(text: string): DocumentType | null {
   })
     .filter((s) => s.score > 0)
     .sort((a, b) => b.score - a.score);
-  return scored[0] && scored[0].score > (scored[1]?.score ?? 0)
-    ? scored[0].type
-    : null;
+  return scored[0] && scored[0].score > (scored[1]?.score ?? 0) ? scored[0].type : null;
 }
 const line = (text: string, label: string) =>
-  new RegExp(`(?:^|\\n)${label}:\\s*([^\\n]+)`, "i").exec(text)?.[1]?.trim() ??
-  null;
+  new RegExp(`(?:^|\\n)${label}:\\s*([^\\n]+)`, "i").exec(text)?.[1]?.trim() ?? null;
 export function metadata(
   parsed: Parsed,
   start: number,
@@ -96,18 +85,12 @@ export function metadata(
     .join("\n");
   const spec = officialForm(type);
   const field = (name: string) =>
-    blocks.find((b) => b.kind === "field" && b.name === name && b.text)?.text ??
-    null;
+    blocks.find((b) => b.kind === "field" && b.name === name && b.text)?.text ?? null;
   const party_name =
-    (spec ? field(spec.name) : null) ??
-    line(text, "Named party") ??
-    line(text, "Name");
+    (spec ? field(spec.name) : null) ?? line(text, "Named party") ?? line(text, "Name");
   const period_raw = line(text, "Period");
-  const period =
-    period_raw && /^\d{4}(?:-\d{2})?$/.test(period_raw) ? period_raw : null;
-  const signature = /Signature:\s*(e-signed|_+);\s*Date:\s*([\d-]+|_+)/i.exec(
-    text,
-  );
+  const period = period_raw && /^\d{4}(?:-\d{2})?$/.test(period_raw) ? period_raw : null;
+  const signature = /Signature:\s*(e-signed|_+);\s*Date:\s*([\d-]+|_+)/i.exec(text);
   // A36: an official form's signature mark is page content inside its signature widget; its date is the form's own date field.
   const officialMark = spec
     ? /e-signed \/ SYNTHETIC-[\w-]+|e-signed|envelope/i.exec(text)?.[0]
@@ -119,26 +102,17 @@ export function metadata(
     : spec
       ? !!officialMark
       : null;
-  const dated = signature
-    ? !signature[2]!.startsWith("_")
-    : spec
-      ? dateFieldValid
-      : null;
+  const dated = signature ? !signature[2]!.startsWith("_") : spec ? dateFieldValid : null;
   const date = dateFieldValid ? dateField : signature?.[2];
-  const signature_date =
-    date && z.iso.date().safeParse(date).success ? date : null;
-  const asOf =
-    spec && "documentDate" in spec ? field(spec.documentDate) : null;
+  const signature_date = date && z.iso.date().safeParse(date).success ? date : null;
+  const asOf = spec && "documentDate" in spec ? field(spec.documentDate) : null;
   const document = spec
     ? asOf && z.iso.date().safeParse(asOf).success
       ? asOf
       : signature_date
     : line(text, "Document date");
-  const document_date =
-    document && z.iso.date().safeParse(document).success ? document : null;
-  const pageCounts = [...text.matchAll(/Page\s+\d+\s+of\s+(\d+)/gi)].map((m) =>
-    Number(m[1]),
-  );
+  const document_date = document && z.iso.date().safeParse(document).success ? document : null;
+  const pageCounts = [...text.matchAll(/Page\s+\d+\s+of\s+(\d+)/gi)].map((m) => Number(m[1]));
   const expected_page_count = spec
     ? spec.pages
     : pageCounts.length
@@ -148,20 +122,14 @@ export function metadata(
   const quote =
     signature?.[0] ??
     (spec
-      ? (officialMark ??
-        (dateFieldValid ? dateField : null) ??
-        field(spec.name) ??
-        "")
+      ? (officialMark ?? (dateFieldValid ? dateField : null) ?? field(spec.name) ?? "")
       : (blocks[0]?.text.slice(0, 180) ?? ""));
-  const quote_page =
-    blocks.find((b) => quote && b.text.includes(quote))?.page ?? start;
+  const quote_page = blocks.find((b) => quote && b.text.includes(quote))?.page ?? start;
   const evidence = Object.entries({
     party_name,
     period: period_raw,
     form_revision:
-      spec && "revision" in spec && text.includes(spec.revision)
-        ? spec.revision
-        : null,
+      spec && "revision" in spec && text.includes(spec.revision) ? spec.revision : null,
     signed: signature?.[0] ?? officialMark,
     dated: signature?.[0] ?? (dateFieldValid ? dateField : undefined),
     signature_date,
@@ -181,9 +149,7 @@ export function metadata(
     period_raw,
     period,
     form_revision:
-      spec && "revision" in spec && text.includes(spec.revision)
-        ? spec.revision
-        : null,
+      spec && "revision" in spec && text.includes(spec.revision) ? spec.revision : null,
     signed,
     dated,
     signature_date,
@@ -197,11 +163,8 @@ export function metadata(
   });
 }
 export function deterministicSegments(parsed: Parsed): Candidate[] | null {
-  if (parsed.status !== "parsed" || parsed.blocks.some((b) => b.image_only))
-    return null;
-  const fields = new Set(
-    parsed.blocks.filter((b) => b.kind === "field").map((b) => b.name),
-  );
+  if (parsed.status !== "parsed" || parsed.blocks.some((b) => b.image_only)) return null;
+  const fields = new Set(parsed.blocks.filter((b) => b.kind === "field").map((b) => b.name));
   const official = DOCUMENT_TYPES.filter(
     (t) =>
       DOCUMENT_SIGNATURES[t].acroform.length &&
@@ -210,10 +173,7 @@ export function deterministicSegments(parsed: Parsed): Candidate[] | null {
   if (official.length === 1) {
     // AcroForm fields identify a form, not necessarily the whole uploaded packet.
     const anotherType = parsed.blocks.some(
-      (b) =>
-        b.kind === "page" &&
-        signature(b.text) &&
-        signature(b.text) !== official[0],
+      (b) => b.kind === "page" && signature(b.text) && signature(b.text) !== official[0],
     );
     if (anotherType) return null;
     return [metadata(parsed, 1, parsed.pages, official[0]!)];
@@ -240,12 +200,7 @@ export function deterministicSegments(parsed: Parsed): Candidate[] | null {
       previous.period === current.period &&
       !restart
     ) {
-      output[output.length - 1] = metadata(
-        parsed,
-        previous.page_start,
-        page,
-        type,
-      );
+      output[output.length - 1] = metadata(parsed, previous.page_start, page, type);
     } else output.push(current);
   }
   return validateBoundaries(output, parsed.pages);
@@ -256,29 +211,18 @@ export type AssignmentParty = {
   nameVariants: unknown;
   identifierHmac: string | null;
 };
-export function assignParty(
-  candidate: Candidate,
-  parsed: Parsed,
-  parties: AssignmentParty[],
-) {
+export function assignParty(candidate: Candidate, parsed: Parsed, parties: AssignmentParty[]) {
   const identifiers = parsed.identifiers.filter(
-    (i) =>
-      i.page >= candidate.page_start &&
-      i.page <= candidate.page_end &&
-      i.kind !== "account",
+    (i) => i.page >= candidate.page_start && i.page <= candidate.page_end && i.kind !== "account",
   );
   const idMatches = parties.filter(
-    (p) =>
-      p.identifierHmac && identifiers.some((i) => i.hmac === p.identifierHmac),
+    (p) => p.identifierHmac && identifiers.some((i) => i.hmac === p.identifierHmac),
   );
   const name = normalizeName(candidate.party_name ?? "");
   const matches = idMatches.length
     ? idMatches
     : parties.filter((p) =>
-        [
-          p.legalName,
-          ...(Array.isArray(p.nameVariants) ? p.nameVariants : []),
-        ].some(
+        [p.legalName, ...(Array.isArray(p.nameVariants) ? p.nameVariants : [])].some(
           (n) => typeof n === "string" && name && normalizeName(n) === name,
         ),
       );

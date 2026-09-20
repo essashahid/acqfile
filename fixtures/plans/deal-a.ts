@@ -1,68 +1,464 @@
-import {base,doc,add,party,owner,guarantor,setOwners,checklist,status,finding,plant,fault,key,layout,fakeId,YEARS,person,row} from './shared';
-export function dealA(){
- const p=base('deal-a');guarantor(p,'bea',20260916);
- party(p,'holding','Zelmivar Holdings LLC',['buyer_owner'],'entity');
- party(p,'affiliate','Zelmivar Equipment LLC',['affiliate'],'entity');
- party(p,'landlord','Zelmivar Premises LLC',['landlord'],'entity');
- p.parties.find(x=>x.id==='alex')!.affiliates=['affiliate'];
- p.ownership[0]!.percent=60;owner(p,'holding',40);owner(p,'bea',100,'holding');owner(p,'alex',100,'affiliate');
- setOwners(p,[{name:p.parties.find(x=>x.id==='alex')!.legal_name,percent:60},{name:'Zelmivar Holdings LLC',percent:40}]);
- add(p,'holding-citizen','CITIZENSHIP_EVIDENCE','holding');p.confirmations.push({rule:'GUA-05',scope:'holding',key:'citizenship_handling'});
- for(const y of YEARS)add(p,`affiliate-tax-${y}`,'TAX_BUSINESS','affiliate',{'party.legal_name':'Zelmivar Equipment LLC','party.identifier':fakeId('00-5556789'),'tax.gross_receipts':100000,'tax.net_income':10000,'tax.year':Number(y)},y);
- add(p,'affiliate-interim','FIN_INTERIM','affiliate',{'financial.period_end':'2026-08-31','financial.revenue':70000,'financial.total_assets':100000,'financial.total_liabilities':20000});
- add(p,'affiliate-debt','DEBT_SCHEDULE','affiliate',{'debt.as_of_date':'2026-08-31','debt.total':20000});
- add(p,'lease','LEASE','target',{'party.address':'14 Velnoric Way, Tazmervale, ZZ 00000','lease.tenant':p.parties[1]!.legal_name,'lease.landlord':'Zelmivar Premises LLC','lease.expiry':'2029-09-15','lease.option_years':0});
- add(p,'lease-consent','LEASE_CONSENT','target');
- for(const d of p.documents.filter(d=>['TAX_BUSINESS','PURCHASE_AGREEMENT'].includes(d.type)&&d.party==='target'))d.facts['party.address']='14 Velnoric Way, Tazmervale, ZZ 00000';
- for(const y of YEARS)add(p,`holding-tax-${y}`,'TAX_BUSINESS','holding',{'party.legal_name':'Zelmivar Holdings LLC','party.identifier':fakeId('00-5566789'),'tax.gross_receipts':0,'tax.net_income':0,'tax.year':Number(y)},y);
- add(p,'holding-interim','FIN_INTERIM','holding',{'financial.period_end':'2026-08-31','financial.revenue':0,'financial.total_assets':400000,'financial.total_liabilities':0});
- add(p,'holding-debt','DEBT_SCHEDULE','holding',{'debt.as_of_date':'2026-08-31','debt.total':0});
- row(p,['GUA-09a'],'holding','satisfied',YEARS);row(p,['GUA-09b','GUA-09c'],'holding');
- checklist(p,['alex','bea'],['alex','bea','holding'],p.profile.equity_sources as {id:string;kind:string}[],'affiliate');
- doc(p,'personal-2024').batch=2;doc(p,'bea-citizen').batch=2;
- status(p,'GUA-02','alex','missing','2024');finding(p,'GUA-02','alex','2024','missing');
- plant(p,1,'Guarantor 2024 return absent until batch 2',['personal-2024'],[key('GUA-02','alex','2024')]);
- Object.assign(doc(p,'pfs').facts,{'pfs.as_of_date':'2026-04-28'});Object.assign(doc(p,'pfs').metadata,{document_date:'2026-04-28',signature_date:'2026-04-28'});
- add(p,'bank-april','BANK_STATEMENT','alex',{'party.legal_name':p.parties.find(x=>x.id==='alex')!.legal_name,'bank.ending_balance':180000,'bank.period_end':'2026-04-30','bank.institution':'Zelmivar Bank'},'2026-04').metadata={...doc(p,'bank-aug').metadata,document_date:'2026-04-30'};
- status(p,'GUA-01','alex','received_with_issues');finding(p,'GUA-01','alex',null,'stale','blocker');plant(p,2,'Form 413 is 140 days old',['pfs'],[key('GUA-01','alex')]);
- const fixed=structuredClone(doc(p,'1919'));fixed.id='1919-fixed';fixed.batch=2;fixed.supersedes='1919';fixed.metadata.document_date='2026-09-10';fixed.metadata.signature_date='2026-09-10';p.documents.push(fixed);
- Object.assign(doc(p,'1919').metadata,{signed:false,dated:false,signature_date:null});status(p,'ENT-01','buyer','received_with_issues');finding(p,'ENT-01','buyer',null,'incomplete','blocker');plant(p,3,'Unsigned and undated Form 1919',['1919'],[key('ENT-01','buyer')]);
- const wrong=structuredClone(doc(p,'personal-2023'));wrong.id='personal-wrong-year';wrong.duplicate_of='personal-2023';wrong.group=undefined;wrong.notes=['Filename claims 2024; form tax year is 2023'];p.documents.push(wrong);plant(p,4,'Same tax year twice; one misleading filename',['personal-2023','personal-wrong-year'],[], 'duplicate; period is 2023 regardless of filename');
- doc(p,'4506').facts['party.identifier']=fakeId('00-1234568');finding(p,'CON-01','target',null,'conflict','blocker');plant(p,5,'One-digit EIN conflict',['4506','tax-2023','tax-2024','tax-2025'],[key('CON-01','target')]);
- doc(p,'loi').facts['deal.purchase_price']=2425000;doc(p,'funding').facts['deal.purchase_price']=2410000;finding(p,'CON-03','deal',null,'conflict','blocker');plant(p,6,'Three conflicting purchase prices',['loi','purchase','funding'],[key('CON-03')]);
- doc(p,'funding').facts['funding.sources_total']=p.model.project-25000;(doc(p,'funding').facts['funding.sources'] as {label:string;amount:number}[])[0]!.amount-=25000;status(p,'TXN-03','deal','received_with_issues');finding(p,'TXN-03','deal',null,'incomplete');finding(p,'CON-04','deal',null,'conflict','blocker');plant(p,7,'Sources are 25000 below uses',['funding'],[key('TXN-03'),key('CON-04')]);
- for(const id of ['loi','purchase','funding','note'])doc(p,id).facts['deal.seller_note_terms']='24-month standby, then monthly payments';doc(p,'note').facts['note.full_standby']=false;
- finding(p,'CON-06');finding(p,'CON-07');plant(p,8,'Injection includes seller note with only 24 months standby; amount also exceeds seed fraction',['note','funding'],[key('CON-06'),key('CON-07')]);
- const owners=structuredClone(doc(p,'operating').facts['ownership.members']) as {name:string;percent:number}[];owners[0]!.percent=55;owners[1]!.percent=45;doc(p,'operating').facts['ownership.members']=owners;finding(p,'CON-02','buyer',null,'conflict','blocker');plant(p,9,'Operating agreement 55/45 against Form 1919 60/40',['operating','1919'],[key('CON-02','buyer')]);
- const dup=structuredClone(doc(p,'license'));dup.id='license-resend';dup.duplicate_of='license';p.documents.push(dup);plant(p,10,'Exact duplicate under forwarded filename',['license','license-resend'],[],'duplicate_of license');
- const old=structuredClone(doc(p,'bea-pfs'));old.id='bea-pfs-old';old.facts['pfs.as_of_date']='2025-01-01';old.metadata.document_date='2025-01-01';p.documents.push(old);doc(p,'bea-pfs').supersedes='bea-pfs-old';plant(p,11,'Corrected Form 413 replaces stale earlier version',['bea-pfs-old','bea-pfs'],[],'supersedes bea-pfs-old');
- plant(p,13,'Three logical documents in one physical PDF',['id','resume','credit'],[],'bundle: GOV_ID, RESUME, CREDIT_AUTH');plant(p,14,'Lease hidden behind phone-scan filename',['lease'],[],'classify as LEASE');
- add(p,'brochure','OTHER_NOT_REQUIRED','target',{},undefined).notes=['A synthetic equipment care brochure unrelated to the requested file'];plant(p,15,'Irrelevant brochure',['brochure'],[],'not_required');
- doc(p,'formation').unreadable=true;doc(p,'formation').format='protected_pdf';status(p,'ENT-02','buyer','missing');finding(p,'ENT-02','buyer',null,'missing');plant(p,16,'Password-protected formation document',['formation'],[key('ENT-02','buyer')],'unreadable: FORMATION_DOC; no segment or fact');
- doc(p,'fin-2025').facts['financial.revenue']=1484000;finding(p,'CON-10','target','2025');plant(p,17,'Statement revenue 6 percent above return',['fin-2025','tax-2025'],[key('CON-10','target','2025')]);
- doc(p,'interim').facts['financial.period_end']='2026-04-18';for(const id of ['ar','ap'])doc(p,id).facts['aging.as_of_date']='2026-04-18';status(p,'TGT-03','target','received_with_issues');finding(p,'TGT-03','target',null,'stale');plant(p,18,'Interim is 150 days old; aging shares the same period',['interim','ar','ap'],[key('TGT-03','target')]);
- doc(p,'fin-2025').format='xlsx';plant(p,19,'Income statement and balance sheet in separate workbook sheets',['fin-2025'],[],'xlsx sheets: Income Statement, Balance Sheet');
- finding(p,'CON-13','target',null,'conflict','minor');plant(p,20,'Lease ends in three years with no options',['lease'],[key('CON-13','target')]);
- status(p,'GUA-05','bea','missing');finding(p,'GUA-05','bea',null,'missing');plant(p,21,'Citizenship evidence absent for indirect 40 percent owner',['owners','bea-citizen'],[key('GUA-05','bea')]);
- doc(p,'bank-aug').facts['bank.ending_balance']=100000;finding(p,'CON-08','cash-alex');plant(p,22,'August bank balance 100000 below claimed cash 150000',['bank-aug','funding'],[key('CON-08','cash-alex')]);
- doc(p,'loi').facts['deal.expiry_date']='2026-09-01';status(p,'TXN-01','deal','received_with_issues');finding(p,'TXN-01','deal',null,'incomplete');finding(p,'CON-15');plant(p,23,'LOI expired before as-of',['loi'],[key('TXN-01'),key('CON-15')]);
- add(p,'unmatched','OTHER_NOT_REQUIRED','outside-party').notes=[`Named party: ${person(20260999)}`];finding(p,'CON-16','deal',null,'needs_review');plant(p,24,'Document names a person outside the deal',['unmatched'],[key('CON-16')],'unmatched_party');
- finding(p,'PACK-01','deal',null,'info','info');
- // All traps have independent scopes from the deliberately conflicting evidence.
- doc(p,'purchase').facts['deal.seller']='Varn Holt Climate Services L.L.C.';
- doc(p,'bea-pfs').facts['pfs.net_worth']=400000.5;
- p.traps=[{id:'name-normalization',documents:['purchase'],rules:['TXN-02'],reason:'Spacing and LLC punctuation do not change the named seller'}, {id:'rounding',documents:['bea-pfs'],rules:['GUA-01|bea'],reason:'50 cents is within USD 1 arithmetic tolerance'}, {id:'superseded-stale',documents:['bea-pfs-old','bea-pfs'],rules:['GUA-01|bea'],reason:'Earlier stale version is excluded from the current inventory'}];
- const after=structuredClone(p.batches[0]!);after.batch=2;after.resolves=[key('GUA-02','alex','2024'),key('ENT-01','buyer'),key('GUA-05','bea')];after.findings=after.findings.filter(f=>!after.resolves.includes(key(f.rule_id,f.scope_key,f.period)));for(const r of after.checklist)if(after.resolves.includes(key(r.item_id,r.scope_key,r.period)))r.status='satisfied';p.batches.push(after);
- // A43 planted extraction faults. Expected routing reasoned from A39: text score = 0.30 exact + 0.20 validation + 0.25 verifier + 0.15 cross-pass (extractor value against the verifier's independent value) + 0.10 specificity; unsupported or contradicted evidence blocks regardless; vision never auto-accepts.
- fault(p,{id:'A-F1',document:'loi',attribute:'deal.purchase_price',kind:'wrong_value_real_quote',expected:'blocked',description:'Extractor transposes digits although the cited line states the price; the verifier contradicts it.',extractor:{value:2452000,quote:'purchase price: 2425000'},verifier:{status:'unsupported',corrected_value:2425000,contradiction:true,specificity:1}});
- fault(p,{id:'A-F2',document:'ar',attribute:'aging.as_of_date',kind:'quote_not_in_block',expected:'blocked',description:'Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.',extractor:{value:'2026-04-18',quote:'as of date: 2026-04-19'},verifier:{status:'unsupported',corrected_value:null,contradiction:false,specificity:0}});
- fault(p,{id:'A-F3',document:'interim',attribute:'financial.revenue',kind:'weak_evidence',expected:'review',description:'Right value cited to the broad title line only: 0.30+0.20+0.125+0.15+0.04 = 0.815, review.',extractor:{value:900000,quote:'Interim Income Statement and Balance Sheet'},verifier:{status:'partially_supported',corrected_value:900000,contradiction:false,specificity:0.4}});
- fault(p,{id:'A-F4',document:'tax-2024',attribute:'tax.gross_receipts',kind:'verifier_corrects',expected:'review',description:'Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.',extractor:{value:1030000,quote:'gross receipts: 1300000'},verifier:{status:'partially_supported',corrected_value:1300000,contradiction:false,specificity:0.75}});
- fault(p,{id:'A-F5',document:'debt',attribute:'debt.total',kind:'missing_value',expected:'review',description:'Extractor returns null for a value the schedule states; the gap is a review item, never an accepted absence.',extractor:{value:null,quote:null},verifier:null});
- fault(p,{id:'A-F6',document:'pfs',attribute:'pfs.cash',kind:'vision_disagreement',expected:'review',description:'Two independent vision reads disagree: 0+0.25+0.30+0.10 = 0.65, review; vision never auto-accepts.',extractor:{value:180000,quote:'180000',second_read:108000},verifier:{status:'supported',corrected_value:180000,contradiction:false,specificity:1}});
- doc(p,'plan').format='docx';doc(p,'lease').format='scan_pdf';doc(p,'pfs').format='scan_pdf';layout(p,40);
- doc(p,'personal-wrong-year').path='incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF';doc(p,'personal-wrong-year').group=undefined;
- // A duplicate of a segment inside a bundle must duplicate the complete physical file.
- doc(p,'personal-wrong-year').duplicate_of='personal-2023';
- return p;
+import {
+  base,
+  doc,
+  add,
+  party,
+  owner,
+  guarantor,
+  setOwners,
+  checklist,
+  status,
+  finding,
+  plant,
+  fault,
+  key,
+  layout,
+  fakeId,
+  YEARS,
+  person,
+  row,
+} from "./shared";
+export function dealA() {
+  const p = base("deal-a");
+  guarantor(p, "bea", 20260916);
+  party(p, "holding", "Zelmivar Holdings LLC", ["buyer_owner"], "entity");
+  party(p, "affiliate", "Zelmivar Equipment LLC", ["affiliate"], "entity");
+  party(p, "landlord", "Zelmivar Premises LLC", ["landlord"], "entity");
+  p.parties.find((x) => x.id === "alex")!.affiliates = ["affiliate"];
+  p.ownership[0]!.percent = 60;
+  owner(p, "holding", 40);
+  owner(p, "bea", 100, "holding");
+  owner(p, "alex", 100, "affiliate");
+  setOwners(p, [
+    { name: p.parties.find((x) => x.id === "alex")!.legal_name, percent: 60 },
+    { name: "Zelmivar Holdings LLC", percent: 40 },
+  ]);
+  add(p, "holding-citizen", "CITIZENSHIP_EVIDENCE", "holding");
+  p.confirmations.push({ rule: "GUA-05", scope: "holding", key: "citizenship_handling" });
+  for (const y of YEARS)
+    add(
+      p,
+      `affiliate-tax-${y}`,
+      "TAX_BUSINESS",
+      "affiliate",
+      {
+        "party.legal_name": "Zelmivar Equipment LLC",
+        "party.identifier": fakeId("00-5556789"),
+        "tax.gross_receipts": 100000,
+        "tax.net_income": 10000,
+        "tax.year": Number(y),
+      },
+      y,
+    );
+  add(p, "affiliate-interim", "FIN_INTERIM", "affiliate", {
+    "financial.period_end": "2026-08-31",
+    "financial.revenue": 70000,
+    "financial.total_assets": 100000,
+    "financial.total_liabilities": 20000,
+  });
+  add(p, "affiliate-debt", "DEBT_SCHEDULE", "affiliate", {
+    "debt.as_of_date": "2026-08-31",
+    "debt.total": 20000,
+  });
+  add(p, "lease", "LEASE", "target", {
+    "party.address": "14 Velnoric Way, Tazmervale, ZZ 00000",
+    "lease.tenant": p.parties[1]!.legal_name,
+    "lease.landlord": "Zelmivar Premises LLC",
+    "lease.expiry": "2029-09-15",
+    "lease.option_years": 0,
+  });
+  add(p, "lease-consent", "LEASE_CONSENT", "target");
+  for (const d of p.documents.filter(
+    (d) => ["TAX_BUSINESS", "PURCHASE_AGREEMENT"].includes(d.type) && d.party === "target",
+  ))
+    d.facts["party.address"] = "14 Velnoric Way, Tazmervale, ZZ 00000";
+  for (const y of YEARS)
+    add(
+      p,
+      `holding-tax-${y}`,
+      "TAX_BUSINESS",
+      "holding",
+      {
+        "party.legal_name": "Zelmivar Holdings LLC",
+        "party.identifier": fakeId("00-5566789"),
+        "tax.gross_receipts": 0,
+        "tax.net_income": 0,
+        "tax.year": Number(y),
+      },
+      y,
+    );
+  add(p, "holding-interim", "FIN_INTERIM", "holding", {
+    "financial.period_end": "2026-08-31",
+    "financial.revenue": 0,
+    "financial.total_assets": 400000,
+    "financial.total_liabilities": 0,
+  });
+  add(p, "holding-debt", "DEBT_SCHEDULE", "holding", {
+    "debt.as_of_date": "2026-08-31",
+    "debt.total": 0,
+  });
+  row(p, ["GUA-09a"], "holding", "satisfied", YEARS);
+  row(p, ["GUA-09b", "GUA-09c"], "holding");
+  checklist(
+    p,
+    ["alex", "bea"],
+    ["alex", "bea", "holding"],
+    p.profile.equity_sources as { id: string; kind: string }[],
+    "affiliate",
+  );
+  doc(p, "personal-2024").batch = 2;
+  doc(p, "bea-citizen").batch = 2;
+  status(p, "GUA-02", "alex", "missing", "2024");
+  finding(p, "GUA-02", "alex", "2024", "missing");
+  plant(
+    p,
+    1,
+    "Guarantor 2024 return absent until batch 2",
+    ["personal-2024"],
+    [key("GUA-02", "alex", "2024")],
+  );
+  Object.assign(doc(p, "pfs").facts, { "pfs.as_of_date": "2026-04-28" });
+  Object.assign(doc(p, "pfs").metadata, {
+    document_date: "2026-04-28",
+    signature_date: "2026-04-28",
+  });
+  add(
+    p,
+    "bank-april",
+    "BANK_STATEMENT",
+    "alex",
+    {
+      "party.legal_name": p.parties.find((x) => x.id === "alex")!.legal_name,
+      "bank.ending_balance": 180000,
+      "bank.period_end": "2026-04-30",
+      "bank.institution": "Zelmivar Bank",
+    },
+    "2026-04",
+  ).metadata = { ...doc(p, "bank-aug").metadata, document_date: "2026-04-30" };
+  status(p, "GUA-01", "alex", "received_with_issues");
+  finding(p, "GUA-01", "alex", null, "stale", "blocker");
+  plant(p, 2, "Form 413 is 140 days old", ["pfs"], [key("GUA-01", "alex")]);
+  const fixed = structuredClone(doc(p, "1919"));
+  fixed.id = "1919-fixed";
+  fixed.batch = 2;
+  fixed.supersedes = "1919";
+  fixed.metadata.document_date = "2026-09-10";
+  fixed.metadata.signature_date = "2026-09-10";
+  p.documents.push(fixed);
+  Object.assign(doc(p, "1919").metadata, { signed: false, dated: false, signature_date: null });
+  status(p, "ENT-01", "buyer", "received_with_issues");
+  finding(p, "ENT-01", "buyer", null, "incomplete", "blocker");
+  plant(p, 3, "Unsigned and undated Form 1919", ["1919"], [key("ENT-01", "buyer")]);
+  const wrong = structuredClone(doc(p, "personal-2023"));
+  wrong.id = "personal-wrong-year";
+  wrong.duplicate_of = "personal-2023";
+  wrong.group = undefined;
+  wrong.notes = ["Filename claims 2024; form tax year is 2023"];
+  p.documents.push(wrong);
+  plant(
+    p,
+    4,
+    "Same tax year twice; one misleading filename",
+    ["personal-2023", "personal-wrong-year"],
+    [],
+    "duplicate; period is 2023 regardless of filename",
+  );
+  doc(p, "4506").facts["party.identifier"] = fakeId("00-1234568");
+  finding(p, "CON-01", "target", null, "conflict", "blocker");
+  plant(
+    p,
+    5,
+    "One-digit EIN conflict",
+    ["4506", "tax-2023", "tax-2024", "tax-2025"],
+    [key("CON-01", "target")],
+  );
+  doc(p, "loi").facts["deal.purchase_price"] = 2425000;
+  doc(p, "funding").facts["deal.purchase_price"] = 2410000;
+  finding(p, "CON-03", "deal", null, "conflict", "blocker");
+  plant(p, 6, "Three conflicting purchase prices", ["loi", "purchase", "funding"], [key("CON-03")]);
+  doc(p, "funding").facts["funding.sources_total"] = p.model.project - 25000;
+  (doc(p, "funding").facts["funding.sources"] as { label: string; amount: number }[])[0]!.amount -=
+    25000;
+  status(p, "TXN-03", "deal", "received_with_issues");
+  finding(p, "TXN-03", "deal", null, "incomplete");
+  finding(p, "CON-04", "deal", null, "conflict", "blocker");
+  plant(p, 7, "Sources are 25000 below uses", ["funding"], [key("TXN-03"), key("CON-04")]);
+  for (const id of ["loi", "purchase", "funding", "note"])
+    doc(p, id).facts["deal.seller_note_terms"] = "24-month standby, then monthly payments";
+  doc(p, "note").facts["note.full_standby"] = false;
+  finding(p, "CON-06");
+  finding(p, "CON-07");
+  plant(
+    p,
+    8,
+    "Injection includes seller note with only 24 months standby; amount also exceeds seed fraction",
+    ["note", "funding"],
+    [key("CON-06"), key("CON-07")],
+  );
+  const owners = structuredClone(doc(p, "operating").facts["ownership.members"]) as {
+    name: string;
+    percent: number;
+  }[];
+  owners[0]!.percent = 55;
+  owners[1]!.percent = 45;
+  doc(p, "operating").facts["ownership.members"] = owners;
+  finding(p, "CON-02", "buyer", null, "conflict", "blocker");
+  plant(
+    p,
+    9,
+    "Operating agreement 55/45 against Form 1919 60/40",
+    ["operating", "1919"],
+    [key("CON-02", "buyer")],
+  );
+  const dup = structuredClone(doc(p, "license"));
+  dup.id = "license-resend";
+  dup.duplicate_of = "license";
+  p.documents.push(dup);
+  plant(
+    p,
+    10,
+    "Exact duplicate under forwarded filename",
+    ["license", "license-resend"],
+    [],
+    "duplicate_of license",
+  );
+  const old = structuredClone(doc(p, "bea-pfs"));
+  old.id = "bea-pfs-old";
+  old.facts["pfs.as_of_date"] = "2025-01-01";
+  old.metadata.document_date = "2025-01-01";
+  p.documents.push(old);
+  doc(p, "bea-pfs").supersedes = "bea-pfs-old";
+  plant(
+    p,
+    11,
+    "Corrected Form 413 replaces stale earlier version",
+    ["bea-pfs-old", "bea-pfs"],
+    [],
+    "supersedes bea-pfs-old",
+  );
+  plant(
+    p,
+    13,
+    "Three logical documents in one physical PDF",
+    ["id", "resume", "credit"],
+    [],
+    "bundle: GOV_ID, RESUME, CREDIT_AUTH",
+  );
+  plant(p, 14, "Lease hidden behind phone-scan filename", ["lease"], [], "classify as LEASE");
+  add(p, "brochure", "OTHER_NOT_REQUIRED", "target", {}, undefined).notes = [
+    "A synthetic equipment care brochure unrelated to the requested file",
+  ];
+  plant(p, 15, "Irrelevant brochure", ["brochure"], [], "not_required");
+  doc(p, "formation").unreadable = true;
+  doc(p, "formation").format = "protected_pdf";
+  status(p, "ENT-02", "buyer", "missing");
+  finding(p, "ENT-02", "buyer", null, "missing");
+  plant(
+    p,
+    16,
+    "Password-protected formation document",
+    ["formation"],
+    [key("ENT-02", "buyer")],
+    "unreadable: FORMATION_DOC; no segment or fact",
+  );
+  doc(p, "fin-2025").facts["financial.revenue"] = 1484000;
+  finding(p, "CON-10", "target", "2025");
+  plant(
+    p,
+    17,
+    "Statement revenue 6 percent above return",
+    ["fin-2025", "tax-2025"],
+    [key("CON-10", "target", "2025")],
+  );
+  doc(p, "interim").facts["financial.period_end"] = "2026-04-18";
+  for (const id of ["ar", "ap"]) doc(p, id).facts["aging.as_of_date"] = "2026-04-18";
+  status(p, "TGT-03", "target", "received_with_issues");
+  finding(p, "TGT-03", "target", null, "stale");
+  plant(
+    p,
+    18,
+    "Interim is 150 days old; aging shares the same period",
+    ["interim", "ar", "ap"],
+    [key("TGT-03", "target")],
+  );
+  doc(p, "fin-2025").format = "xlsx";
+  plant(
+    p,
+    19,
+    "Income statement and balance sheet in separate workbook sheets",
+    ["fin-2025"],
+    [],
+    "xlsx sheets: Income Statement, Balance Sheet",
+  );
+  finding(p, "CON-13", "target", null, "conflict", "minor");
+  plant(p, 20, "Lease ends in three years with no options", ["lease"], [key("CON-13", "target")]);
+  status(p, "GUA-05", "bea", "missing");
+  finding(p, "GUA-05", "bea", null, "missing");
+  plant(
+    p,
+    21,
+    "Citizenship evidence absent for indirect 40 percent owner",
+    ["owners", "bea-citizen"],
+    [key("GUA-05", "bea")],
+  );
+  doc(p, "bank-aug").facts["bank.ending_balance"] = 100000;
+  finding(p, "CON-08", "cash-alex");
+  plant(
+    p,
+    22,
+    "August bank balance 100000 below claimed cash 150000",
+    ["bank-aug", "funding"],
+    [key("CON-08", "cash-alex")],
+  );
+  doc(p, "loi").facts["deal.expiry_date"] = "2026-09-01";
+  status(p, "TXN-01", "deal", "received_with_issues");
+  finding(p, "TXN-01", "deal", null, "incomplete");
+  finding(p, "CON-15");
+  plant(p, 23, "LOI expired before as-of", ["loi"], [key("TXN-01"), key("CON-15")]);
+  add(p, "unmatched", "OTHER_NOT_REQUIRED", "outside-party").notes = [
+    `Named party: ${person(20260999)}`,
+  ];
+  finding(p, "CON-16", "deal", null, "needs_review");
+  plant(
+    p,
+    24,
+    "Document names a person outside the deal",
+    ["unmatched"],
+    [key("CON-16")],
+    "unmatched_party",
+  );
+  finding(p, "PACK-01", "deal", null, "info", "info");
+  // All traps have independent scopes from the deliberately conflicting evidence.
+  doc(p, "purchase").facts["deal.seller"] = "Varn Holt Climate Services L.L.C.";
+  doc(p, "bea-pfs").facts["pfs.net_worth"] = 400000.5;
+  p.traps = [
+    {
+      id: "name-normalization",
+      documents: ["purchase"],
+      rules: ["TXN-02"],
+      reason: "Spacing and LLC punctuation do not change the named seller",
+    },
+    {
+      id: "rounding",
+      documents: ["bea-pfs"],
+      rules: ["GUA-01|bea"],
+      reason: "50 cents is within USD 1 arithmetic tolerance",
+    },
+    {
+      id: "superseded-stale",
+      documents: ["bea-pfs-old", "bea-pfs"],
+      rules: ["GUA-01|bea"],
+      reason: "Earlier stale version is excluded from the current inventory",
+    },
+  ];
+  const after = structuredClone(p.batches[0]!);
+  after.batch = 2;
+  after.resolves = [key("GUA-02", "alex", "2024"), key("ENT-01", "buyer"), key("GUA-05", "bea")];
+  after.findings = after.findings.filter(
+    (f) => !after.resolves.includes(key(f.rule_id, f.scope_key, f.period)),
+  );
+  for (const r of after.checklist)
+    if (after.resolves.includes(key(r.item_id, r.scope_key, r.period))) r.status = "satisfied";
+  p.batches.push(after);
+  // A43 planted extraction faults. Expected routing reasoned from A39: text score = 0.30 exact + 0.20 validation + 0.25 verifier + 0.15 cross-pass (extractor value against the verifier's independent value) + 0.10 specificity; unsupported or contradicted evidence blocks regardless; vision never auto-accepts.
+  fault(p, {
+    id: "A-F1",
+    document: "loi",
+    attribute: "deal.purchase_price",
+    kind: "wrong_value_real_quote",
+    expected: "blocked",
+    description:
+      "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
+    extractor: { value: 2452000, quote: "purchase price: 2425000" },
+    verifier: {
+      status: "unsupported",
+      corrected_value: 2425000,
+      contradiction: true,
+      specificity: 1,
+    },
+  });
+  fault(p, {
+    id: "A-F2",
+    document: "ar",
+    attribute: "aging.as_of_date",
+    kind: "quote_not_in_block",
+    expected: "blocked",
+    description:
+      "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
+    extractor: { value: "2026-04-18", quote: "as of date: 2026-04-19" },
+    verifier: {
+      status: "unsupported",
+      corrected_value: null,
+      contradiction: false,
+      specificity: 0,
+    },
+  });
+  fault(p, {
+    id: "A-F3",
+    document: "interim",
+    attribute: "financial.revenue",
+    kind: "weak_evidence",
+    expected: "review",
+    description:
+      "Right value cited to the broad title line only: 0.30+0.20+0.125+0.15+0.04 = 0.815, review.",
+    extractor: { value: 900000, quote: "Interim Income Statement and Balance Sheet" },
+    verifier: {
+      status: "partially_supported",
+      corrected_value: 900000,
+      contradiction: false,
+      specificity: 0.4,
+    },
+  });
+  fault(p, {
+    id: "A-F4",
+    document: "tax-2024",
+    attribute: "tax.gross_receipts",
+    kind: "verifier_corrects",
+    expected: "review",
+    description:
+      "Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.",
+    extractor: { value: 1030000, quote: "gross receipts: 1300000" },
+    verifier: {
+      status: "partially_supported",
+      corrected_value: 1300000,
+      contradiction: false,
+      specificity: 0.75,
+    },
+  });
+  fault(p, {
+    id: "A-F5",
+    document: "debt",
+    attribute: "debt.total",
+    kind: "missing_value",
+    expected: "review",
+    description:
+      "Extractor returns null for a value the schedule states; the gap is a review item, never an accepted absence.",
+    extractor: { value: null, quote: null },
+    verifier: null,
+  });
+  fault(p, {
+    id: "A-F6",
+    document: "pfs",
+    attribute: "pfs.cash",
+    kind: "vision_disagreement",
+    expected: "review",
+    description:
+      "Two independent vision reads disagree: 0+0.25+0.30+0.10 = 0.65, review; vision never auto-accepts.",
+    extractor: { value: 180000, quote: "180000", second_read: 108000 },
+    verifier: {
+      status: "supported",
+      corrected_value: 180000,
+      contradiction: false,
+      specificity: 1,
+    },
+  });
+  doc(p, "plan").format = "docx";
+  doc(p, "lease").format = "scan_pdf";
+  doc(p, "pfs").format = "scan_pdf";
+  layout(p, 40);
+  doc(p, "personal-wrong-year").path = "incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF";
+  doc(p, "personal-wrong-year").group = undefined;
+  // A duplicate of a segment inside a bundle must duplicate the complete physical file.
+  doc(p, "personal-wrong-year").duplicate_of = "personal-2023";
+  return p;
 }

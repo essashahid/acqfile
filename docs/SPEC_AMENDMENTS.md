@@ -21,8 +21,6 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
 - **A17. The rule-pack review sheet moves from Phase 5 to this phase,** as XLSX and HTML. The PDF version joins in Phase 5.
 - **A18. Tables `requests`, `snapshots` and `work_log`** are created in Phase 5 with their features, not now.
 
-
-
 ## Phase 2 rulings (2026-09-19)
 
 - **A19. Names.** "Northfield Bank" is a real FDIC-insured bank. Remove the name everywhere: the overlay file, its display name, the `NF_` filename prefix, tests, scenario fixtures, docs, the viewer and the review exports. The overlay becomes `rulepacks/overlays/sample-lender-a.yaml`, display name "Sample Lender A", prefix `SLA_`. Re-run `pnpm rules:export-review` afterwards so no exported sheet carries the old name. Every organization in fixtures, tests, seeds and screenshots must be invented: businesses, banks, CPA and law firms, landlords, valuation firms, and the franchise brand in Deal C. Use coined words, not plausible real names. Defaults: Deal A "Varnholt Climate Services", Deal B "Quenby Grounds Management", Deal C "Ostrel Fitness" under the invented franchise brand "Ostrel". If you have web access, search each organization name once and replace any that matches a real business or bank. Rename the Phase 1 trap pair to the same kind of variation (spacing, punctuation, suffix style) on the new Deal A name. Person names come from the seeded Faker. Addresses use invented street and town names. Phones use 555-01xx. Emails use example.com.
@@ -34,11 +32,9 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
 - **A25. Repository visibility is the owner's call.** The owner sometimes makes the repository public for outside review. Report the visibility you observe. Do not change it.
 - **A26. Unreadable files.** A file that cannot be opened contributes no segment and no fact. Its checklist row is `missing`, and `expected_review.json` carries an `unreadable` item naming what the plan says the file really is.
 
-
 ### Owner ruling: A19/A24 legacy exception (2026-09-19)
 
 “Preserve legacy bytes; exempt only fixtures/legacy from A19 until Phase 4.” This exception does not apply to new deal fixtures, scenario tests, seeds or screenshots.
-
 
 ## Phase 3 rulings (2026-09-20)
 
@@ -53,6 +49,7 @@ Save this section verbatim as `docs/SPEC_AMENDMENTS.md`. Where an amendment conf
   8. **Expressions use standard three-valued logic:** false AND unknown is false; true OR unknown is true. A row whose applicability does not depend on the unknown value is not sent to review.
 
   Both invariants still hold: nothing but all-pass is satisfied, and removing evidence can only move a row to `missing` or `needs_review`.
+
 - **A29. Guardrail 1 covers words we author,** not documents. It applies to UI strings, rule titles and messages, templates, request drafts and report boilerplate. It does not apply to supplied documents, to fixtures that imitate them, or to verbatim quotes from them shown as evidence. Real SBA forms contain those words and the product must read them. The lint skips fixture documents and quoted-evidence fields. Exports mark quotes as quotes.
 - **A30. Official forms.** Your trial showed the official blank Form 1919 and Form 413 fill, save and reopen. Use them, with the `SYNTHETIC` watermark on every page, for every Form 1919 and Form 413 in all three deals, including the pages that are rasterized. Map the official AcroForm field names to the fact catalog in one config file. That mapping is what a real pilot needs. Timebox three hours. Fall back to facsimiles only for a technical reason, and record it.
 - **A31. Deal A needs scans.** The flagship deal has no image-only file. Make `Phone/scan0007.pdf` (the lease) and one guarantor's Form 413 image-only in Deal A. Truth statuses do not change. Fact methods and locators do.
@@ -93,3 +90,17 @@ A35 implementation accepted: public demo visitors may open synthetic originals, 
 - **A42. Legacy removal.** Delete `fixtures/legacy`, the report schemas, the legacy extraction path, its queries, screens, tests and its 76 evaluation cases. The A27 exemption ends here. Keep the evaluation harness code that Phase 6 will reuse. Until Phase 6, `pnpm eval` runs the Phase 3 and Phase 4 gates.
 - **A43. Planted extraction faults.** The mock provider must misbehave on purpose so routing can be tested. Author about twelve faults in the deal plans, under A21: wrong value with a real quote, right value with a quote that is not in the block, broad weak evidence, a value the verifier corrects, a missing value, a vision dual-read disagreement. Each names its file, attribute, fault and expected routing (`review` or `blocked`).
 - **A44. Optional live smoke test,** only if the owner has put a provider key in the environment. One pass of extraction and verification over Deal C plus ten text documents from Deal A. Hard cap USD 3. Estimate first and abort above the cap. Report fact accuracy by method, routing, false accepts, cost and time. Not a gate. Without a key, skip it and say so.
+
+## Phase 5 and 6 rulings (2026-09-20)
+
+Phase 4 readings accepted: any catalog producer a rule consumes is extracted; cross-pass agreement uses the verifier's independent value; the browser proof counted by finding type.
+
+- **A45. Keep it simple. Standing rule from now on.** This is a project with no customers yet. Add no hardening, abstraction, configuration or documentation that a gate in a phase request does not require. When in doubt, leave it out and note it in one line. Prefer deleting code to adding it. Proof documents are one page. For small choices, decide, record and report. Stop only for something that would change scope, break a hard guardrail, or cost money.
+- **A46. Readability.** The source has about 340 lines longer than 160 characters and the engine is written as dense one-line functions. Add Prettier as a dev dependency, print width 100, with `pnpm format` and `pnpm format:check`. Format the whole repository once. Behaviour unchanged, and the tests prove it. Remove every dependency nothing imports.
+- **A47. Deliverables, simplified. This replaces the file list in Section 15.** A package is a ZIP with: `00_Package_Report.html`, one printable page with status summary, index, missing items, conflicts and change log; `00_Package_Workbook.xlsx` with tabs Index, Missing items, Conflicts, Source record, Change log; and the folder tree of renamed copies per A3. No PDF generation. The guardrail 9 footer is on the report and on every workbook tab. Identifiers are masked in both.
+- **A48. Findings lifecycle, simplified:** `open`, `requested`, `resolved`, `dismissed`, `waived`. The system resolves a finding when its condition disappears and records which segment or fact resolved it; it reopens the finding if the condition returns. Dismiss and waive need a reason and are audit events. There is no `received` state.
+- **A49. Requests are template-only.** One draft per responsible party from a deterministic template. No model drafting. A conflict shows both values with their file and page and asks which is correct. It never says which is right.
+- **A50. Required facts come from the rules.** A row's required facts are the facts its checks reference. A confirmed segment that satisfies a row's type but lacks a referenced fact raises `extraction_gap`. No hand list and no new configuration.
+- **A51. Dropped from v1:** work log, binder PDF, client status page, model-drafted requests, PDF exports, a runs and observability area, and any QA report beyond the one-page scorecard below.
+- **A52. Screens are plain on purpose.** A product and design pass follows in Phase 7. Use existing components and plain tables. No styling effort, no charts, no new UI dependencies, no empty-state illustrations. Correct data, clear labels, working actions.
+- **A53. Live run is optional.** `pnpm eval:live` runs only if the owner has put a provider key in the environment. Hard cap USD 5. Estimate first and abort above the cap.

@@ -35,9 +35,7 @@ export async function intake(
   const files = arrivalFiles(uploads);
   const db = getDb();
   const batch = await db.transaction(async (tx) => {
-    await tx.execute(
-      sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`,
-    );
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
     const [count] = await tx
       .select({ n: sql<number>`coalesce(max(number),0)+1` })
       .from(schema.dealBatches)
@@ -102,9 +100,7 @@ export async function intake(
         "hash_dedupe",
         () =>
           db.transaction(async (tx) => {
-            await tx.execute(
-              sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`,
-            );
+            await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
             const [registered] = await tx
               .select()
               .from(schema.intakeFiles)
@@ -186,13 +182,7 @@ export async function intake(
           ),
         );
       if (!result.duplicate)
-        await parseVersion(
-          context,
-          dealId,
-          result.documentVersionId,
-          run!.id,
-          opts,
-        );
+        await parseVersion(context, dealId, result.documentVersionId, run!.id, opts);
       rows.push(result);
     }
   } catch {
@@ -231,10 +221,7 @@ export async function parseVersion(
     .select()
     .from(schema.documentVersions)
     .where(
-      and(
-        eq(schema.documentVersions.id, versionId),
-        eq(schema.documentVersions.dealId, dealId),
-      ),
+      and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
     );
   if (!version) throw Error("Version not found");
   const ctx: StepContext = {
@@ -250,10 +237,7 @@ export async function parseVersion(
     ctx,
     "parse",
     async () => {
-      const result = await parseArrival(
-        await getStorage().get(version.storagePath),
-        piiKey(),
-      );
+      const result = await parseArrival(await getStorage().get(version.storagePath), piiKey());
       // Source blocks live in this step's durable output (A41: no field-value tables); only counts reach the version row.
       const cursor = result.blocks.reduce((n, b) => n + b.text.length, 0);
       await db.transaction(async (tx) => {
@@ -261,8 +245,7 @@ export async function parseVersion(
           .update(schema.documentVersions)
           .set({
             parseStatus: result.status === "parsed" ? "parsed" : "failed",
-            processingStatus:
-              result.status === "parsed" ? "queued" : "completed_with_review",
+            processingStatus: result.status === "parsed" ? "queued" : "completed_with_review",
             pageCount: result.pages,
             charCount: cursor,
           })

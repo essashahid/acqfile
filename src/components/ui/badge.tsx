@@ -86,7 +86,17 @@ export function labelFor(status: string | null | undefined): string {
 }
 
 /** Small, quiet status pill. Pass `title` to add context beyond the label. */
-export function StatusBadge({ status, title, className = "", size = "md" }: { status: string | null | undefined; title?: string; className?: string; size?: "sm" | "md" }) {
+export function StatusBadge({
+  status,
+  title,
+  className = "",
+  size = "md",
+}: {
+  status: string | null | undefined;
+  title?: string;
+  className?: string;
+  size?: "sm" | "md";
+}) {
   if (!status) return <span className="text-[var(--faint)]">&mdash;</span>;
   const tone = toneFor(status);
   const label = labelFor(status);
@@ -100,16 +110,38 @@ export function StatusBadge({ status, title, className = "", size = "md" }: { st
         className,
       )}
     >
-      {LIVE.has(status) ? <span aria-hidden className="size-1.5 animate-pulse rounded-full bg-current" /> : null}
+      {LIVE.has(status) ? (
+        <span aria-hidden className="size-1.5 animate-pulse rounded-full bg-current" />
+      ) : null}
       {label}
     </span>
   );
 }
 
 /** Free-form badge when the content is not a known status value. */
-export function Badge({ children, tone = "neutral", title, mono = false, className = "" }: { children: ReactNode; tone?: Tone; title?: string; mono?: boolean; className?: string }) {
+export function Badge({
+  children,
+  tone = "neutral",
+  title,
+  mono = false,
+  className = "",
+}: {
+  children: ReactNode;
+  tone?: Tone;
+  title?: string;
+  mono?: boolean;
+  className?: string;
+}) {
   return (
-    <span title={title} className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-[12px] font-medium", mono && "font-mono text-[11px]", TONE_CLASS[tone], className)}>
+    <span
+      title={title}
+      className={cn(
+        "inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-[12px] font-medium",
+        mono && "font-mono text-[11px]",
+        TONE_CLASS[tone],
+        className,
+      )}
+    >
       {children}
     </span>
   );

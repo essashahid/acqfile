@@ -11,7 +11,8 @@ export default function NotFound() {
         </span>
         <h1 className="text-[20px] font-semibold tracking-[-0.02em]">Not found</h1>
         <p className="mt-1.5 text-[13.5px] leading-6 text-[var(--muted)]">
-          The page or record you asked for does not exist in this workspace, or you do not have access to it.
+          The page or record you asked for does not exist in this workspace, or you do not have
+          access to it.
         </p>
         <Button asChild className="mt-5">
           <Link href="/">Back to the overview</Link>

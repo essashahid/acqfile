@@ -9,11 +9,7 @@ import { dealCounts, PENDING } from "@/lib/evaluation/run";
 import { inArray } from "drizzle-orm";
 import { DealEditor } from "../DealEditor";
 import { IntakeForm } from "../IntakeForm";
-export default async function DealPage({
-  params,
-}: {
-  params: Promise<{ dealId: string }>;
-}) {
+export default async function DealPage({ params }: { params: Promise<{ dealId: string }> }) {
   const { dealId } = await params;
   const ctx = await requireWorkspace();
   const { deal } = await readDeal(ctx, dealId);
@@ -22,11 +18,34 @@ export default async function DealPage({
     .from(schema.segments)
     .where(eq(schema.segments.dealId, dealId));
   const counts = await dealCounts(dealId);
-  const parties = await getDb().select().from(schema.parties).where(eq(schema.parties.dealId, dealId));
-  const pendingFacts = await getDb().select({ segmentId: schema.facts.segmentId }).from(schema.facts).where(and(eq(schema.facts.dealId, dealId), eq(schema.facts.isCurrent, true), inArray(schema.facts.routingStatus, [...PENDING])));
-  const openGaps = await getDb().select({ segmentId: schema.intakeReviews.segmentId }).from(schema.intakeReviews).where(and(eq(schema.intakeReviews.dealId, dealId), eq(schema.intakeReviews.status, "open"), inArray(schema.intakeReviews.type, ["extraction_gap", "identifier_mismatch"])));
+  const parties = await getDb()
+    .select()
+    .from(schema.parties)
+    .where(eq(schema.parties.dealId, dealId));
+  const pendingFacts = await getDb()
+    .select({ segmentId: schema.facts.segmentId })
+    .from(schema.facts)
+    .where(
+      and(
+        eq(schema.facts.dealId, dealId),
+        eq(schema.facts.isCurrent, true),
+        inArray(schema.facts.routingStatus, [...PENDING]),
+      ),
+    );
+  const openGaps = await getDb()
+    .select({ segmentId: schema.intakeReviews.segmentId })
+    .from(schema.intakeReviews)
+    .where(
+      and(
+        eq(schema.intakeReviews.dealId, dealId),
+        eq(schema.intakeReviews.status, "open"),
+        inArray(schema.intakeReviews.type, ["extraction_gap", "identifier_mismatch"]),
+      ),
+    );
   const pendingBySegment = new Map<string, number>();
-  for (const row of [...pendingFacts, ...openGaps]) if (row.segmentId) pendingBySegment.set(row.segmentId, (pendingBySegment.get(row.segmentId) ?? 0) + 1);
+  for (const row of [...pendingFacts, ...openGaps])
+    if (row.segmentId)
+      pendingBySegment.set(row.segmentId, (pendingBySegment.get(row.segmentId) ?? 0) + 1);
   const reviewSegments = segments.filter((s) => s.isCurrent && pendingBySegment.has(s.id));
   const rows = await getDb()
     .select({
@@ -53,8 +72,7 @@ export default async function DealPage({
         {deal.code} · {deal.name}
       </h1>
       <p>
-        Rule pack: {deal.rulePackVersion} · Overlay: {deal.overlayId ?? "Base"}{" "}
-        · Rules unverified
+        Rule pack: {deal.rulePackVersion} · Overlay: {deal.overlayId ?? "Base"} · Rules unverified
       </p>
       {mutationAllowed(ctx) && (
         <>
@@ -71,17 +89,42 @@ export default async function DealPage({
       )}
       <section aria-label="Evaluation counts" className="rounded border p-3 text-sm">
         <h2 className="text-xl font-semibold">Evaluation</h2>
-        <p>Checklist: {Object.entries(counts.checklist).sort().map(([k, v]) => `${k} ${v}`).join(" · ") || "not evaluated"}</p>
-        <p>Findings: <span data-testid="findings-total">{counts.findingsTotal}</span> ({Object.entries(counts.findings).sort().map(([k, v]) => `${k} ${v}`).join(" · ") || "none"})</p>
-        <p>By type: {["missing", "stale", "incomplete", "conflict", "needs_review", "info"].map((t) => <span key={t} className="mr-3">{t} <span data-testid={`findings-${t}`}>{counts.findingsByType[t] ?? 0}</span></span>)}</p>
-        <p>Pending values: <span data-testid="pending-values">{counts.pendingFacts}</span> · open review items: <span data-testid="open-reviews">{counts.openReviews}</span>{counts.evaluatedAt ? ` · evaluated ${counts.evaluatedAt.toISOString()}` : ""}</p>
+        <p>
+          Checklist:{" "}
+          {Object.entries(counts.checklist)
+            .sort()
+            .map(([k, v]) => `${k} ${v}`)
+            .join(" · ") || "not evaluated"}
+        </p>
+        <p>
+          Findings: <span data-testid="findings-total">{counts.findingsTotal}</span> (
+          {Object.entries(counts.findings)
+            .sort()
+            .map(([k, v]) => `${k} ${v}`)
+            .join(" · ") || "none"}
+          )
+        </p>
+        <p>
+          By type:{" "}
+          {["missing", "stale", "incomplete", "conflict", "needs_review", "info"].map((t) => (
+            <span key={t} className="mr-3">
+              {t} <span data-testid={`findings-${t}`}>{counts.findingsByType[t] ?? 0}</span>
+            </span>
+          ))}
+        </p>
+        <p>
+          Pending values: <span data-testid="pending-values">{counts.pendingFacts}</span> · open
+          review items: <span data-testid="open-reviews">{counts.openReviews}</span>
+          {counts.evaluatedAt ? ` · evaluated ${counts.evaluatedAt.toISOString()}` : ""}
+        </p>
       </section>
       <h2 className="text-xl font-semibold">Fact review</h2>
       <ul className="divide-y text-sm">
         {reviewSegments.map((s) => (
           <li key={s.id} className="py-2">
             <Link className="underline" href={`/deals/${dealId}/segments/${s.id}/review`}>
-              {s.docType} · {parties.find((p) => p.id === s.partyId)?.legalName ?? "No party"} · {s.period ?? "No period"}
+              {s.docType} · {parties.find((p) => p.id === s.partyId)?.legalName ?? "No party"} ·{" "}
+              {s.period ?? "No period"}
             </Link>
             <span className="ml-3">{pendingBySegment.get(s.id)} pending</span>
           </li>
@@ -103,10 +146,7 @@ export default async function DealPage({
             <tr key={r.arrival.id} className="border-b">
               <td>{r.batch}</td>
               <td className="py-3">
-                <Link
-                  className="underline"
-                  href={`/deals/${dealId}/files/${r.version.id}`}
-                >
+                <Link className="underline" href={`/deals/${dealId}/files/${r.version.id}`}>
                   {r.arrival.originalPath}
                 </Link>
                 <p className="text-xs">

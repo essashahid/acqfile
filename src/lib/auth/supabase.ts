@@ -12,7 +12,9 @@ import type { AuthUser } from "@/lib/auth/local";
 async function client() {
   const e = env();
   if (!e.NEXT_PUBLIC_SUPABASE_URL || !e.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    throw new Error("AUTH_DRIVER=supabase requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    throw new Error(
+      "AUTH_DRIVER=supabase requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    );
   }
   const store = await cookies();
   return createServerClient(e.NEXT_PUBLIC_SUPABASE_URL, e.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
@@ -32,17 +34,36 @@ async function client() {
 }
 
 /** Mirror authenticated identity. Workspace membership must be granted explicitly. */
-async function ensureAppUser(authUser: { id: string; email?: string; user_metadata?: Record<string, unknown> }): Promise<AuthUser> {
+async function ensureAppUser(authUser: {
+  id: string;
+  email?: string;
+  user_metadata?: Record<string, unknown>;
+}): Promise<AuthUser> {
   const db = getDb();
   const email = (authUser.email ?? `${authUser.id}@supabase.local`).toLowerCase();
   const meta = authUser.user_metadata ?? {};
   const displayName = String(meta.display_name ?? meta.full_name ?? meta.name ?? email);
-  const [existing] = await db.select().from(schema.appUsers).where(eq(schema.appUsers.id, authUser.id)).limit(1);
+  const [existing] = await db
+    .select()
+    .from(schema.appUsers)
+    .where(eq(schema.appUsers.id, authUser.id))
+    .limit(1);
   if (!existing) {
-    await db.insert(schema.appUsers).values({ id: authUser.id, email, displayName }).onConflictDoNothing();
+    await db
+      .insert(schema.appUsers)
+      .values({ id: authUser.id, email, displayName })
+      .onConflictDoNothing();
   }
-  const [row] = await db.select().from(schema.appUsers).where(eq(schema.appUsers.id, authUser.id)).limit(1);
-  return { id: authUser.id, email: row?.email ?? email, displayName: row?.displayName ?? displayName };
+  const [row] = await db
+    .select()
+    .from(schema.appUsers)
+    .where(eq(schema.appUsers.id, authUser.id))
+    .limit(1);
+  return {
+    id: authUser.id,
+    email: row?.email ?? email,
+    displayName: row?.displayName ?? displayName,
+  };
 }
 
 export async function getSupabaseUser(): Promise<AuthUser | null> {
@@ -52,7 +73,10 @@ export async function getSupabaseUser(): Promise<AuthUser | null> {
   return ensureAppUser(data.user);
 }
 
-export async function signInSupabase(email: string, password: string): Promise<{ ok: true; user: AuthUser } | { ok: false; error: string }> {
+export async function signInSupabase(
+  email: string,
+  password: string,
+): Promise<{ ok: true; user: AuthUser } | { ok: false; error: string }> {
   const sb = await client();
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error || !data.user) return { ok: false, error: error?.message ?? "Sign-in failed" };

@@ -79,7 +79,7 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 ## Phase 2 decisions (2026-09-19)
 
 32. Preserve legacy bytes under fixtures/legacy with pre-move SHA-256 inventory; the owner explicitly exempted that directory from A19 until Phase 4 after Cardinal Fleet Services matched a real business.
-33. Replace the real-bank overlay with Sample Lender A / sample-lender-a / SLA_; preserve its two required and five optional rows.
+33. Replace the real-bank overlay with Sample Lender A / sample-lender-a / SLA\_; preserve its two required and five optional rows.
 34. Replace the proposed Ostrel brand with Ostrelyva (Ostrelyva Fitness): the original matches an actual van-conversion business at https://ostrel.fr/; an exact replacement-name search returned no matching business.
 35. Repository visibility is public as observed through GitHub REST; A25 supersedes the earlier private-repository decisions. No visibility mutation is authorized or performed.
 36. Use Ostrelyva for the franchise and the Zelmivar coined root for support organizations; record exact-name searches in phase-2-name-checks.md rather than claim global uniqueness.
@@ -155,4 +155,9 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 97. Evaluation requests coalesce per deal: a request during a running evaluation schedules exactly one follow-up. Filing, operator review, extraction after review, a completed batch run and a profile save all request an evaluation and await it in the inline job driver.
 98. Operator attestations (tracking state, manual confirmation, waiver) get a table and an audited API in this phase because the engine reads them; their screens are Phase 5. The proofs record the plan's authored attestations through that API.
 99. A42 removed the legacy corpus, report schema, extraction path, review queue, dashboards, evaluation cases and their tables in migration 0012; `record_versions` stays for filing records without its extraction columns. `pnpm eval` runs the Phase 3 and Phase 4 proofs until Phase 6. The hosted job driver keeps one Inngest function that runs a deal batch.
-100. The browser proof for "three findings disappear" counts by finding type: the absent 2024 return and the absent citizenship evidence leave the missing count and the unsigned Form 1919 leaves the incomplete count. The citizenship row then waits on a manual confirmation whose screen is Phase 5, so the total finding count drops by two in that flow; the integration proof, which records the confirmation, shows the exact expected set.
+100.  The browser proof for "three findings disappear" counts by finding type: the absent 2024 return and the absent citizenship evidence leave the missing count and the unsigned Form 1919 leaves the incomplete count. The citizenship row then waits on a manual confirmation whose screen is Phase 5, so the total finding count drops by two in that flow; the integration proof, which records the confirmation, shows the exact expected set.
+
+## Phase 5 and 6 decisions (2026-09-20)
+
+101. A46: Prettier 3.6.2 as a dev dependency with print width 100, `pnpm format` and `pnpm format:check`, and one formatting pass over the repository. `fixtures/deals`, `eval` output and the generated rule-pack review HTML are ignored. Long lines that remain are string literals and SQL templates, which Prettier does not break. Every gate passes unchanged, which is the behaviour proof.
+102. Removed nine dependencies nothing imports: the six unused Radix packages (checkbox, dialog, label, select, tabs, tooltip), TanStack Table, Recharts and MSW. Kept `@radix-ui/react-slot`, `class-variance-authority`, `clsx` and `tailwind-merge`, which the retained button and badge components use.

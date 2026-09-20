@@ -41,28 +41,21 @@
     {
       "id": "buyer",
       "kind": "entity",
-      "roles": [
-        "buyer_entity"
-      ],
+      "roles": ["buyer_entity"],
       "legal_name": "Varnholt Acquisition LLC",
       "affiliates": []
     },
     {
       "id": "target",
       "kind": "entity",
-      "roles": [
-        "seller_entity"
-      ],
+      "roles": ["seller_entity"],
       "legal_name": "Varnholt Climate Services, LLC",
       "affiliates": []
     },
     {
       "id": "alex",
       "kind": "individual",
-      "roles": [
-        "buyer_owner",
-        "guarantor"
-      ],
+      "roles": ["buyer_owner", "guarantor"],
       "legal_name": "Kiel McDermott",
       "jointly_held_assets": "no",
       "affiliates": []
@@ -431,13 +424,7 @@
       "party": "target"
     }
   ],
-  "tracking": [
-    "TXN-08",
-    "LND-01",
-    "LND-02",
-    "LND-03",
-    "LND-04"
-  ],
+  "tracking": ["TXN-08", "LND-01", "LND-02", "LND-03", "LND-04"],
   "confirmations": [
     {
       "rule": "TXN-08",
@@ -458,132 +445,60 @@
   "expected": {
     "checklist": [
       {
-        "ids": [
-          "TXN-01",
-          "TXN-02",
-          "TXN-03",
-          "TXN-08",
-          "LND-01",
-          "LND-02",
-          "LND-03",
-          "LND-04"
-        ],
+        "ids": ["TXN-01", "TXN-02", "TXN-03", "TXN-08", "LND-01", "LND-02", "LND-03", "LND-04"],
         "scope": "deal",
         "status": "satisfied"
       },
       {
-        "ids": [
-          "TXN-04",
-          "TXN-05",
-          "TXN-06",
-          "RE-01",
-          "RE-02",
-          "RE-03"
-        ],
+        "ids": ["TXN-04", "TXN-05", "TXN-06", "RE-01", "RE-02", "RE-03"],
         "scope": "deal",
         "status": "not_applicable"
       },
       {
-        "ids": [
-          "TXN-07",
-          "GUA-09a",
-          "GUA-09b",
-          "GUA-09c"
-        ],
+        "ids": ["TXN-07", "GUA-09a", "GUA-09b", "GUA-09c"],
         "scope": "none",
         "status": "not_applicable"
       },
       {
-        "ids": [
-          "ENT-01",
-          "ENT-02",
-          "ENT-03",
-          "ENT-04",
-          "ENT-05",
-          "ENT-06",
-          "ENT-07a",
-          "ENT-07b"
-        ],
+        "ids": ["ENT-01", "ENT-02", "ENT-03", "ENT-04", "ENT-05", "ENT-06", "ENT-07a", "ENT-07b"],
         "scope": "buyer",
         "status": "satisfied"
       },
       {
-        "ids": [
-          "GUA-01",
-          "GUA-03",
-          "GUA-04",
-          "GUA-05",
-          "GUA-06"
-        ],
+        "ids": ["GUA-01", "GUA-03", "GUA-04", "GUA-05", "GUA-06"],
         "scope": "alex",
         "status": "satisfied"
       },
       {
-        "ids": [
-          "GUA-02"
-        ],
+        "ids": ["GUA-02"],
         "scope": "alex",
-        "periods": [
-          "2023",
-          "2024",
-          "2025"
-        ],
+        "periods": ["2023", "2024", "2025"],
         "status": "satisfied"
       },
       {
-        "ids": [
-          "GUA-07"
-        ],
+        "ids": ["GUA-07"],
         "scope": "cash-alex",
-        "periods": [
-          "2026-07",
-          "2026-08"
-        ],
+        "periods": ["2026-07", "2026-08"],
         "status": "satisfied"
       },
       {
-        "ids": [
-          "GUA-08a",
-          "GUA-08b",
-          "GUA-08c"
-        ],
+        "ids": ["GUA-08a", "GUA-08b", "GUA-08c"],
         "scope": "cash-alex",
         "status": "not_applicable"
       },
       {
-        "ids": [
-          "TGT-01",
-          "TGT-02"
-        ],
+        "ids": ["TGT-01", "TGT-02"],
         "scope": "target",
-        "periods": [
-          "2023",
-          "2024",
-          "2025"
-        ],
+        "periods": ["2023", "2024", "2025"],
         "status": "satisfied"
       },
       {
-        "ids": [
-          "TGT-03",
-          "TGT-04a",
-          "TGT-04b",
-          "TGT-05",
-          "TGT-06",
-          "TGT-08a",
-          "TGT-08b",
-          "TGT-09"
-        ],
+        "ids": ["TGT-03", "TGT-04a", "TGT-04b", "TGT-05", "TGT-06", "TGT-08a", "TGT-08b", "TGT-09"],
         "scope": "target",
         "status": "satisfied"
       },
       {
-        "ids": [
-          "TGT-07a",
-          "TGT-07b",
-          "TGT-10a",
-          "TGT-10b"
-        ],
+        "ids": ["TGT-07a", "TGT-07b", "TGT-10a", "TGT-10b"],
         "scope": "target",
         "status": "not_applicable"
       }

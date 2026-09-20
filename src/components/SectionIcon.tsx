@@ -9,13 +9,35 @@ const SIZE = {
 } as const;
 
 /** A tinted tile that gives a page or card its section identity. */
-export function SectionIcon({ section, icon, hue, size = "md", className = "" }: { section?: SectionKey; icon?: LucideIcon; hue?: Hue; size?: keyof typeof SIZE; className?: string }) {
+export function SectionIcon({
+  section,
+  icon,
+  hue,
+  size = "md",
+  className = "",
+}: {
+  section?: SectionKey;
+  icon?: LucideIcon;
+  hue?: Hue;
+  size?: keyof typeof SIZE;
+  className?: string;
+}) {
   const s = section ? SECTIONS[section] : null;
   const Icon = icon ?? s?.icon;
   const h = HUE[hue ?? s?.hue ?? "accent"];
   if (!Icon) return null;
   return (
-    <span aria-hidden className={cn("grid shrink-0 place-items-center border", SIZE[size].tile, h.soft, h.border, h.fg, className)}>
+    <span
+      aria-hidden
+      className={cn(
+        "grid shrink-0 place-items-center border",
+        SIZE[size].tile,
+        h.soft,
+        h.border,
+        h.fg,
+        className,
+      )}
+    >
       <Icon size={SIZE[size].icon} strokeWidth={2} />
     </span>
   );

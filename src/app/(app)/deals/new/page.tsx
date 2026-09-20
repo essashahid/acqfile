@@ -7,10 +7,7 @@ export default async function NewDeal() {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold">Create deal</h1>
-      <p>
-        Enter known details. Use unknown where information has not been
-        supplied.
-      </p>
+      <p>Enter known details. Use unknown where information has not been supplied.</p>
       <DealEditor />
     </div>
   );

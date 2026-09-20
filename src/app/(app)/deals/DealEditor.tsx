@@ -4,13 +4,7 @@ import { useRouter } from "next/navigation";
 import { saveDealAction } from "./actions";
 import type { DealDraft } from "@/lib/deals/service";
 import { PARTY_ROLES } from "@/lib/domain/profile";
-type Value =
-  | string
-  | number
-  | boolean
-  | null
-  | Value[]
-  | { [k: string]: Value };
+type Value = string | number | boolean | null | Value[] | { [k: string]: Value };
 const enums: Record<string, string[]> = {
   transaction_category: [
     "initial_acquisition",
@@ -81,8 +75,7 @@ const item: Record<string, Value> = {
     source_account_last_four: "unknown",
   },
 };
-const label = (s: string) =>
-  s.replaceAll("_", " ").replace(/^./, (c) => c.toUpperCase());
+const label = (s: string) => s.replaceAll("_", " ").replace(/^./, (c) => c.toUpperCase());
 function Fields({
   value,
   onChange,
@@ -94,8 +87,7 @@ function Fields({
   name: string;
   path: string;
 }) {
-  const input =
-    "rounded border border-slate-300 bg-white px-2 py-1 text-sm w-full";
+  const input = "rounded border border-slate-300 bg-white px-2 py-1 text-sm w-full";
   if (Array.isArray(value))
     return (
       <fieldset className="col-span-full rounded border border-slate-200 p-3 space-y-3">
@@ -107,15 +99,10 @@ function Fields({
                 value={v}
                 name={name === "roles" ? "roles" : `${name} ${i + 1}`}
                 path={`${path}.${i}`}
-                onChange={(next) =>
-                  onChange(value.map((old, j) => (i === j ? next : old)))
-                }
+                onChange={(next) => onChange(value.map((old, j) => (i === j ? next : old)))}
               />
             </div>
-            <button
-              type="button"
-              onClick={() => onChange(value.filter((_, j) => i !== j))}
-            >
+            <button type="button" onClick={() => onChange(value.filter((_, j) => i !== j))}>
               Remove
             </button>
           </div>
@@ -123,9 +110,7 @@ function Fields({
         <button
           type="button"
           className="underline"
-          onClick={() =>
-            onChange([...value, structuredClone(item[name] ?? "unknown")])
-          }
+          onClick={() => onChange([...value, structuredClone(item[name] ?? "unknown")])}
         >
           Add {label(name)}
         </button>
@@ -133,11 +118,7 @@ function Fields({
           name !== "ownership" &&
           name !== "roles" &&
           name !== "name_variants" && (
-            <button
-              type="button"
-              className="ml-3 underline"
-              onClick={() => onChange("unknown")}
-            >
+            <button type="button" className="ml-3 underline" onClick={() => onChange("unknown")}>
               Unknown
             </button>
           )}
@@ -157,10 +138,7 @@ function Fields({
           />
         ))}
         {templates[name] && (
-          <button
-            type="button"
-            onClick={() => onChange(name === "identifier" ? null : "unknown")}
-          >
+          <button type="button" onClick={() => onChange(name === "identifier" ? null : "unknown")}>
             Mark unknown
           </button>
         )}
@@ -179,13 +157,9 @@ function Fields({
         </button>
       </div>
     );
-  const numeric = [
-    "purchase_price",
-    "total_project_cost",
-    "amount",
-    "months",
-    "percent",
-  ].includes(name);
+  const numeric = ["purchase_price", "total_project_cost", "amount", "months", "percent"].includes(
+    name,
+  );
   const choices =
     name === "kind" && path.includes("equity_sources")
       ? [
@@ -296,9 +270,8 @@ export function DealEditor({
                 code: d.code ?? d.id ?? "",
                 name:
                   d.name ??
-                  d.parties?.find((p: { roles: string[] }) =>
-                    p.roles.includes("seller_entity"),
-                  )?.legal_name ??
+                  d.parties?.find((p: { roles: string[] }) => p.roles.includes("seller_entity"))
+                    ?.legal_name ??
                   "",
                 as_of: d.as_of,
                 profile: d.profile,
@@ -331,19 +304,11 @@ export function DealEditor({
           }
         }}
       >
-        <Fields
-          value={value}
-          name="Deal profile and parties"
-          path="deal"
-          onChange={setValue}
-        />
+        <Fields value={value} name="Deal profile and parties" path="deal" onChange={setValue} />
         <p role="alert" className="text-red-700 whitespace-pre-wrap">
           {error}
         </p>
-        <button
-          disabled={busy}
-          className="mt-4 rounded bg-teal-800 px-4 py-2 text-white"
-        >
+        <button disabled={busy} className="mt-4 rounded bg-teal-800 px-4 py-2 text-white">
           {busy ? "Saving…" : "Save deal"}
         </button>
       </form>

@@ -24,7 +24,8 @@ export function decodeModelValue(def: FactDefinition, raw: unknown): Decoded {
   if (def.value_type === "money") {
     if (value && typeof value === "object" && "amount" in value) {
       const money = value as { amount: unknown; currency?: unknown };
-      if (money.currency !== undefined && money.currency !== "USD") return { value: null, error: "currency_invalid" };
+      if (money.currency !== undefined && money.currency !== "USD")
+        return { value: null, error: "currency_invalid" };
       value = money.amount;
     }
   }
@@ -33,11 +34,16 @@ export function decodeModelValue(def: FactDefinition, raw: unknown): Decoded {
     return { value: null, error: "identifier_shape" };
   }
   if (def.value_type === "owners" && Array.isArray(value))
-    value = (value as unknown[]).map((o) => (o && typeof o === "object" && "title" in o && (o as { title: unknown }).title === null ? { ...(o as Record<string, unknown>), title: undefined } : o));
+    value = (value as unknown[]).map((o) =>
+      o && typeof o === "object" && "title" in o && (o as { title: unknown }).title === null
+        ? { ...(o as Record<string, unknown>), title: undefined }
+        : o,
+    );
   return { value, error: null };
 }
 export function valueValid(def: FactDefinition, value: unknown) {
-  if (def.value_type === "identifier") return typeof value === "object" && value !== null && "last_four" in value;
+  if (def.value_type === "identifier")
+    return typeof value === "object" && value !== null && "last_four" in value;
   return VALUE_SCHEMAS[def.value_type].safeParse(value).success;
 }
 /** Human text of a value, used for non-verbatim quotes and support checks. */
@@ -46,7 +52,10 @@ export function valueText(value: unknown): string {
   if (typeof value === "boolean") return value ? "Yes" : "No";
   if (typeof value === "object" && !Array.isArray(value)) {
     if ("last_four" in value) return String((value as { last_four: string }).last_four);
-    return Object.values(value as Record<string, unknown>).filter((v) => v !== undefined).map(valueText).join(" / ");
+    return Object.values(value as Record<string, unknown>)
+      .filter((v) => v !== undefined)
+      .map(valueText)
+      .join(" / ");
   }
   if (Array.isArray(value)) return value.map(valueText).join("; ");
   return String(value);
@@ -54,7 +63,8 @@ export function valueText(value: unknown): string {
 /** Normalized value for storage: names are normalized as the engine normalizes them; every other type keeps its catalog shape (the engine normalizes again when it compares). */
 export const normalizeFact = (attribute: string, value: unknown) => {
   const def = FACTS[attribute];
-  if (def?.value_type === "text" && typeof value === "string") return (normalizeValue(value) as string) || value;
+  if (def?.value_type === "text" && typeof value === "string")
+    return (normalizeValue(value) as string) || value;
   return value;
 };
 /** A39 cross-pass agreement: 1 same after normalization, 0.75 formatting-only difference, 0 materially different. */

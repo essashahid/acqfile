@@ -4,12 +4,8 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 /** Renders one page of a private original in the browser (A33). The file is fetched once per link, so one open is one audit event (A35). */
 export function PdfPage({ url, page }: { url: string; page: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const [doc, setDoc] = useState<{ url: string; pdf: PDFDocumentProxy } | null>(
-    null,
-  );
-  const [error, setError] = useState<{ key: string; message: string } | null>(
-    null,
-  );
+  const [doc, setDoc] = useState<{ url: string; pdf: PDFDocumentProxy } | null>(null);
+  const [error, setError] = useState<{ key: string; message: string } | null>(null);
   useEffect(() => {
     let cancelled = false;
     let dispose = () => {};
@@ -27,8 +23,7 @@ export function PdfPage({ url, page }: { url: string; page: number }) {
         if (!cancelled)
           setError({
             key: url,
-            message:
-              "This file cannot be displayed. You can still file the document manually.",
+            message: "This file cannot be displayed. You can still file the document manually.",
           });
       }
     })();
@@ -62,8 +57,7 @@ export function PdfPage({ url, page }: { url: string; page: number }) {
         if (!cancelled)
           setError({
             key: `${url}:${page}`,
-            message:
-              "This page cannot be displayed. You can still file the document manually.",
+            message: "This page cannot be displayed. You can still file the document manually.",
           });
       }
     })();
@@ -77,11 +71,7 @@ export function PdfPage({ url, page }: { url: string; page: number }) {
       {failed ? (
         <p role="status">{error!.message}</p>
       ) : (
-        <canvas
-          ref={ref}
-          aria-label={`Source page ${page}`}
-          className="w-full border bg-white"
-        />
+        <canvas ref={ref} aria-label={`Source page ${page}`} className="w-full border bg-white" />
       )}
     </div>
   );

@@ -7,10 +7,9 @@ import { display } from "./truth";
 export async function officialPdf(p: Plan, d: Doc) {
   const spec = officialForm(d.type);
   if (!spec) throw Error("Not an official type");
-  const pdf = await PDFDocument.load(
-    fs.readFileSync(path.join("fixtures/forms", spec.file)),
-    { updateMetadata: false },
-  );
+  const pdf = await PDFDocument.load(fs.readFileSync(path.join("fixtures/forms", spec.file)), {
+    updateMetadata: false,
+  });
   const form = pdf.getForm();
   const party = p.parties.find((p) => p.id === d.party);
   form.getTextField(spec.name).setText(String(party?.legal_name ?? ""));
@@ -25,11 +24,8 @@ export async function officialPdf(p: Plan, d: Doc) {
     }[];
     owners.forEach((o, i) => {
       form.getTextField(spec.owners.name + (i + 1)).setText(o.name);
-      form
-        .getTextField(spec.owners.percent + (i + 1))
-        .setText(String(o.percent));
-      if (o.title)
-        form.getTextField(spec.owners.title + (i + 1)).setText(o.title);
+      form.getTextField(spec.owners.percent + (i + 1)).setText(String(o.percent));
+      if (o.title) form.getTextField(spec.owners.title + (i + 1)).setText(o.title);
     });
   }
   form
@@ -100,8 +96,7 @@ export async function verifyOfficial(bytes: Buffer, d: Doc) {
     ).entries()) {
       if (
         form.getTextField(spec.owners.name + (i + 1)).getText() !== o.name ||
-        form.getTextField(spec.owners.percent + (i + 1)).getText() !==
-          String(o.percent)
+        form.getTextField(spec.owners.percent + (i + 1)).getText() !== String(o.percent)
       )
         throw Error("Official owners mismatch");
       count += 2;

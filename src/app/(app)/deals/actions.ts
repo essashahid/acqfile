@@ -7,11 +7,7 @@ import { reviewFact, resolveGap, reclassifySegment } from "@/lib/extract/review"
 import { reviewFile, undoSupersession } from "@/lib/deals/filing";
 import { assertMutation } from "@/lib/access";
 import { intake } from "@/lib/deals/intake";
-export async function saveDealAction(
-  raw: unknown,
-  id?: string,
-  revision?: number,
-) {
+export async function saveDealAction(raw: unknown, id?: string, revision?: number) {
   const context = await requireWorkspace();
   const dealId = await saveDeal(context, raw, id, revision);
   revalidatePath("/deals");
@@ -19,9 +15,7 @@ export async function saveDealAction(
 }
 export async function uploadDealAction(dealId: string, data: FormData) {
   const context = await requireWorkspace();
-  const files = data
-    .getAll("files")
-    .filter((v): v is File => v instanceof File);
+  const files = data.getAll("files").filter((v): v is File => v instanceof File);
   const paths = data.getAll("paths").map(String);
   const result = await intake(
     context,
@@ -38,11 +32,7 @@ export async function uploadDealAction(dealId: string, data: FormData) {
   return { batch: result.batch.number, count: result.rows.length };
 }
 
-export async function reviewFileAction(
-  dealId: string,
-  versionId: string,
-  input: unknown,
-) {
+export async function reviewFileAction(dealId: string, versionId: string, input: unknown) {
   const ctx = await requireWorkspace();
   await reviewFile(ctx, dealId, versionId, input);
   await extractAfterReview(ctx, dealId, versionId);

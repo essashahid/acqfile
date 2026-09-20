@@ -2,12 +2,7 @@
   {
     "name": "sop-50-10-8 comparison",
     "pack": "sop-50-10-8",
-    "rules": [
-      "TXN-08",
-      "TXN-09",
-      "CON-07",
-      "CON-14"
-    ],
+    "rules": ["TXN-08", "TXN-09", "CON-07", "CON-14"],
     "changes": [
       {
         "op": "profile",
@@ -67,27 +62,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-08"
-          ],
+          "ids": ["TXN-08"],
           "scope": "deal",
           "status": "satisfied"
         }
       ],
-      "findings": [
-        "CON-14"
-      ]
+      "findings": ["CON-14"]
     }
   },
   {
     "name": "sop-50-10-8-1 comparison",
     "pack": "sop-50-10-8-1",
-    "rules": [
-      "TXN-08",
-      "TXN-09",
-      "CON-07",
-      "CON-14"
-    ],
+    "rules": ["TXN-08", "TXN-09", "CON-07", "CON-14"],
     "changes": [
       {
         "op": "profile",
@@ -147,34 +133,23 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-08"
-          ],
+          "ids": ["TXN-08"],
           "scope": "deal",
           "status": "satisfied"
         },
         {
-          "ids": [
-            "TXN-09"
-          ],
+          "ids": ["TXN-09"],
           "scope": "deal",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "CON-07",
-        "TXN-09"
-      ]
+      "findings": ["CON-07", "TXN-09"]
     }
   },
   {
     "name": "60 versus 120 days None",
     "overlay": null,
-    "rules": [
-      "TGT-03",
-      "TXN-10a",
-      "TGT-11"
-    ],
+    "rules": ["TGT-03", "TXN-10a", "TGT-11"],
     "changes": [
       {
         "op": "fact",
@@ -185,9 +160,7 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TGT-03"
-          ],
+          "ids": ["TGT-03"],
           "scope": "target",
           "status": "satisfied"
         }
@@ -198,11 +171,7 @@
   {
     "name": "60 versus 120 days sample-lender-a",
     "overlay": "sample-lender-a",
-    "rules": [
-      "TGT-03",
-      "TXN-10a",
-      "TGT-11"
-    ],
+    "rules": ["TGT-03", "TXN-10a", "TGT-11"],
     "changes": [
       {
         "op": "fact",
@@ -213,40 +182,28 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TGT-03"
-          ],
+          "ids": ["TGT-03"],
           "scope": "target",
           "status": "received_with_issues"
         },
         {
-          "ids": [
-            "TXN-10a"
-          ],
+          "ids": ["TXN-10a"],
           "scope": "deal",
           "status": "missing"
         },
         {
-          "ids": [
-            "TGT-11"
-          ],
+          "ids": ["TGT-11"],
           "scope": "target",
           "status": "missing"
         }
       ],
-      "findings": [
-        "TGT-03",
-        "TXN-10a",
-        "TGT-11"
-      ]
+      "findings": ["TGT-03", "TXN-10a", "TGT-11"]
     }
   },
   {
     "name": "Valuation confirmation 8",
     "pack": "sop-50-10-8",
-    "rules": [
-      "TXN-08"
-    ],
+    "rules": ["TXN-08"],
     "changes": [
       {
         "op": "remove_confirmation",
@@ -261,24 +218,18 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-08"
-          ],
+          "ids": ["TXN-08"],
           "scope": "deal",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "TXN-08"
-      ]
+      "findings": ["TXN-08"]
     }
   },
   {
     "name": "Valuation confirmation 8.1",
     "pack": "sop-50-10-8-1",
-    "rules": [
-      "TXN-08"
-    ],
+    "rules": ["TXN-08"],
     "changes": [
       {
         "op": "remove_confirmation",
@@ -293,9 +244,7 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-08"
-          ],
+          "ids": ["TXN-08"],
           "scope": "deal",
           "status": "satisfied"
         }

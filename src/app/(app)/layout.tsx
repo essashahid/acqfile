@@ -11,9 +11,20 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   const e = env();
   return (
     <div className="flex min-h-screen flex-col">
-      <AppNav isPublic={isPublic} email={user.email} role={workspace.role} workspaceName={workspace.name} signOutAction={signOutAction} />
-      <main id="main-content" className="mx-auto w-full max-w-[1520px] flex-1 px-4 py-6 sm:px-6 sm:py-7">
-        <Notice tone="accent" title="Synthetic data only" className="mb-5">Real-data processing is disabled. This workspace uses invented people and organizations.</Notice>
+      <AppNav
+        isPublic={isPublic}
+        email={user.email}
+        role={workspace.role}
+        workspaceName={workspace.name}
+        signOutAction={signOutAction}
+      />
+      <main
+        id="main-content"
+        className="mx-auto w-full max-w-[1520px] flex-1 px-4 py-6 sm:px-6 sm:py-7"
+      >
+        <Notice tone="accent" title="Synthetic data only" className="mb-5">
+          Real-data processing is disabled. This workspace uses invented people and organizations.
+        </Notice>
         {e.PUBLIC_DEMO_MODE ? (
           <Notice
             tone="accent"
@@ -22,17 +33,32 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             actions={
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px]">
                 <span className="text-[var(--muted)]">Try:</span>
-                <Link href="/deals" className="font-medium underline underline-offset-2">Open a deal</Link>
-                <Link href="/rulepacks" className="font-medium underline underline-offset-2">Read the rule packs</Link>
-                {isPublic ? <Link href="/login" className="font-semibold underline underline-offset-2">Sign in to manage</Link> : null}
+                <Link href="/deals" className="font-medium underline underline-offset-2">
+                  Open a deal
+                </Link>
+                <Link href="/rulepacks" className="font-medium underline underline-offset-2">
+                  Read the rule packs
+                </Link>
+                {isPublic ? (
+                  <Link href="/login" className="font-semibold underline underline-offset-2">
+                    Sign in to manage
+                  </Link>
+                ) : null}
               </span>
             }
           >
-            Synthetic deal fixtures.{e.LLM_PROVIDER === "mock" ? " Model output comes from a deterministic test provider." : ""}
+            Synthetic deal fixtures.
+            {e.LLM_PROVIDER === "mock"
+              ? " Model output comes from a deterministic test provider."
+              : ""}
           </Notice>
         ) : null}
         {!isPublic && !jobsConfigured() ? (
-          <Notice tone="warn" title="Background processing is not connected." className="mb-5 no-print">
+          <Notice
+            tone="warn"
+            title="Background processing is not connected."
+            className="mb-5 no-print"
+          >
             Batch intake and reprocessing stay unavailable until Inngest is configured.
           </Notice>
         ) : null}

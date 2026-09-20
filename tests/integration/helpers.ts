@@ -30,6 +30,10 @@ export async function llmCallsFor(runId: string) {
 }
 
 export async function runRow(runId: string) {
-  const [r] = await getDb().select().from(schema.processingRuns).where(eq(schema.processingRuns.id, runId)).limit(1);
+  const [r] = await getDb()
+    .select()
+    .from(schema.processingRuns)
+    .where(eq(schema.processingRuns.id, runId))
+    .limit(1);
   return r!;
 }

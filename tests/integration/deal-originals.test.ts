@@ -11,7 +11,11 @@ import type { SessionContext, WorkspaceRole } from "@/lib/workspace";
 let workspaceId: string, dealId: string, versionId: string;
 const users: Record<WorkspaceRole, string> = { admin: "", reviewer: "", viewer: "" };
 const ctx = (role: WorkspaceRole, isPublic = false): SessionContext => ({
-  user: { id: isPublic ? "00000000-0000-0000-0000-000000000000" : users[role], email: `${role}@example.com`, displayName: role },
+  user: {
+    id: isPublic ? "00000000-0000-0000-0000-000000000000" : users[role],
+    email: `${role}@example.com`,
+    displayName: role,
+  },
   workspace: { workspaceId, slug: "default", name: "Synthetic workspace", role },
   isPublic,
 });
@@ -28,9 +32,16 @@ beforeAll(async () => {
   users.reviewer = seed.reviewerId;
   users.viewer = seed.viewerId;
   const draft = JSON.parse(fs.readFileSync("fixtures/deals/deal-a/truth/deal.json", "utf8"));
-  dealId = await saveDeal(ctx("admin"), { ...draft, code: "ORIGINALS-A", name: "Varnholt Climate Services" });
+  dealId = await saveDeal(ctx("admin"), {
+    ...draft,
+    code: "ORIGINALS-A",
+    name: "Varnholt Climate Services",
+  });
   const result = await intake(ctx("admin"), dealId, [
-    { path: "Buyer/synthetic-original.pdf", bytes: await makePdf(["SYNTHETIC", "Synthetic original for the A35 audit test"]) },
+    {
+      path: "Buyer/synthetic-original.pdf",
+      bytes: await makePdf(["SYNTHETIC", "Synthetic original for the A35 audit test"]),
+    },
   ]);
   versionId = result.rows[0]!.documentVersionId;
 });
@@ -44,15 +55,20 @@ it("A35.1: admin and operator roles open originals, the viewer role is refused",
   expect(admin?.version.id).toBe(versionId);
   const operator = await openOriginal(ctx("reviewer"), dealId, versionId, 1_800_000_000);
   expect(operator?.version.id).toBe(versionId);
-  await expect(openOriginal(ctx("viewer"), dealId, versionId, 1_800_000_000)).rejects.toThrow(ORIGINAL_ACCESS_MESSAGE);
+  await expect(openOriginal(ctx("viewer"), dealId, versionId, 1_800_000_000)).rejects.toThrow(
+    ORIGINAL_ACCESS_MESSAGE,
+  );
   expect((await events()).some((e) => e.actorId === users.viewer)).toBe(false);
 });
 it("A35.2: every open writes one audit event with user, document version and time, not one per page", async () => {
   const before = await events();
   const link = 1_800_000_060;
-  for (let request = 0; request < 3; request++) await openOriginal(ctx("admin"), dealId, versionId, link);
+  for (let request = 0; request < 3; request++)
+    await openOriginal(ctx("admin"), dealId, versionId, link);
   const after = await events();
-  const mine = after.filter((e) => e.actorId === users.admin && (e.maskedAfter as { link: string }).link === String(link));
+  const mine = after.filter(
+    (e) => e.actorId === users.admin && (e.maskedAfter as { link: string }).link === String(link),
+  );
   expect(mine).toHaveLength(1);
   expect(after.length - before.length).toBe(1);
   const event = mine[0]!;
@@ -71,5 +87,7 @@ it("A35.4: public visitors preview originals only while the synthetic public dem
   expect(visitor?.version.id).toBe(versionId);
   vi.stubEnv("PUBLIC_DEMO_MODE", "false");
   resetEnvCache();
-  await expect(openOriginal(ctx("viewer", true), dealId, versionId, 1_800_001_000)).rejects.toThrow(ORIGINAL_ACCESS_MESSAGE);
+  await expect(openOriginal(ctx("viewer", true), dealId, versionId, 1_800_001_000)).rejects.toThrow(
+    ORIGINAL_ACCESS_MESSAGE,
+  );
 });

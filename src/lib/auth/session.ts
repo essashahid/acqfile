@@ -4,7 +4,15 @@ import { getDb } from "@/lib/db/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env";
-import { SESSION_COOKIE, authenticateLocal, loadUserById, readSession, sessionCookieOptions, signSession, type AuthUser } from "@/lib/auth/local";
+import {
+  SESSION_COOKIE,
+  authenticateLocal,
+  loadUserById,
+  readSession,
+  sessionCookieOptions,
+  signSession,
+  type AuthUser,
+} from "@/lib/auth/local";
 
 export type CurrentUser = AuthUser;
 
@@ -43,7 +51,8 @@ export async function signIn(email: string, password: string): Promise<SignInRes
         hits = case when mutation_limits.window_start < date_trunc('minute', now()) then 1 else mutation_limits.hits + 1 end,
         window_start = date_trunc('minute', now()) returning hits
     `);
-    if (Number(rows[0]?.hits) > 10) return { ok: false, error: "Too many sign-in attempts. Wait a minute and try again." };
+    if (Number(rows[0]?.hits) > 10)
+      return { ok: false, error: "Too many sign-in attempts. Wait a minute and try again." };
   }
   const user = await authenticateLocal(email, password);
   if (!user) return { ok: false, error: "Invalid email or password" };

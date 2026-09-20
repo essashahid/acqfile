@@ -16,61 +16,37 @@ export async function DealDocuments({
   editable: boolean;
 }) {
   const db = getDb();
-  const [segments, reviews, parties, versions, records, events, runs] =
-    await Promise.all([
-      db
-        .select()
-        .from(schema.segments)
-        .where(eq(schema.segments.dealId, dealId)),
-      db
-        .select()
-        .from(schema.intakeReviews)
-        .where(
-          and(
-            eq(schema.intakeReviews.dealId, dealId),
-            eq(schema.intakeReviews.status, "open"),
-          ),
+  const [segments, reviews, parties, versions, records, events, runs] = await Promise.all([
+    db.select().from(schema.segments).where(eq(schema.segments.dealId, dealId)),
+    db
+      .select()
+      .from(schema.intakeReviews)
+      .where(and(eq(schema.intakeReviews.dealId, dealId), eq(schema.intakeReviews.status, "open"))),
+    db.select().from(schema.parties).where(eq(schema.parties.dealId, dealId)),
+    db.select().from(schema.documentVersions).where(eq(schema.documentVersions.dealId, dealId)),
+    db
+      .select({ record: schema.recordVersions })
+      .from(schema.recordVersions)
+      .innerJoin(
+        schema.documentVersions,
+        and(
+          eq(schema.documentVersions.id, schema.recordVersions.documentVersionId),
+          eq(schema.documentVersions.dealId, dealId),
         ),
-      db.select().from(schema.parties).where(eq(schema.parties.dealId, dealId)),
-      db
-        .select()
-        .from(schema.documentVersions)
-        .where(eq(schema.documentVersions.dealId, dealId)),
-      db
-        .select({ record: schema.recordVersions })
-        .from(schema.recordVersions)
-        .innerJoin(
-          schema.documentVersions,
-          and(
-            eq(
-              schema.documentVersions.id,
-              schema.recordVersions.documentVersionId,
-            ),
-            eq(schema.documentVersions.dealId, dealId),
-          ),
-        )
-        .where(eq(schema.recordVersions.isCurrent, true)),
-      db
-        .select()
-        .from(schema.events)
-        .where(
-          and(
-            eq(schema.events.dealId, dealId),
-            eq(schema.events.action, "segment_superseded"),
-          ),
-        ),
-      db
-        .select()
-        .from(schema.processingRuns)
-        .where(eq(schema.processingRuns.status, "failed")),
-    ]);
+      )
+      .where(eq(schema.recordVersions.isCurrent, true)),
+    db
+      .select()
+      .from(schema.events)
+      .where(and(eq(schema.events.dealId, dealId), eq(schema.events.action, "segment_superseded"))),
+    db.select().from(schema.processingRuns).where(eq(schema.processingRuns.status, "failed")),
+  ]);
   const folders =
     pack === "unknown"
       ? ["Transaction", "Buyer", "Guarantors", "Target", "Lender"]
       : loadPack(pack, overlay ?? undefined).index.folders;
   const folder = (type: string, partyId: string | null) => {
-    if (["OTHER_NOT_REQUIRED", "UNREADABLE"].includes(type))
-      return "Unfiled or not required";
+    if (["OTHER_NOT_REQUIRED", "UNREADABLE"].includes(type)) return "Unfiled or not required";
     if (
       [
         "LOI",
@@ -87,9 +63,7 @@ export async function DealDocuments({
       ? folders[1]!
       : roles.includes("seller_entity")
         ? folders[3]!
-        : roles.some((r) =>
-              ["buyer_owner", "guarantor", "donor", "affiliate"].includes(r),
-            )
+        : roles.some((r) => ["buyer_owner", "guarantor", "donor", "affiliate"].includes(r))
           ? folders[2]!
           : "Unfiled or not required";
   };
@@ -118,15 +92,8 @@ export async function DealDocuments({
       <ul className="divide-y">
         {reviews.map((r) => (
           <li key={r.id} className="py-2">
-            <Link
-              className="underline"
-              href={`/deals/${dealId}/files/${r.documentVersionId}`}
-            >
-              {
-                versions.find((v) => v.id === r.documentVersionId)
-                  ?.sourceFilename
-              }{" "}
-              · {r.type}
+            <Link className="underline" href={`/deals/${dealId}/files/${r.documentVersionId}`}>
+              {versions.find((v) => v.id === r.documentVersionId)?.sourceFilename} · {r.type}
             </Link>
             <span className="ml-3 text-sm">
               {r.priority === "high" ? "High priority · " : ""}
@@ -145,10 +112,7 @@ export async function DealDocuments({
               .filter((f) => f.folder === folder)
               .map((f) => (
                 <li className="py-1 pl-4 text-sm" key={f.id}>
-                  <Link
-                    className="underline"
-                    href={`/deals/${dealId}/files/${f.versionId}`}
-                  >
+                  <Link className="underline" href={`/deals/${dealId}/files/${f.versionId}`}>
                     {f.label}
                   </Link>
                 </li>
@@ -178,10 +142,7 @@ export async function DealDocuments({
         runs
           .filter((r) => r.configJson.dealId === dealId)
           .map((r) => (
-            <form
-              key={r.id}
-              action={retryDealRunAction.bind(null, dealId, r.id)}
-            >
+            <form key={r.id} action={retryDealRunAction.bind(null, dealId, r.id)}>
               <button className="underline">Retry incomplete batch</button>
             </form>
           ))}

@@ -8,8 +8,12 @@ const MIGRATIONS_DIR = path.resolve(process.cwd(), "supabase/migrations");
 export async function migrate(sql: postgres.Sql, opts: { log?: (m: string) => void } = {}) {
   const log = opts.log ?? (() => {});
   await sql`create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())`;
-  const applied = new Set((await sql<{ name: string }[]>`select name from schema_migrations`).map((r) => r.name));
-  const hasSupabase = (await sql<{ n: string }[]>`select nspname as n from pg_namespace where nspname = 'auth'`).length > 0;
+  const applied = new Set(
+    (await sql<{ name: string }[]>`select name from schema_migrations`).map((r) => r.name),
+  );
+  const hasSupabase =
+    (await sql<{ n: string }[]>`select nspname as n from pg_namespace where nspname = 'auth'`)
+      .length > 0;
   const files = fs
     .readdirSync(MIGRATIONS_DIR)
     .filter((f) => f.endsWith(".sql"))

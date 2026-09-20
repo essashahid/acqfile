@@ -32,7 +32,17 @@ export function FormButton({
 }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" name={name} value={value} variant={variant} size={size} disabled={disabled || pending} aria-disabled={disabled || pending} title={title} className={className}>
+    <Button
+      type="submit"
+      name={name}
+      value={value}
+      variant={variant}
+      size={size}
+      disabled={disabled || pending}
+      aria-disabled={disabled || pending}
+      title={title}
+      className={className}
+    >
       {pending ? (
         <>
           <Loader2 size={14} aria-hidden className="animate-spin" />

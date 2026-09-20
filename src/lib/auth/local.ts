@@ -18,7 +18,10 @@ function hmac(data: string, secret: string): string {
 }
 
 /** Produce `payload.signature` where payload is base64url JSON `{userId, exp}`. */
-export function signSession(userId: string, opts: { secret?: string; now?: number; ttlSeconds?: number } = {}): string {
+export function signSession(
+  userId: string,
+  opts: { secret?: string; now?: number; ttlSeconds?: number } = {},
+): string {
   const secret = opts.secret ?? env().AUTH_SECRET;
   const now = opts.now ?? Date.now();
   const exp = Math.floor(now / 1000) + (opts.ttlSeconds ?? SESSION_TTL_SECONDS);
@@ -27,7 +30,10 @@ export function signSession(userId: string, opts: { secret?: string; now?: numbe
 }
 
 /** Verify the signature and expiry of a session token; returns the payload or null. */
-export function readSession(token: string | undefined | null, opts: { secret?: string; now?: number } = {}): SessionPayload | null {
+export function readSession(
+  token: string | undefined | null,
+  opts: { secret?: string; now?: number } = {},
+): SessionPayload | null {
   if (!token) return null;
   const secret = opts.secret ?? env().AUTH_SECRET;
   const dot = token.lastIndexOf(".");
@@ -39,7 +45,9 @@ export function readSession(token: string | undefined | null, opts: { secret?: s
   const b = Buffer.from(expected);
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
   try {
-    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as Partial<SessionPayload>;
+    const parsed = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    ) as Partial<SessionPayload>;
     if (typeof parsed.userId !== "string" || typeof parsed.exp !== "number") return null;
     const now = opts.now ?? Date.now();
     if (parsed.exp * 1000 <= now) return null;
@@ -65,7 +73,12 @@ export type AuthUser = { id: string; email: string; displayName: string };
 export async function authenticateLocal(email: string, password: string): Promise<AuthUser | null> {
   const normalized = email.trim().toLowerCase();
   const [user] = await getDb()
-    .select({ id: schema.appUsers.id, email: schema.appUsers.email, displayName: schema.appUsers.displayName, passwordHash: schema.appUsers.passwordHash })
+    .select({
+      id: schema.appUsers.id,
+      email: schema.appUsers.email,
+      displayName: schema.appUsers.displayName,
+      passwordHash: schema.appUsers.passwordHash,
+    })
     .from(schema.appUsers)
     .where(eq(schema.appUsers.email, normalized))
     .limit(1);
@@ -75,7 +88,11 @@ export async function authenticateLocal(email: string, password: string): Promis
 
 export async function loadUserById(userId: string): Promise<AuthUser | null> {
   const [user] = await getDb()
-    .select({ id: schema.appUsers.id, email: schema.appUsers.email, displayName: schema.appUsers.displayName })
+    .select({
+      id: schema.appUsers.id,
+      email: schema.appUsers.email,
+      displayName: schema.appUsers.displayName,
+    })
     .from(schema.appUsers)
     .where(and(eq(schema.appUsers.id, userId)))
     .limit(1);

@@ -4,20 +4,19 @@ Date: 2026-09-20. Scope: corrections, deal profiles, intake, source blocks, segm
 
 ## A28 corrections and independent expectations
 
-| Expectation | Before | After | Reason |
-| --- | --- | --- | --- |
-| A batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | No accepted or proposed return for 2024; do not run completeness on absence. |
-| C batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | Same absent-return rule. |
-| A batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Explicit unsigned and undated indicators are definite failures. |
-| C batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Same definite signature failure. |
-| Phase 1 missing annual tax period scenario | needs_review | missing | Absence short-circuits page checks. |
-| Phase 1 false conjunct with unknown applicability | needs_review and finding | not_applicable, no finding | False AND unknown is false. |
-| Expression false AND unknown / true OR unknown | unknown / unknown | false / true | Standard three-valued Boolean logic. |
-| Older 2024 extension test | needs_review | missing | Only the latest completed tax year gets A13's extension exception. |
-| Missing paid-agent Form 159 with unknown fee | needs_review | missing | Fee uncertainty does not replace the absent accepted document. |
+| Expectation                                       | Before                   | After                                     | Reason                                                                       |
+| ------------------------------------------------- | ------------------------ | ----------------------------------------- | ---------------------------------------------------------------------------- |
+| A batch 1 GUA-02/alex/2024                        | needs_review             | missing / missing finding                 | No accepted or proposed return for 2024; do not run completeness on absence. |
+| C batch 1 GUA-02/alex/2024                        | needs_review             | missing / missing finding                 | Same absent-return rule.                                                     |
+| A batch 1 ENT-01/buyer                            | needs_review             | received_with_issues / incomplete finding | Explicit unsigned and undated indicators are definite failures.              |
+| C batch 1 ENT-01/buyer                            | needs_review             | received_with_issues / incomplete finding | Same definite signature failure.                                             |
+| Phase 1 missing annual tax period scenario        | needs_review             | missing                                   | Absence short-circuits page checks.                                          |
+| Phase 1 false conjunct with unknown applicability | needs_review and finding | not_applicable, no finding                | False AND unknown is false.                                                  |
+| Expression false AND unknown / true OR unknown    | unknown / unknown        | false / true                              | Standard three-valued Boolean logic.                                         |
+| Older 2024 extension test                         | needs_review             | missing                                   | Only the latest completed tax year gets A13's extension exception.           |
+| Missing paid-agent Form 159 with unknown fee      | needs_review             | missing                                   | Fee uncertainty does not replace the absent accepted document.               |
 
 The check-coverage assertion now recognizes absence as a short-circuit and does not demand that checks execute for missing documents. The missing-document scenario directly asserts an empty reasons list. Removal, pending-evidence and determinism invariant tests retain their intent. New cases cover absence with signature/page checks, unsigned with null date, known conflict with a pending third source, proposed evidence and inventory precedence over waiver. Failed and unknown checks both appear in messages; their order follows pack order.
-
 
 All four independently authored oracles pass: A batch 1 **78 rows / 20 findings**, A batch 2 **78 / 17**, B **76 / 3**, C **63 / 4**. A's second batch still resolves exactly three findings. No-false-satisfied, removal monotonicity, pending-never-satisfies and determinism tests retain their intent.
 
@@ -37,18 +36,18 @@ Raster proof: **19 unique scan PDFs / 50 pages**, all independently OCR-checked 
 
 The integration proof ingests every file of every batch, compares persisted segments with `documents.json`, and checks declared duplicate/supersession/unreadable outcomes. The mock provider alone reads fixture truth. Deterministic parsing/classification never imports truth.
 
-| Deal | Files / batches | Segments | Type | Bundle boundaries | Party + period | Signed + dated | Wrong true |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| deal-a | 40 / 2 | 63 | 63/63 (100%) | 46/46 (100%) | 63/63 (100%) | 63/63 (100%) | 0 |
-| deal-b | 28 / 1 | 39 | 39/39 (100%) | 19/19 (100%) | 39/39 (100%) | 39/39 (100%) | 0 |
-| deal-c | 22 / 1 | 39 | 39/39 (100%) | 34/34 (100%) | 39/39 (100%) | 39/39 (100%) | 0 |
+| Deal   | Files / batches | Segments | Type         | Bundle boundaries | Party + period | Signed + dated | Wrong true |
+| ------ | --------------- | -------- | ------------ | ----------------- | -------------- | -------------- | ---------- |
+| deal-a | 40 / 2          | 63       | 63/63 (100%) | 46/46 (100%)      | 63/63 (100%)   | 63/63 (100%)   | 0          |
+| deal-b | 28 / 1          | 39       | 39/39 (100%) | 19/19 (100%)      | 39/39 (100%)   | 39/39 (100%)   | 0          |
+| deal-c | 22 / 1          | 39       | 39/39 (100%) | 34/34 (100%)      | 39/39 (100%)   | 39/39 (100%)   | 0          |
 
-| Deal | Deterministic segments / share | Deterministic type + boundary accuracy | Classifier segments / share |
-| --- | --- | --- | --- |
-| deal-a | 55 / 87.30% | 55/55 (100%) | 8 / 12.70% |
-| deal-b | 36 / 92.31% | 36/36 (100%) | 3 / 7.69% |
-| deal-c | 3 / 7.69% | 3/3 (100%) | 36 / 92.31% |
-| Total | 94 / 66.67% | 94/94 (100%) | 47 / 33.33% |
+| Deal   | Deterministic segments / share | Deterministic type + boundary accuracy | Classifier segments / share |
+| ------ | ------------------------------ | -------------------------------------- | --------------------------- |
+| deal-a | 55 / 87.30%                    | 55/55 (100%)                           | 8 / 12.70%                  |
+| deal-b | 36 / 92.31%                    | 36/36 (100%)                           | 3 / 7.69%                   |
+| deal-c | 3 / 7.69%                      | 3/3 (100%)                             | 36 / 92.31%                 |
+| Total  | 94 / 66.67%                    | 94/94 (100%)                           | 47 / 33.33%                 |
 
 These are fixture routing and mock integration results, not model-quality results. A34 was **skipped: no owner provider key configured**. No live calls or spend.
 
@@ -79,19 +78,19 @@ Originals are private, accessed through authenticated, workspace-checked, role-g
 
 ## Final commands
 
-| Command | Result |
-| --- | --- |
-| `pnpm lint` | PASS, exit 0 |
-| `pnpm typecheck` | PASS, exit 0; Next route types + TypeScript |
-| `pnpm test` | PASS, exit 0; 143 tests / 17 files |
-| `pnpm test:integration` | PASS, exit 0; 28 tests / 8 files, including legacy/deal coexistence and A35 originals |
-| `pnpm test:e2e` | PASS, exit 0; 8 tests, 1.6 min, against the production build, including the A35 notice |
-| `pnpm rules:check` | PASS, exit 0; four pack/overlay resolutions, 52 types, 79 attributes |
-| `pnpm fixtures:check` | PASS, exit 0; four oracles, readability/synthetic lint, 47 unchanged legacy hashes |
-| `pnpm fixtures:generate --check` | PASS, exit 0; A 40 files/two batches, B 28/one, C 22/one |
-| `pnpm build` | PASS, exit 0; Next.js 16.3.4 production build |
-| `pnpm exec tsx scripts/check-raster-fixtures.ts` | PASS, exit 0; 19 canonical files / 50 pages, two matching rerasterizations |
-| `git diff --check` | PASS, exit 0 |
+| Command                                          | Result                                                                                 |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| `pnpm lint`                                      | PASS, exit 0                                                                           |
+| `pnpm typecheck`                                 | PASS, exit 0; Next route types + TypeScript                                            |
+| `pnpm test`                                      | PASS, exit 0; 143 tests / 17 files                                                     |
+| `pnpm test:integration`                          | PASS, exit 0; 28 tests / 8 files, including legacy/deal coexistence and A35 originals  |
+| `pnpm test:e2e`                                  | PASS, exit 0; 8 tests, 1.6 min, against the production build, including the A35 notice |
+| `pnpm rules:check`                               | PASS, exit 0; four pack/overlay resolutions, 52 types, 79 attributes                   |
+| `pnpm fixtures:check`                            | PASS, exit 0; four oracles, readability/synthetic lint, 47 unchanged legacy hashes     |
+| `pnpm fixtures:generate --check`                 | PASS, exit 0; A 40 files/two batches, B 28/one, C 22/one                               |
+| `pnpm build`                                     | PASS, exit 0; Next.js 16.3.4 production build                                          |
+| `pnpm exec tsx scripts/check-raster-fixtures.ts` | PASS, exit 0; 19 canonical files / 50 pages, two matching rerasterizations             |
+| `git diff --check`                               | PASS, exit 0                                                                           |
 
 The new browser scenario imports A's profile JSON, uploads batch 1, displays filed documents, renders a source page, confirms one bundle, manually indexes the unreadable formation document, uploads batch 2, and observes 1919 supersession. Retained seven browser tests pass unchanged in intent. A local inspection of the captured screen confirmed the file/batch/status and filing controls. Phase 3 logs contain no SSN/EIN or seeded account/passport test patterns. SPEC.md remains unchanged (SHA-256 aa407cdd0e5b06273c296d67d17a98af80f958c379993aeb679f157efbd9fdd9).
 

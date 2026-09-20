@@ -9,7 +9,11 @@ const ERRORS: Record<string, string> = {
   no_workspace: "Your account is not a member of any workspace.",
 };
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; error?: string }> }) {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string; error?: string }>;
+}) {
   const params = await searchParams;
   const user = await getCurrentUser();
   if (user && !params.error) redirect("/");
@@ -25,11 +29,16 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <ShieldCheck size={22} aria-hidden strokeWidth={2.2} />
           </span>
           <h1 className="text-[20px] font-semibold tracking-[-0.02em]">{PRODUCT_NAME}</h1>
-          <p className="mt-1 text-[13px] text-[var(--muted)]">Document intelligence with evidence you can check.</p>
+          <p className="mt-1 text-[13px] text-[var(--muted)]">
+            Document intelligence with evidence you can check.
+          </p>
         </div>
 
         <div className="rounded-[var(--r-lg)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)]">
-          <LoginForm next={next} initialError={params.error ? (ERRORS[params.error] ?? "Sign-in required") : null} />
+          <LoginForm
+            next={next}
+            initialError={params.error ? (ERRORS[params.error] ?? "Sign-in required") : null}
+          />
         </div>
 
         {showHints ? (

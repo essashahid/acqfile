@@ -38,15 +38,28 @@ async function verifyLocalSession(token: string | undefined, secret: string): Pr
   const payload = token.slice(0, dot);
   const sig = token.slice(dot + 1);
   const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
   const expected = bytesToB64url(await crypto.subtle.sign("HMAC", key, enc.encode(payload)));
   if (expected.length !== sig.length) return false;
   let diff = 0;
   for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ sig.charCodeAt(i);
   if (diff !== 0) return false;
   try {
-    const parsed = JSON.parse(new TextDecoder().decode(b64urlToBytes(payload))) as { userId?: unknown; exp?: unknown };
-    return typeof parsed.userId === "string" && typeof parsed.exp === "number" && parsed.exp * 1000 > Date.now();
+    const parsed = JSON.parse(new TextDecoder().decode(b64urlToBytes(payload))) as {
+      userId?: unknown;
+      exp?: unknown;
+    };
+    return (
+      typeof parsed.userId === "string" &&
+      typeof parsed.exp === "number" &&
+      parsed.exp * 1000 > Date.now()
+    );
   } catch {
     return false;
   }
@@ -58,21 +71,31 @@ export async function proxy(req: NextRequest) {
   let response = NextResponse.next({ request: req });
   let authed = false;
   if (process.env.AUTH_DRIVER === "supabase") {
-    const sb = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-      cookies: {
-        getAll: () => req.cookies.getAll(),
-        setAll(cookies, headers) {
-          for (const { name, value } of cookies) req.cookies.set(name, value);
-          response = NextResponse.next({ request: req });
-          for (const { name, value, options } of cookies) response.cookies.set(name, value, options);
-          if (headers) for (const [name, value] of Object.entries(headers)) response.headers.set(name, value);
+    const sb = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => req.cookies.getAll(),
+          setAll(cookies, headers) {
+            for (const { name, value } of cookies) req.cookies.set(name, value);
+            response = NextResponse.next({ request: req });
+            for (const { name, value, options } of cookies)
+              response.cookies.set(name, value, options);
+            if (headers)
+              for (const [name, value] of Object.entries(headers))
+                response.headers.set(name, value);
+          },
         },
       },
-    });
+    );
     const { data } = await sb.auth.getUser();
     authed = Boolean(data.user);
   } else {
-    authed = await verifyLocalSession(req.cookies.get(SESSION_COOKIE)?.value, process.env.AUTH_SECRET ?? "acqfile-dev-secret-change-me");
+    authed = await verifyLocalSession(
+      req.cookies.get(SESSION_COOKIE)?.value,
+      process.env.AUTH_SECRET ?? "acqfile-dev-secret-change-me",
+    );
   }
   if (authed || pathname === "/login" || process.env.PUBLIC_DEMO_MODE === "true") return response;
   const url = req.nextUrl.clone();

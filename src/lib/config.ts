@@ -12,7 +12,10 @@ export const UPLOAD_LIMITS = {
   } as const,
 };
 
-export const ROUTING_THRESHOLDS = { autoAccept: env().AUTO_ACCEPT_THRESHOLD, review: env().REVIEW_THRESHOLD } as const;
+export const ROUTING_THRESHOLDS = {
+  autoAccept: env().AUTO_ACCEPT_THRESHOLD,
+  review: env().REVIEW_THRESHOLD,
+} as const;
 
 export const VERIFIER_BATCH_SIZE = 12;
 

@@ -79,26 +79,61 @@ let cached: Env | null = null;
 export function env(): Env {
   if (cached) return cached;
   // A35: a public demo may only show originals because every file is synthetic.
-  if (["1", "true"].includes(process.env.REAL_DATA_MODE ?? "") && ["1", "true"].includes(process.env.PUBLIC_DEMO_MODE ?? ""))
-    throw new Error("REAL_DATA_MODE=true cannot be combined with PUBLIC_DEMO_MODE=true: public visitors may only preview synthetic originals (A35).");
+  if (
+    ["1", "true"].includes(process.env.REAL_DATA_MODE ?? "") &&
+    ["1", "true"].includes(process.env.PUBLIC_DEMO_MODE ?? "")
+  )
+    throw new Error(
+      "REAL_DATA_MODE=true cannot be combined with PUBLIC_DEMO_MODE=true: public visitors may only preview synthetic originals (A35).",
+    );
   const parsed = schema.safeParse(process.env);
   if (!parsed.success) throw new Error(`Invalid environment: ${parsed.error.message}`);
   const e = parsed.data;
-  if (typeof window === "undefined" && e.LLM_PROVIDER === "openai" && !e.OPENAI_API_KEY && e.NODE_ENV !== "test") {
+  if (
+    typeof window === "undefined" &&
+    e.LLM_PROVIDER === "openai" &&
+    !e.OPENAI_API_KEY &&
+    e.NODE_ENV !== "test"
+  ) {
     // Startup validation: the real provider needs a key. Surfaced once, loudly.
-    console.warn("[acqfile] LLM_PROVIDER=openai but OPENAI_API_KEY is empty; model calls will fail until it is set.");
+    console.warn(
+      "[acqfile] LLM_PROVIDER=openai but OPENAI_API_KEY is empty; model calls will fail until it is set.",
+    );
   }
-  if (e.AUTH_DRIVER === "supabase" && (!e.NEXT_PUBLIC_SUPABASE_URL || !e.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-    throw new Error("AUTH_DRIVER=supabase requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  if (
+    e.AUTH_DRIVER === "supabase" &&
+    (!e.NEXT_PUBLIC_SUPABASE_URL || !e.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  ) {
+    throw new Error(
+      "AUTH_DRIVER=supabase requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    );
   }
-  if (e.STORAGE_DRIVER === "supabase" && (!e.NEXT_PUBLIC_SUPABASE_URL || !e.SUPABASE_SERVICE_ROLE_KEY)) throw new Error("Supabase storage credentials are missing");
-  if (new URL(e.DATABASE_URL).port === "6543" || new URL(e.DATABASE_URL).hostname.includes("-pooler.")) throw new Error("Use a direct database connection; transaction pooling is incompatible with pipeline advisory locks.");
+  if (
+    e.STORAGE_DRIVER === "supabase" &&
+    (!e.NEXT_PUBLIC_SUPABASE_URL || !e.SUPABASE_SERVICE_ROLE_KEY)
+  )
+    throw new Error("Supabase storage credentials are missing");
+  if (
+    new URL(e.DATABASE_URL).port === "6543" ||
+    new URL(e.DATABASE_URL).hostname.includes("-pooler.")
+  )
+    throw new Error(
+      "Use a direct database connection; transaction pooling is incompatible with pipeline advisory locks.",
+    );
   if (process.env.VERCEL && process.env.NEXT_PHASE !== "phase-production-build") {
-    if (e.AUTH_DRIVER === "local" || e.STORAGE_DRIVER === "local" || e.JOB_DRIVER !== "inngest") throw new Error("Vercel requires production authentication, persistent storage and Inngest jobs.");
-    if (e.AUTH_DRIVER === "database" && e.AUTH_SECRET.length < 48) throw new Error("Database authentication requires a random AUTH_SECRET of at least 48 characters.");
-    if (e.LLM_PROVIDER === "openai" && !e.OPENAI_API_KEY) throw new Error("OpenAI production key is missing.");
+    if (e.AUTH_DRIVER === "local" || e.STORAGE_DRIVER === "local" || e.JOB_DRIVER !== "inngest")
+      throw new Error(
+        "Vercel requires production authentication, persistent storage and Inngest jobs.",
+      );
+    if (e.AUTH_DRIVER === "database" && e.AUTH_SECRET.length < 48)
+      throw new Error(
+        "Database authentication requires a random AUTH_SECRET of at least 48 characters.",
+      );
+    if (e.LLM_PROVIDER === "openai" && !e.OPENAI_API_KEY)
+      throw new Error("OpenAI production key is missing.");
   }
-  if (e.STORAGE_DRIVER === "blob" && !e.BLOB_READ_WRITE_TOKEN) throw new Error("Private Blob storage requires BLOB_READ_WRITE_TOKEN.");
+  if (e.STORAGE_DRIVER === "blob" && !e.BLOB_READ_WRITE_TOKEN)
+    throw new Error("Private Blob storage requires BLOB_READ_WRITE_TOKEN.");
   cached = e;
   return e;
 }

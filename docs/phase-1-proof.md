@@ -24,14 +24,14 @@ Date: 2026-09-19. Base: accepted Phase 0 commit `b586d9c`. Repository: private `
 
 ## Pack differences
 
-| Behavior | SOP 50 10 8 | SOP 50 10 8.1 |
-| --- | --- | --- |
-| Loan-number date | 2025-06-01 through 2026-09-30 | On/after 2026-10-01 |
-| TXN-08 valuation | Manual lender confirmation plus tracking | Tracking always applicable |
-| TXN-09 QOE | Absent | Initial acquisition/business expansion, business price >= USD 3 million; lender tracking |
-| CON-14 consulting duration | 12 months | 24 months |
-| CON-07 limited sources | Seller standby note alone | Seller standby note + other standby debt + minority-investor equity |
-| CON-07 comparator | Half of 10% of project cost, for lender review | Same baseline, for lender review |
+| Behavior                   | SOP 50 10 8                                    | SOP 50 10 8.1                                                                            |
+| -------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Loan-number date           | 2025-06-01 through 2026-09-30                  | On/after 2026-10-01                                                                      |
+| TXN-08 valuation           | Manual lender confirmation plus tracking       | Tracking always applicable                                                               |
+| TXN-09 QOE                 | Absent                                         | Initial acquisition/business expansion, business price >= USD 3 million; lender tracking |
+| CON-14 consulting duration | 12 months                                      | 24 months                                                                                |
+| CON-07 limited sources     | Seller standby note alone                      | Seller standby note + other standby debt + minority-investor equity                      |
+| CON-07 comparator          | Half of 10% of project cost, for lender review | Same baseline, for lender review                                                         |
 
 Sample Lender A changes interim freshness from 120 to 60 days, adds two required rows and five inactive optional definitions, and uses `SLA_{party}_{item_id}_{doc_label}_{period}{original_extension}`. No engine code branches on Sample Lender A or a CON id.
 
@@ -50,12 +50,12 @@ The spec's fixed 10% equity baseline and universal valuation/consulting wording 
 
 ## Registry and rule counts
 
-| Configuration | Document types | Fact attributes | Checklist definitions | Consistency | Total rules |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| SOP 8 | 52 | 79 | 50 | 16 | 66 |
-| SOP 8.1 | 52 | 79 | 51 | 16 | 67 |
-| SOP 8 + Sample Lender A | 52 | 79 | 57 (5 inactive) | 16 | 73 |
-| SOP 8.1 + Sample Lender A | 52 | 79 | 58 (5 inactive) | 16 | 74 |
+| Configuration             | Document types | Fact attributes | Checklist definitions | Consistency | Total rules |
+| ------------------------- | -------------: | --------------: | --------------------: | ----------: | ----------: |
+| SOP 8                     |             52 |              79 |                    50 |          16 |          66 |
+| SOP 8.1                   |             52 |              79 |                    51 |          16 |          67 |
+| SOP 8 + Sample Lender A   |             52 |              79 |       57 (5 inactive) |          16 |          73 |
+| SOP 8.1 + Sample Lender A |             52 |              79 |       58 (5 inactive) |          16 |          74 |
 
 The taxonomy contains 25 extracted and 27 classification-only types. Required definition counts include conditional rules; they are not counts of applicable requirements on an individual deal.
 
@@ -74,17 +74,17 @@ The taxonomy contains 25 extracted and 27 classification-only types. Required de
 
 ## Command results
 
-| Exact command | Exit | Result |
-| --- | ---: | --- |
-| `pnpm lint` | 0 | Clean, no warnings |
-| `pnpm typecheck` | 0 | Route types generated; TypeScript clean |
-| `pnpm test` | 0 | 111 tests, 13 files; includes all 43 retained Phase 0 unit tests |
-| `pnpm test:integration` | 0 | 20 tests, 5 files; includes all 15 retained Phase 0 integration tests |
-| `pnpm test:e2e` | 0 | 7 Chromium tests; includes all 6 retained Phase 0 E2E tests |
-| `pnpm rules:check` | 0 | Both packs and both Sample Lender A resolutions validate; 52 types, 79 fact attributes |
-| `pnpm rules:export-review` | 0 | XLSX and HTML written for four resolved configurations |
-| `pnpm db:migrate` | 0 | Additive migration applied to local acqfile |
-| `pnpm build` | 0 | Production build passes, including `/rulepacks` |
+| Exact command              | Exit | Result                                                                                 |
+| -------------------------- | ---: | -------------------------------------------------------------------------------------- |
+| `pnpm lint`                |    0 | Clean, no warnings                                                                     |
+| `pnpm typecheck`           |    0 | Route types generated; TypeScript clean                                                |
+| `pnpm test`                |    0 | 111 tests, 13 files; includes all 43 retained Phase 0 unit tests                       |
+| `pnpm test:integration`    |    0 | 20 tests, 5 files; includes all 15 retained Phase 0 integration tests                  |
+| `pnpm test:e2e`            |    0 | 7 Chromium tests; includes all 6 retained Phase 0 E2E tests                            |
+| `pnpm rules:check`         |    0 | Both packs and both Sample Lender A resolutions validate; 52 types, 79 fact attributes |
+| `pnpm rules:export-review` |    0 | XLSX and HTML written for four resolved configurations                                 |
+| `pnpm db:migrate`          |    0 | Additive migration applied to local acqfile                                            |
+| `pnpm build`               |    0 | Production build passes, including `/rulepacks`                                        |
 
 No deployment or hosted Supabase connection is part of this proof; conditional Supabase RLS migrations are skipped on plain local PostgreSQL. The 0008 policy/revoke script therefore remains unexercised against hosted Supabase. CLI logs from this run are `/tmp/acqfile-phase1-{lint,typecheck,test,integration,e2e,rules-check,export,migrate,build}.log`.
 

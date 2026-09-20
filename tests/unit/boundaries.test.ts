@@ -10,8 +10,13 @@ function sources(dir: string): string[] {
 }
 describe("product boundaries", () => {
   it("keeps lending-decision language out of authored UI strings (Guardrail 1, A29)", () => {
-    const banned = /\b(?:eligible|ineligible|qualifies|approved|compliant)\b|meets SBA requirements/i;
-    expect(["src/app", "src/components"].flatMap(sources).filter((file) => banned.test(fs.readFileSync(file, "utf8")))).toEqual([]);
+    const banned =
+      /\b(?:eligible|ineligible|qualifies|approved|compliant)\b|meets SBA requirements/i;
+    expect(
+      ["src/app", "src/components"]
+        .flatMap(sources)
+        .filter((file) => banned.test(fs.readFileSync(file, "utf8"))),
+    ).toEqual([]);
   });
   it("requires independent live models and configured prices", async () => {
     vi.stubEnv("OPENAI_API_KEY", "test-only");
@@ -27,6 +32,15 @@ describe("product boundaries", () => {
     expect(() => estimateCostUsd("unconfigured", 1, 1)).toThrow("Configure token pricing");
   });
   it("has no legacy report path left (A42)", () => {
-    for (const gone of ["fixtures/legacy", "src/lib/llm", "src/lib/schema/report.ts", "src/lib/review", "src/lib/queries", "src/app/(app)/review", "src/app/(app)/upload"]) expect(fs.existsSync(gone), gone).toBe(false);
+    for (const gone of [
+      "fixtures/legacy",
+      "src/lib/llm",
+      "src/lib/schema/report.ts",
+      "src/lib/review",
+      "src/lib/queries",
+      "src/app/(app)/review",
+      "src/app/(app)/upload",
+    ])
+      expect(fs.existsSync(gone), gone).toBe(false);
   });
 });

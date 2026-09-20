@@ -3,11 +3,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { requestEvaluation } from "@/lib/evaluation/run";
 import { getDb, schema } from "@/lib/db/client";
-import {
-  DealProfileSchema,
-  PartySchema,
-  OwnershipSchema,
-} from "@/lib/domain/profile";
+import { DealProfileSchema, PartySchema, OwnershipSchema } from "@/lib/domain/profile";
 import { loadPack } from "@/lib/rules/loader";
 import { selectPack } from "@/lib/rules/engine";
 import { assertMutation } from "@/lib/access";
@@ -29,20 +25,14 @@ export async function requireDeal(context: SessionContext, id: string) {
     .select()
     .from(schema.deals)
     .where(
-      and(
-        eq(schema.deals.id, id),
-        eq(schema.deals.workspaceId, context.workspace.workspaceId),
-      ),
+      and(eq(schema.deals.id, id), eq(schema.deals.workspaceId, context.workspace.workspaceId)),
     );
   if (!deal) throw Error("Deal not found");
   return deal;
 }
 export async function readDeal(context: SessionContext, id: string) {
   const deal = await requireDeal(context, id);
-  const parties = await getDb()
-    .select()
-    .from(schema.parties)
-    .where(eq(schema.parties.dealId, id));
+  const parties = await getDb().select().from(schema.parties).where(eq(schema.parties.dealId, id));
   const ownership = await getDb()
     .select()
     .from(schema.ownershipLinks)
@@ -67,10 +57,7 @@ export async function saveDeal(
         !ids.has(o.owned_party_id) ||
         o.owner_party_id === o.owned_party_id,
     ) ||
-    d.parties.some(
-      (p) =>
-        Array.isArray(p.affiliates) && p.affiliates.some((a) => !ids.has(a)),
-    )
+    d.parties.some((p) => Array.isArray(p.affiliates) && p.affiliates.some((a) => !ids.has(a)))
   )
     throw Error("Ownership and affiliate links must name declared parties");
   const pack = selectPack(d.profile.expected_loan_number_date, [
@@ -78,8 +65,7 @@ export async function saveDeal(
     loadPack("sop-50-10-8-1"),
   ]).pack;
   const overlay =
-    d.overlay ??
-    (d.profile.target_lender === "Sample Lender A" ? "sample-lender-a" : null);
+    d.overlay ?? (d.profile.target_lender === "Sample Lender A" ? "sample-lender-a" : null);
   if (pack) loadPack(pack.version, overlay ?? undefined);
   const saved = await getDb().transaction(async (tx) => {
     const dealId = id ?? randomUUID();
@@ -93,13 +79,9 @@ export async function saveDeal(
         .from(schema.deals)
         .where(eq(schema.deals.id, id))
         .for("update");
-      if (old!.revision !== revision)
-        throw Error("Stale edit. Reload the deal before saving.");
+      if (old!.revision !== revision) throw Error("Stale edit. Reload the deal before saving.");
       previous = old;
-      const existing = await tx
-        .select()
-        .from(schema.parties)
-        .where(eq(schema.parties.dealId, id));
+      const existing = await tx.select().from(schema.parties).where(eq(schema.parties.dealId, id));
       for (const p of existing) {
         if (!d.parties.some((x) => x.id === p.id || x.id === p.externalKey))
           throw Error(
@@ -110,8 +92,7 @@ export async function saveDeal(
         aliases.set(p.id, p.id);
       }
     }
-    for (const p of d.parties)
-      if (!aliases.has(p.id)) aliases.set(p.id, randomUUID());
+    for (const p of d.parties) if (!aliases.has(p.id)) aliases.set(p.id, randomUUID());
     const profile = scrubPayload({
       ...d.profile,
       paid_agents: Array.isArray(d.profile.paid_agents)
@@ -139,9 +120,7 @@ export async function saveDeal(
           ? null
           : d.profile.expected_loan_number_date,
       targetSubmissionDate:
-        d.profile.target_submission_date === "unknown"
-          ? null
-          : d.profile.target_submission_date,
+        d.profile.target_submission_date === "unknown" ? null : d.profile.target_submission_date,
     };
     if (id)
       await tx
@@ -178,10 +157,7 @@ export async function saveDeal(
     await tx
       .delete(schema.ownershipLinks)
       .where(
-        and(
-          eq(schema.ownershipLinks.dealId, dealId),
-          eq(schema.ownershipLinks.origin, "declared"),
-        ),
+        and(eq(schema.ownershipLinks.dealId, dealId), eq(schema.ownershipLinks.origin, "declared")),
       );
     for (const o of d.ownership)
       await tx.insert(schema.ownershipLinks).values({
@@ -207,10 +183,7 @@ export async function saveDeal(
   await requestEvaluation(saved);
   return saved;
 }
-export async function dealDraft(
-  context: SessionContext,
-  id: string,
-): Promise<DealDraft> {
+export async function dealDraft(context: SessionContext, id: string): Promise<DealDraft> {
   const { deal, parties, ownership } = await readDeal(context, id);
   return {
     code: deal.code,

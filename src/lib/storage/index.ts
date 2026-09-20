@@ -12,7 +12,8 @@ export interface ObjectStorage {
 
 function safeJoin(root: string, objectPath: string): string {
   const full = path.resolve(root, objectPath);
-  if (!full.startsWith(path.resolve(root) + path.sep)) throw new Error(`invalid object path ${objectPath}`);
+  if (!full.startsWith(path.resolve(root) + path.sep))
+    throw new Error(`invalid object path ${objectPath}`);
   return full;
 }
 
@@ -40,7 +41,11 @@ export function createLocalStorage(root: string): ObjectStorage {
   };
 }
 
-export function createSupabaseStorage(url: string, serviceKey: string, bucket: string): ObjectStorage {
+export function createSupabaseStorage(
+  url: string,
+  serviceKey: string,
+  bucket: string,
+): ObjectStorage {
   async function client() {
     const { createClient } = await import("@supabase/supabase-js");
     return createClient(url, serviceKey, { auth: { persistSession: false } });
@@ -51,16 +56,21 @@ export function createSupabaseStorage(url: string, serviceKey: string, bucket: s
       const sb = await client();
       let lastErr: unknown = null;
       for (let attempt = 0; attempt < 3; attempt++) {
-        const { error } = await sb.storage.from(bucket).upload(objectPath, bytes, { contentType, upsert: true });
+        const { error } = await sb.storage
+          .from(bucket)
+          .upload(objectPath, bytes, { contentType, upsert: true });
         if (!error) return;
         lastErr = error;
       }
-      throw new Error(`storage upload failed after 3 attempts: ${String((lastErr as Error)?.message ?? lastErr)}`);
+      throw new Error(
+        `storage upload failed after 3 attempts: ${String((lastErr as Error)?.message ?? lastErr)}`,
+      );
     },
     async get(objectPath) {
       const sb = await client();
       const { data, error } = await sb.storage.from(bucket).download(objectPath);
-      if (error || !data) throw new Error(`storage download failed: ${error?.message ?? "no data"}`);
+      if (error || !data)
+        throw new Error(`storage download failed: ${error?.message ?? "no data"}`);
       return Buffer.from(await data.arrayBuffer());
     },
     async exists(objectPath) {
@@ -78,7 +88,13 @@ export function createBlobStorage(token: string): ObjectStorage {
     driver: "blob",
     async put(objectPath, bytes, contentType) {
       const { put } = await import("@vercel/blob");
-      await put(objectPath, bytes, { access: "private", token, contentType, addRandomSuffix: false, allowOverwrite: true });
+      await put(objectPath, bytes, {
+        access: "private",
+        token,
+        contentType,
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
     },
     async get(objectPath) {
       const { get } = await import("@vercel/blob");
@@ -88,8 +104,13 @@ export function createBlobStorage(token: string): ObjectStorage {
     },
     async exists(objectPath) {
       const { head, BlobNotFoundError } = await import("@vercel/blob");
-      try { await head(objectPath, { token }); return true; }
-      catch (error) { if (error instanceof BlobNotFoundError) return false; throw error; }
+      try {
+        await head(objectPath, { token });
+        return true;
+      } catch (error) {
+        if (error instanceof BlobNotFoundError) return false;
+        throw error;
+      }
     },
   };
 }
@@ -102,10 +123,20 @@ export function getStorage(): ObjectStorage {
   if (e.STORAGE_DRIVER === "blob") {
     cached = createBlobStorage(e.BLOB_READ_WRITE_TOKEN!);
   } else if (e.STORAGE_DRIVER === "supabase") {
-    if (!e.NEXT_PUBLIC_SUPABASE_URL || !e.SUPABASE_SERVICE_ROLE_KEY) throw new Error("supabase storage requires NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY");
-    cached = createSupabaseStorage(e.NEXT_PUBLIC_SUPABASE_URL, e.SUPABASE_SERVICE_ROLE_KEY, e.SUPABASE_STORAGE_BUCKET);
+    if (!e.NEXT_PUBLIC_SUPABASE_URL || !e.SUPABASE_SERVICE_ROLE_KEY)
+      throw new Error(
+        "supabase storage requires NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY",
+      );
+    cached = createSupabaseStorage(
+      e.NEXT_PUBLIC_SUPABASE_URL,
+      e.SUPABASE_SERVICE_ROLE_KEY,
+      e.SUPABASE_STORAGE_BUCKET,
+    );
   } else {
-    const root = e.NODE_ENV === "test" || e.ACQFILE_DB === "test" ? `${e.LOCAL_STORAGE_DIR}-test` : e.LOCAL_STORAGE_DIR;
+    const root =
+      e.NODE_ENV === "test" || e.ACQFILE_DB === "test"
+        ? `${e.LOCAL_STORAGE_DIR}-test`
+        : e.LOCAL_STORAGE_DIR;
     cached = createLocalStorage(path.resolve(/* turbopackIgnore: true */ process.cwd(), root));
   }
   return cached;

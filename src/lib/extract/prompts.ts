@@ -47,8 +47,18 @@ Rules:
    0.4 broad or weak; 0.0 none.
 6. Return only JSON: status, corrected_value, contradiction_detected,
    evidence_specificity, reason (one sentence).`;
-export type PromptBlock = { source_block_id: string; page: number; text: string; image_only?: boolean };
-export function extractorUserPrompt(docType: string, fields: FactDefinition[], blocks: PromptBlock[], imagePages: number[]) {
+export type PromptBlock = {
+  source_block_id: string;
+  page: number;
+  text: string;
+  image_only?: boolean;
+};
+export function extractorUserPrompt(
+  docType: string,
+  fields: FactDefinition[],
+  blocks: PromptBlock[],
+  imagePages: number[],
+) {
   return `Document type: ${docType}
 
 Field definitions (extract only these; the value is a JSON-encoded string of the shape shown, or null):
@@ -59,7 +69,14 @@ ${JSON.stringify(blocks, null, 2)}
 
 Return {"fields": [{"attribute", "value", "source_block_ids", "evidence_quote", "region", "ambiguity"}]} with one entry per field definition.`;
 }
-export type VerifyPromptItem = { index: number; attribute: string; candidate: string; evidence_quote: string | null; cited_blocks: PromptBlock[]; context: PromptBlock[] };
+export type VerifyPromptItem = {
+  index: number;
+  attribute: string;
+  candidate: string;
+  evidence_quote: string | null;
+  cited_blocks: PromptBlock[];
+  context: PromptBlock[];
+};
 export function verifierUserPrompt(items: VerifyPromptItem[]) {
   return `Check each candidate below. corrected_value is a JSON-encoded string in the candidate's shape, or null.
 

@@ -25,7 +25,10 @@ export function canonical(input: unknown): string {
 }
 
 /** Locate a normalized quote inside normalized block text. Returns [start, end] or null. */
-export function findQuote(blockNormalized: string, quote: string): { start: number; end: number } | null {
+export function findQuote(
+  blockNormalized: string,
+  quote: string,
+): { start: number; end: number } | null {
   const q = normalizeText(quote);
   if (!q) return null;
   const idx = blockNormalized.indexOf(q);
@@ -51,7 +54,12 @@ export function contentTokens(input: string): string[] {
   return tokenize(input).filter((t) => !STOPWORDS.has(t));
 }
 
-export function excerpt(text: string, start: number, end: number, context = 250): { before: string; match: string; after: string } {
+export function excerpt(
+  text: string,
+  start: number,
+  end: number,
+  context = 250,
+): { before: string; match: string; after: string } {
   const s = Math.max(0, start - context);
   const e = Math.min(text.length, end + context);
   return { before: text.slice(s, start), match: text.slice(start, end), after: text.slice(end, e) };

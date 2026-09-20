@@ -2,7 +2,18 @@ export { AppNav } from "./AppNav";
 export { PageHeader, SectionHeader, SectionTitle } from "./PageHeader";
 export { StatusBadge, Badge, toneFor, labelFor } from "./StatusBadge";
 export { Metric, MetricGroup, MetricStrip, StatCard } from "./StatCard";
-export { Table, THead, Th, Tr, Td, Mono, CellStack, TableEmpty, rowLink, inlineLink } from "./DataTable";
+export {
+  Table,
+  THead,
+  Th,
+  Tr,
+  Td,
+  Mono,
+  CellStack,
+  TableEmpty,
+  rowLink,
+  inlineLink,
+} from "./DataTable";
 export { EmptyState, EmptyLine } from "./EmptyState";
 export { FormButton } from "./FormButton";
 export { Panel, PanelHeader, PanelBody, PanelFooter, Notice } from "./ui/panel";

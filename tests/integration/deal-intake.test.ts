@@ -7,9 +7,7 @@ import { intake } from "@/lib/deals/intake";
 import { seeded } from "./helpers";
 import type { SessionContext } from "@/lib/workspace";
 let ctx: SessionContext, id: string;
-const draft = JSON.parse(
-  fs.readFileSync("fixtures/deals/deal-a/truth/deal.json", "utf8"),
-);
+const draft = JSON.parse(fs.readFileSync("fixtures/deals/deal-a/truth/deal.json", "utf8"));
 beforeAll(async () => {
   process.env.PII_HMAC_KEY = "SYNTHETIC-INTAKE-TEST-HMAC-KEY-ONLY-2026";
   const seed = await seeded();
@@ -37,18 +35,10 @@ it("creates all profile fields, resolves pack, audits changes and rejects stale 
   expect(first.deal.rulePackVersion).toBe("sop-50-10-8");
   expect(first.parties).toHaveLength(draft.parties.length);
   const edit = await dealDraft(ctx, id);
-  await saveDeal(
-    ctx,
-    { ...edit, name: "Varnholt Climate Services - intake" },
-    id,
-    1,
-  );
+  await saveDeal(ctx, { ...edit, name: "Varnholt Climate Services - intake" }, id, 1);
   await expect(saveDeal(ctx, edit, id, 1)).rejects.toThrow("Stale edit");
   expect(
-    await getDb()
-      .select()
-      .from(schema.events)
-      .where(eq(schema.events.dealId, id)),
+    await getDb().select().from(schema.events).where(eq(schema.events.dealId, id)),
   ).toHaveLength(2);
 });
 it("imports a ZIP batch, parses once, flags unreadable and links exact duplicates", async () => {
@@ -65,9 +55,7 @@ it("imports a ZIP batch, parses once, flags unreadable and links exact duplicate
     .select()
     .from(schema.intakeReviews)
     .where(eq(schema.intakeReviews.dealId, id));
-  expect(
-    reviews.some((r) => r.type === "unreadable" && r.priority === "high"),
-  ).toBe(true);
+  expect(reviews.some((r) => r.type === "unreadable" && r.priority === "high")).toBe(true);
   const steps = await getDb()
     .select()
     .from(schema.runSteps)
@@ -82,9 +70,7 @@ it("imports a ZIP batch, parses once, flags unreadable and links exact duplicate
   const dup = await intake(ctx, id, [
     {
       path: "again/lease.PDF",
-      bytes: fs.readFileSync(
-        "fixtures/deals/deal-a/incoming/batch-1/Phone/scan0007.pdf",
-      ),
+      bytes: fs.readFileSync("fixtures/deals/deal-a/incoming/batch-1/Phone/scan0007.pdf"),
     },
   ]);
   expect(dup.batch.number).toBe(2);
@@ -101,9 +87,7 @@ it("imports a ZIP batch, parses once, flags unreadable and links exact duplicate
   ).toEqual(["hash_dedupe", "upload"]);
   const rows =
     await getSql()`select row_to_json(t)::text as payload from run_steps t union all select row_to_json(t)::text from run_events t`;
-  expect(
-    rows.some((r) => /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/.test(r.payload)),
-  ).toBe(false);
+  expect(rows.some((r) => /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/.test(r.payload))).toBe(false);
 });
 it("limits duplicate identity to the deal, and denies viewers and other workspaces", async () => {
   const second = await saveDeal(ctx, {
@@ -114,9 +98,7 @@ it("limits duplicate identity to the deal, and denies viewers and other workspac
   const up = await intake(ctx, second, [
     {
       path: "same.pdf",
-      bytes: fs.readFileSync(
-        "fixtures/deals/deal-a/incoming/batch-1/Phone/scan0007.pdf",
-      ),
+      bytes: fs.readFileSync("fixtures/deals/deal-a/incoming/batch-1/Phone/scan0007.pdf"),
     },
   ]);
   expect(up.rows[0]!.duplicate).toBe(false);
@@ -154,8 +136,6 @@ it("upload, dedupe and parse execute inside retriable steps, with identifier-saf
       .from(schema.runSteps)
       .where(eq(schema.runSteps.processingRunId, up.runId));
     expect(steps.find((s) => s.stepName === step)?.attemptCount).toBe(2);
-    expect(JSON.stringify(steps)).not.toMatch(
-      /900-12-3456|00-1234567|987654321012|AB1234567/,
-    );
+    expect(JSON.stringify(steps)).not.toMatch(/900-12-3456|00-1234567|987654321012|AB1234567/);
   }
 });

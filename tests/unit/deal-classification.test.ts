@@ -1,10 +1,6 @@
 import fs from "node:fs";
 import { it, expect } from "vitest";
-import {
-  deterministicSegments,
-  assignParty,
-  validateBoundaries,
-} from "@/lib/deals/classification";
+import { deterministicSegments, assignParty, validateBoundaries } from "@/lib/deals/classification";
 import { classifyFile } from "@/lib/deals/classifier";
 import { parseArrival } from "@/lib/deals/parse";
 import { CLASSIFIER_PROMPT } from "@/lib/deals/classifier-prompt";
@@ -33,25 +29,20 @@ it("signatures and mock fallbacks match all document metadata", async () => {
       const bytes = fs.readFileSync(`fixtures/deals/${p.id}/${doc.file}`),
         parsed = await parseArrival(bytes, key);
       const signature = deterministicSegments(parsed);
-      const result =
-        signature ??
-        (await classifyFile(doc.hash!, parsed, bytes, "mock")).segments;
+      const result = signature ?? (await classifyFile(doc.hash!, parsed, bytes, "mock")).segments;
       validateBoundaries(result, parsed.pages);
       if (signature) deterministic += result.length;
       else classifier += result.length;
       for (const [i, s] of result.entries()) {
         if (signature) {
           expect(
-            parsed.blocks.some(
-              (b) => b.page === s.quote_page && b.text.includes(s.quote),
-            ),
+            parsed.blocks.some((b) => b.page === s.quote_page && b.text.includes(s.quote)),
             `${doc.file}: quote page`,
           ).toBe(true);
           for (const evidence of s.evidence)
             expect(
               parsed.blocks.some(
-                (b) =>
-                  b.page === evidence.page && b.text.includes(evidence.quote),
+                (b) => b.page === evidence.page && b.text.includes(evidence.quote),
               ),
               `${doc.file}: ${evidence.field} locator`,
             ).toBe(true);
@@ -70,9 +61,7 @@ it("signatures and mock fallbacks match all document metadata", async () => {
           "dated",
         ] as const)
           if (s[field] !== expected[field])
-            errors.push(
-              `${p.id}/${doc.file}/${i}/${field}: ${s[field]} != ${expected[field]}`,
-            );
+            errors.push(`${p.id}/${doc.file}/${i}/${field}: ${s[field]} != ${expected[field]}`);
         const party = assignParty(
           s,
           parsed,
@@ -83,14 +72,10 @@ it("signatures and mock fallbacks match all document metadata", async () => {
             identifierHmac: p.identifier?.hmac ?? null,
           })),
         );
-        if (
-          party.party_id !==
-          (expected.party_id === "outside-party" ? null : expected.party_id)
-        )
+        if (party.party_id !== (expected.party_id === "outside-party" ? null : expected.party_id))
           errors.push(`${p.id}/${doc.file}: wrong party ${party.party_id}`);
       }
-      if (result.length !== doc.segments.length)
-        errors.push(`${doc.file}: wrong count`);
+      if (result.length !== doc.segments.length) errors.push(`${doc.file}: wrong count`);
     }
     report.push({ deal: p.id, deterministic, classifier });
   }

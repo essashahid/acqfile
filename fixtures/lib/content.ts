@@ -1,8 +1,65 @@
-import type {Doc,Plan} from '../plans/shared';
-import type {DocumentType} from '../../src/lib/domain/registry';
-import {quote,metadataQuote} from './truth';
-export const CUES:Partial<Record<DocumentType,string>>={SBA_1919:'SBA Form 1919 (02/2025) - Borrower Information Form | OMB 3245-0348',SBA_413:'SBA Form 413 - Personal Financial Statement | OMB 3245-0188',TAX_PERSONAL:'Form 1040 - U.S. Individual Income Tax Return | OMB 1545-0074',TAX_BUSINESS:'Form 1120-S - U.S. Income Tax Return for an S Corporation | OMB 1545-0123',TAX_EXTENSION:'Form 4868 - Application for Extension of Time | OMB 1545-0074',IRS_4506C:'Form 4506-C - IVES Request for Transcript of Tax Return | OMB 1545-1872',FIN_YEAR_END:'Year-end Income Statement and Balance Sheet',FIN_INTERIM:'Interim Income Statement and Balance Sheet',BANK_STATEMENT:'Monthly Account Statement',GOV_ID:'SYNTHETIC Government Photo Identification - Specimen',LOI:'Letter of Intent - Business Acquisition',SOURCES_USES:'Sources and Uses of Funds',LEASE:'Commercial Premises Lease',CREDIT_AUTH:'Authorization to Obtain Credit Report',FORMATION_DOC:'Articles of Organization - Limited Liability Company',GIFT_LETTER:'Gift Letter - No Repayment Obligation',ADDBACK_SCHEDULE:'Schedule of Add-backs'};
-export const cue=(d:Doc)=>CUES[d.type]??d.type.toLowerCase().replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
-export function content(p:Plan,d:Doc){const party=p.parties.find(x=>x.id===d.party)?.legal_name??'Unmatched named party';return ['SYNTHETIC',cue(d),'Simplified training facsimile - never submit to an agency or lender',`Name: ${party}`,`Period: ${d.period??d.metadata.document_date??'Not stated'}`,`Record: ${d.id}`,`Document date: ${d.metadata.document_date??"Not stated"}`,...(d.metadata.account_last_four?[`Account ending: ${d.metadata.account_last_four}`]:[]),`Address: 14 Velnoric Way, Tazmervale, ZZ 00000`,'Contact: fixture@example.com | (202) 555-0142',...Object.entries(d.facts).map(([a,v])=>quote(a,v)),...d.notes,metadataQuote(d),...(d.metadata.signed?[`Electronic signature envelope: SYNTHETIC-${p.id}-${d.id}`,`Signer: ${party}`]:[]),'Prepared from synthetic documents. For lender review only.'];}
+import type { Doc, Plan } from "../plans/shared";
+import type { DocumentType } from "../../src/lib/domain/registry";
+import { quote, metadataQuote } from "./truth";
+export const CUES: Partial<Record<DocumentType, string>> = {
+  SBA_1919: "SBA Form 1919 (02/2025) - Borrower Information Form | OMB 3245-0348",
+  SBA_413: "SBA Form 413 - Personal Financial Statement | OMB 3245-0188",
+  TAX_PERSONAL: "Form 1040 - U.S. Individual Income Tax Return | OMB 1545-0074",
+  TAX_BUSINESS: "Form 1120-S - U.S. Income Tax Return for an S Corporation | OMB 1545-0123",
+  TAX_EXTENSION: "Form 4868 - Application for Extension of Time | OMB 1545-0074",
+  IRS_4506C: "Form 4506-C - IVES Request for Transcript of Tax Return | OMB 1545-1872",
+  FIN_YEAR_END: "Year-end Income Statement and Balance Sheet",
+  FIN_INTERIM: "Interim Income Statement and Balance Sheet",
+  BANK_STATEMENT: "Monthly Account Statement",
+  GOV_ID: "SYNTHETIC Government Photo Identification - Specimen",
+  LOI: "Letter of Intent - Business Acquisition",
+  SOURCES_USES: "Sources and Uses of Funds",
+  LEASE: "Commercial Premises Lease",
+  CREDIT_AUTH: "Authorization to Obtain Credit Report",
+  FORMATION_DOC: "Articles of Organization - Limited Liability Company",
+  GIFT_LETTER: "Gift Letter - No Repayment Obligation",
+  ADDBACK_SCHEDULE: "Schedule of Add-backs",
+};
+export const cue = (d: Doc) =>
+  CUES[d.type] ??
+  d.type
+    .toLowerCase()
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+export function content(p: Plan, d: Doc) {
+  const party = p.parties.find((x) => x.id === d.party)?.legal_name ?? "Unmatched named party";
+  return [
+    "SYNTHETIC",
+    cue(d),
+    "Simplified training facsimile - never submit to an agency or lender",
+    `Name: ${party}`,
+    `Period: ${d.period ?? d.metadata.document_date ?? "Not stated"}`,
+    `Record: ${d.id}`,
+    `Document date: ${d.metadata.document_date ?? "Not stated"}`,
+    ...(d.metadata.account_last_four ? [`Account ending: ${d.metadata.account_last_four}`] : []),
+    `Address: 14 Velnoric Way, Tazmervale, ZZ 00000`,
+    "Contact: fixture@example.com | (202) 555-0142",
+    ...Object.entries(d.facts).map(([a, v]) => quote(a, v)),
+    ...d.notes,
+    metadataQuote(d),
+    ...(d.metadata.signed
+      ? [`Electronic signature envelope: SYNTHETIC-${p.id}-${d.id}`, `Signer: ${party}`]
+      : []),
+    "Prepared from synthetic documents. For lender review only.",
+  ];
+}
 
-export function sheetContent(p:Plan,d:Doc,name:string){const balance=name==='Balance Sheet';const facts=Object.fromEntries(Object.entries(d.facts).filter(([a])=>a.startsWith('financial.total_')===balance));const lines=content(p,{...d,facts});if(balance)lines.splice(-1,0,`Equity: ${Number(d.facts['financial.total_assets'])-Number(d.facts['financial.total_liabilities'])}`);return lines;}
+export function sheetContent(p: Plan, d: Doc, name: string) {
+  const balance = name === "Balance Sheet";
+  const facts = Object.fromEntries(
+    Object.entries(d.facts).filter(([a]) => a.startsWith("financial.total_") === balance),
+  );
+  const lines = content(p, { ...d, facts });
+  if (balance)
+    lines.splice(
+      -1,
+      0,
+      `Equity: ${Number(d.facts["financial.total_assets"]) - Number(d.facts["financial.total_liabilities"])}`,
+    );
+  return lines;
+}

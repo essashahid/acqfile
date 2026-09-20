@@ -64,15 +64,12 @@ export function officialForm(type: string) {
 export function officialFieldName(type: string, attribute: string) {
   const spec = officialForm(type);
   if (!spec) return null;
-  if (attribute === "ownership.members")
-    return "owners" in spec ? spec.owners.name + "1" : null;
+  if (attribute === "ownership.members") return "owners" in spec ? spec.owners.name + "1" : null;
   return (spec.fields as Record<string, string>)[attribute] ?? null;
 }
 export function officialFieldPage(type: string, field: string) {
   const spec = officialForm(type);
-  const page = spec
-    ? (spec.fieldPages as Record<string, number>)[field]
-    : undefined;
+  const page = spec ? (spec.fieldPages as Record<string, number>)[field] : undefined;
   if (!page) throw Error(`Unknown official field page ${type}/${field}`);
   return page;
 }

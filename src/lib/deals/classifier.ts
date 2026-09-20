@@ -7,11 +7,7 @@ import { env } from "@/lib/env";
 import { DOCUMENT_TYPES } from "@/lib/domain/registry";
 import { estimateCostUsd } from "@/lib/config";
 import { CLASSIFIER_PROMPT } from "./classifier-prompt";
-import {
-  ClassificationSchema,
-  validateBoundaries,
-  type Candidate,
-} from "./classification";
+import { ClassificationSchema, validateBoundaries, type Candidate } from "./classification";
 import { scrubPayload } from "./identifiers";
 import type { Parsed } from "./parse";
 export type ClassificationCall = {
@@ -44,9 +40,7 @@ export async function classifyFile(
     // Truth is accessible only inside this explicit mock-provider branch.
     for (const deal of ["deal-a", "deal-b", "deal-c"]) {
       const root = path.join(process.cwd(), "fixtures/deals", deal, "truth");
-      const docs = JSON.parse(
-        fs.readFileSync(path.join(root, "documents.json"), "utf8"),
-      ) as {
+      const docs = JSON.parse(fs.readFileSync(path.join(root, "documents.json"), "utf8")) as {
         hash: string;
         segments: {
           page_start: number;
@@ -66,14 +60,12 @@ export async function classifyFile(
       }[];
       const match = docs.find((d) => d.hash === hash && d.segments.length);
       if (!match) continue;
-      const profile = JSON.parse(
-        fs.readFileSync(path.join(root, "deal.json"), "utf8"),
-      );
+      const profile = JSON.parse(fs.readFileSync(path.join(root, "deal.json"), "utf8"));
       const segments = match.segments.map((s) => ({
         ...s,
         party_name:
-          profile.parties.find((p: { id: string }) => p.id === s.party_id)
-            ?.legal_name ?? "Unmatched named party",
+          profile.parties.find((p: { id: string }) => p.id === s.party_id)?.legal_name ??
+          "Unmatched named party",
         period_raw: s.period,
         alternatives: [],
         quote: s.metadata_locator.quote,
@@ -129,8 +121,7 @@ export async function classifyFile(
     };
   }
   const e = env();
-  if (!e.OPENAI_API_KEY)
-    throw Error("Live classifier requires an owner-supplied provider key");
+  if (!e.OPENAI_API_KEY) throw Error("Live classifier requires an owner-supplied provider key");
   const model = e.OPENAI_EXTRACT_MODEL;
   estimateCostUsd(model, 0, 0);
   const client = new OpenAI({
@@ -172,8 +163,7 @@ export async function classifyFile(
     store: false,
   });
   const segments = validateBoundaries(
-    ClassificationSchema.parse(scrubPayload(JSON.parse(response.output_text)))
-      .segments,
+    ClassificationSchema.parse(scrubPayload(JSON.parse(response.output_text))).segments,
     parsed.pages,
   );
   const inputTokens = response.usage?.input_tokens ?? 0,

@@ -3,7 +3,9 @@ import { canonical, contentTokens, excerpt, findQuote, normalizeText } from "@/l
 
 describe("normalizeText", () => {
   it("collapses whitespace and normalizes typographic punctuation without rewriting words", () => {
-    expect(normalizeText("The  “revised”\n program\tcost is $1.25\r\nmillion – now.")).toBe('The "revised" program cost is $1.25 million - now.');
+    expect(normalizeText("The  “revised”\n program\tcost is $1.25\r\nmillion – now.")).toBe(
+      'The "revised" program cost is $1.25 million - now.',
+    );
   });
   it("is idempotent", () => {
     const once = normalizeText("a   b\n\nc");
@@ -12,7 +14,9 @@ describe("normalizeText", () => {
 });
 
 describe("findQuote", () => {
-  const block = normalizeText("Summary. The revised program cost is $1.25 million. Appendix follows.");
+  const block = normalizeText(
+    "Summary. The revised program cost is $1.25 million. Appendix follows.",
+  );
   it("finds an exact normalized quote and returns offsets", () => {
     const hit = findQuote(block, "The revised program cost is $1.25 million.");
     expect(hit).toEqual({ start: 9, end: 51 });
@@ -30,7 +34,11 @@ describe("findQuote", () => {
 describe("canonical and tokens", () => {
   it("compares values case and punctuation insensitively", () => {
     expect(canonical("Zelmivar Equipment, LLC")).toBe("zelmivar equipment llc");
-    expect(contentTokens("What is the revised program cost?")).toEqual(["revised", "program", "cost"]);
+    expect(contentTokens("What is the revised program cost?")).toEqual([
+      "revised",
+      "program",
+      "cost",
+    ]);
   });
   it("excerpt returns bounded context", () => {
     const e = excerpt("0123456789".repeat(100), 500, 510, 20);

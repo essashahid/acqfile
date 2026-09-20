@@ -6,11 +6,7 @@ import { TAXONOMY } from "@/lib/domain/registry";
 import { assertMutation } from "@/lib/access";
 import type { SessionContext } from "@/lib/workspace";
 import { requireDeal } from "./service";
-import {
-  CandidateSchema,
-  validateBoundaries,
-  type Classified,
-} from "./classification";
+import { CandidateSchema, validateBoundaries, type Classified } from "./classification";
 import { scrubPayload } from "./identifiers";
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 export type Filed = Classified & { id: string };
@@ -45,22 +41,13 @@ async function supersede(
       ),
     );
   for (const old of current.filter(
-    (s) =>
-      s.id !== newId &&
-      s.period === c.period &&
-      s.accountLastFour === c.account_last_four,
+    (s) => s.id !== newId && s.period === c.period && s.accountLastFour === c.account_last_four,
   )) {
     // A32 with A36: a dated submission is strictly later than a current one that carries no date at all.
     const later = !!(
-      (c.document_date &&
-        old.documentDate &&
-        c.document_date > old.documentDate) ||
-      (c.signature_date &&
-        old.signatureDate &&
-        c.signature_date > old.signatureDate) ||
-      ((c.document_date || c.signature_date) &&
-        !old.documentDate &&
-        !old.signatureDate)
+      (c.document_date && old.documentDate && c.document_date > old.documentDate) ||
+      (c.signature_date && old.signatureDate && c.signature_date > old.signatureDate) ||
+      ((c.document_date || c.signature_date) && !old.documentDate && !old.signatureDate)
     );
     if (later || force) {
       await tx
@@ -83,14 +70,10 @@ async function supersede(
         .values({
           dealId,
           documentVersionId: (
-            await tx
-              .select()
-              .from(schema.segments)
-              .where(eq(schema.segments.id, newId))
+            await tx.select().from(schema.segments).where(eq(schema.segments.id, newId))
           )[0]!.documentVersionId,
           type: "version_conflict",
-          reason:
-            "Another current segment has the same identity without a strictly earlier date.",
+          reason: "Another current segment has the same identity without a strictly earlier date.",
         })
         .onConflictDoNothing();
       await tx
@@ -150,9 +133,7 @@ export async function finalizeSegments(
   candidates: Classified[],
 ) {
   return getDb().transaction(async (tx) => {
-    await tx.execute(
-      sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`,
-    );
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
     const [existing] = await tx
       .select()
       .from(schema.recordVersions)
@@ -163,13 +144,7 @@ export async function finalizeSegments(
         ),
       );
     if (existing) return existing.payloadJson as FilingRecord;
-    const segments = await writeSegments(
-      tx,
-      context,
-      dealId,
-      versionId,
-      candidates,
-    );
+    const segments = await writeSegments(tx, context, dealId, versionId, candidates);
     const payload: FilingRecord = { segments };
     const [record] = await tx
       .insert(schema.recordVersions)
@@ -189,8 +164,7 @@ export async function finalizeSegments(
     )
       reviews.add("version_conflict");
     if (segments.some((s) => s.uncertain)) reviews.add("classification");
-    if (segments.some((s) => s.assignment !== "matched"))
-      reviews.add("party_assignment");
+    if (segments.some((s) => s.assignment !== "matched")) reviews.add("party_assignment");
     for (const type of reviews)
       await tx
         .insert(schema.intakeReviews)
@@ -239,17 +213,12 @@ export async function reviewFile(
   await requireDeal(context, dealId);
   const input = ReviewSchema.parse(scrubPayload(raw));
   return getDb().transaction(async (tx) => {
-    await tx.execute(
-      sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`,
-    );
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
     const [version] = await tx
       .select()
       .from(schema.documentVersions)
       .where(
-        and(
-          eq(schema.documentVersions.id, versionId),
-          eq(schema.documentVersions.dealId, dealId),
-        ),
+        and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
       );
     if (!version) throw Error("File not found");
     const [current] = await tx
@@ -264,21 +233,15 @@ export async function reviewFile(
     if ((current?.id ?? null) !== input.record_id)
       throw Error("Stale edit. Reload the file before saving.");
     const partyIds = (
-      await tx
-        .select()
-        .from(schema.parties)
-        .where(eq(schema.parties.dealId, dealId))
+      await tx.select().from(schema.parties).where(eq(schema.parties.dealId, dealId))
     ).map((p) => p.id);
-    if (
-      input.segments.some((s) => s.party_id && !partyIds.includes(s.party_id))
-    )
+    if (input.segments.some((s) => s.party_id && !partyIds.includes(s.party_id)))
       throw Error("Party belongs to another deal");
     const unreadable = version.parseStatus === "failed";
     if (unreadable && !input.manual_filing)
       throw Error("Unreadable files can only be manually indexed");
     if (!unreadable) validateBoundaries(input.segments, version.pageCount ?? 1);
-    if (unreadable && input.segments.length !== 1)
-      throw Error("Choose one manual filing type");
+    if (unreadable && input.segments.length !== 1) throw Error("Choose one manual filing type");
     if (current)
       await tx
         .update(schema.recordVersions)
@@ -292,12 +255,7 @@ export async function reviewFile(
     await tx
       .update(schema.facts)
       .set({ isCurrent: false })
-      .where(
-        and(
-          eq(schema.facts.documentVersionId, versionId),
-          eq(schema.facts.isCurrent, true),
-        ),
-      );
+      .where(and(eq(schema.facts.documentVersionId, versionId), eq(schema.facts.isCurrent, true)));
     await tx
       .update(schema.intakeReviews)
       .set({ status: "resolved" })
@@ -358,57 +316,35 @@ export async function reviewFile(
     return record!.id;
   });
 }
-export async function undoSupersession(
-  context: SessionContext,
-  dealId: string,
-  eventId: string,
-) {
+export async function undoSupersession(context: SessionContext, dealId: string, eventId: string) {
   await assertMutation(context, "deal-review");
   await requireDeal(context, dealId);
   await getDb().transaction(async (tx) => {
-    await tx.execute(
-      sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`,
-    );
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
     const [event] = await tx
       .select()
       .from(schema.events)
-      .where(
-        and(eq(schema.events.id, eventId), eq(schema.events.dealId, dealId)),
-      );
-    if (
-      !event ||
-      !["segment_superseded", "version_selected"].includes(event.action)
-    )
+      .where(and(eq(schema.events.id, eventId), eq(schema.events.dealId, dealId)));
+    if (!event || !["segment_superseded", "version_selected"].includes(event.action))
       throw Error("Supersession event not found");
     const oldId = (event.maskedBefore as { segmentId: string }).segmentId,
       newId = (event.maskedAfter as { segmentId: string }).segmentId;
     const [current] = await tx
       .select()
       .from(schema.segments)
-      .where(
-        and(eq(schema.segments.id, newId), eq(schema.segments.isCurrent, true)),
-      );
+      .where(and(eq(schema.segments.id, newId), eq(schema.segments.isCurrent, true)));
     const [old] = await tx
       .select()
       .from(schema.segments)
-      .where(
-        and(
-          eq(schema.segments.id, oldId),
-          eq(schema.segments.isCurrent, false),
-        ),
-      );
-    if (!current || !old)
-      throw Error("Stale supersession. Reload before undoing.");
+      .where(and(eq(schema.segments.id, oldId), eq(schema.segments.isCurrent, false)));
+    if (!current || !old) throw Error("Stale supersession. Reload before undoing.");
     for (const segment of [current, old]) {
       const [record] = await tx
         .select()
         .from(schema.recordVersions)
         .where(
           and(
-            eq(
-              schema.recordVersions.documentVersionId,
-              segment.documentVersionId,
-            ),
+            eq(schema.recordVersions.documentVersionId, segment.documentVersionId),
             eq(schema.recordVersions.isCurrent, true),
           ),
         );
@@ -419,14 +355,8 @@ export async function undoSupersession(
       )
         throw Error("Stale supersession. A document has since been reviewed.");
     }
-    await tx
-      .update(schema.segments)
-      .set({ isCurrent: false })
-      .where(eq(schema.segments.id, newId));
-    await tx
-      .update(schema.segments)
-      .set({ isCurrent: true })
-      .where(eq(schema.segments.id, oldId));
+    await tx.update(schema.segments).set({ isCurrent: false }).where(eq(schema.segments.id, newId));
+    await tx.update(schema.segments).set({ isCurrent: true }).where(eq(schema.segments.id, oldId));
     await tx.insert(schema.events).values({
       dealId,
       actorId: context.user.id,

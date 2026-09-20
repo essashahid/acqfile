@@ -4,6 +4,7 @@
 Prepared 19 September 2026.
 
 > **Before you send this (delete this box)**
+>
 > - Every assumption I made sits in Section 1, PARAMETERS. Edit there and nowhere else.
 > - `BASE_REPO` assumes you want to build on EvidenceOps. Set it to `none` for a clean start; the rest of the prompt still holds.
 > - The checklist in Section 13 is a seed built from public sources and is marked unverified on purpose. The agent also builds a rule-pack review sheet. Hand that sheet to Asif: his corrections are the most valuable output of the first call.
@@ -25,18 +26,18 @@ Three standing rules:
 
 # 1. PARAMETERS
 
-| Key | Value |
-| --- | --- |
-| PRODUCT_CODENAME | `AcqFile` (keep in one config constant so it can be renamed) |
-| BASE_REPO | `https://github.com/essashahid/EvidenceOps` at current `main`. This is the owner's own prior work. Copy it as the starting codebase. No runtime dependency on it. If it is unreachable, build greenfield on the same stack and patterns and say so in `docs/DECISIONS.md`. |
-| REPO_VISIBILITY | private |
-| DATA_MODE | synthetic only |
-| FIXTURE_AS_OF_DATE | 2026-09-15 (inject a clock; no test may read the system date) |
-| RULE_PACKS | `sop-50-10-8` for an expected SBA loan number before 2026-10-01; `sop-50-10-8-1` on or after |
-| LLM | Keep the base repo's provider adapter and its explicit mock mode. All model identifiers via env. Extractor and verifier must be different models. Image-only pages use the provider's native PDF or image input. |
-| MAX_LIVE_EVAL_COST_USD | 10. Estimate before running; abort if the projection exceeds it. |
-| TIMEBOX | Seven phases (Section 23). Stop adding features when the Phase 7 gates pass. |
-| DEMO_AUDIENCE | Commercial finance brokers, SBA loan packagers, acquisition advisers, and one bank SBA lending contact |
+| Key                    | Value                                                                                                                                                                                                                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PRODUCT_CODENAME       | `AcqFile` (keep in one config constant so it can be renamed)                                                                                                                                                                                                               |
+| BASE_REPO              | `https://github.com/essashahid/EvidenceOps` at current `main`. This is the owner's own prior work. Copy it as the starting codebase. No runtime dependency on it. If it is unreachable, build greenfield on the same stack and patterns and say so in `docs/DECISIONS.md`. |
+| REPO_VISIBILITY        | private                                                                                                                                                                                                                                                                    |
+| DATA_MODE              | synthetic only                                                                                                                                                                                                                                                             |
+| FIXTURE_AS_OF_DATE     | 2026-09-15 (inject a clock; no test may read the system date)                                                                                                                                                                                                              |
+| RULE_PACKS             | `sop-50-10-8` for an expected SBA loan number before 2026-10-01; `sop-50-10-8-1` on or after                                                                                                                                                                               |
+| LLM                    | Keep the base repo's provider adapter and its explicit mock mode. All model identifiers via env. Extractor and verifier must be different models. Image-only pages use the provider's native PDF or image input.                                                           |
+| MAX_LIVE_EVAL_COST_USD | 10. Estimate before running; abort if the projection exceeds it.                                                                                                                                                                                                           |
+| TIMEBOX                | Seven phases (Section 23). Stop adding features when the Phase 7 gates pass.                                                                                                                                                                                               |
+| DEMO_AUDIENCE          | Commercial finance brokers, SBA loan packagers, acquisition advisers, and one bank SBA lending contact                                                                                                                                                                     |
 
 # 2. MISSION
 
@@ -219,30 +220,30 @@ Fields: transaction category as stated by the broker or lender; structure (`asse
 
 **Rule-feeding facts.** Extract only what an active rule consumes, and derive that list from the rule pack. Starting set:
 
-| Type | Facts |
-| --- | --- |
-| SBA_1919 | applicant legal name, DBA, EIN, entity type, address, loan amount requested, owners (name, title, percent, SSN last four), form revision, signed, signature date |
-| SBA_413 | name, as-of date, cash, total assets, total liabilities, net worth, signed, signature date, spouse signature present |
-| TAX_PERSONAL | taxpayer names, tax year, SSN last four, page count |
-| TAX_BUSINESS | entity name, EIN, form type, tax year, gross receipts, net or ordinary business income, officer compensation, depreciation, interest expense |
-| FIN_YEAR_END, FIN_INTERIM | entity name, period start and end, revenue, net income, total assets, total liabilities |
-| AGING_AR, AGING_AP | as-of date, total |
-| DEBT_SCHEDULE | as-of date, debts (creditor, balance, payment), total |
-| LOI | buyer, seller, purchase price, structure, seller note amount and terms, expiry date, signed by both |
-| PURCHASE_AGREEMENT | parties, structure, purchase price, allocation table present, seller note amount and terms, closing or outside date, executed |
-| SOURCES_USES | each source and use with amount, both totals |
-| SELLER_NOTE | principal, rate, term, standby wording (full standby for the life of the SBA loan: yes, no or unclear, with the quote) |
-| BANK_STATEMENT | account holder, institution, account last four, period end, ending balance |
-| GIFT_LETTER | donor, recipient, amount, no-repayment statement present, signed |
-| LEASE | landlord, tenant, premises address, commencement, expiry, renewal options, assignment clause present |
-| OPERATING_AGREEMENT | entity, members (name, percent), signed |
-| EIN_LETTER | entity, EIN |
-| GOV_ID | name, expiry date |
-| CITIZENSHIP_EVIDENCE | name, evidence kind (passport, birth certificate, naturalization certificate) |
-| IRS_4506C | taxpayer, identifier last four, years requested, signature date |
-| SBA_159 | agent, services, amount, payer, agent and applicant signatures present |
-| CONSULTING_AGREEMENT | party, term in months |
-| VALUATION, QOE | subject company, report date, preparer and credential, concluded value (valuation only) |
+| Type                      | Facts                                                                                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SBA_1919                  | applicant legal name, DBA, EIN, entity type, address, loan amount requested, owners (name, title, percent, SSN last four), form revision, signed, signature date |
+| SBA_413                   | name, as-of date, cash, total assets, total liabilities, net worth, signed, signature date, spouse signature present                                             |
+| TAX_PERSONAL              | taxpayer names, tax year, SSN last four, page count                                                                                                              |
+| TAX_BUSINESS              | entity name, EIN, form type, tax year, gross receipts, net or ordinary business income, officer compensation, depreciation, interest expense                     |
+| FIN_YEAR_END, FIN_INTERIM | entity name, period start and end, revenue, net income, total assets, total liabilities                                                                          |
+| AGING_AR, AGING_AP        | as-of date, total                                                                                                                                                |
+| DEBT_SCHEDULE             | as-of date, debts (creditor, balance, payment), total                                                                                                            |
+| LOI                       | buyer, seller, purchase price, structure, seller note amount and terms, expiry date, signed by both                                                              |
+| PURCHASE_AGREEMENT        | parties, structure, purchase price, allocation table present, seller note amount and terms, closing or outside date, executed                                    |
+| SOURCES_USES              | each source and use with amount, both totals                                                                                                                     |
+| SELLER_NOTE               | principal, rate, term, standby wording (full standby for the life of the SBA loan: yes, no or unclear, with the quote)                                           |
+| BANK_STATEMENT            | account holder, institution, account last four, period end, ending balance                                                                                       |
+| GIFT_LETTER               | donor, recipient, amount, no-repayment statement present, signed                                                                                                 |
+| LEASE                     | landlord, tenant, premises address, commencement, expiry, renewal options, assignment clause present                                                             |
+| OPERATING_AGREEMENT       | entity, members (name, percent), signed                                                                                                                          |
+| EIN_LETTER                | entity, EIN                                                                                                                                                      |
+| GOV_ID                    | name, expiry date                                                                                                                                                |
+| CITIZENSHIP_EVIDENCE      | name, evidence kind (passport, birth certificate, naturalization certificate)                                                                                    |
+| IRS_4506C                 | taxpayer, identifier last four, years requested, signature date                                                                                                  |
+| SBA_159                   | agent, services, amount, payer, agent and applicant signatures present                                                                                           |
+| CONSULTING_AGREEMENT      | party, term in months                                                                                                                                            |
+| VALUATION, QOE            | subject company, report date, preparer and credential, concluded value (valuation only)                                                                          |
 
 **Normalization.** Entity suffixes and punctuation, EIN and SSN formats, money, dates including forms such as `4 Sept. 26`, percentages, light address normalization. Normalized equality drives conflict detection.
 
@@ -307,7 +308,11 @@ items:
     checks:
       - { type: freshness, fact: as_of_date, max_age_days: 90 }
       - { type: signed_and_dated }
-      - { type: arithmetic, expr: "total_assets - total_liabilities == net_worth", tolerance_abs: 1 }
+      - {
+          type: arithmetic,
+          expr: "total_assets - total_liabilities == net_worth",
+          tolerance_abs: 1,
+        }
     source_ref: "Lender convention; SBA Form 413 instructions"
     verified: false
 consistency:
@@ -336,61 +341,61 @@ Ship every row below in both packs unless the Packs column says otherwise. All `
 
 **Transaction**
 
-| ID | Item | Applies when | Checks | Responsible | Packs |
-| --- | --- | --- | --- | --- | --- |
-| TXN-01 | Signed letter of intent | always | signed by both; not expired | broker | both |
-| TXN-02 | Purchase agreement, draft or executed, with purchase price allocation | always | parties match deal parties; allocation present; page completeness | buyer attorney | both |
-| TXN-03 | Sources and uses | always | totals foot; presence | broker | both |
-| TXN-04 | Seller note or term sheet | seller note | principal, term, standby wording extracted | seller | both |
-| TXN-05 | Standby agreement (SBA Form 155 or lender equivalent) | seller note counted toward injection | tracking | lender | both |
-| TXN-06 | Seller consulting or transition agreement | seller staying on | term in months extracted | seller | both |
-| TXN-07 | SBA Form 159 per paid agent | any agent compensated | agent and applicant signatures | broker | both |
-| TXN-08 | Independent business valuation | 8.1: always. 8: `manual_confirmation` "confirm with lender whether required" | tracking, lender-ordered | lender | differs |
-| TXN-09 | Quality of earnings report | 8.1 and category is initial acquisition or business expansion and business purchase price at or above 3,000,000 | tracking, lender-ordered | lender | 8.1 only |
-| TXN-10 | Non-compete; CIM; escrow evidence | overlay only | presence | varies | overlay |
+| ID     | Item                                                                  | Applies when                                                                                                    | Checks                                                            | Responsible    | Packs    |
+| ------ | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------- | -------- |
+| TXN-01 | Signed letter of intent                                               | always                                                                                                          | signed by both; not expired                                       | broker         | both     |
+| TXN-02 | Purchase agreement, draft or executed, with purchase price allocation | always                                                                                                          | parties match deal parties; allocation present; page completeness | buyer attorney | both     |
+| TXN-03 | Sources and uses                                                      | always                                                                                                          | totals foot; presence                                             | broker         | both     |
+| TXN-04 | Seller note or term sheet                                             | seller note                                                                                                     | principal, term, standby wording extracted                        | seller         | both     |
+| TXN-05 | Standby agreement (SBA Form 155 or lender equivalent)                 | seller note counted toward injection                                                                            | tracking                                                          | lender         | both     |
+| TXN-06 | Seller consulting or transition agreement                             | seller staying on                                                                                               | term in months extracted                                          | seller         | both     |
+| TXN-07 | SBA Form 159 per paid agent                                           | any agent compensated                                                                                           | agent and applicant signatures                                    | broker         | both     |
+| TXN-08 | Independent business valuation                                        | 8.1: always. 8: `manual_confirmation` "confirm with lender whether required"                                    | tracking, lender-ordered                                          | lender         | differs  |
+| TXN-09 | Quality of earnings report                                            | 8.1 and category is initial acquisition or business expansion and business purchase price at or above 3,000,000 | tracking, lender-ordered                                          | lender         | 8.1 only |
+| TXN-10 | Non-compete; CIM; escrow evidence                                     | overlay only                                                                                                    | presence                                                          | varies         | overlay  |
 
 **Buyer entity**
 
-| ID | Item | Checks | Responsible |
-| --- | --- | --- | --- |
-| ENT-01 | SBA Form 1919 | form revision equals configured value (default 02/2025); signed and dated; ownership table sums to 100; every 20 percent or greater owner listed | buyer |
-| ENT-02 | Formation documents | presence | buyer |
-| ENT-03 | Operating agreement or bylaws | signed; members and percents extracted | buyer |
-| ENT-04 | EIN confirmation letter | EIN extracted | buyer |
-| ENT-05 | Certificate of good standing | presence; freshness via overlay | buyer |
-| ENT-06 | Post-closing ownership chart including indirect owners | presence | buyer |
-| ENT-07 | Business plan and projections with assumptions | presence | buyer |
+| ID     | Item                                                   | Checks                                                                                                                                           | Responsible |
+| ------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| ENT-01 | SBA Form 1919                                          | form revision equals configured value (default 02/2025); signed and dated; ownership table sums to 100; every 20 percent or greater owner listed | buyer       |
+| ENT-02 | Formation documents                                    | presence                                                                                                                                         | buyer       |
+| ENT-03 | Operating agreement or bylaws                          | signed; members and percents extracted                                                                                                           | buyer       |
+| ENT-04 | EIN confirmation letter                                | EIN extracted                                                                                                                                    | buyer       |
+| ENT-05 | Certificate of good standing                           | presence; freshness via overlay                                                                                                                  | buyer       |
+| ENT-06 | Post-closing ownership chart including indirect owners | presence                                                                                                                                         | buyer       |
+| ENT-07 | Business plan and projections with assumptions         | presence                                                                                                                                         | buyer       |
 
 **Each guarantor** (every owner of 20 percent or more, plus anyone else the deal profile marks as guarantor)
 
-| ID | Item | Applies when | Checks |
-| --- | --- | --- | --- |
-| GUA-01 | SBA Form 413 | always | as-of date within 90 days; signed and dated; totals foot |
-| GUA-02 | Personal federal tax returns, last three years | always | period coverage by year; page completeness |
-| GUA-03 | Resume or management profile | always | presence |
-| GUA-04 | Government photo ID | always | not expired |
-| GUA-05 | Citizenship evidence | every direct and indirect owner and guarantor | presence; `manual_confirmation` "rule reported under legal challenge; confirm handling with lender" |
-| GUA-06 | Credit authorization | always | signed |
-| GUA-07 | Equity injection source statements | guarantor contributes cash | two most recent monthly statements per source account; account holder matches party |
-| GUA-08 | Gift letter, donor statements, transfer evidence | gift funds | signed; amount extracted; no-repayment statement present |
-| GUA-09 | Affiliate package: three years of returns, interim financials, debt schedule | guarantor owns 20 percent or more of another business | period coverage; interim within 120 days |
+| ID     | Item                                                                         | Applies when                                          | Checks                                                                                              |
+| ------ | ---------------------------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| GUA-01 | SBA Form 413                                                                 | always                                                | as-of date within 90 days; signed and dated; totals foot                                            |
+| GUA-02 | Personal federal tax returns, last three years                               | always                                                | period coverage by year; page completeness                                                          |
+| GUA-03 | Resume or management profile                                                 | always                                                | presence                                                                                            |
+| GUA-04 | Government photo ID                                                          | always                                                | not expired                                                                                         |
+| GUA-05 | Citizenship evidence                                                         | every direct and indirect owner and guarantor         | presence; `manual_confirmation` "rule reported under legal challenge; confirm handling with lender" |
+| GUA-06 | Credit authorization                                                         | always                                                | signed                                                                                              |
+| GUA-07 | Equity injection source statements                                           | guarantor contributes cash                            | two most recent monthly statements per source account; account holder matches party                 |
+| GUA-08 | Gift letter, donor statements, transfer evidence                             | gift funds                                            | signed; amount extracted; no-repayment statement present                                            |
+| GUA-09 | Affiliate package: three years of returns, interim financials, debt schedule | guarantor owns 20 percent or more of another business | period coverage; interim within 120 days                                                            |
 
 **Target business**
 
-| ID | Item | Applies when | Checks |
-| --- | --- | --- | --- |
-| TGT-01 | Business federal tax returns, last three years | always | period coverage; entity name and EIN consistent |
-| TGT-02 | Year-end income statement and balance sheet, last three fiscal years | always | period coverage |
-| TGT-03 | Interim income statement and balance sheet | always | period end within 120 days of the as-of date |
-| TGT-04 | Receivables and payables agings | always | same as-of date as TGT-03 |
-| TGT-05 | Business debt schedule | always | dated; total extracted |
-| TGT-06 | IRS Form 4506-C signed by the seller for the target | always | signature date within 120 days |
-| TGT-07 | Lease, with assignment, landlord consent or new lease terms | leased premises | expiry and options extracted |
-| TGT-08 | Equipment list and inventory summary | always | presence |
-| TGT-09 | Licenses and permits needed to operate | always | presence; `manual_confirmation` "does the business operate on the seller's personal license?" |
-| TGT-10 | Franchise agreement and disclosure document | franchise | presence; `manual_confirmation` "brand checked against the current SBA Franchise Directory" |
-| TGT-11 | Add-back schedule with support | overlay | presence |
-| TGT-12 | Key contracts; employee roster; seller good standing | overlay | presence |
+| ID     | Item                                                                 | Applies when    | Checks                                                                                        |
+| ------ | -------------------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------- |
+| TGT-01 | Business federal tax returns, last three years                       | always          | period coverage; entity name and EIN consistent                                               |
+| TGT-02 | Year-end income statement and balance sheet, last three fiscal years | always          | period coverage                                                                               |
+| TGT-03 | Interim income statement and balance sheet                           | always          | period end within 120 days of the as-of date                                                  |
+| TGT-04 | Receivables and payables agings                                      | always          | same as-of date as TGT-03                                                                     |
+| TGT-05 | Business debt schedule                                               | always          | dated; total extracted                                                                        |
+| TGT-06 | IRS Form 4506-C signed by the seller for the target                  | always          | signature date within 120 days                                                                |
+| TGT-07 | Lease, with assignment, landlord consent or new lease terms          | leased premises | expiry and options extracted                                                                  |
+| TGT-08 | Equipment list and inventory summary                                 | always          | presence                                                                                      |
+| TGT-09 | Licenses and permits needed to operate                               | always          | presence; `manual_confirmation` "does the business operate on the seller's personal license?" |
+| TGT-10 | Franchise agreement and disclosure document                          | franchise       | presence; `manual_confirmation` "brand checked against the current SBA Franchise Directory"   |
+| TGT-11 | Add-back schedule with support                                       | overlay         | presence                                                                                      |
+| TGT-12 | Key contracts; employee roster; seller good standing                 | overlay         | presence                                                                                      |
 
 **Real estate, when included:** purchase contract (presence); appraisal and environmental review (tracking, lender-ordered).
 
@@ -398,24 +403,24 @@ Ship every row below in both packs unless the Packs column says otherwise. All `
 
 ## Seed consistency rules
 
-| ID | Check | Severity |
-| --- | --- | --- |
-| CON-01 | Seller legal name and EIN agree across tax returns, purchase agreement and 4506-C | blocker |
-| CON-02 | Owner names and percents agree across Form 1919, operating agreement, ownership chart and declared profile; percents sum to 100 | blocker |
-| CON-03 | Purchase price agrees across LOI, purchase agreement, sources and uses and declared profile | blocker |
-| CON-04 | Sources total equals uses total | blocker |
-| CON-05 | Seller note amount and terms agree across LOI, purchase agreement, note and sources and uses | major |
-| CON-06 | Seller note counted toward equity injection while its standby wording is not "full standby for the life of the loan": for lender review | major |
-| CON-07 | Limited-source share (seller standby note, other standby debt, minority investor equity) exceeds half of 10 percent of total project cost: for lender review; show the arithmetic | major |
-| CON-08 | Cash injection claimed from an account exceeds that account's latest ending balance | major |
-| CON-09 | Form 413 cash differs from bank statement balances dated within 45 days by more than the tolerance | minor |
-| CON-10 | Tax return gross receipts differ from year-end income statement revenue for the same year by more than 1 percent | major |
-| CON-11 | Declared structure differs from the purchase agreement's structure | blocker |
-| CON-12 | Business address differs across lease, tax return and purchase agreement | minor |
-| CON-13 | Lease expiry plus stated options ends before the as-of date plus ten years: for lender review | minor |
-| CON-14 | Seller consulting term exceeds the pack limit (12 months under 8; 24 under 8.1): for lender review | major |
-| CON-15 | LOI expired, or purchase agreement outside date before the target submission date | major |
-| CON-16 | A document's party matches no deal party | needs_review |
+| ID     | Check                                                                                                                                                                             | Severity     |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| CON-01 | Seller legal name and EIN agree across tax returns, purchase agreement and 4506-C                                                                                                 | blocker      |
+| CON-02 | Owner names and percents agree across Form 1919, operating agreement, ownership chart and declared profile; percents sum to 100                                                   | blocker      |
+| CON-03 | Purchase price agrees across LOI, purchase agreement, sources and uses and declared profile                                                                                       | blocker      |
+| CON-04 | Sources total equals uses total                                                                                                                                                   | blocker      |
+| CON-05 | Seller note amount and terms agree across LOI, purchase agreement, note and sources and uses                                                                                      | major        |
+| CON-06 | Seller note counted toward equity injection while its standby wording is not "full standby for the life of the loan": for lender review                                           | major        |
+| CON-07 | Limited-source share (seller standby note, other standby debt, minority investor equity) exceeds half of 10 percent of total project cost: for lender review; show the arithmetic | major        |
+| CON-08 | Cash injection claimed from an account exceeds that account's latest ending balance                                                                                               | major        |
+| CON-09 | Form 413 cash differs from bank statement balances dated within 45 days by more than the tolerance                                                                                | minor        |
+| CON-10 | Tax return gross receipts differ from year-end income statement revenue for the same year by more than 1 percent                                                                  | major        |
+| CON-11 | Declared structure differs from the purchase agreement's structure                                                                                                                | blocker      |
+| CON-12 | Business address differs across lease, tax return and purchase agreement                                                                                                          | minor        |
+| CON-13 | Lease expiry plus stated options ends before the as-of date plus ten years: for lender review                                                                                     | minor        |
+| CON-14 | Seller consulting term exceeds the pack limit (12 months under 8; 24 under 8.1): for lender review                                                                                | major        |
+| CON-15 | LOI expired, or purchase agreement outside date before the target submission date                                                                                                 | major        |
+| CON-16 | A document's party matches no deal party                                                                                                                                          | needs_review |
 
 Every finding shows each side's value, source file, page and quote, side by side.
 
@@ -539,24 +544,24 @@ For Forms 1919 and 413, try the official blank PDFs from sba.gov (U.S. governmen
 
 `pnpm eval` runs the mock provider and gates CI. `pnpm eval:live` runs a real provider under the cost cap and is reported separately. Never present mock scores as evidence of model quality.
 
-| Metric | Gate (mock baseline) |
-| --- | --- |
-| Segment type accuracy | at least 95% |
-| Segment boundary accuracy on bundles | at least 90% |
-| Party and period assignment accuracy | at least 90% |
-| Rule-feeding fact accuracy, acroform and text | at least 95% |
-| Rule-feeding fact accuracy, vision, before review | report only |
-| Provenance validity, text layer | at least 98% |
-| Checklist status accuracy | at least 95% |
-| Planted defect recall: missing, stale, incomplete | at least 95% |
-| Planted defect recall: conflicts | at least 90% |
-| Finding precision | at least 80% |
-| False-positive traps raised | 0 |
-| **False-satisfied on planted blockers** | **0, hard gate** |
-| Review routing recall on planted uncertain items | at least 90% |
-| Deal evaluation determinism (result hash equal on rerun) | pass |
-| Overlay changes the checklist with no code change | pass |
-| Duplicate, superseded version, resume after injected failure | pass |
+| Metric                                                       | Gate (mock baseline) |
+| ------------------------------------------------------------ | -------------------- |
+| Segment type accuracy                                        | at least 95%         |
+| Segment boundary accuracy on bundles                         | at least 90%         |
+| Party and period assignment accuracy                         | at least 90%         |
+| Rule-feeding fact accuracy, acroform and text                | at least 95%         |
+| Rule-feeding fact accuracy, vision, before review            | report only          |
+| Provenance validity, text layer                              | at least 98%         |
+| Checklist status accuracy                                    | at least 95%         |
+| Planted defect recall: missing, stale, incomplete            | at least 95%         |
+| Planted defect recall: conflicts                             | at least 90%         |
+| Finding precision                                            | at least 80%         |
+| False-positive traps raised                                  | 0                    |
+| **False-satisfied on planted blockers**                      | **0, hard gate**     |
+| Review routing recall on planted uncertain items             | at least 90%         |
+| Deal evaluation determinism (result hash equal on rerun)     | pass                 |
+| Overlay changes the checklist with no code change            | pass                 |
+| Duplicate, superseded version, resume after injected failure | pass                 |
 
 Regression rules against the stored baseline: any drop of more than 2 points in status accuracy or defect recall fails; any false-satisfied fails; any trap raised fails. Only a passing run can become a baseline.
 
@@ -613,16 +618,16 @@ Write `docs/WALKTHROUGH.md`, a seven-minute script:
 
 # 23. PHASES AND CUT ORDER
 
-| Phase | Build | Proof |
-| --- | --- | --- |
-| 0 | Read the base repo and this document. Write `docs/PLAN.md` and `docs/DECISIONS.md`. Verify dependencies and model identifiers. Remove RAG. | Clean build and tests green after removal |
-| 1 | Schema. Rule pack loader, validator, overlay merge, viewer. Rule engine tested against hand-written facts. | `pnpm rules:check`; engine reproduces the expected findings from a JSON fact fixture |
-| 2 | Fixture generators and truth for three deals | Identical hashes on regeneration |
-| 3 | Intake, parsing (text, AcroForm, DOCX, XLSX, image-only), signature library, classifier, segments, party and period assignment, manual filing | Deal A segment accuracy at or above gate on mock; bundle split proposed |
-| 4 | Extraction, verification, method-aware confidence, grouped review, entity resolution, fact store | Planted uncertain values reach review; a correction creates a version and triggers re-evaluation |
-| 5 | Deal evaluation, checklist, findings lifecycle, requests, snapshots, exports, review sheet | Deal A ZIP with all seven artifacts; v1 to v2 diff correct |
-| 6 | Evaluation harness, gates, QA report, live run under the cap | `pnpm eval` passes; live results recorded |
-| 7 | Demo seed, read-only mode, README, walkthrough, `docs/PILOT_RUNBOOK.md` (how to run a paid test on a client's past files: consent, `REAL_DATA_MODE`, access, metrics to capture, purge), security pass | Every command in Section 21 passes |
+| Phase | Build                                                                                                                                                                                                  | Proof                                                                                            |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| 0     | Read the base repo and this document. Write `docs/PLAN.md` and `docs/DECISIONS.md`. Verify dependencies and model identifiers. Remove RAG.                                                             | Clean build and tests green after removal                                                        |
+| 1     | Schema. Rule pack loader, validator, overlay merge, viewer. Rule engine tested against hand-written facts.                                                                                             | `pnpm rules:check`; engine reproduces the expected findings from a JSON fact fixture             |
+| 2     | Fixture generators and truth for three deals                                                                                                                                                           | Identical hashes on regeneration                                                                 |
+| 3     | Intake, parsing (text, AcroForm, DOCX, XLSX, image-only), signature library, classifier, segments, party and period assignment, manual filing                                                          | Deal A segment accuracy at or above gate on mock; bundle split proposed                          |
+| 4     | Extraction, verification, method-aware confidence, grouped review, entity resolution, fact store                                                                                                       | Planted uncertain values reach review; a correction creates a version and triggers re-evaluation |
+| 5     | Deal evaluation, checklist, findings lifecycle, requests, snapshots, exports, review sheet                                                                                                             | Deal A ZIP with all seven artifacts; v1 to v2 diff correct                                       |
+| 6     | Evaluation harness, gates, QA report, live run under the cap                                                                                                                                           | `pnpm eval` passes; live results recorded                                                        |
+| 7     | Demo seed, read-only mode, README, walkthrough, `docs/PILOT_RUNBOOK.md` (how to run a paid test on a client's past files: consent, `REAL_DATA_MODE`, access, metrics to capture, purge), security pass | Every command in Section 21 passes                                                               |
 
 **If time runs short, cut in this order:** work log; binder PDF; model-drafted requests (keep the template); official-form AcroForm filling (use look-alikes); XLSX parsing (route to manual filing); Deal C; vision extraction of values (keep vision classification and signature detection, enter values by hand).
 

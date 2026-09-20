@@ -32,8 +32,12 @@ export const workspaces = pgTable("workspaces", {
 export const workspaceMembers = pgTable(
   "workspace_members",
   {
-    workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
-    userId: uuid("user_id").notNull().references(() => appUsers.id),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => appUsers.id),
     role: text("role", { enum: ["admin", "reviewer", "viewer"] }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -43,7 +47,9 @@ export const workspaceMembers = pgTable(
 export const documents = pgTable("documents", {
   dealId: uuid("deal_id").references(() => deals.id),
   id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id),
   logicalKey: text("logical_key").notNull(),
   displayName: text("display_name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -62,8 +68,12 @@ export const PROCESSING_STATUSES = [
 export const documentVersions = pgTable("document_versions", {
   dealId: uuid("deal_id"),
   id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
-  documentId: uuid("document_id").notNull().references(() => documents.id),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id),
+  documentId: uuid("document_id")
+    .notNull()
+    .references(() => documents.id),
   versionNumber: integer("version_number").notNull(),
   contentHash: text("content_hash").notNull(),
   storagePath: text("storage_path").notNull(),
@@ -73,18 +83,28 @@ export const documentVersions = pgTable("document_versions", {
   supersedesVersionId: uuid("supersedes_version_id"),
   isCurrent: boolean("is_current").notNull().default(true),
   parseStatus: text("parse_status", { enum: PARSE_STATUSES }).notNull().default("pending"),
-  processingStatus: text("processing_status", { enum: PROCESSING_STATUSES }).notNull().default("queued"),
+  processingStatus: text("processing_status", { enum: PROCESSING_STATUSES })
+    .notNull()
+    .default("queued"),
   pageCount: integer("page_count"),
   charCount: integer("char_count"),
   uploadedBy: uuid("uploaded_by"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const RUN_STATUSES = ["queued", "running", "completed", "completed_with_review", "failed"] as const;
+export const RUN_STATUSES = [
+  "queued",
+  "running",
+  "completed",
+  "completed_with_review",
+  "failed",
+] as const;
 
 export const processingRuns = pgTable("processing_runs", {
   id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id),
   runType: text("run_type", { enum: ["ingest", "reprocess", "eval", "backfill"] }).notNull(),
   pipelineVersion: text("pipeline_version").notNull(),
   provider: text("provider").notNull(),
@@ -100,7 +120,9 @@ export const processingRuns = pgTable("processing_runs", {
   retries: integer("retries").notNull().default(0),
   inputTokens: bigint("input_tokens", { mode: "number" }).notNull().default(0),
   outputTokens: bigint("output_tokens", { mode: "number" }).notNull().default(0),
-  estimatedCostUsd: numeric("estimated_cost_usd", { precision: 10, scale: 6 }).notNull().default("0"),
+  estimatedCostUsd: numeric("estimated_cost_usd", { precision: 10, scale: 6 })
+    .notNull()
+    .default("0"),
   initiatedBy: uuid("initiated_by"),
   configJson: jsonb("config_json").$type<RunConfig>().notNull().default({}),
   errorMessage: text("error_message"),
@@ -115,11 +137,20 @@ export type RunConfig = {
   [k: string]: unknown;
 };
 
-export const STEP_STATUSES = ["pending", "running", "succeeded", "failed", "dead_letter", "skipped"] as const;
+export const STEP_STATUSES = [
+  "pending",
+  "running",
+  "succeeded",
+  "failed",
+  "dead_letter",
+  "skipped",
+] as const;
 
 export const runSteps = pgTable("run_steps", {
   id: uuid("id").primaryKey().defaultRandom(),
-  processingRunId: uuid("processing_run_id").notNull().references(() => processingRuns.id),
+  processingRunId: uuid("processing_run_id")
+    .notNull()
+    .references(() => processingRuns.id),
   documentVersionId: uuid("document_version_id"),
   stepName: text("step_name").notNull(),
   idempotencyKey: text("idempotency_key").notNull().unique(),
@@ -156,7 +187,9 @@ export const llmCalls = pgTable("llm_calls", {
 
 export const recordVersions = pgTable("record_versions", {
   id: uuid("id").primaryKey().defaultRandom(),
-  documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
+  documentVersionId: uuid("document_version_id")
+    .notNull()
+    .references(() => documentVersions.id),
   parentRecordVersionId: uuid("parent_record_version_id"),
   versionNumber: integer("version_number").notNull(),
   createdByType: text("created_by_type", { enum: ["model", "reviewer", "reprocess"] }).notNull(),
@@ -167,12 +200,21 @@ export const recordVersions = pgTable("record_versions", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const ROUTING_STATUSES = ["auto_accepted", "review", "blocked", "accepted", "rejected", "needs_source"] as const;
+export const ROUTING_STATUSES = [
+  "auto_accepted",
+  "review",
+  "blocked",
+  "accepted",
+  "rejected",
+  "needs_source",
+] as const;
 export type RoutingStatus = (typeof ROUTING_STATUSES)[number];
 
 export const runEvents = pgTable("run_events", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
-  processingRunId: uuid("processing_run_id").notNull().references(() => processingRuns.id),
+  processingRunId: uuid("processing_run_id")
+    .notNull()
+    .references(() => processingRuns.id),
   documentVersionId: uuid("document_version_id"),
   level: text("level", { enum: ["debug", "info", "warn", "error"] }).notNull(),
   eventType: text("event_type").notNull(),
@@ -183,14 +225,20 @@ export const runEvents = pgTable("run_events", {
 
 export const deadLetters = pgTable("dead_letters", {
   id: uuid("id").primaryKey().defaultRandom(),
-  processingRunId: uuid("processing_run_id").notNull().references(() => processingRuns.id),
-  documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
+  processingRunId: uuid("processing_run_id")
+    .notNull()
+    .references(() => processingRuns.id),
+  documentVersionId: uuid("document_version_id")
+    .notNull()
+    .references(() => documentVersions.id),
   failedStep: text("failed_step").notNull(),
   errorCode: text("error_code").notNull(),
   errorMessage: text("error_message").notNull(),
   attemptCount: integer("attempt_count").notNull().default(0),
   retryable: boolean("retryable").notNull().default(true),
-  status: text("status", { enum: ["open", "retrying", "resolved"] }).notNull().default("open"),
+  status: text("status", { enum: ["open", "retrying", "resolved"] })
+    .notNull()
+    .default("open"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   resolvedAt: timestamp("resolved_at", { withTimezone: true }),
 });

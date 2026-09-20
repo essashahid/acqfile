@@ -9,25 +9,13 @@ import { plans } from "../../fixtures/lib/plans";
 import { groups } from "../../fixtures/lib/truth";
 const key = "SYNTHETIC-INTAKE-TEST-HMAC-KEY-ONLY-2026";
 it("rejects unsafe ZIP paths, nested archives, bombs, symlinks and dishonest sizes", async () => {
-  for (const p of [
-    "../a.pdf",
-    "/a.pdf",
-    "a\\b.pdf",
-    "C:/a.pdf",
-    "a/../b",
-    "a\0b",
-  ])
+  for (const p of ["../a.pdf", "/a.pdf", "a\\b.pdf", "C:/a.pdf", "a/../b", "a\0b"])
     expect(() => safePath(p)).toThrow();
   const zip = new JSZip();
-  zip.file(
-    "inner.zip",
-    await new JSZip().file("x", "x").generateAsync({ type: "nodebuffer" }),
-  );
+  zip.file("inner.zip", await new JSZip().file("x", "x").generateAsync({ type: "nodebuffer" }));
   expect(() => readZip(Buffer.from([]))).toThrow();
   expect(() => readZip(Buffer.from("bad"))).toThrow();
-  expect(() =>
-    arrivalFiles([{ path: "outer.zip", bytes: Buffer.from("bad") }]),
-  ).not.toThrow();
+  expect(() => arrivalFiles([{ path: "outer.zip", bytes: Buffer.from("bad") }])).not.toThrow();
   const nested = await zip.generateAsync({ type: "nodebuffer" });
   expect(() => readZip(nested)).toThrow("Nested");
   const bomb = await new JSZip()
@@ -56,11 +44,7 @@ it("sniffs bytes and masks identifiers before persistence", () => {
   );
   expect(out.identifiers).toHaveLength(3);
   expect(out.text).not.toMatch(/900-12-3456|00-1234567|987654321012|AB1234567/);
-  expect(out.identifiers.map((i) => i.last_four)).toEqual([
-    "3456",
-    "4567",
-    "1012",
-  ]);
+  expect(out.identifiers.map((i) => i.last_four)).toEqual(["3456", "4567", "1012"]);
 });
 it("parses every unique deal file with page fields, paragraph and sheet/cell locators", async () => {
   let fields = 0,
@@ -70,24 +54,15 @@ it("parses every unique deal file with page fields, paragraph and sheet/cell loc
   for (const p of plans())
     for (const g of groups(p).filter((g) => !g.docs[0]!.duplicate_of)) {
       const first = g.docs[0]!;
-      const parsed = await parseArrival(
-        fs.readFileSync(`fixtures/deals/${p.id}/${g.file}`),
-        key,
-      );
-      expect(parsed.status, g.file).toBe(
-        first.unreadable ? "unreadable" : "parsed",
-      );
+      const parsed = await parseArrival(fs.readFileSync(`fixtures/deals/${p.id}/${g.file}`), key);
+      expect(parsed.status, g.file).toBe(first.unreadable ? "unreadable" : "parsed");
       if (first.unreadable) {
         expect(parsed.blocks).toEqual([]);
         continue;
       }
-      expect(JSON.stringify(parsed)).not.toMatch(
-        /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/,
-      );
+      expect(JSON.stringify(parsed)).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/);
       fields += parsed.blocks.filter((b) => b.kind === "field").length;
-      cells += parsed.blocks.filter(
-        (b) => b.kind === "cell" && b.locator.includes("!"),
-      ).length;
+      cells += parsed.blocks.filter((b) => b.kind === "cell" && b.locator.includes("!")).length;
       paragraphs += parsed.blocks.filter((b) => b.kind === "paragraph").length;
       images += parsed.blocks.filter((b) => b.image_only).length;
     }
@@ -104,9 +79,7 @@ it("redacts passport AcroForm values even without a printed label", async () => 
   field.setText("AB1234567");
   field.addToPage(page);
   const parsed = await parseArrival(Buffer.from(await pdf.save()), key);
-  expect(parsed.blocks.find((b) => b.kind === "field")?.text).toBe(
-    "[redacted]",
-  );
+  expect(parsed.blocks.find((b) => b.kind === "field")?.text).toBe("[redacted]");
   // The same unlabeled value in the text layer must also be redacted.
   expect(JSON.stringify(parsed)).not.toContain("AB1234567");
 });

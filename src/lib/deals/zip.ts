@@ -29,8 +29,7 @@ function crc32(data: Buffer) {
 }
 // Validate central and local headers before any inflation. No ZIP64, encryption or symlinks.
 export function readZip(bytes: Buffer, office = false) {
-  if (bytes.length > INTAKE_LIMITS.archiveBytes)
-    throw Error("Archive too large");
+  if (bytes.length > INTAKE_LIMITS.archiveBytes) throw Error("Archive too large");
   let end = -1;
   for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 65557); i--)
     if (bytes.readUInt32LE(i) === 0x06054b50) {
@@ -100,10 +99,8 @@ export function readZip(bytes: Buffer, office = false) {
       method === 0
         ? Buffer.from(packed)
         : inflateRawSync(packed, { maxOutputLength: Math.max(1, expanded) });
-    if (data.length !== expanded || crc32(data) !== crc)
-      throw Error("ZIP integrity mismatch");
-    if (!office && sniff(data) === "zip")
-      throw Error("Nested archives are not accepted");
+    if (data.length !== expanded || crc32(data) !== crc) throw Error("ZIP integrity mismatch");
+    if (!office && sniff(data) === "zip") throw Error("Nested archives are not accepted");
     result.push({ path: name, bytes: data });
   }
   if (cursor !== offset + size) throw Error("ZIP directory length mismatch");
@@ -114,25 +111,15 @@ export function sniff(bytes: Buffer): FileKind {
   if (bytes.subarray(0, 5).toString() === "%PDF-") return "pdf";
   if (bytes.length >= 4 && bytes.readUInt32LE(0) === 0x04034b50) {
     const names = bytes.toString("latin1");
-    if (
-      names.includes("[Content_Types].xml") &&
-      names.includes("word/document.xml")
-    )
-      return "docx";
-    if (
-      names.includes("[Content_Types].xml") &&
-      names.includes("xl/workbook.xml")
-    )
-      return "xlsx";
+    if (names.includes("[Content_Types].xml") && names.includes("word/document.xml")) return "docx";
+    if (names.includes("[Content_Types].xml") && names.includes("xl/workbook.xml")) return "xlsx";
     return "zip";
   }
   return "unsupported";
 }
 export function arrivalFiles(files: { path: string; bytes: Buffer }[]) {
   const result = files.flatMap((f) =>
-    sniff(f.bytes) === "zip"
-      ? readZip(f.bytes)
-      : [{ ...f, path: safePath(f.path) }],
+    sniff(f.bytes) === "zip" ? readZip(f.bytes) : [{ ...f, path: safePath(f.path) }],
   );
   if (
     !result.length ||

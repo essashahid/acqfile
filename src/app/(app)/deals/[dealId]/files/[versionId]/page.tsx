@@ -21,10 +21,7 @@ export default async function FilePage({
     .select()
     .from(schema.documentVersions)
     .where(
-      and(
-        eq(schema.documentVersions.id, versionId),
-        eq(schema.documentVersions.dealId, dealId),
-      ),
+      and(eq(schema.documentVersions.id, versionId), eq(schema.documentVersions.dealId, dealId)),
     );
   if (!version) throw Error("File not found");
   const [record] = await db
@@ -36,10 +33,7 @@ export default async function FilePage({
         eq(schema.recordVersions.isCurrent, true),
       ),
     );
-  const parties = await db
-    .select()
-    .from(schema.parties)
-    .where(eq(schema.parties.dealId, dealId));
+  const parties = await db.select().from(schema.parties).where(eq(schema.parties.dealId, dealId));
   const blocks = (await parsedVersion(versionId))?.blocks ?? [];
   const reviews = await db
     .select()
@@ -56,16 +50,12 @@ export default async function FilePage({
         Back to deal
       </Link>
       <h1 className="text-xl font-semibold">{version.sourceFilename}</h1>
-      <p className="text-sm font-mono break-all">
-        SHA-256 {version.contentHash}
-      </p>
+      <p className="text-sm font-mono break-all">SHA-256 {version.contentHash}</p>
       <FileReview
         dealId={dealId}
         versionId={versionId}
         recordId={record?.id ?? null}
-        initial={
-          (record?.payloadJson as FilingRecord | undefined)?.segments ?? []
-        }
+        initial={(record?.payloadJson as FilingRecord | undefined)?.segments ?? []}
         parties={parties.map((p) => ({ id: p.id, name: p.legalName }))}
         pages={version.pageCount ?? 1}
         unreadable={version.parseStatus === "failed"}

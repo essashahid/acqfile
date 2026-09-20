@@ -13,27 +13,27 @@ Date: 2026-09-20. Scope: fixture correction (A36, A43), extraction core, grouped
 
 The test operator first confirms proposed segmentation exactly as truth (Phase 3 review); fact review has not happened when the "before review" columns are measured.
 
-| Deal / batch | Facts | Rule-feeding acroform | Rule-feeding text | Rule-feeding vision (report only) | Provenance (text-layer) | Vision auto-accepted | Faults routed as planned | Before review: false satisfied | After review: exact |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A / 1 | 123 | 6/6 (100%) | 105/108 (97.2%) | 8/8 (100%) | 114/115 (99.1%) | 0 | 6/6 | 0 | yes (78 rows, 20 findings) |
-| A / 2 | 3 new | 1/1 | 1/1 | – | 3/3 | 0 | – | 0 | yes (78 rows, 17 findings) |
-| B / 1 | 73 | 6/6 (100%) | 63/65 (96.9%) | – | 72/73 (98.6%) | 0 | 4/4 | 0 | yes (76 rows, 3 findings) |
-| C / 1 | 56 | 1/1 (100%) | 3/3 (100%) | 51/59 (86.4%) | 5/5 (100%) | 0 | 2/2 | 0 | yes (63 rows, 4 findings) |
+| Deal / batch | Facts | Rule-feeding acroform | Rule-feeding text | Rule-feeding vision (report only) | Provenance (text-layer) | Vision auto-accepted | Faults routed as planned | Before review: false satisfied | After review: exact        |
+| ------------ | ----- | --------------------- | ----------------- | --------------------------------- | ----------------------- | -------------------- | ------------------------ | ------------------------------ | -------------------------- |
+| A / 1        | 123   | 6/6 (100%)            | 105/108 (97.2%)   | 8/8 (100%)                        | 114/115 (99.1%)         | 0                    | 6/6                      | 0                              | yes (78 rows, 20 findings) |
+| A / 2        | 3 new | 1/1                   | 1/1               | –                                 | 3/3                     | 0                    | –                        | 0                              | yes (78 rows, 17 findings) |
+| B / 1        | 73    | 6/6 (100%)            | 63/65 (96.9%)     | –                                 | 72/73 (98.6%)           | 0                    | 4/4                      | 0                              | yes (76 rows, 3 findings)  |
+| C / 1        | 56    | 1/1 (100%)            | 3/3 (100%)        | 51/59 (86.4%)                     | 5/5 (100%)              | 0                    | 2/2                      | 0                              | yes (63 rows, 4 findings)  |
 
 Every text or AcroForm miss is a planted fault (A-F1, A-F4, A-F5, B-F1, B-F4 and the C-F1 gap); the vision misses are the eight image-read identifiers that become operator entry items under A40 (decision 90) plus the planted gap. The one invalid provenance claim per deal A and B is the planted quote-not-in-block fault, blocked as planned.
 
-| Gate | Result |
-| --- | --- |
-| Rule-feeding accuracy, acroform and text, before review, at least 95% | 96.9% to 100% per deal and batch |
-| Provenance validity on text-layer facts, at least 98% | 98.6% to 100% |
-| Every planted fault routed as its plan expects | 12/12 |
-| Vision rule-feeding facts auto-accepted | 0 |
-| Before review: rows satisfied where truth says otherwise | 0 in every deal and batch |
-| After simulated review: engine result equals expected checklist and findings | exact, every deal and batch |
-| Correction creates a new version and a new evaluation whose result changes as expected | pass (deal B: record version 2, one conflict appears, restored value removes it; stale write rejected) |
-| Injected failure at `extract` and at `independent_verify` resumes with no repeated call | pass (extract attempt 5 after four injected failures, one extract call; verify attempt 2, one verify call; rerun makes zero calls) |
-| Identifier patterns in facts, reviews, events, run steps, run events and model call rows | none |
-| Phase 3 gates on the regenerated fixtures | pass |
+| Gate                                                                                     | Result                                                                                                                             |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Rule-feeding accuracy, acroform and text, before review, at least 95%                    | 96.9% to 100% per deal and batch                                                                                                   |
+| Provenance validity on text-layer facts, at least 98%                                    | 98.6% to 100%                                                                                                                      |
+| Every planted fault routed as its plan expects                                           | 12/12                                                                                                                              |
+| Vision rule-feeding facts auto-accepted                                                  | 0                                                                                                                                  |
+| Before review: rows satisfied where truth says otherwise                                 | 0 in every deal and batch                                                                                                          |
+| After simulated review: engine result equals expected checklist and findings             | exact, every deal and batch                                                                                                        |
+| Correction creates a new version and a new evaluation whose result changes as expected   | pass (deal B: record version 2, one conflict appears, restored value removes it; stale write rejected)                             |
+| Injected failure at `extract` and at `independent_verify` resumes with no repeated call  | pass (extract attempt 5 after four injected failures, one extract call; verify attempt 2, one verify call; rerun makes zero calls) |
+| Identifier patterns in facts, reviews, events, run steps, run events and model call rows | none                                                                                                                               |
+| Phase 3 gates on the regenerated fixtures                                                | pass                                                                                                                               |
 
 **Facts by method** (all deals, all batches): acroform 20, text 176, vision 59; 255 facts. Routing before review: 188 auto-accepted, 63 review, 4 blocked.
 
@@ -43,20 +43,20 @@ Every text or AcroForm miss is a planted fault (A-F1, A-F4, A-F5, B-F1, B-F4 and
 
 ## Planted faults
 
-| Fault | Document / attribute | Kind | Expected | Actual | Confidence |
-| --- | --- | --- | --- | --- | --- |
-| A-F1 | loi / deal.purchase_price | wrong value, real quote | blocked | blocked | 0.60 (contradiction) |
-| A-F2 | ar / aging.as_of_date | quote not in block | blocked | blocked | 0.10 (unsupported evidence) |
-| A-F3 | interim / financial.revenue | weak evidence | review | review | 0.815 |
-| A-F4 | tax-2024 / tax.gross_receipts | verifier corrects | review | review | 0.70 |
-| A-F5 | debt / debt.total | missing value | review | review (extraction gap) | – |
-| A-F6 | pfs (scan) / pfs.cash | vision dual-read disagreement | review | review | 0.65 |
-| B-F1 | funding / funding.uses_total | wrong value, real quote | blocked | blocked | 0.40 (contradiction) |
-| B-F2 | note / note.term_months | quote not in block | blocked | blocked | 0.10 |
-| B-F3 | bank-aug / bank.ending_balance | weak evidence | review | review | 0.815 |
-| B-F4 | fin-2024 / financial.total_assets | verifier corrects | review | review | 0.70 |
-| C-F1 | gift-letter (scan) / gift.amount | missing value | review | review (extraction gap) | – |
-| C-F2 | donor-bank (scan) / bank.ending_balance | vision dual-read disagreement | review | review | 0.65 |
+| Fault | Document / attribute                    | Kind                          | Expected | Actual                  | Confidence                  |
+| ----- | --------------------------------------- | ----------------------------- | -------- | ----------------------- | --------------------------- |
+| A-F1  | loi / deal.purchase_price               | wrong value, real quote       | blocked  | blocked                 | 0.60 (contradiction)        |
+| A-F2  | ar / aging.as_of_date                   | quote not in block            | blocked  | blocked                 | 0.10 (unsupported evidence) |
+| A-F3  | interim / financial.revenue             | weak evidence                 | review   | review                  | 0.815                       |
+| A-F4  | tax-2024 / tax.gross_receipts           | verifier corrects             | review   | review                  | 0.70                        |
+| A-F5  | debt / debt.total                       | missing value                 | review   | review (extraction gap) | –                           |
+| A-F6  | pfs (scan) / pfs.cash                   | vision dual-read disagreement | review   | review                  | 0.65                        |
+| B-F1  | funding / funding.uses_total            | wrong value, real quote       | blocked  | blocked                 | 0.40 (contradiction)        |
+| B-F2  | note / note.term_months                 | quote not in block            | blocked  | blocked                 | 0.10                        |
+| B-F3  | bank-aug / bank.ending_balance          | weak evidence                 | review   | review                  | 0.815                       |
+| B-F4  | fin-2024 / financial.total_assets       | verifier corrects             | review   | review                  | 0.70                        |
+| C-F1  | gift-letter (scan) / gift.amount        | missing value                 | review   | review (extraction gap) | –                           |
+| C-F2  | donor-bank (scan) / bank.ending_balance | vision dual-read disagreement | review   | review                  | 0.65                        |
 
 ## Deleted under A42
 
@@ -68,20 +68,20 @@ Skipped: no owner provider key is in the environment. No live call, estimate or 
 
 ## Final commands
 
-| Command | Result |
-| --- | --- |
-| `pnpm lint` | PASS, exit 0 |
-| `pnpm typecheck` | PASS, exit 0 |
-| `pnpm test` | PASS, exit 0; 133 tests / 12 files |
-| `pnpm test:integration` | PASS, exit 0; 15 tests / 6 files |
-| `pnpm test:e2e` | PASS, exit 0; 2 tests against the production build |
-| `pnpm rules:check` | PASS, exit 0; 52 types, 79 attributes |
-| `pnpm fixtures:check` | PASS, exit 0; four oracles, readability and synthetic lint |
-| `pnpm fixtures:generate --check` | PASS, exit 0; A 40 / B 28 / C 22 files |
-| `pnpm eval` | PASS, exit 0; the three mock-mode proofs |
-| `pnpm build` | PASS, exit 0 |
-| `pnpm exec tsx scripts/check-raster-fixtures.ts` | PASS, exit 0; 19 files / 48 pages |
-| `git diff --check` | PASS |
+| Command                                          | Result                                                     |
+| ------------------------------------------------ | ---------------------------------------------------------- |
+| `pnpm lint`                                      | PASS, exit 0                                               |
+| `pnpm typecheck`                                 | PASS, exit 0                                               |
+| `pnpm test`                                      | PASS, exit 0; 133 tests / 12 files                         |
+| `pnpm test:integration`                          | PASS, exit 0; 15 tests / 6 files                           |
+| `pnpm test:e2e`                                  | PASS, exit 0; 2 tests against the production build         |
+| `pnpm rules:check`                               | PASS, exit 0; 52 types, 79 attributes                      |
+| `pnpm fixtures:check`                            | PASS, exit 0; four oracles, readability and synthetic lint |
+| `pnpm fixtures:generate --check`                 | PASS, exit 0; A 40 / B 28 / C 22 files                     |
+| `pnpm eval`                                      | PASS, exit 0; the three mock-mode proofs                   |
+| `pnpm build`                                     | PASS, exit 0                                               |
+| `pnpm exec tsx scripts/check-raster-fixtures.ts` | PASS, exit 0; 19 files / 48 pages                          |
+| `git diff --check`                               | PASS                                                       |
 
 The browser proof imports Deal A, uploads batch 1, confirms a bundle, files the unreadable formation document, opens the review screen for the scanned Form 413 beside its page, edits one value and accepts it, sees the pending count fall by one, uploads batch 2 and sees the missing and incomplete counts fall by three in total (decision 100).
 

@@ -8,5 +8,12 @@ export async function logEvent(
   message: string,
   payload: Record<string, unknown> = {},
 ) {
-  await getDb().insert(schema.runEvents).values({ processingRunId, documentVersionId, level, eventType, message, payloadJson: payload });
+  await getDb().insert(schema.runEvents).values({
+    processingRunId,
+    documentVersionId,
+    level,
+    eventType,
+    message,
+    payloadJson: payload,
+  });
 }

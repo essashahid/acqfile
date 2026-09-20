@@ -17,6 +17,7 @@ Standing instruction: for small choices, decide, record and report. Stop only fo
   8. **Expressions use standard three-valued logic:** false AND unknown is false; true OR unknown is true. A row whose applicability does not depend on the unknown value is not sent to review.
 
   Both invariants still hold: nothing but all-pass is satisfied, and removing evidence can only move a row to `missing` or `needs_review`.
+
 - **A29. Guardrail 1 covers words we author,** not documents. It applies to UI strings, rule titles and messages, templates, request drafts and report boilerplate. It does not apply to supplied documents, to fixtures that imitate them, or to verbatim quotes from them shown as evidence. Real SBA forms contain those words and the product must read them. The lint skips fixture documents and quoted-evidence fields. Exports mark quotes as quotes.
 - **A30. Official forms.** Your trial showed the official blank Form 1919 and Form 413 fill, save and reopen. Use them, with the `SYNTHETIC` watermark on every page, for every Form 1919 and Form 413 in all three deals, including the pages that are rasterized. Map the official AcroForm field names to the fact catalog in one config file. That mapping is what a real pilot needs. Timebox three hours. Fall back to facsimiles only for a technical reason, and record it.
 - **A31. Deal A needs scans.** The flagship deal has no image-only file. Make `Phone/scan0007.pdf` (the lease) and one guarantor's Form 413 image-only in Deal A. Truth statuses do not change. Fact methods and locators do.
@@ -54,16 +55,16 @@ Build on the inherited run and step persistence, storage, hashing and review inf
 
 Run all three deals, every batch, through the pipeline in mock mode and compare with `documents.json`:
 
-| Measure | Gate |
-| --- | --- |
-| Segment type accuracy | at least 95% |
-| Segment boundary accuracy on bundles | at least 90% |
-| Party and period assignment | at least 90% |
-| Signed and dated indicators | at least 90%, and never a wrong `true` |
-| Duplicates, supersession, unreadable files, the misnamed lease, the brochure, the unmatched party | every pipeline expectation matches |
-| Exact duplicate triggers no parse and no model call | pass |
-| Injected failure at `segment_classify` resumes without repeating completed steps | pass |
-| Identifier patterns in the database, logs and stored payloads | none |
+| Measure                                                                                           | Gate                                   |
+| ------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Segment type accuracy                                                                             | at least 95%                           |
+| Segment boundary accuracy on bundles                                                              | at least 90%                           |
+| Party and period assignment                                                                       | at least 90%                           |
+| Signed and dated indicators                                                                       | at least 90%, and never a wrong `true` |
+| Duplicates, supersession, unreadable files, the misnamed lease, the brochure, the unmatched party | every pipeline expectation matches     |
+| Exact duplicate triggers no parse and no model call                                               | pass                                   |
+| Injected failure at `segment_classify` resumes without repeating completed steps                  | pass                                   |
+| Identifier patterns in the database, logs and stored payloads                                     | none                                   |
 
 Report two numbers separately, because mock results say nothing about model quality: the share of segments classified and bounded by the deterministic path alone with its accuracy, and the share that needed the classifier. If A34 ran, report it apart from both.
 

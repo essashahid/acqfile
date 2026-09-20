@@ -2,17 +2,17 @@
 
 Expected outcomes were re-authored from A28 before comparison, without deriving truth from engine output.
 
-| Expectation | Before | After | Reason |
-| --- | --- | --- | --- |
-| A batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | No accepted or proposed return for 2024; do not run completeness on absence. |
-| C batch 1 GUA-02/alex/2024 | needs_review | missing / missing finding | Same absent-return rule. |
-| A batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Explicit unsigned and undated indicators are definite failures. |
-| C batch 1 ENT-01/buyer | needs_review | received_with_issues / incomplete finding | Same definite signature failure. |
-| Phase 1 missing annual tax period scenario | needs_review | missing | Absence short-circuits page checks. |
-| Phase 1 false conjunct with unknown applicability | needs_review and finding | not_applicable, no finding | False AND unknown is false. |
-| Expression false AND unknown / true OR unknown | unknown / unknown | false / true | Standard three-valued Boolean logic. |
-| Older 2024 extension test | needs_review | missing | Only the latest completed tax year gets A13's extension exception. |
-| Missing paid-agent Form 159 with unknown fee | needs_review | missing | Fee uncertainty does not replace the absent accepted document. |
+| Expectation                                       | Before                   | After                                     | Reason                                                                       |
+| ------------------------------------------------- | ------------------------ | ----------------------------------------- | ---------------------------------------------------------------------------- |
+| A batch 1 GUA-02/alex/2024                        | needs_review             | missing / missing finding                 | No accepted or proposed return for 2024; do not run completeness on absence. |
+| C batch 1 GUA-02/alex/2024                        | needs_review             | missing / missing finding                 | Same absent-return rule.                                                     |
+| A batch 1 ENT-01/buyer                            | needs_review             | received_with_issues / incomplete finding | Explicit unsigned and undated indicators are definite failures.              |
+| C batch 1 ENT-01/buyer                            | needs_review             | received_with_issues / incomplete finding | Same definite signature failure.                                             |
+| Phase 1 missing annual tax period scenario        | needs_review             | missing                                   | Absence short-circuits page checks.                                          |
+| Phase 1 false conjunct with unknown applicability | needs_review and finding | not_applicable, no finding                | False AND unknown is false.                                                  |
+| Expression false AND unknown / true OR unknown    | unknown / unknown        | false / true                              | Standard three-valued Boolean logic.                                         |
+| Older 2024 extension test                         | needs_review             | missing                                   | Only the latest completed tax year gets A13's extension exception.           |
+| Missing paid-agent Form 159 with unknown fee      | needs_review             | missing                                   | Fee uncertainty does not replace the absent accepted document.               |
 
 The check-coverage assertion now recognizes absence as a short-circuit and does not demand that checks execute for missing documents. The missing-document scenario directly asserts an empty reasons list. Removal, pending-evidence and determinism invariant tests retain their intent. New cases cover absence with signature/page checks, unsigned with null date, known conflict with a pending third source, proposed evidence and inventory precedence over waiver. Failed and unknown checks both appear in messages; their order follows pack order.
 

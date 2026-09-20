@@ -1,9 +1,7 @@
 [
   {
     "name": "pending accepted-looking net worth",
-    "rules": [
-      "GUA-01"
-    ],
+    "rules": ["GUA-01"],
     "changes": [
       {
         "op": "pending",
@@ -13,23 +11,17 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-01"
-          ],
+          "ids": ["GUA-01"],
           "scope": "alex",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "GUA-01"
-      ]
+      "findings": ["GUA-01"]
     }
   },
   {
     "name": "unknown applicability dominates absence",
-    "rules": [
-      "TXN-04"
-    ],
+    "rules": ["TXN-04"],
     "changes": [
       {
         "op": "profile",
@@ -40,23 +32,17 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-04"
-          ],
+          "ids": ["TXN-04"],
           "scope": "deal",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "TXN-04"
-      ]
+      "findings": ["TXN-04"]
     }
   },
   {
     "name": "null signature is unknown",
-    "rules": [
-      "GUA-06"
-    ],
+    "rules": ["GUA-06"],
     "changes": [
       {
         "op": "segment",
@@ -68,23 +54,17 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "GUA-06"
-          ],
+          "ids": ["GUA-06"],
           "scope": "alex",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "GUA-06"
-      ]
+      "findings": ["GUA-06"]
     }
   },
   {
     "name": "null signature date is unknown",
-    "rules": [
-      "ENT-01"
-    ],
+    "rules": ["ENT-01"],
     "changes": [
       {
         "op": "segment",
@@ -96,23 +76,17 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "ENT-01"
-          ],
+          "ids": ["ENT-01"],
           "scope": "buyer",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "ENT-01"
-      ]
+      "findings": ["ENT-01"]
     }
   },
   {
     "name": "pending price never resolves a conflict",
-    "rules": [
-      "CON-03"
-    ],
+    "rules": ["CON-03"],
     "changes": [
       {
         "op": "pending",
@@ -121,16 +95,12 @@
     ],
     "expected": {
       "checklist": [],
-      "findings": [
-        "CON-03"
-      ]
+      "findings": ["CON-03"]
     }
   },
   {
     "name": "false conjunct makes unknown applicability irrelevant",
-    "rules": [
-      "TXN-05"
-    ],
+    "rules": ["TXN-05"],
     "changes": [
       {
         "op": "profile",
@@ -141,9 +111,7 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TXN-05"
-          ],
+          "ids": ["TXN-05"],
           "scope": "deal",
           "status": "not_applicable"
         }
@@ -153,9 +121,7 @@
   },
   {
     "name": "income statement alone cannot prove a balance sheet",
-    "rules": [
-      "TGT-03"
-    ],
+    "rules": ["TGT-03"],
     "changes": [
       {
         "op": "pending",
@@ -165,16 +131,12 @@
     "expected": {
       "checklist": [
         {
-          "ids": [
-            "TGT-03"
-          ],
+          "ids": ["TGT-03"],
           "scope": "target",
           "status": "needs_review"
         }
       ],
-      "findings": [
-        "TGT-03"
-      ]
+      "findings": ["TGT-03"]
     }
   }
 ]

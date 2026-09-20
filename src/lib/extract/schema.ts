@@ -50,9 +50,7 @@ export function consumption(): Consumption {
 /** A38: the extraction schema of a type is the catalog entries it produces and a rule consumes. Any producer is extracted, including classification-era types such as the ownership chart. */
 export function extractionFields(type: DocumentType): FactDefinition[] {
   const { attributes } = consumption();
-  return FACT_CATALOG.filter(
-    (f) => f.producers.includes(type) && attributes.has(f.attribute),
-  );
+  return FACT_CATALOG.filter((f) => f.producers.includes(type) && attributes.has(f.attribute));
 }
 /** A rule-consumed attribute that only this type can produce is expected of every such document; a null is an extraction gap. */
 export function expectedAttributes(type: DocumentType): string[] {
@@ -62,12 +60,7 @@ export function expectedAttributes(type: DocumentType): string[] {
 }
 export const schemaHash = () =>
   hashObject(
-    Object.fromEntries(
-      DOCUMENT_TYPES.map((t) => [
-        t,
-        extractionFields(t).map((f) => f.attribute),
-      ]),
-    ),
+    Object.fromEntries(DOCUMENT_TYPES.map((t) => [t, extractionFields(t).map((f) => f.attribute)])),
   );
 /** Model-facing value shapes (A37 rule 6 and 7): money carries a currency, identifiers are last four only. */
 export const MODEL_VALUE_DESCRIPTIONS: Record<FactDefinition["value_type"], string> = {

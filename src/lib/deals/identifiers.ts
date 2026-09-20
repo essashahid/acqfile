@@ -2,9 +2,7 @@ import { maskIdentifier, scrubIdentifiers } from "@/lib/domain/evidence";
 export function piiKey() {
   const key = process.env.PII_HMAC_KEY;
   if (!key || key.length < 32)
-    throw Error(
-      "Configure PII_HMAC_KEY with at least 32 characters before deal intake.",
-    );
+    throw Error("Configure PII_HMAC_KEY with at least 32 characters before deal intake.");
   return key;
 }
 export type ReadIdentifier = {
@@ -23,11 +21,7 @@ export function protectText(text: string, page: number, key: string) {
     if (digits.length < 8 || digits.length > 17) continue;
     identifiers.push({
       ...maskIdentifier(clear, key),
-      kind: /^\d{3}-|ssn/i.test(m[0])
-        ? "ssn"
-        : /^\d{2}-|ein|tin/i.test(m[0])
-          ? "ein"
-          : "account",
+      kind: /^\d{3}-|ssn/i.test(m[0]) ? "ssn" : /^\d{2}-|ein|tin/i.test(m[0]) ? "ein" : "account",
       page,
     });
     text = text.replace(
@@ -48,9 +42,7 @@ export function protectText(text: string, page: number, key: string) {
 export function scrubPayload<T>(value: T): T {
   if (
     typeof value === "string" &&
-    (/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(
-      value,
-    ) ||
+    (/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value) ||
       /^[a-f0-9]{64}$/i.test(value))
   )
     return value;
@@ -61,8 +53,6 @@ export function scrubPayload<T>(value: T): T {
     ) as T;
   if (Array.isArray(value)) return value.map(scrubPayload) as T;
   if (value && typeof value === "object")
-    return Object.fromEntries(
-      Object.entries(value).map(([k, v]) => [k, scrubPayload(v)]),
-    ) as T;
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, scrubPayload(v)])) as T;
   return value;
 }

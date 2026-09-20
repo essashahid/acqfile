@@ -8,16 +8,10 @@ export async function GET(
   const { dealId, versionId } = await params;
   const ctx = await requireWorkspace();
   const url = new URL(request.url);
-  if (!validSourceUrl(url, dealId, versionId))
-    return new Response("Link expired", { status: 403 });
+  if (!validSourceUrl(url, dealId, versionId)) return new Response("Link expired", { status: 403 });
   let opened: Awaited<ReturnType<typeof openOriginal>>;
   try {
-    opened = await openOriginal(
-      ctx,
-      dealId,
-      versionId,
-      Number(url.searchParams.get("expires")),
-    );
+    opened = await openOriginal(ctx, dealId, versionId, Number(url.searchParams.get("expires")));
   } catch (error) {
     if (error instanceof Error && error.message === ORIGINAL_ACCESS_MESSAGE)
       return new Response(ORIGINAL_ACCESS_MESSAGE, { status: 403 });

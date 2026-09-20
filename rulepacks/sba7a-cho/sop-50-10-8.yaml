@@ -90,7 +90,8 @@ items:
         message: Page X of Y agrees with the supplied page range
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Detailed
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Detailed
         Purchase Agreement"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -190,7 +191,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B, Ch.1 C.2, Equity Requirements (C begins p.129). Pagination is the section-start page
+      citation:
+        SOP 50 10 8, Section B, Ch.1 C.2, Equity Requirements (C begins p.129). Pagination is the section-start page
         in the official DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
@@ -240,7 +242,8 @@ items:
             - true
     source_ref:
       class: sba_form
-      citation: SBA Form 159 (08-21), page 3, applicant and agent signature/date blocks; this citation does not assert the
+      citation:
+        SBA Form 159 (08-21), page 3, applicant and agent signature/date blocks; this citation does not assert the
         current form revision.
       url: https://legacy.sba.gov/sites/default/files/2022-02/SBA%20Form%20159_2.10.22-508_0.pdf
     verified: false
@@ -262,7 +265,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B, Ch.1 C.3.d.v, Business Valuation Requirements (C begins p.129). Pagination is the
+      citation:
+        SOP 50 10 8, Section B, Ch.1 C.3.d.v, Business Valuation Requirements (C begins p.129). Pagination is the
         section-start page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
@@ -295,7 +299,8 @@ items:
         tolerance_param: percent_tolerance
     source_ref:
       class: secondary
-      citation: "StatementsReady, How to Fill Out SBA Form 1919: revision 02/2025 and owner entries; the 100% ownership total
+      citation:
+        "StatementsReady, How to Fill Out SBA Form 1919: revision 02/2025 and owner entries; the 100% ownership total
         and every-owner comparison are AcqFile seed conventions, stronger than the form’s minimum listing coverage."
       url: https://statementsready.com/blog/how-to-fill-out-sba-form-1919
     verified: false
@@ -315,7 +320,8 @@ items:
         facts: []
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
         Organizational Documents"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -339,7 +345,8 @@ items:
         signed_only: true
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04:
         Organizational Documents"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -378,7 +385,8 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Buyer good standing; no inference from the
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Buyer good standing; no inference from the
         secondary article citation to 13 CFR 120.420"
     verified: false
   - id: ENT-06
@@ -397,7 +405,8 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Includes indirect owners; manual facts
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Includes indirect owners; manual facts
         permitted"
     verified: false
   - id: ENT-07a
@@ -470,7 +479,8 @@ items:
         tolerance_param: money_tolerance
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B, Ch.1 D, Owner Financial Statement (D begins p.144). Pagination is the section-start
+      citation:
+        SOP 50 10 8, Section B, Ch.1 D, Owner Financial Statement (D begins p.144). Pagination is the section-start
         page in the official DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
@@ -491,7 +501,8 @@ items:
         message: Page X of Y agrees with the supplied page range
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Personal
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Personal
         Tax Returns (Typically 3 Years)"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -558,7 +569,8 @@ items:
         note_key: citizenship_handling
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Evidence and manual lender discussion only;
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Evidence and manual lender discussion only;
         this is not a citizenship determination. Section A Ch.1 F differs between versions and later notices; see
         RULE_CANDIDATES.md."
     verified: false
@@ -581,7 +593,8 @@ items:
         signed_only: true
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Credit
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Credit
         Report Authorization"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -608,7 +621,8 @@ items:
         fact: party.legal_name
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Two latest completed calendar months per
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Two latest completed calendar months per
         declared cash source account; stronger than the cited 30-day evidence practice"
     verified: false
     period_requirement: last_two_months
@@ -643,7 +657,8 @@ items:
             - true
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
         Funds"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -671,7 +686,8 @@ items:
         fact: party.legal_name
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
         Funds"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -695,7 +711,8 @@ items:
         facts: []
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Gifted
         Funds"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -714,7 +731,8 @@ items:
         message: Required period is present
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
         Tax Returns"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -742,7 +760,8 @@ items:
         max_age_param: interim_days
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
         Financial Documentation"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -767,7 +786,8 @@ items:
         max_age_param: interim_days
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Business
         Debt Schedules"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -794,7 +814,8 @@ items:
           - party.identifier
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
         Years of Business Tax Returns and Financial Statements"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -820,7 +841,8 @@ items:
           - financial.total_liabilities
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Three
         Years of Business Tax Returns and Financial Statements"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -848,7 +870,8 @@ items:
         max_age_param: interim_days
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Interim
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Interim
         financials dated within 120 days"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -928,7 +951,8 @@ items:
           - debt.total
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Current
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Current
         Debt Schedule"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -955,7 +979,8 @@ items:
         max_age_param: irs_days
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed 4506-C; 120-day signature window is a
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed 4506-C; 120-day signature window is a
         synthetic seed convention, not a claim about IRS validity"
     verified: false
   - id: TGT-07a
@@ -980,7 +1005,8 @@ items:
           - lease.option_years
     source_ref:
       class: secondary
-      citation: "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Copies of
+      citation:
+        "Pioneer Capital Advisory, The Complete SBA Documentation Checklist for Business Buyers, 2025-12-04: Copies of
         Key Contracts"
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
@@ -1086,7 +1112,8 @@ items:
         note_key: franchise_directory
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section A Ch.1 G, Franchises (begins p.31). Pagination is the section-start page in the official
+      citation:
+        SOP 50 10 8, Section A Ch.1 G, Franchises (begins p.31). Pagination is the section-start page in the official
         DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
@@ -1190,7 +1217,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-02
@@ -1207,7 +1235,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-03
@@ -1224,7 +1253,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-04
@@ -1241,7 +1271,8 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
 consistency:
@@ -1436,7 +1467,8 @@ consistency:
             - true
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129). Pagination is the section-start page in
+      citation:
+        SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129). Pagination is the section-start page in
         the official DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
@@ -1467,7 +1499,8 @@ consistency:
                 - param: limited_fraction
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129); fixed 10% baseline is the AcqFile seed
+      citation:
+        SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129); fixed 10% baseline is the AcqFile seed
         convention. Pagination is the section-start page in the official DOCX table of contents; see
         docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
@@ -1656,7 +1689,8 @@ consistency:
                 - param: lease_years
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Ten-year review horizon; not a universal
+      citation:
+        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Ten-year review horizon; not a universal
         lease term determination"
     verified: false
     finding_type: conflict
@@ -1684,7 +1718,8 @@ consistency:
             - param: consulting_months
     source_ref:
       class: sop
-      citation: SOP 50 10 8, Section B Ch.1 A, Changes of Ownership (A begins p.113). Pagination is the section-start page in
+      citation:
+        SOP 50 10 8, Section B Ch.1 A, Changes of Ownership (A begins p.113). Pagination is the section-start page in
         the official DOCX table of contents; see docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
