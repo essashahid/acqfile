@@ -3,6 +3,8 @@ import { AlertTriangle, ArrowRight, FileWarning, Info, ListChecks, Send } from "
 import { requireStaff } from "@/lib/workspace";
 import { readDeal } from "@/lib/deals/service";
 import { dealView } from "@/lib/staff/deal-view";
+import { mutationAllowed } from "@/lib/access";
+import { staffRole } from "@/lib/staff/roles";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
 const MARK = {
@@ -38,13 +40,30 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
       ? "No blockers. Open items remain before the file is complete under the configured checks."
       : c.required.done === c.required.applicable
         ? "Every applicable required requirement is satisfied or waived under the configured checks."
-        : "No open findings. Some required requirements still have no accepted evidence.";
-  const actionable = v.work.filter((w) => w.kind !== "info");
+        : "No open findings. Some requirements still have no accepted evidence.";
+  const editable = mutationAllowed(ctx);
+  const actionable = v.work.filter(
+    (w) => w.kind !== "info" && (editable || w.kind !== "follow-up"),
+  );
+  if (ctx.workspace.role === "reviewer")
+    actionable.sort(
+      (a, b) =>
+        Number(["processing", "review"].includes(b.kind)) -
+        Number(["processing", "review"].includes(a.kind)),
+    );
+  const priorities = actionable.slice(0, 6);
   const informational = v.work.filter((w) => w.kind === "info");
   return (
     <>
       <PageHead
-        title="Overview"
+        title={
+          ctx.workspace.role === "admin"
+            ? "File oversight"
+            : editable
+              ? "Move the file forward"
+              : "Evidence and decisions"
+        }
+        eyebrow={staffRole(ctx.workspace.role)}
         subtitle={position}
         actions={
           <Link className="btn" href={`${base}/lender-file`}>
@@ -54,7 +73,13 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
       />
       <div className="space-y-5">
         <Card
-          title={actionable.length ? "What needs attention" : "Nothing needs attention"}
+          title={
+            actionable.length
+              ? editable
+                ? "Current priorities"
+                : "Focus your review"
+              : "No current issues"
+          }
           description={
             actionable.length
               ? "Most consequential first. Each item opens the evidence behind it."
@@ -64,7 +89,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
         >
           {actionable.length ? (
             <ul>
-              {actionable.map((w) => {
+              {priorities.map((w) => {
                 const m = MARK[w.kind];
                 return (
                   <li key={w.key} className="work">
@@ -75,7 +100,11 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
                       <p className="meta mt-1">{w.party}</p>
                     </div>
                     <Link className="btn btn-sm self-center" href={w.href}>
-                      {w.action}
+                      {editable
+                        ? w.action
+                        : w.kind === "review"
+                          ? "Inspect values"
+                          : "Inspect evidence"}
                       <ArrowRight size={13} aria-hidden />
                     </Link>
                   </li>
@@ -89,10 +118,41 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
           )}
         </Card>
 
+        {actionable.length > priorities.length ? (
+          <p className="meta">
+            Showing {priorities.length} current priorities.{" "}
+            <Link className="link" href={`${base}/review`}>
+              See all current findings
+            </Link>{" "}
+            or{" "}
+            <Link className="link" href={`${base}/documents`}>
+              open documents
+            </Link>
+            .
+          </p>
+        ) : null}
+        {!editable ? (
+          <Card
+            title="Review the record"
+            description="Inspect current coverage and the reasons behind completed decisions. No changes can be made from this account."
+          >
+            <div className="flex flex-wrap gap-3">
+              <Link className="btn" href={`${base}/requirements?show=all`}>
+                Evidence coverage
+              </Link>
+              <Link className="btn" href={`${base}/review?show=history`}>
+                Decision history
+              </Link>
+              <Link className="btn" href={`${base}/lender-file`}>
+                Version contents
+              </Link>
+            </div>
+          </Card>
+        ) : null}
         <div className="grid gap-5 lg:grid-cols-2">
           <Card
             title="Requirements"
-            description="Applicable required requirements only."
+            description="Applicable requirements only."
             actions={
               <Link className="link" href={`${base}/requirements`}>
                 Open
@@ -222,7 +282,11 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
                     <p className="meta mt-1">{w.party}</p>
                   </div>
                   <Link className="link self-center" href={w.href}>
-                    {w.action}
+                    {editable
+                      ? w.action
+                      : w.kind === "review"
+                        ? "Inspect values"
+                        : "Inspect evidence"}
                   </Link>
                 </li>
               ))}

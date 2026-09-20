@@ -3,7 +3,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { reviewFactAction, resolveGapAction, reclassifyAction } from "./actions";
 import { PdfPage } from "./PdfPage";
-import { formatValue } from "@/components/staff";
+import { Pill } from "@/components/staff";
+import { attributeName, factValue } from "@/lib/staff/labels";
+import { FACTS } from "@/lib/domain/registry";
+const display = (f: ReviewFact, value: unknown = f.value) =>
+  factValue(f.attribute, FACTS[f.attribute]?.unit ?? "text", value);
 export type ReviewFact = {
   id: string;
   attribute: string;
@@ -74,6 +78,7 @@ export function FactReview({
   url,
   blocks,
   facts,
+  history = [],
   gaps,
   editable,
 }: {
@@ -86,6 +91,7 @@ export function FactReview({
   url: string | null;
   blocks: { locator: string; page: number; text: string }[];
   facts: ReviewFact[];
+  history?: ReviewFact[];
   gaps: ReviewGap[];
   editable: boolean;
 }) {
@@ -163,7 +169,13 @@ export function FactReview({
           {url && pdf ? (
             <PdfPage url={url} page={page} />
           ) : (
-            <div className="max-h-[720px] space-y-2 overflow-auto">
+            <div className="max-h-[65vh] space-y-2 overflow-auto">
+              {!blocks.some((b) => b.page === page) ? (
+                <p className="meta">
+                  No text layer is available on this page. Recorded image reads appear beside it;
+                  originals require an Operator or Admin account.
+                </p>
+              ) : null}
               {blocks
                 .filter((b) => b.page === page)
                 .map((b) => (
@@ -171,7 +183,7 @@ export function FactReview({
                     key={b.locator}
                     className="rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] p-3"
                   >
-                    <p className="eyebrow mb-1">{b.locator}</p>
+                    <p className="eyebrow mb-1">Page {b.page}</p>
                     <p className="whitespace-pre-wrap text-[13px]">{b.text}</p>
                   </blockquote>
                 ))}
@@ -192,48 +204,51 @@ export function FactReview({
             {pending.map((f) => (
               <fieldset
                 key={f.id}
-                disabled={!editable || busy}
+                disabled={busy}
                 className="rowline"
                 aria-label={`Pending ${f.attribute}`}
               >
                 <legend className="sr-only">{f.attribute}</legend>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1.5">
-                  <h3>{f.attribute}</h3>
+                  <h3>{attributeName(f.attribute)}</h3>
                   <div className="flex items-center gap-2">
-                    <span className={`pill ${TONE[f.routing] ?? "pill-quiet"}`}>{f.routing}</span>
-                    <span className="pill pill-quiet">{f.method}</span>
+                    <Pill value={f.routing} />
+                    <span className="meta">
+                      {f.method === "manual" ? "Operator confirmed" : "Extracted"}
+                    </span>
                   </div>
                 </div>
 
                 <p className="mt-2 break-words text-[14px]" data-testid={`value-${f.attribute}`}>
-                  {formatValue(f.value)}
+                  {display(f)}
                 </p>
 
-                <div className="mt-3 flex items-center gap-2">
-                  <span className="eyebrow">Confidence</span>
-                  <span className="text-[15px] font-semibold tabular-nums">
-                    {f.confidence.toFixed(2)}
-                  </span>
-                </div>
-                <Components components={f.components} />
-
-                {f.verifierReason ? (
-                  <p className="meta mt-2">
-                    <span className="eyebrow">Verifier</span> {f.verifierReason}
-                  </p>
-                ) : null}
-                {f.correctedValue !== null && f.correctedValue !== undefined ? (
-                  <p className="mt-1.5 text-[13px]">
-                    <span className="eyebrow">Suggested</span>{" "}
-                    <span>{formatValue(f.correctedValue)}</span>
-                  </p>
-                ) : null}
-                {f.validation.length ? (
-                  <p className="meta mt-1.5">
-                    <span className="eyebrow">Checks</span> {f.validation.join(", ")}
-                  </p>
-                ) : null}
-
+                <details className="reveal mt-3">
+                  <summary>How this value was checked</summary>{" "}
+                  <div className="mt-3 flex items-center gap-2">
+                    <span className="eyebrow">Confidence</span>
+                    <span className="text-[15px] font-semibold tabular-nums">
+                      {f.confidence.toFixed(2)}
+                    </span>
+                  </div>
+                  <Components components={f.components} />
+                  {f.verifierReason ? (
+                    <p className="meta mt-2">
+                      <span className="eyebrow">Verifier</span> {f.verifierReason}
+                    </p>
+                  ) : null}
+                  {f.correctedValue !== null && f.correctedValue !== undefined ? (
+                    <p className="mt-1.5 text-[13px]">
+                      <span className="eyebrow">Suggested</span>{" "}
+                      <span>{display(f, f.correctedValue)}</span>
+                    </p>
+                  ) : null}
+                  {f.validation.length ? (
+                    <p className="meta mt-1.5">
+                      <span className="eyebrow">Checks</span> {f.validation.join(", ")}
+                    </p>
+                  ) : null}
+                </details>
                 <blockquote className="mt-3 rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-[13px]">
                   <button type="button" className="link" onClick={() => setPage(f.page)}>
                     Show page {f.page}
@@ -244,53 +259,65 @@ export function FactReview({
                   </p>
                 </blockquote>
 
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  <label className="flex flex-col gap-1">
-                    <span className="eyebrow">Edit value</span>
-                    <input
-                      aria-label={`Edit value ${f.attribute}`}
-                      className="font-mono"
-                      value={edits[f.id] ?? show(f.value)}
-                      onChange={(e) => setEdits({ ...edits, [f.id]: e.target.value })}
-                    />
-                  </label>
-                  <label className="flex flex-col gap-1">
-                    <span className="eyebrow">Comment (required)</span>
-                    <input
-                      aria-label={`Comment ${f.attribute}`}
-                      required
-                      value={comments[f.id] ?? ""}
-                      onChange={(e) => setComments({ ...comments, [f.id]: e.target.value })}
-                    />
-                  </label>
-                </div>
+                {editable ? (
+                  <>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      <label className="flex flex-col gap-1">
+                        <span className="eyebrow">Edit value</span>
+                        <input
+                          aria-label={`Edit value ${f.attribute}`}
+                          className="font-mono"
+                          value={edits[f.id] ?? show(f.value)}
+                          onChange={(e) => setEdits({ ...edits, [f.id]: e.target.value })}
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1">
+                        <span className="eyebrow">Comment (required)</span>
+                        <input
+                          aria-label={`Comment ${f.attribute}`}
+                          required
+                          value={comments[f.id] ?? ""}
+                          onChange={(e) => setComments({ ...comments, [f.id]: e.target.value })}
+                        />
+                      </label>
+                    </div>
 
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={() => decide(f, "accept")}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    onClick={() => decide(f, "edit_accept")}
-                  >
-                    Edit and accept
-                  </button>
-                  <button type="button" className="btn btn-sm" onClick={() => decide(f, "reject")}>
-                    Reject
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    onClick={() => decide(f, "needs_source")}
-                  >
-                    Needs a better copy
-                  </button>
-                </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() => decide(f, "accept")}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => decide(f, "edit_accept")}
+                      >
+                        Edit and accept
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => decide(f, "reject")}
+                      >
+                        Reject
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => decide(f, "needs_source")}
+                      >
+                        Needs a better copy
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <p className="meta mt-3">
+                    Awaiting an operator decision. You can inspect the source and recorded checks.
+                  </p>
+                )}
               </fieldset>
             ))}
             {!pending.length ? (
@@ -309,7 +336,7 @@ export function FactReview({
               {gaps.map((g) => (
                 <fieldset
                   key={g.id}
-                  disabled={!editable || busy}
+                  disabled={busy}
                   className="rowline"
                   aria-label={`Gap ${g.attribute ?? g.type}`}
                 >
@@ -319,7 +346,7 @@ export function FactReview({
                     <span className="pill pill-quiet">{g.type.replaceAll("_", " ")}</span>
                   </div>
                   <p className="meta mt-1.5">{g.reason}</p>
-                  {g.type === "extraction_gap" ? (
+                  {g.type === "extraction_gap" && editable ? (
                     <>
                       <div className="mt-3 grid gap-2 sm:grid-cols-2">
                         <label className="flex flex-col gap-1">
@@ -401,11 +428,24 @@ export function FactReview({
                 <tbody>
                   {decided.map((f) => (
                     <tr key={f.id}>
-                      <td className="font-medium">{f.attribute}</td>
-                      <td className="break-words">{formatValue(f.value)}</td>
+                      <td className="font-medium">
+                        {attributeName(f.attribute)}
+                        <button
+                          type="button"
+                          className="link block mt-1"
+                          onClick={() => setPage(f.page)}
+                        >
+                          Show page {f.page}
+                        </button>
+                        <blockquote className="meta mt-2 italic">
+                          {f.quote}
+                          {f.verbatim ? "" : " (as read, not verbatim)"}
+                        </blockquote>
+                      </td>
+                      <td className="min-w-28">{display(f)}</td>
                       <td>
                         <span className={`pill ${TONE[f.routing] ?? "pill-quiet"}`}>
-                          {f.routing}
+                          {f.routing.replaceAll("_", " ")}
                         </span>
                         <p className="meta mt-1">{f.method}</p>
                         {f.reviewNote ? <p className="meta">{f.reviewNote}</p> : null}
@@ -420,6 +460,38 @@ export function FactReview({
             )}
           </div>
         </section>
+
+        {history.length ? (
+          <details className="reveal">
+            <summary>Earlier value records ({history.length})</summary>
+            <section className="card mt-3">
+              <div className="card-head">
+                <h2>Value history</h2>
+                <p className="meta">
+                  Earlier records are preserved; only current accepted values feed the file checks.
+                </p>
+              </div>
+              <ul>
+                {history.map((f) => (
+                  <li key={f.id} className="rowline">
+                    <h3>{attributeName(f.attribute)}</h3>
+                    <p>
+                      {display(f)}{" "}
+                      <span className="meta">
+                        · Version {f.recordVersion} · {f.routing.replaceAll("_", " ")}
+                      </span>
+                    </p>
+                    {f.reviewNote ? <p className="meta">{f.reviewNote}</p> : null}
+                    <blockquote className="meta italic mt-2">{f.quote}</blockquote>
+                    <button type="button" className="link mt-2" onClick={() => setPage(f.page)}>
+                      Show page {f.page}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </details>
+        ) : null}
 
         {editable ? (
           <section className="card">
@@ -436,7 +508,7 @@ export function FactReview({
                   e.preventDefault();
                   void run("Sent back to filing", async () => {
                     const version = await reclassifyAction(dealId, segmentId, reclassifyNote);
-                    router.push(`/staff/deals/${dealId}/files/${version}`);
+                    router.push(`/staff/deals/${dealId}/documents/${version}`);
                   });
                 }}
               >

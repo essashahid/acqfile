@@ -146,3 +146,7 @@ These rulings replace earlier Phase 7 requests wherever they conflict.
 - **A97. What A76 bans and allows.** Banned on customer pages: item-completion ratios ("41 of 58"), percentages and progress bars. Allowed: the stage position ("Step 2 of 4"), a person's place in their own short list ("1 of 3 things to do"), and plain facts about a file ("2 of 6 pages").
 
 Staff area: keep the existing working screens there, restyled lightly. Do not redesign them in this phase. These rulings supersede planning decisions 116–119 where they conflict: no separate invented-person demo variant; A55 is supplied; photo conversion is authorized.
+
+## Owner-authorized staff redesign (2026-09-21)
+
+The complete role-aware staff redesign in `docs/STAFF_REDESIGN.md` supersedes the earlier Phase 7 restriction to lightly restyle staff. Existing permissions, engine, pipeline, tenant boundaries, audit/provenance and immutable versions remain authoritative. Adviser is the visual benchmark, not a workflow template. No new role capabilities or lending policy are authorized.

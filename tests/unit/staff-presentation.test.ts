@@ -80,6 +80,37 @@ describe("follow-up drafts are written for the recipient", () => {
   const party = () => "Ostrelyva Acquisition LLC";
   const doc = (_v: string, page: number | null) => `SBA Form 1919, page ${page}`;
 
+  it("does not describe a lease-horizon check as two conflicting values", () => {
+    const items = draftItems(
+      [
+        finding({
+          type: "conflict",
+          detailsJson: { message: "Lease and options cover the review horizon", details: [] },
+        }),
+      ],
+      new Map([
+        [
+          "ENT-01",
+          rule({
+            accepts: ["LEASE"],
+            checks: [
+              {
+                type: "date_order",
+                message: "Lease and options cover the review horizon",
+                expr: true,
+              },
+            ],
+          }),
+        ],
+      ]),
+      party,
+      doc,
+    );
+    expect(items[0]!.ask).toContain("check the lease");
+    expect(items[0]!.ask).not.toContain("which value");
+    expect(items[0]!.because).toContain("could not confirm that lease and options cover");
+  });
+
   it("never leaks rule parameters, paths, enums or a null page", () => {
     const items = draftItems(
       [
@@ -154,4 +185,21 @@ describe("follow-up drafts are written for the recipient", () => {
     expect(items[0]!.sides).toHaveLength(2);
     expect(items[0]!.ask).not.toMatch(/should be|is right|use the/i);
   });
+});
+
+it("keeps technical messages out of the actual outgoing draft", () => {
+  const items = draftItems(
+    [
+      finding({
+        detailsJson: {
+          message: 'unknown: source_account_last_four; rule parameters {"limit": 1}',
+          details: [],
+        },
+      }),
+    ],
+    new Map([["ENT-01", rule()]]),
+    () => "Synthetic party",
+    () => "Document",
+  );
+  expect(items[0]!.because).not.toMatch(/source_account|parameters|unknown:|[{}]/);
 });

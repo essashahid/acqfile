@@ -1,3 +1,5 @@
+import { requirementEvidence } from "@/lib/staff/evidence";
+import { DecisionForm } from "@/components/staff/DecisionForm";
 import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
@@ -5,7 +7,7 @@ import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { dealView, requirementGroups } from "@/lib/staff/deal-view";
-import { checkOutcome, STATUS_MEANING } from "@/lib/staff/labels";
+import { checkOutcome, documentName, STATUS_MEANING } from "@/lib/staff/labels";
 import { attestAction } from "../../deliverable-actions";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
@@ -29,13 +31,14 @@ export default async function Requirements({
     .select()
     .from(schema.attestations)
     .where(eq(schema.attestations.dealId, dealId));
-  const saved = (kind: string, ruleId: string, scope: string, period: string) =>
+  const saved = (kind: string, ruleId: string, scope: string, period: string, key = "") =>
     attestations.find(
       (a) =>
         a.kind === kind &&
         a.ruleId === ruleId &&
         a.scopeKey === scope &&
-        (a.period ?? "") === (period ?? ""),
+        (a.period ?? "") === (period ?? "") &&
+        a.key === key,
     );
   const show = q.show === "all" ? "all" : q.show === "not_applicable" ? "not_applicable" : "open";
   const visible = v.index.filter((r) =>
@@ -56,7 +59,7 @@ export default async function Requirements({
     <>
       <PageHead
         title="Requirements"
-        subtitle={`${c.required.done} of ${c.required.applicable} applicable required requirements satisfied or waived. ${c.notApplicable} not applicable, excluded from that count.`}
+        subtitle={`${c.required.done} of ${c.required.applicable} applicable requirements satisfied or waived. ${c.notApplicable} not applicable, excluded from that count.`}
       />
       <Card className="mb-5">
         <div className="flex flex-wrap items-center gap-2">
@@ -78,7 +81,7 @@ export default async function Requirements({
           <Card
             key={g.name}
             title={g.name}
-            description={`${g.rows.filter((r) => ["satisfied", "waived"].includes(r.status)).length} of ${g.rows.length} satisfied or waived`}
+            description={`${g.rows.length} requirements in this view · ${g.rows.filter((r) => r.status === "not_applicable").length} not applicable`}
             flush
           >
             <table className="grid">
@@ -93,6 +96,7 @@ export default async function Requirements({
               <tbody>
                 {g.rows.map((r) => {
                   const rule = v.rules.get(r.item_id)!;
+                  const evidence = requirementEvidence(v, r);
                   const failed = r.checks.filter((ch) => ch.result !== "pass");
                   const tracking = rule.checks.find((ch) => ch.type === "tracking");
                   const confirmations = rule.checks.filter(
@@ -101,7 +105,11 @@ export default async function Requirements({
                   // GUA-02 repeats per party and period, so identity is the full row key.
                   const rowKey = `${r.item_id}|${r.scope_key}|${r.period}`;
                   return (
-                    <tr key={rowKey} data-testid={`${r.item_id}-${r.scope_key}-${r.period}`}>
+                    <tr
+                      id={rowKey}
+                      key={rowKey}
+                      data-testid={`${r.item_id}-${r.scope_key}-${r.period}`}
+                    >
                       <td>
                         <p className="font-semibold">{r.item}</p>
                         <p className="meta mt-0.5">
@@ -114,21 +122,21 @@ export default async function Requirements({
                         <p className="meta mt-1.5">{STATUS_MEANING[r.status]}</p>
                       </td>
                       <td>
-                        {r.segments.length ? (
+                        {evidence.length ? (
                           <ul className="space-y-1">
-                            {r.segments.slice(0, 3).map((s) => (
+                            {evidence.map((s) => (
                               <li key={s.id}>
                                 <Link
                                   className="link"
                                   href={`/staff/deals/${dealId}/documents/${s.versionId}?page=${s.page}`}
                                 >
-                                  {s.label}
+                                  {documentName(
+                                    v.segments.find((document) => document.id === s.id)?.docType ??
+                                      s.label,
+                                  )}
                                 </Link>
                               </li>
                             ))}
-                            {r.segments.length > 3 ? (
-                              <li className="meta">and {r.segments.length - 3} more</li>
-                            ) : null}
                           </ul>
                         ) : (
                           <span className="meta">No document filed against this requirement.</span>
@@ -141,7 +149,7 @@ export default async function Requirements({
                       </td>
                       <td>
                         <details className="reveal">
-                          <summary>Checks and rule</summary>
+                          <summary>Checks and decisions</summary>
                           <div className="mt-2 space-y-3">
                             <ul className="space-y-1.5">
                               {r.checks.map((ch, i) => {
@@ -162,10 +170,31 @@ export default async function Requirements({
                             <p className="meta">
                               Rule {r.item_id} · responsible {rule.responsible} · unverified
                             </p>
+                            {attestations
+                              .filter(
+                                (a) =>
+                                  a.ruleId === r.item_id &&
+                                  a.scopeKey === r.scope_key &&
+                                  (a.period ?? "") === (r.period ?? ""),
+                              )
+                              .map((a) => (
+                                <div key={a.id} className="border-t border-[var(--line)] pt-2">
+                                  <p className="font-medium">
+                                    {a.kind === "tracking"
+                                      ? `Lender tracking: ${a.state?.replaceAll("_", " ")}`
+                                      : a.kind === "waiver"
+                                        ? "Requirement waived"
+                                        : a.confirmed
+                                          ? "Confirmed by an operator"
+                                          : "Not confirmed"}
+                                  </p>
+                                  <p className="meta">{a.note}</p>
+                                </div>
+                              ))}
                             {editable ? (
                               <div className="space-y-3 border-t border-[var(--line)] pt-3">
                                 {tracking ? (
-                                  <form
+                                  <DecisionForm
                                     action={attestAction.bind(null, dealId)}
                                     className="space-y-1.5"
                                   >
@@ -200,7 +229,7 @@ export default async function Requirements({
                                       required
                                     />
                                     <button className="btn btn-sm w-full">Save tracking</button>
-                                  </form>
+                                  </DecisionForm>
                                 ) : null}
                                 {confirmations.map((ch, i) => {
                                   const on = saved(
@@ -208,6 +237,7 @@ export default async function Requirements({
                                     r.item_id,
                                     r.scope_key,
                                     r.period,
+                                    ch.note_key ?? "",
                                   );
                                   return (
                                     <form
@@ -249,7 +279,7 @@ export default async function Requirements({
                                   );
                                 })}
                                 {r.status !== "waived" && r.status !== "not_applicable" ? (
-                                  <form
+                                  <DecisionForm
                                     action={attestAction.bind(null, dealId)}
                                     className="space-y-1.5"
                                   >
@@ -272,7 +302,7 @@ export default async function Requirements({
                                       />
                                     </label>
                                     <button className="btn btn-sm w-full">Waive row</button>
-                                  </form>
+                                  </DecisionForm>
                                 ) : null}
                               </div>
                             ) : null}

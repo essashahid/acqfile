@@ -20,7 +20,13 @@ const DIFF_LABEL: Record<keyof SnapshotDiff, string> = {
   waivers: "Requirements waived",
 };
 
-export default async function LenderFile({ params }: { params: Promise<{ dealId: string }> }) {
+export default async function LenderFile({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ dealId: string }>;
+  searchParams: Promise<{ version?: string }>;
+}) {
   const { dealId } = await params;
   const ctx = await requireStaff();
   await requireDeal(ctx, dealId);
@@ -29,7 +35,8 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
   const editable = mutationAllowed(ctx);
   const canDownload = originalAccessAllowed(ctx);
   const complete = c.required.done === c.required.applicable && c.blockers === 0;
-  const latest = v.snapshots[0];
+  const selected = (await searchParams).version;
+  const latest = v.snapshots.find((s) => String(s.number) === selected) ?? v.snapshots[0];
   return (
     <>
       <PageHead
@@ -144,8 +151,8 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
                   </div>
                   <p className="meta mt-4">
                     Contains a printable report, a workbook of the index, missing items, conflicts
-                    and the source record, and a folder of renamed copies. Identifiers are masked
-                    throughout.
+                    and the source record, and a folder of renamed original copies. Identifiers are
+                    masked in generated reports; originals retain their supplied contents.
                   </p>
                   <div className="mt-4 border-t border-[var(--line)] pt-4">
                     <p className="eyebrow mb-2">Changed since the previous version</p>
@@ -158,7 +165,16 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
                           <li key={k}>
                             <span className="font-medium">{DIFF_LABEL[k]}:</span>{" "}
                             <span className="meta">
-                              {Array.isArray(value) ? value.join("; ") : value}
+                              {Array.isArray(value)
+                                ? value
+                                    .map((entry) =>
+                                      entry.replace(
+                                        /^[A-Z]+-\d+[a-z]?/,
+                                        (id) => v.rules.get(id)?.title ?? id,
+                                      ),
+                                    )
+                                    .join("; ")
+                                : value}
                             </span>
                           </li>
                         );
@@ -172,7 +188,7 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
                     </ul>
                   </div>
                   <details className="reveal mt-4">
-                    <summary>Manifest and hashes</summary>
+                    <summary>Included files and original details</summary>
                     <table className="grid mt-2">
                       <thead>
                         <tr>
@@ -208,7 +224,7 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
         )}
 
         {v.snapshots.length > 1 ? (
-          <Card title="Earlier versions" description="Earlier versions never change." flush>
+          <Card title="Other versions" description="Earlier versions never change." flush>
             <table className="grid">
               <thead>
                 <tr>
@@ -220,34 +236,40 @@ export default async function LenderFile({ params }: { params: Promise<{ dealId:
                 </tr>
               </thead>
               <tbody>
-                {v.snapshots.slice(1).map((s) => {
-                  const content = s.contentJson as SnapshotContent;
-                  return (
-                    <tr key={s.id}>
-                      <td className="num font-medium">{s.number}</td>
-                      <td className="num">{s.createdAt.toISOString().slice(0, 10)}</td>
-                      <td className="num">
-                        {content.readiness.satisfied} of {content.readiness.applicable}
-                      </td>
-                      <td className="num">{content.manifest.length}</td>
-                      <td>
-                        {canDownload ? (
-                          <Link
-                            className="link"
-                            href={sourceUrl(dealId, s.id).replace(
-                              `/files/${s.id}/source`,
-                              `/lender-file/${s.id}`,
-                            )}
-                          >
-                            ZIP
+                {v.snapshots
+                  .filter((s) => s.id !== latest?.id)
+                  .map((s) => {
+                    const content = s.contentJson as SnapshotContent;
+                    return (
+                      <tr key={s.id}>
+                        <td className="num font-medium">
+                          <Link className="link" href={`?version=${s.number}`}>
+                            Version {s.number}
                           </Link>
-                        ) : (
-                          <span className="meta">—</span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                        </td>
+                        <td className="num">{s.createdAt.toISOString().slice(0, 10)}</td>
+                        <td className="num">
+                          {content.readiness.satisfied} of {content.readiness.applicable}
+                        </td>
+                        <td className="num">{content.manifest.length}</td>
+                        <td>
+                          {canDownload ? (
+                            <Link
+                              className="link"
+                              href={sourceUrl(dealId, s.id).replace(
+                                `/files/${s.id}/source`,
+                                `/lender-file/${s.id}`,
+                              )}
+                            >
+                              ZIP
+                            </Link>
+                          ) : (
+                            <span className="meta">—</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </Card>

@@ -51,8 +51,8 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
         {!drafts.length ? (
           <Card>
             <Empty>
-              No open findings, so there is nothing to ask anyone for. Findings already recorded as
-              sent appear in the history below.
+              No new actionable findings need a draft. Findings already recorded as sent appear in
+              the history below.
             </Empty>
           </Card>
         ) : null}
@@ -103,11 +103,19 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
               <tbody>
                 {v.requests.map((r) => {
                   const stillOpen = v.findings.filter(
-                    (f) => r.findingKeys.includes(f.findingKey) && f.status === "requested",
+                    (f) =>
+                      r.findingKeys.includes(f.findingKey) &&
+                      (f.status === "requested" || f.status === "open"),
                   ).length;
                   return (
                     <tr key={r.id}>
-                      <td className="font-medium">{r.responsible}</td>
+                      <td className="font-medium">
+                        {r.responsible}
+                        <details className="reveal mt-2">
+                          <summary>Recorded message</summary>
+                          <pre className="mt-2 whitespace-pre-wrap font-sans text-sm">{r.body}</pre>
+                        </details>
+                      </td>
                       <td className="num">{r.sentAt?.toISOString().slice(0, 10) ?? "—"}</td>
                       <td className="num">{ageInDays(r.sentAt)} days</td>
                       <td className="num">{r.findingKeys.length}</td>
@@ -115,7 +123,7 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
                         {stillOpen ? (
                           <span className="pill pill-warn">{stillOpen} awaiting</span>
                         ) : (
-                          <span className="pill pill-ok">All answered</span>
+                          <span className="pill pill-ok">No linked findings open</span>
                         )}
                       </td>
                     </tr>

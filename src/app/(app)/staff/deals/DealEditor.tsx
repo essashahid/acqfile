@@ -81,16 +81,18 @@ function Fields({
   onChange,
   name,
   path,
+  parties = [],
 }: {
   value: Value;
   onChange: (v: Value) => void;
   name: string;
   path: string;
+  parties?: { id: string; legal_name: string }[];
 }) {
-  const input = "rounded border border-slate-300 bg-white px-2 py-1 text-sm w-full";
+  const input = "w-full";
   if (Array.isArray(value))
     return (
-      <fieldset className="col-span-full rounded border border-slate-200 p-3 space-y-3">
+      <fieldset className="col-span-full rounded-xl border border-[var(--line)] p-4 space-y-4">
         <legend>{label(name)}</legend>
         {value.map((v, i) => (
           <div key={i} className="flex gap-2">
@@ -98,6 +100,7 @@ function Fields({
               <Fields
                 value={v}
                 name={name === "roles" ? "roles" : `${name} ${i + 1}`}
+                parties={parties}
                 path={`${path}.${i}`}
                 onChange={(next) => onChange(value.map((old, j) => (i === j ? next : old)))}
               />
@@ -126,13 +129,14 @@ function Fields({
     );
   if (value && typeof value === "object")
     return (
-      <fieldset className="col-span-full rounded border border-slate-200 p-3 grid gap-3 sm:grid-cols-2">
+      <fieldset className="col-span-full rounded-xl border border-[var(--line)] p-4 grid gap-4 sm:grid-cols-2">
         <legend>{label(name)}</legend>
         {Object.entries(value).map(([k, v]) => (
           <Fields
             key={k}
             value={v}
             name={k}
+            parties={parties}
             path={`${path}.${k}`}
             onChange={(next) => onChange({ ...value, [k]: next })}
           />
@@ -175,7 +179,22 @@ function Fields({
   return (
     <label className="block text-sm">
       {label(name)}
-      {choices ? (
+      {["owner_party_id", "owned_party_id", "party"].includes(name) ? (
+        <select
+          aria-label={path}
+          className={input}
+          value={String(value ?? "")}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="">Choose a party</option>
+          <option value="unknown">Unknown</option>
+          {parties.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.legal_name}
+            </option>
+          ))}
+        </select>
+      ) : choices ? (
         <select
           aria-label={path}
           className={input}
@@ -183,7 +202,9 @@ function Fields({
           onChange={(e) => onChange(e.target.value)}
         >
           {choices.map((v) => (
-            <option key={v}>{v}</option>
+            <option key={v} value={v}>
+              {label(v)}
+            </option>
           ))}
         </select>
       ) : (
@@ -251,7 +272,7 @@ export function DealEditor({
   return (
     <div className="space-y-5">
       <details>
-        <summary>Import profile JSON</summary>
+        <summary className="link cursor-pointer">Advanced: import a profile</summary>
         <label className="block">
           Profile JSON
           <textarea
@@ -304,11 +325,17 @@ export function DealEditor({
           }
         }}
       >
-        <Fields value={value} name="Deal profile and parties" path="deal" onChange={setValue} />
+        <Fields
+          value={value}
+          name="Deal profile and parties"
+          path="deal"
+          parties={(value as { parties?: { id: string; legal_name: string }[] }).parties ?? []}
+          onChange={setValue}
+        />
         <p role="alert" className="text-red-700 whitespace-pre-wrap">
           {error}
         </p>
-        <button disabled={busy} className="mt-4 rounded bg-teal-800 px-4 py-2 text-white">
+        <button disabled={busy} className="btn btn-primary mt-4">
           {busy ? "Saving…" : "Save deal"}
         </button>
       </form>

@@ -25,3 +25,5 @@
 **Issues resolved during proof.** Fixed file-picker overflow, overlapping polls, evidence omitted by the export index, bundle labels/correction targeting, old-document notices on new photos, and non-applicable lender rows in ready copy. No engine/truth disagreement was patched by copying output into truth. A55/A90–97 resolve the earlier name, count, photo and frozen-fixture contradictions; no unresolved specification contradiction remains.
 
 **Live run:** `pnpm eval:live` skipped: no owner key, $0 spent. Live extraction, especially scans, remains the largest open risk. Phase 7 ends here.
+
+The subsequently authorized complete staff redesign is documented in [its separate proof](staff-redesign-proof.md), with the role matrix, route map and screenshot gallery. The accepted customer-phase proof above is retained.

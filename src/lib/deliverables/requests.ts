@@ -6,7 +6,7 @@ import { requireDeal } from "@/lib/deals/service";
 import type { SessionContext } from "@/lib/workspace";
 import { buildIndex } from "./index-build";
 import type { Rule } from "@/lib/rules/schema";
-import { documentName, factValue } from "@/lib/staff/labels";
+import { attributeName, documentName, factValue } from "@/lib/staff/labels";
 
 type Finding = typeof schema.findings.$inferSelect;
 type Detail = {
@@ -35,6 +35,7 @@ export function draftItems(
   rules: Map<string, Rule>,
   partyOf: (id: string) => string,
   documentOf: (versionId: string, page: number | null) => string,
+  valueOf: (detail: Detail) => string = (d) => factValue("", "text", d.value),
 ): DraftItem[] {
   return findings.map((f) => {
     const rule = rules.get(f.ruleId);
@@ -51,19 +52,27 @@ export function draftItems(
     );
     const what = `${f.period ? `${f.period} ` : ""}${named}`;
     const condition = lowerFirst(conditionOf(details.message));
+    const relationshipCheck = rule?.checks?.some((check) =>
+      ["arithmetic", "fact_comparison", "date_order"].includes(check.type),
+    );
     if (f.type === "conflict")
       return {
-        ask: `Please confirm which value is correct${who}.`,
-        because:
-          "The documents supplied give different values, so we do not know which one to use.",
+        ask: relationshipCheck
+          ? `Please check the ${what}${who} and clarify or correct the information below.`
+          : `Please confirm which value is correct${who}.`,
+        because: relationshipCheck
+          ? `We could not confirm that ${condition}.`
+          : "The documents supplied give different values, so we do not know which one to use.",
         // Only a conflict needs both sides; every other type is a single clear request.
         sides: details.details
-          .filter((d) => d.page !== null)
+          .filter((d) => d.fact_id !== null)
           .map((d) => ({
-            value: factValue("", "text", d.value),
+            value: valueOf(d),
             source: documentOf(d.file, d.page),
           }))
-          .filter((s, i, all) => all.findIndex((o) => o.value === s.value) === i),
+          .filter(
+            (s, i, all) => all.findIndex((o) => o.value === s.value && o.source === s.source) === i,
+          ),
       };
     if (f.type === "missing")
       return {
@@ -95,7 +104,18 @@ export function draftItems(
 const midSentence = (name: string) =>
   /^(SBA|IRS|EIN|QOE|CIM)\b/.test(name) ? name : name.charAt(0).toLowerCase() + name.slice(1);
 
-const conditionOf = (message: string) => message.replace(/^(fail|pass|unknown):\s*/i, "").trim();
+const conditionOf = (message: string) => {
+  const readable = message
+    .replace(/\b(fail|pass|unknown):\s*/gi, "")
+    .replace(
+      /every current confirmed segment matches a deal party/gi,
+      "the document belongs to a person or business in this deal",
+    )
+    .trim();
+  return /[{}]|\b[a-z]+_[a-z_]+\b|\b(?:null|undefined)\b/.test(readable)
+    ? "all the information needed is present; please check the document and send a complete copy"
+    : readable.replace(/[.;]+$/, "");
+};
 const lowerFirst = (t: string) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : "the requirement");
 
 export function draftBody(
@@ -105,10 +125,11 @@ export function draftBody(
   rules: Map<string, Rule>,
   partyOf: (id: string) => string,
   documentOf: (versionId: string, page: number | null) => string,
+  valueOf?: (detail: Detail) => string,
 ) {
   // An informational finding is context, not a request. It is never turned into a demand.
   const asks = findings.filter((f) => f.type !== "info" && f.severity !== "info");
-  const items = draftItems(asks, rules, partyOf, documentOf);
+  const items = draftItems(asks, rules, partyOf, documentOf, valueOf);
   const lines = [
     `Documents needed for ${deal.name}`,
     "",
@@ -136,11 +157,14 @@ export function draftBody(
 /** Rebuild one draft per responsible party from the currently open findings. */
 export async function buildDrafts(context: SessionContext, dealId: string) {
   await requireDeal(context, dealId);
-  const { deal, findings, versions, partyName, rules } = await buildIndex(dealId);
-  const { segments } = await buildIndex(dealId);
+  const { deal, findings, versions, partyName, rules, segments, facts } = await buildIndex(dealId);
   // A recipient recognises "SBA Form 1919, page 2", never an internal path or an identifier.
   const documentOf = (versionId: string, page: number | null) => {
-    const segment = segments.find((s) => s.documentVersionId === versionId);
+    const segment = segments.find(
+      (s) =>
+        s.documentVersionId === versionId &&
+        (page === null || (s.pageStart <= page && s.pageEnd >= page)),
+    );
     const name = segment ? documentName(segment.docType) : null;
     if (!name)
       return versions.some((v) => v.id === versionId)
@@ -149,7 +173,7 @@ export async function buildDrafts(context: SessionContext, dealId: string) {
     return page === null ? name : `${name}, page ${page}`;
   };
   const open = findings
-    .filter((f) => f.status === "open")
+    .filter((f) => f.status === "open" && f.type !== "info" && f.severity !== "info")
     .sort((a, b) => a.findingKey.localeCompare(b.findingKey));
   const recipient = (f: Finding) => {
     const rule = rules.get(f.ruleId);
@@ -163,7 +187,15 @@ export async function buildDrafts(context: SessionContext, dealId: string) {
     return {
       responsible,
       findingKeys: mine.map((f) => f.findingKey),
-      body: draftBody(deal, responsible, mine, rules, partyName, documentOf),
+      body: draftBody(deal, responsible, mine, rules, partyName, documentOf, (detail) => {
+        const fact = facts.find((f) => f.id === detail.fact_id);
+        const value = factValue(
+          fact?.attribute ?? "",
+          fact?.unit ?? "text",
+          fact?.valueJson ?? detail.value,
+        );
+        return fact ? `${attributeName(fact.attribute)}: ${value}` : value;
+      }),
       /** Informational findings travel with the group but never become a demand. */
       informational: mine.filter((f) => f.type === "info" || f.severity === "info").length,
     };

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /** Page title, one line of context, and the actions that belong to the page. */
@@ -174,29 +173,4 @@ export function StatRow({ children }: { children: ReactNode }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return <p className="meta py-1">{children}</p>;
-}
-
-/** Deal tabs. Rendered server-side; the active tab comes from the caller. */
-export function DealTabs({ dealId, current }: { dealId: string; current: string }) {
-  const tabs = [
-    ["overview", "Overview", ""],
-    ["checklist", "Checklist", "/checklist"],
-    ["findings", "Findings", "/findings"],
-    ["requests", "Requests", "/requests"],
-    ["package", "Lender file", "/package"],
-  ] as const;
-  return (
-    <nav className="tabs mb-5" aria-label="Deal sections">
-      {tabs.map(([key, label, path]) => (
-        <Link
-          key={key}
-          href={`/staff/deals/${dealId}${path}`}
-          className="tab"
-          aria-current={key === current ? "page" : undefined}
-        >
-          {label}
-        </Link>
-      ))}
-    </nav>
-  );
 }

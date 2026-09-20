@@ -69,7 +69,10 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
   const firstContent = first.contentJson as SnapshotContent;
   const drafts = await buildDrafts(ctx, d.id);
   const keys = drafts.flatMap((d) => d.findingKeys);
-  const open = (await buildIndex(d.id)).findings.filter((f) => f.status === "open");
+  const allOpen = (await buildIndex(d.id)).findings.filter((f) => f.status === "open");
+  const open = allOpen.filter((f) => f.type !== "info" && f.severity !== "info");
+  for (const info of allOpen.filter((f) => f.type === "info" || f.severity === "info"))
+    expect(keys).not.toContain(info.findingKey);
   expect(new Set(keys).size).toBe(keys.length);
   expect(keys.sort()).toEqual(open.map((f) => f.findingKey).sort());
   for (const d of drafts)

@@ -4,7 +4,8 @@ import { PRODUCT_NAME } from "@/lib/product";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, ShieldCheck } from "lucide-react";
-import { StatusBadge } from "@/components/ui/badge";
+import { staffRole } from "@/lib/staff/roles";
+import type { WorkspaceRole } from "@/lib/workspace";
 import { FormButton } from "@/components/FormButton";
 import { NAV_ORDER, SECTIONS, sectionForPath } from "@/lib/sections";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,32 @@ export function AppNav({
           {PRODUCT_NAME}
         </Link>
 
+        <nav aria-label="Main" className="hidden md:block">
+          <ul className="flex min-w-max gap-0.5">
+            {NAV_ORDER.map((key) => {
+              const s = SECTIONS[key];
+              const active = current === key;
+              return (
+                <li key={key}>
+                  <Link
+                    href={s.href}
+                    aria-current={active ? "page" : undefined}
+                    title={s.blurb}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-lg px-3 py-2 text-[14px] font-medium transition-colors",
+                      active
+                        ? "bg-[var(--accent-soft)] text-[var(--accent)]"
+                        : "border-transparent text-[var(--muted)] hover:text-[var(--fg)]",
+                    )}
+                  >
+                    <s.icon size={15} aria-hidden strokeWidth={active ? 2.2 : 1.9} />
+                    {s.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
         <div className="flex min-w-0 items-center gap-2.5">
           <span
             className="hidden max-w-[220px] truncate text-[12.5px] text-[var(--muted)] xl:block"
@@ -55,7 +82,7 @@ export function AppNav({
             {workspaceName}
           </span>
           <span aria-hidden className="hidden h-4 w-px bg-[var(--line)] xl:block" />
-          <StatusBadge status={role} size="sm" />
+          <span className="pill pill-quiet">{staffRole(role as WorkspaceRole)}</span>
           <span
             className="hidden max-w-[190px] truncate text-[12.5px] text-[var(--muted)] sm:block"
             title={email}
@@ -98,36 +125,6 @@ export function AppNav({
           )}
         </div>
       </div>
-
-      <nav
-        aria-label="Main"
-        className="scroll-thin scroll-x-fade mx-auto max-w-[1400px] overflow-x-auto px-5 sm:px-7 lg:[mask-image:none]"
-      >
-        <ul className="flex min-w-max gap-0.5">
-          {NAV_ORDER.map((key) => {
-            const s = SECTIONS[key];
-            const active = current === key;
-            return (
-              <li key={key}>
-                <Link
-                  href={s.href}
-                  aria-current={active ? "page" : undefined}
-                  title={s.blurb}
-                  className={cn(
-                    "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-2.5 text-[14px] font-semibold transition-colors",
-                    active
-                      ? "border-[var(--accent)] text-[var(--accent)]"
-                      : "border-transparent text-[var(--muted)] hover:text-[var(--fg)]",
-                  )}
-                >
-                  <s.icon size={15} aria-hidden strokeWidth={active ? 2.2 : 1.9} />
-                  {s.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
     </header>
   );
 }

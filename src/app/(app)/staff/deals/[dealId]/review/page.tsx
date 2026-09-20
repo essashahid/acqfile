@@ -1,9 +1,17 @@
+import { DecisionForm } from "@/components/staff/DecisionForm";
 import Link from "next/link";
 import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { dealView } from "@/lib/staff/deal-view";
-import { FINDING_MEANING, documentName, factValue, findingHeadline } from "@/lib/staff/labels";
+import {
+  FINDING_MEANING,
+  documentName,
+  factValue,
+  findingHeadline,
+  attributeName,
+  reviewSubject,
+} from "@/lib/staff/labels";
 import { decisionAction } from "../../deliverable-actions";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
@@ -34,9 +42,16 @@ export default async function Review({
   await requireDeal(ctx, dealId);
   const v = await dealView(dealId);
   const editable = mutationAllowed(ctx);
-  const show = q.show === "history" ? "history" : "open";
+  const show = q.show === "history" ? "history" : q.show === "info" ? "info" : "open";
   const list = v.findings
-    .filter((f) => (show === "history" ? CLOSED.includes(f.status) : !CLOSED.includes(f.status)))
+    .filter((f) =>
+      show === "history"
+        ? CLOSED.includes(f.status)
+        : !CLOSED.includes(f.status) &&
+          (show === "info"
+            ? f.type === "info" || f.severity === "info"
+            : f.type !== "info" && f.severity !== "info"),
+    )
     .filter((f) => !q.severity || f.severity === q.severity)
     .filter((f) => !q.responsible || f.responsibleRole === q.responsible)
     .sort(
@@ -64,7 +79,18 @@ export default async function Review({
       })
     : null;
   // Evidence the engine cited. Page-less entries are the declared profile, not a document page.
-  const cited = d?.details.filter((x) => x.page !== null) ?? [];
+  const cited = (d?.details ?? [])
+    .filter((x) => x.fact_id !== null || x.page !== null)
+    .filter(
+      (x, i, all) =>
+        all.findIndex(
+          (y) =>
+            y.fact_id === x.fact_id &&
+            y.file === x.file &&
+            y.page === x.page &&
+            JSON.stringify(y.value) === JSON.stringify(x.value),
+        ) === i,
+    );
   const fromProfile = d?.details.some((x) => x.page === null) ?? false;
   const resolvedSegments = selected?.resolvedByJson
     ? ((selected.resolvedByJson as { segment_ids: string[] }).segment_ids ?? [])
@@ -83,10 +109,7 @@ export default async function Review({
               className={`btn btn-sm ${show === "open" ? "btn-primary" : ""}`}
               href={keep({ show: "open", finding: undefined })}
             >
-              Open{" "}
-              <span className="num">
-                {v.findings.filter((f) => !CLOSED.includes(f.status)).length}
-              </span>
+              Open <span className="num">{v.counts.findingsOpen - v.counts.informational}</span>
             </Link>
             <Link
               className={`btn btn-sm ${show === "history" ? "btn-primary" : ""}`}
@@ -96,6 +119,12 @@ export default async function Review({
               <span className="num">
                 {v.findings.filter((f) => CLOSED.includes(f.status)).length}
               </span>
+            </Link>
+            <Link
+              className={`btn btn-sm ${show === "info" ? "btn-primary" : ""}`}
+              href={keep({ show: "info", finding: undefined })}
+            >
+              For information <span className="num">{v.counts.informational}</span>
             </Link>
           </div>
           <form className="flex flex-wrap items-end gap-3">
@@ -131,13 +160,14 @@ export default async function Review({
               <Link
                 key={f.findingKey}
                 href={keep({ finding: f.findingKey })}
+                scroll={false}
                 className={`pick ${selected?.findingKey === f.findingKey ? "is-active" : ""}`}
                 aria-current={selected?.findingKey === f.findingKey ? "true" : undefined}
               >
                 <div className="flex items-start justify-between gap-2">
                   <p className="font-semibold leading-snug">
-                    {findingHeadline(f.type, (f.detailsJson as { message: string }).message) ||
-                      f.ruleId}
+                    {reviewSubject(v.rules.get(f.ruleId)?.title ?? "") ||
+                      findingHeadline(f.type, (f.detailsJson as { message: string }).message)}
                   </p>
                   {f.severity === "blocker" && !CLOSED.includes(f.status) ? (
                     <span className="pill pill-bad shrink-0">Blocker</span>
@@ -161,7 +191,8 @@ export default async function Review({
                 <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
                   <div className="min-w-0">
                     <h2 className="text-[19px]">
-                      {findingHeadline(selected.type, d.message) || selected.ruleId}
+                      {reviewSubject(v.rules.get(selected.ruleId)?.title ?? "") ||
+                        findingHeadline(selected.type, d.message)}
                     </h2>
                     <p className="meta mt-1">
                       {v.party(selected.scopeKey)}
@@ -175,7 +206,28 @@ export default async function Review({
                     <Pill value={selected.status} />
                   </div>
                 </div>
-                <p className="mt-3">{FINDING_MEANING[selected.type] ?? ""}</p>
+                <p className="mt-3">
+                  {CLOSED.includes(selected.status)
+                    ? `This finding was ${selected.status}. Its evidence and recorded decisions remain here.`
+                    : (FINDING_MEANING[selected.type] ?? "")}
+                </p>
+                {v.index
+                  .filter(
+                    (r) =>
+                      r.item_id === selected.ruleId &&
+                      r.scope_key === selected.scopeKey &&
+                      (r.period || null) === selected.period,
+                  )
+                  .map((r) => (
+                    <p key={r.item_id} className="mt-3">
+                      <Link
+                        className="link"
+                        href={`../${dealId}/requirements?show=all#${encodeURIComponent(`${r.item_id}|${r.scope_key}|${r.period}`)}`}
+                      >
+                        Requirement: {r.item}
+                      </Link>
+                    </p>
+                  ))}
                 {selected.reason ? (
                   <p className="meta mt-2">
                     <span className="eyebrow">Operator reason</span> {selected.reason}
@@ -187,7 +239,7 @@ export default async function Review({
                 title="Evidence"
                 description={
                   cited.length
-                    ? "What the engine read, with the page it read it from."
+                    ? "Values cited by the check. Compare each value with its source."
                     : "No document page was cited for this finding."
                 }
                 flush={cited.length > 0}
@@ -196,38 +248,66 @@ export default async function Review({
                   <table className="grid">
                     <thead>
                       <tr>
-                        <th className="w-[28%]">Value</th>
+                        <th className="w-[28%]">Field and value</th>
                         <th className="w-[30%]">Source</th>
                         <th>Quoted</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {cited.map((s, i) => (
-                        <tr key={i}>
-                          <td className="font-semibold">{factValue("", "text", s.value)}</td>
-                          <td>
-                            {v.versions.some((x) => x.id === s.file) ? (
-                              <>
-                                <Link
-                                  className="link"
-                                  href={`/staff/deals/${dealId}/documents/${s.file}?page=${s.page}`}
-                                >
-                                  {documentName(
-                                    v.segments.find((x) => x.documentVersionId === s.file)
-                                      ?.docType ?? "",
-                                  ) || "Supplied document"}
-                                </Link>
-                                <p className="meta">
-                                  page {s.page} · {v.originalPath(s.file)}
-                                </p>
-                              </>
-                            ) : (
-                              <span className="meta">Deal profile</span>
-                            )}
-                          </td>
-                          <td className="italic">{s.quote}</td>
-                        </tr>
-                      ))}
+                      {cited.map((s, i) => {
+                        const fact = v.sourceFacts.find((f) => f.id === s.fact_id);
+                        return (
+                          <tr key={i}>
+                            <td>
+                              <p className="meta">
+                                {fact
+                                  ? attributeName(fact.attribute)
+                                  : s.page === null
+                                    ? "Declared value"
+                                    : "Document information"}
+                              </p>
+                              <p className="font-semibold">
+                                {factValue(
+                                  fact?.attribute ?? "",
+                                  fact?.unit ?? "text",
+                                  fact?.valueJson ?? s.value,
+                                )}
+                              </p>
+                              <p className="meta">
+                                {fact?.method === "manual"
+                                  ? "Operator confirmed"
+                                  : s.page === null
+                                    ? "Declared"
+                                    : "Extracted"}
+                              </p>
+                            </td>
+                            <td>
+                              {v.versions.some((x) => x.id === s.file) ? (
+                                <>
+                                  <Link
+                                    className="link"
+                                    href={`/staff/deals/${dealId}/documents/${s.file}?page=${s.page}&returnTo=${encodeURIComponent(`/staff/deals/${dealId}/review${keep({ finding: selected.findingKey })}`)}`}
+                                  >
+                                    {documentName(
+                                      v.segments.find(
+                                        (x) =>
+                                          x.documentVersionId === s.file &&
+                                          s.page !== null &&
+                                          x.pageStart <= s.page &&
+                                          x.pageEnd >= s.page,
+                                      )?.docType ?? "",
+                                    ) || "Supplied document"}
+                                  </Link>
+                                  <p className="meta">Page {s.page}</p>
+                                </>
+                              ) : (
+                                <span className="meta">Deal profile</span>
+                              )}
+                            </td>
+                            <td className="italic">{s.quote}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 ) : (
@@ -237,9 +317,12 @@ export default async function Review({
                       : "No cited evidence."}
                   </Empty>
                 )}
-                {cited.length && fromProfile ? (
+                {fromProfile ? (
                   <p className="meta px-[18px] py-3">
-                    The declared deal profile was also read when evaluating this rule.
+                    This check also reads declared transaction terms.{" "}
+                    <Link className="link" href={`/staff/deals/${dealId}/profile`}>
+                      Inspect profile
+                    </Link>
                   </p>
                 ) : null}
               </Card>
@@ -281,7 +364,7 @@ export default async function Review({
                     requirement row. Both need a reason and are recorded against your name. Neither
                     changes the evidence.
                   </p>
-                  <form
+                  <DecisionForm
                     action={decisionAction.bind(null, dealId)}
                     className="flex flex-wrap items-end gap-2"
                   >
@@ -296,7 +379,7 @@ export default async function Review({
                     <button className="btn" name="action" value="waive">
                       Waive requirement
                     </button>
-                  </form>
+                  </DecisionForm>
                 </Card>
               ) : null}
 
@@ -321,6 +404,12 @@ export default async function Review({
                       <dd className="text-[13px]">{d.message}</dd>
                     </div>
                   </dl>
+                  <details className="reveal mt-4">
+                    <summary>All cited evidence and rule inputs</summary>
+                    <pre className="mt-3 overflow-auto whitespace-pre-wrap text-sm">
+                      {JSON.stringify(d.details, null, 2)}
+                    </pre>
+                  </details>
                 </Card>
               </details>
             </div>

@@ -3,20 +3,36 @@ import { eq, desc } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { requireStaff } from "@/lib/workspace";
 import { mutationAllowed } from "@/lib/access";
-import { Card, Empty, PageHead, Pill } from "@/components/staff";
+import { dealView } from "@/lib/staff/deal-view";
+import { staffFocus } from "@/lib/staff/roles";
+import { Card, Empty, PageHead } from "@/components/staff";
 
-export default async function DealsPage() {
+export default async function DealsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
   const ctx = await requireStaff();
   const deals = await getDb()
     .select()
     .from(schema.deals)
     .where(eq(schema.deals.workspaceId, ctx.workspace.workspaceId))
     .orderBy(desc(schema.deals.createdAt));
+  const query = (await searchParams).q?.trim() ?? "";
+  const focus = staffFocus(ctx.workspace.role);
+  const rows = await Promise.all(
+    deals
+      .filter((d) => !query || `${d.name} ${d.code}`.toLowerCase().includes(query.toLowerCase()))
+      .map(async (deal) => ({
+        deal,
+        view: deal.rulePackVersion === "unknown" ? null : await dealView(deal.id),
+      })),
+  );
   return (
     <>
       <PageHead
-        title="Deals"
-        subtitle={`${deals.length} ${deals.length === 1 ? "deal" : "deals"} in ${ctx.workspace.name}. Every rule is unverified.`}
+        title={focus.title}
+        subtitle={focus.description}
         actions={
           mutationAllowed(ctx) ? (
             <Link className="btn btn-primary" href="/staff/deals/new">
@@ -25,40 +41,92 @@ export default async function DealsPage() {
           ) : null
         }
       />
+      <form className="mb-5 flex items-end gap-3">
+        <label className="flex flex-col gap-1">
+          <span className="eyebrow">Find a deal</span>
+          <input name="q" placeholder="Business name or deal code" defaultValue={query} />
+        </label>
+        <button className="btn">Search</button>
+        {query ? (
+          <Link className="link" href="/staff/deals">
+            Clear
+          </Link>
+        ) : null}
+      </form>
       <Card flush>
-        {deals.length ? (
+        {rows.length ? (
           <table className="grid">
             <thead>
               <tr>
                 <th>Deal</th>
-                <th>Status</th>
-                <th>Rule pack</th>
-                <th>Overlay</th>
-                <th>As of</th>
+                <th>Current work</th>
+                <th>Evidence coverage</th>
+                <th>Last checked</th>
+                <th>
+                  <span className="sr-only">Open</span>
+                </th>
               </tr>
             </thead>
             <tbody>
-              {deals.map((d) => (
+              {rows.map(({ deal: d, view: v }) => (
                 <tr key={d.id}>
                   <td>
                     <Link className="link font-semibold" href={`/staff/deals/${d.id}`}>
-                      {d.code}
+                      {d.name}
                     </Link>
-                    <p className="meta">{d.name}</p>
+                    <p className="meta">{d.code}</p>
                   </td>
                   <td>
-                    <Pill value={d.status} />
+                    {v ? (
+                      <>
+                        <p>
+                          {v.counts.blockers} blockers ·{" "}
+                          {v.counts.findingsOpen - v.counts.informational} actionable findings
+                        </p>
+                        <p className="meta">
+                          {v.counts.documentsNeedingAttention} source files need attention
+                        </p>
+                      </>
+                    ) : (
+                      "Choose a rule pack"
+                    )}
                   </td>
-                  <td className="num">{d.rulePackVersion}</td>
-                  <td>{d.overlayId ?? "Base"}</td>
-                  <td className="num">{d.asOfDate}</td>
+                  <td>
+                    {v ? (
+                      <>
+                        <p>
+                          {v.counts.required.done} of {v.counts.required.applicable} required
+                        </p>
+                        <p className="meta">
+                          Satisfied or waived · {v.counts.notApplicable} excluded
+                        </p>
+                      </>
+                    ) : (
+                      "Not checked yet"
+                    )}
+                  </td>
+                  <td className="num">
+                    {v?.evaluation?.createdAt.toISOString().slice(0, 10) ?? "Not checked"}
+                  </td>
+                  <td>
+                    <Link
+                      className="btn btn-sm"
+                      href={`/staff/deals/${d.id}${v ? focus.entry : "/profile"}`}
+                    >
+                      {focus.action}
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
           <div className="p-5">
-            <Empty>No deals yet. Create one to begin collecting documents.</Empty>
+            <Empty>
+              {query
+                ? "No deals match your search. Try a business name or clear the search."
+                : "No deals are available in this workspace yet."}
+            </Empty>
           </div>
         )}
       </Card>

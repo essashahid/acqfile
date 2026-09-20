@@ -225,3 +225,15 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 150. Dismissing a finding, waiving a requirement, confirming a fact and recording lender-ordered tracking stay four separate actions with separate controls and separate explanations of their effect. Waiving still writes the waiver attestation the engine reads; dismissing does not.
 151. Resolved findings list "Referenced evidence", not "Resolved by". The system records which segments were current when a finding stopped being raised, which is not the same as establishing which one resolved it.
 152. A file that failed to parse and its unreadable review item are one entry in Needs attention, not two. The explanation states the general rule that an unreadable file supplies no evidence, without asserting a causal link to a particular requirement from the filename.
+
+## Complete staff redesign (2026-09-21)
+
+153. Use Admin / Operator / Reviewer as display names for `admin` / `reviewer` / `viewer`; retain all server permissions because the stored role names differ from the product brief.
+154. Keep a shared compact workspace bar and deal rail, with role-specific landing priorities; the work is shared but execution and read-only inspection differ.
+155. Associate current non-satisfying evidence with requirement rows in a staff-only adapter; the export index intentionally contains satisfying evidence only, which otherwise creates contradictory on-screen claims.
+156. Show masked evidence, recorded reasons and usable page controls to Reviewer instead of disabled decision forms; A35 still restricts originals and original-containing ZIPs.
+157. Exclude informational findings from draft generation and follow-up counts; context is not a demand for a document. Existing sent records remain unchanged.
+158. Keep creation of incomplete lender-file versions available with explicit wording; existing generation rules allow it and versions are immutable.
+159. Inspect older version contents through a URL selection rather than a new workflow or table; all roles may inspect the saved record while downloads keep their existing restriction.
+160. Preserve Adviser source and isolate new CSS under `.staff`; no customer workflow changes are needed. Remove unused components pointing to retired staff routes.
+161. Describe arithmetic, date-order and other relationship conflicts as an unmet comparison, not a choice between two competing values; a lease expiry and its option years are different fields, so that wording would misstate the evidence.

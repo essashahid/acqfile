@@ -20,11 +20,11 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       />
       <main
         id="main-content"
-        className="mx-auto w-full max-w-[1400px] flex-1 px-5 py-7 sm:px-7 sm:py-9"
+        className="mx-auto w-full max-w-[1400px] flex-1 px-5 py-5 sm:px-7 sm:py-6"
       >
-        <Notice tone="accent" title="Synthetic data only" className="mb-5">
-          Real-data processing is disabled. This workspace uses invented people and organizations.
-        </Notice>
+        <p className="meta mb-4 border-b border-[var(--line)] pb-3">
+          Synthetic data only · Real-data processing is disabled.
+        </p>
         {e.PUBLIC_DEMO_MODE ? (
           <Notice
             tone="accent"

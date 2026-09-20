@@ -1,0 +1,33 @@
+body {
+  font:
+    16px/1.5 system-ui,
+    sans-serif;
+  color: #173451;
+  background: #f8f7f3;
+  margin: 24px;
+}
+h2 {
+  margin-top: 40px;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+figure {
+  margin: 0;
+  background: white;
+  border: 1px solid #dedbd3;
+}
+img {
+  display: block;
+  width: 100%;
+}
+figcaption {
+  padding: 8px;
+}
+@media (max-width: 800px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}

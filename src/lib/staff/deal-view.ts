@@ -4,7 +4,7 @@ import { buildIndex, readiness, type IndexRow } from "@/lib/deliverables/index-b
 import { listRequests, ageInDays } from "@/lib/deliverables/requests";
 import { listSnapshots } from "@/lib/deliverables/snapshot";
 import { PENDING } from "@/lib/evaluation/run";
-import { documentName, findingHeadline } from "./labels";
+import { documentName, findingHeadline, reviewSubject } from "./labels";
 
 export type WorkItem = {
   key: string;
@@ -45,44 +45,48 @@ export type DealCounts = {
 export async function dealView(dealId: string) {
   const db = getDb();
   const built = await buildIndex(dealId);
-  const [requests, snapshots, arrivals, openReviews, pendingFacts, runs] = await Promise.all([
-    listRequests(dealId),
-    listSnapshots(dealId),
-    db
-      .select({
-        arrival: schema.intakeFiles,
-        batch: schema.dealBatches.number,
-        version: schema.documentVersions,
-      })
-      .from(schema.intakeFiles)
-      .innerJoin(
-        schema.dealBatches,
-        and(
-          eq(schema.dealBatches.id, schema.intakeFiles.batchId),
-          eq(schema.dealBatches.dealId, dealId),
+  const [requests, snapshots, arrivals, openReviews, pendingFacts, runs, sourceFacts] =
+    await Promise.all([
+      listRequests(dealId),
+      listSnapshots(dealId),
+      db
+        .select({
+          arrival: schema.intakeFiles,
+          batch: schema.dealBatches.number,
+          version: schema.documentVersions,
+        })
+        .from(schema.intakeFiles)
+        .innerJoin(
+          schema.dealBatches,
+          and(
+            eq(schema.dealBatches.id, schema.intakeFiles.batchId),
+            eq(schema.dealBatches.dealId, dealId),
+          ),
+        )
+        .innerJoin(
+          schema.documentVersions,
+          eq(schema.documentVersions.id, schema.intakeFiles.documentVersionId),
+        )
+        .orderBy(desc(schema.dealBatches.number)),
+      db
+        .select()
+        .from(schema.intakeReviews)
+        .where(
+          and(eq(schema.intakeReviews.dealId, dealId), eq(schema.intakeReviews.status, "open")),
         ),
-      )
-      .innerJoin(
-        schema.documentVersions,
-        eq(schema.documentVersions.id, schema.intakeFiles.documentVersionId),
-      )
-      .orderBy(desc(schema.dealBatches.number)),
-    db
-      .select()
-      .from(schema.intakeReviews)
-      .where(and(eq(schema.intakeReviews.dealId, dealId), eq(schema.intakeReviews.status, "open"))),
-    db
-      .select()
-      .from(schema.facts)
-      .where(
-        and(
-          eq(schema.facts.dealId, dealId),
-          eq(schema.facts.isCurrent, true),
-          inArray(schema.facts.routingStatus, [...PENDING]),
+      db
+        .select()
+        .from(schema.facts)
+        .where(
+          and(
+            eq(schema.facts.dealId, dealId),
+            eq(schema.facts.isCurrent, true),
+            inArray(schema.facts.routingStatus, [...PENDING]),
+          ),
         ),
-      ),
-    db.select().from(schema.processingRuns).where(eq(schema.processingRuns.status, "failed")),
-  ]);
+      db.select().from(schema.processingRuns).where(eq(schema.processingRuns.status, "failed")),
+      db.select().from(schema.facts).where(eq(schema.facts.dealId, dealId)),
+    ]);
 
   const ready = readiness(built.index, built.rules);
   const byStatus: Record<string, number> = {};
@@ -104,9 +108,8 @@ export async function dealView(dealId: string) {
       : built.partyName(key);
 
   // Follow-ups still to prepare: open findings not yet covered by a recorded request.
-  const recordedKeys = new Set(requests.flatMap((r) => r.findingKeys));
   const toPrepare = built.findings.filter(
-    (f) => f.status === "open" && !recordedKeys.has(f.findingKey),
+    (f) => f.status === "open" && f.type !== "info" && f.severity !== "info",
   );
   const outstanding = requests.filter((r) =>
     built.findings.some((f) => r.findingKeys.includes(f.findingKey) && f.status === "requested"),
@@ -118,7 +121,10 @@ export async function dealView(dealId: string) {
       key: `finding:${f.findingKey}`,
       rank: 0,
       kind: "blocker",
-      title: findingHeadline(f.type, (f.detailsJson as { message: string }).message) || f.ruleId,
+      title: reviewSubject(
+        built.rules.get(f.ruleId)?.title ??
+          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
+      ),
       why: "Blocks the lender file until it is resolved, dismissed or waived.",
       party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
       href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
@@ -132,7 +138,7 @@ export async function dealView(dealId: string) {
       title: `${r.arrival.originalPath.split("/").pop()} could not be processed`,
       why: "A file that cannot be read supplies no evidence, so any requirement it was meant to meet stays open.",
       party: "Intake",
-      href: `${base}/documents?file=${r.version.id}`,
+      href: `${base}/documents/${r.version.id}`,
       action: "See options",
     });
   for (const f of open.filter((x) => x.severity !== "blocker" && !informational.includes(x)))
@@ -140,7 +146,10 @@ export async function dealView(dealId: string) {
       key: `finding:${f.findingKey}`,
       rank: 2,
       kind: "unresolved",
-      title: findingHeadline(f.type, (f.detailsJson as { message: string }).message) || f.ruleId,
+      title: reviewSubject(
+        built.rules.get(f.ruleId)?.title ??
+          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
+      ),
       why: `${f.type.replaceAll("_", " ")} · responsible: ${f.responsibleRole}`,
       party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
       href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
@@ -177,10 +186,13 @@ export async function dealView(dealId: string) {
       key: `finding:${f.findingKey}`,
       rank: 5,
       kind: "info",
-      title: findingHeadline(f.type, (f.detailsJson as { message: string }).message) || f.ruleId,
+      title: reviewSubject(
+        built.rules.get(f.ruleId)?.title ??
+          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
+      ),
       why: "Context for the file. The current rules do not require a document for this.",
       party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
-      href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
+      href: `${base}/review?show=info&finding=${encodeURIComponent(f.findingKey)}`,
       action: "See finding",
     });
 
@@ -215,6 +227,7 @@ export async function dealView(dealId: string) {
     failedFiles,
     openReviews,
     pendingFacts,
+    sourceFacts,
     requests,
     snapshots,
     failedRuns: runs.filter((r) => r.configJson.dealId === dealId),

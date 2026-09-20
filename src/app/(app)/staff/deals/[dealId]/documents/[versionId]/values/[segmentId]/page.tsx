@@ -8,6 +8,7 @@ import { parsedVersion } from "@/lib/deals/blocks";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import { PENDING } from "@/lib/evaluation/run";
 import { FactReview, type ReviewFact, type ReviewGap } from "../../../../../FactReview";
+import { documentName } from "@/lib/staff/labels";
 import { PageHead, Pill } from "@/components/staff";
 export default async function SegmentReviewPage({
   params,
@@ -30,10 +31,7 @@ export default async function SegmentReviewPage({
   const [party] = segment.partyId
     ? await db.select().from(schema.parties).where(eq(schema.parties.id, segment.partyId))
     : [];
-  const facts = await db
-    .select()
-    .from(schema.facts)
-    .where(and(eq(schema.facts.segmentId, segmentId), eq(schema.facts.isCurrent, true)));
+  const facts = await db.select().from(schema.facts).where(eq(schema.facts.segmentId, segmentId));
   const gaps = await db
     .select()
     .from(schema.intakeReviews)
@@ -51,7 +49,7 @@ export default async function SegmentReviewPage({
   const blocks = ((await parsedVersion(segment.documentVersionId))?.blocks ?? []).filter(
     (b) => b.page >= segment.pageStart && b.page <= segment.pageEnd,
   );
-  const rows: ReviewFact[] = facts
+  const allRows: ReviewFact[] = facts
     .map((f) => ({
       id: f.id,
       attribute: f.attribute,
@@ -77,6 +75,9 @@ export default async function SegmentReviewPage({
           Number((PENDING as readonly string[]).includes(a.routing)) ||
         a.attribute.localeCompare(b.attribute),
     );
+  const currentIds = new Set(facts.filter((f) => f.isCurrent).map((f) => f.id));
+  const rows = allRows.filter((f) => currentIds.has(f.id));
+  const history = allRows.filter((f) => !currentIds.has(f.id));
   const gapRows: ReviewGap[] = gaps.map((g) => ({
     id: g.id,
     type: g.type,
@@ -92,7 +93,7 @@ export default async function SegmentReviewPage({
             Back to documents
           </Link>
         }
-        title={`${segment.docType} · ${party?.legalName ?? "No party"}`}
+        title={`${documentName(segment.docType)} · ${party?.legalName ?? "No party"}`}
         subtitle={
           <>
             {segment.period ?? "No period"} · {version?.sourceFilename} · pages {segment.pageStart}–
@@ -122,6 +123,7 @@ export default async function SegmentReviewPage({
         url={originalAccessAllowed(ctx) ? sourceUrl(dealId, segment.documentVersionId) : null}
         blocks={blocks.map((b) => ({ locator: b.locator, page: b.page, text: b.text }))}
         facts={rows}
+        history={history}
         gaps={gapRows}
         editable={mutationAllowed(ctx)}
       />

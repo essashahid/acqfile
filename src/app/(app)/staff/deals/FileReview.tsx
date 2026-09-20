@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DOCUMENT_TYPES } from "@/lib/domain/registry";
+import { KNOWN_DOCUMENT_TYPES, documentName } from "@/lib/staff/labels";
 import type { Candidate } from "@/lib/deals/classification";
 import { reviewFileAction } from "./actions";
 import { PdfPage } from "./PdfPage";
@@ -51,7 +51,7 @@ export function FileReview({
   unreadable: boolean;
   url: string | null;
   pdf: boolean;
-  blocks: { locator: string; rawText: string }[];
+  blocks: { locator: string; page: number; rawText: string }[];
   editable: boolean;
   conflict: boolean;
   initialPage?: number;
@@ -109,15 +109,17 @@ export function FileReview({
             </p>
           ) : (
             <div className="max-h-[720px] space-y-2 overflow-auto">
-              {blocks.map((b, i) => (
-                <blockquote
-                  key={i}
-                  className="rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] p-3"
-                >
-                  <p className="eyebrow mb-1">{b.locator}</p>
-                  <p className="whitespace-pre-wrap text-[13px]">{b.rawText}</p>
-                </blockquote>
-              ))}
+              {blocks
+                .filter((b) => b.page === page)
+                .map((b, i) => (
+                  <blockquote
+                    key={i}
+                    className="rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] p-3"
+                  >
+                    <p className="eyebrow mb-1">{b.locator}</p>
+                    <p className="whitespace-pre-wrap text-[13px]">{b.rawText}</p>
+                  </blockquote>
+                ))}
             </div>
           )}
         </div>
@@ -146,138 +148,181 @@ export function FileReview({
         }}
       >
         <div className="card-head">
-          <h2 className="text-[17px]">{unreadable ? "Manual filing" : "Segments and filing"}</h2>
+          <h2 className="text-[17px]">{unreadable ? "Manual filing" : "Documents in this file"}</h2>
           <span className="pill pill-quiet">
-            {rows.length} {rows.length === 1 ? "segment" : "segments"}
+            {rows.length} {rows.length === 1 ? "document" : "documents"}
           </span>
         </div>
         <div className="card-body flush">
-          {rows.map((r, i) => (
-            <fieldset
-              disabled={!editable}
-              key={i}
-              className="rowline grid grid-cols-2 gap-3 text-[13.5px]"
-            >
-              <legend className="sr-only">Segment {i + 1}</legend>
-              <h3 className="col-span-2">Segment {i + 1}</h3>
-              <label className="flex flex-col gap-1">
-                <span className="eyebrow">First page</span>
-                <input
-                  aria-label={`Segment ${i + 1} first page`}
-                  className="w-full"
-                  type="number"
-                  min={1}
-                  max={pages || 100}
-                  value={r.page_start}
-                  onChange={(e) => update(i, { page_start: Number(e.target.value) })}
-                />
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="eyebrow">Last page</span>
-                <input
-                  aria-label={`Segment ${i + 1} last page`}
-                  className="w-full"
-                  type="number"
-                  min={1}
-                  max={pages || 100}
-                  value={r.page_end}
-                  onChange={(e) => update(i, { page_end: Number(e.target.value) })}
-                />
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="eyebrow">Type</span>
-                <select
-                  aria-label={`Segment ${i + 1} type`}
-                  className="w-full"
-                  value={r.doc_type}
-                  onChange={(e) => update(i, { doc_type: e.target.value as Row["doc_type"] })}
+          {rows.map((r, i) =>
+            !editable ? (
+              <article key={i} className="rowline">
+                <h3>{documentName(r.doc_type)}</h3>
+                <p className="meta">
+                  {parties.find((p) => p.id === r.party_id)?.name ?? "Unassigned"} ·{" "}
+                  {r.period ?? "No period"}
+                </p>
+                <dl className="mt-3 grid grid-cols-2 gap-3">
+                  <div>
+                    <dt className="eyebrow">Pages</dt>
+                    <dd>
+                      {r.page_start}–{r.page_end}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="eyebrow">Signature / date</dt>
+                    <dd>
+                      {r.signed === null
+                        ? "Uncertain"
+                        : r.signed
+                          ? "Signature recorded"
+                          : "No signature recorded"}{" "}
+                      · {r.signature_date ?? "Date not confirmed"}
+                    </dd>
+                  </div>
+                </dl>
+                <blockquote className="mt-3 italic">{r.quote}</blockquote>
+                <button
+                  type="button"
+                  className="btn btn-sm mt-3"
+                  onClick={() => setPage(r.page_start)}
                 >
-                  {DOCUMENT_TYPES.map((t) => (
-                    <option key={t}>{t}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="eyebrow">Party</span>
-                <select
-                  aria-label={`Segment ${i + 1} party`}
-                  className="w-full"
-                  value={r.party_id ?? ""}
-                  onChange={(e) => update(i, { party_id: e.target.value || null })}
-                >
-                  <option value="">Unknown / outside deal</option>
-                  {parties.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="eyebrow">Period</span>
-                <input
-                  aria-label={`Segment ${i + 1} period`}
-                  className="w-full"
-                  placeholder="Unknown"
-                  value={r.period ?? ""}
-                  onChange={(e) =>
-                    update(i, {
-                      period: e.target.value || null,
-                      period_raw: e.target.value || null,
-                    })
-                  }
-                />
-              </label>
-              {(["signed", "dated"] as const).map((key) => (
-                <label key={key} className="flex flex-col gap-1">
-                  <span className="eyebrow">{key === "signed" ? "Signed" : "Dated"}</span>
-                  <select
-                    aria-label={`Segment ${i + 1} ${key}`}
-                    className="w-full"
-                    value={r[key] === null ? "unknown" : String(r[key])}
-                    onChange={(e) =>
-                      update(i, {
-                        [key]: e.target.value === "unknown" ? null : e.target.value === "true",
-                      })
-                    }
-                  >
-                    <option value="unknown">Unknown</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </label>
-              ))}
-              {(
-                ["signature_date", "document_date", "form_revision", "account_last_four"] as const
-              ).map((key) => (
-                <label key={key} className="flex flex-col gap-1">
-                  <span className="eyebrow">{key.replaceAll("_", " ")}</span>
-                  <input
-                    className="w-full"
-                    value={r[key] ?? ""}
-                    onChange={(e) => update(i, { [key]: e.target.value || null })}
-                  />
-                </label>
-              ))}
-              <blockquote className="col-span-2 rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-[13px] italic">
-                {r.quote}
-              </blockquote>
-              <div className="col-span-2 flex flex-wrap gap-2">
-                <button type="button" className="btn btn-sm" onClick={() => setPage(r.page_start)}>
                   Show page {r.page_start}
                 </button>
-                {rows.length > 1 && (
+              </article>
+            ) : (
+              <fieldset
+                disabled={!editable}
+                key={i}
+                className="rowline grid grid-cols-2 gap-3 text-[13.5px]"
+              >
+                <legend className="sr-only">Segment {i + 1}</legend>
+                <h3 className="col-span-2">Segment {i + 1}</h3>
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">First page</span>
+                  <input
+                    aria-label={`Segment ${i + 1} first page`}
+                    className="w-full"
+                    type="number"
+                    min={1}
+                    max={pages || 100}
+                    value={r.page_start}
+                    onChange={(e) => update(i, { page_start: Number(e.target.value) })}
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">Last page</span>
+                  <input
+                    aria-label={`Segment ${i + 1} last page`}
+                    className="w-full"
+                    type="number"
+                    min={1}
+                    max={pages || 100}
+                    value={r.page_end}
+                    onChange={(e) => update(i, { page_end: Number(e.target.value) })}
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">Type</span>
+                  <select
+                    aria-label={`Segment ${i + 1} type`}
+                    className="w-full"
+                    value={r.doc_type}
+                    onChange={(e) => update(i, { doc_type: e.target.value as Row["doc_type"] })}
+                  >
+                    {KNOWN_DOCUMENT_TYPES.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">Party</span>
+                  <select
+                    aria-label={`Segment ${i + 1} party`}
+                    className="w-full"
+                    value={r.party_id ?? ""}
+                    onChange={(e) => update(i, { party_id: e.target.value || null })}
+                  >
+                    <option value="">Unknown / outside deal</option>
+                    {parties.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">Period</span>
+                  <input
+                    aria-label={`Segment ${i + 1} period`}
+                    className="w-full"
+                    placeholder="Unknown"
+                    value={r.period ?? ""}
+                    onChange={(e) =>
+                      update(i, {
+                        period: e.target.value || null,
+                        period_raw: e.target.value || null,
+                      })
+                    }
+                  />
+                </label>
+                {(["signed", "dated"] as const).map((key) => (
+                  <label key={key} className="flex flex-col gap-1">
+                    <span className="eyebrow">{key === "signed" ? "Signed" : "Dated"}</span>
+                    <select
+                      aria-label={`Segment ${i + 1} ${key}`}
+                      className="w-full"
+                      value={r[key] === null ? "unknown" : String(r[key])}
+                      onChange={(e) =>
+                        update(i, {
+                          [key]: e.target.value === "unknown" ? null : e.target.value === "true",
+                        })
+                      }
+                    >
+                      <option value="unknown">Unknown</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </label>
+                ))}
+                {(
+                  ["signature_date", "document_date", "form_revision", "account_last_four"] as const
+                ).map((key) => (
+                  <label key={key} className="flex flex-col gap-1">
+                    <span className="eyebrow">{key.replaceAll("_", " ")}</span>
+                    <input
+                      className="w-full"
+                      value={r[key] ?? ""}
+                      onChange={(e) => update(i, { [key]: e.target.value || null })}
+                    />
+                  </label>
+                ))}
+                <blockquote className="col-span-2 rounded-[9px] border border-[var(--line)] bg-[var(--surface-sunken)] px-3 py-2 text-[13px] italic">
+                  {r.quote}
+                </blockquote>
+                <div className="col-span-2 flex flex-wrap gap-2">
                   <button
                     type="button"
                     className="btn btn-sm"
-                    onClick={() => setRows(rows.filter((_, j) => j !== i))}
+                    onClick={() => setPage(r.page_start)}
                   >
-                    Remove segment
+                    Show page {r.page_start}
                   </button>
-                )}
-              </div>
-            </fieldset>
-          ))}
+                  {rows.length > 1 && (
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => setRows(rows.filter((_, j) => j !== i))}
+                    >
+                      Remove segment
+                    </button>
+                  )}
+                </div>
+              </fieldset>
+            ),
+          )}
         </div>
         {editable && (
           <div className="card-body border-t border-[var(--line)] space-y-3">

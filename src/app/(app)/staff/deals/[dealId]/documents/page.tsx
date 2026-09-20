@@ -42,7 +42,8 @@ export default async function Documents({
   };
   const attention: Attention[] = [];
   const claim = (versionId: string) => attention.find((a) => a.versionId === versionId);
-  for (const r of v.failedFiles)
+  for (const r of v.failedFiles) {
+    if (claim(r.version.id)) continue;
     attention.push({
       key: r.version.id,
       versionId: r.version.id,
@@ -55,6 +56,7 @@ export default async function Documents({
           : "Processing stopped before this file was filed.",
       retry: true,
     });
+  }
   for (const r of v.openReviews) {
     if (claim(r.documentVersionId)) continue;
     attention.push({
@@ -109,9 +111,21 @@ export default async function Documents({
     <>
       <PageHead
         title="Documents"
-        subtitle={`${v.counts.arrivals} source files received · ${v.counts.filed} documents filed from them · ${attention.length} needing attention`}
+        subtitle={`${v.counts.arrivals} source files received · ${v.counts.filed} documents filed from them · ${v.counts.documentsNeedingAttention} source files needing attention`}
       />
       <div className="space-y-5">
+        {editable ? (
+          <p>
+            <a className="btn btn-primary mb-4" href="#intake">
+              Add documents
+            </a>
+          </p>
+        ) : (
+          <p className="meta mb-4">
+            Inspect the current library and masked source evidence. Filing and processing are
+            managed by an operator.
+          </p>
+        )}
         {attention.length ? (
           <Card
             title="Needs attention"
@@ -208,7 +222,6 @@ export default async function Documents({
                         >
                           {documentName(s.docType)}
                         </Link>
-                        <p className="meta break-words">{v.originalPath(s.documentVersionId)}</p>
                       </td>
                       <td>{v.partyName(s.partyId)}</td>
                       <td className="num">{s.period ?? <span className="meta">—</span>}</td>
@@ -226,7 +239,12 @@ export default async function Documents({
                             {pending} to review
                           </Link>
                         ) : (
-                          <span className="meta">Accepted</span>
+                          <Link
+                            className="link"
+                            href={`${base}/documents/${s.documentVersionId}/values/${s.id}`}
+                          >
+                            Inspect values
+                          </Link>
                         )}
                       </td>
                     </tr>
@@ -247,6 +265,7 @@ export default async function Documents({
 
         {editable ? (
           <Card
+            id="intake"
             title="Add documents"
             description="Files, a ZIP, or a folder. Limits are checked on the server before anything is read."
           >

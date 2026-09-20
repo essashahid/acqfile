@@ -5,6 +5,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 export function PdfPage({ url, page }: { url: string; page: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [doc, setDoc] = useState<{ url: string; pdf: PDFDocumentProxy } | null>(null);
+  const [rendered, setRendered] = useState("");
   const [error, setError] = useState<{ key: string; message: string } | null>(null);
   useEffect(() => {
     let cancelled = false;
@@ -53,6 +54,7 @@ export function PdfPage({ url, page }: { url: string; page: number }) {
         target.width = canvas.width;
         target.height = canvas.height;
         target.getContext("2d")!.drawImage(canvas, 0, 0);
+        setRendered(`${url}:${page}`);
       } catch {
         if (!cancelled)
           setError({
@@ -67,7 +69,12 @@ export function PdfPage({ url, page }: { url: string; page: number }) {
   }, [doc, url, page]);
   const failed = error?.key === url || error?.key === `${url}:${page}`;
   return (
-    <div>
+    <div aria-busy={!failed && rendered !== `${url}:${page}`}>
+      {!failed && rendered !== `${url}:${page}` ? (
+        <p role="status" className="meta mb-3">
+          Loading source page…
+        </p>
+      ) : null}
       {failed ? (
         <p role="status">{error!.message}</p>
       ) : (

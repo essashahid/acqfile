@@ -122,7 +122,8 @@ export const FINDING_MEANING: Record<string, string> = {
   missing: "Expected evidence is not on file.",
   stale: "Evidence is older than the rule allows.",
   incomplete: "Evidence is on file but something required is not confirmed.",
-  conflict: "Two accepted sources disagree.",
+  conflict:
+    "The supplied information does not meet this comparison. Inspect the cited fields and the requirement.",
   needs_review: "A person has to decide.",
   info: "Context for the file. No action is required by the current rules.",
 };
@@ -160,6 +161,16 @@ export function factValue(attribute: string, unit: string, value: unknown): stri
     if (unit === "percent") return `${value}%`;
     if (unit === "months") return `${value} month${value === 1 ? "" : "s"}`;
     return value.toLocaleString("en-US");
+  }
+  if (unit === "date" && /^\d{4}-\d{2}-\d{2}$/.test(String(value))) {
+    const date = new Date(`${value}T00:00:00Z`);
+    if (!Number.isNaN(date.valueOf()))
+      return new Intl.DateTimeFormat("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(date);
   }
   return String(value);
 }
@@ -199,3 +210,8 @@ export const sourceLabel = (file: string, page: number | null, resolved: string)
       ? "Deal profile"
       : file
     : `${resolved}, page ${page}`;
+
+/** Neutral subject: a rule's positive condition must not read as a passed finding. */
+export function reviewSubject(title: string) {
+  return title.replace(/\s+agrees?\b.*$/i, "").replace(/\s+equals?\b.*$/i, " comparison");
+}

@@ -6,40 +6,45 @@ export const dynamic = "force-dynamic";
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 function RuleDetail({ rule }: { rule: Rule }) {
   return (
-    <article className="rowline" data-rule-id={rule.id}>
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
-        <span className="font-mono text-[13px] font-semibold">{rule.id}</span>
-        <h3>{rule.title}</h3>
-        <span className="pill pill-warn">Unverified</span>
-        {!rule.required && <span className="pill pill-quiet">Optional</span>}
+    <details className="rowline reveal" data-rule-id={rule.id}>
+      <summary>
+        {rule.title} <span className="meta">· {rule.id} · unverified</span>
+      </summary>
+      <div className="mt-3">
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5">
+          <span className="font-mono text-[13px] font-semibold">{rule.id}</span>
+          <h3>{rule.title}</h3>
+          <span className="pill pill-warn">Unverified</span>
+          {!rule.required && <span className="pill pill-quiet">Optional</span>}
+        </div>
+        <p className="mt-2">{rule.description}</p>
+        <p className="meta mt-2">
+          Scope: {rule.scope} · {rule.period_requirement ?? "No recurring period"} · Responsible:{" "}
+          {rule.responsible}
+        </p>
+        <ul className="mt-2 list-disc pl-5 text-[13.5px]">
+          {rule.checks.map((check, i) => (
+            <li key={i}>{check.message}</li>
+          ))}
+        </ul>
+        <p className="mt-3 text-[13.5px]">
+          <span className="eyebrow">Source · {rule.source_ref.class}</span>{" "}
+          {rule.source_ref.url ? (
+            <a className="link" href={rule.source_ref.url} target="_blank" rel="noreferrer">
+              {rule.source_ref.citation}
+            </a>
+          ) : (
+            rule.source_ref.citation
+          )}
+        </p>
+        <details className="mt-2 text-[13px]">
+          <summary className="link cursor-pointer">Conditions and checks</summary>
+          <pre className="mt-2 max-h-96 overflow-auto rounded-[9px] bg-[var(--surface-sunken)] p-3">
+            {JSON.stringify({ applies_when: rule.applies_when, checks: rule.checks }, null, 2)}
+          </pre>
+        </details>
       </div>
-      <p className="mt-2">{rule.description}</p>
-      <p className="meta mt-2">
-        Scope: {rule.scope} · {rule.period_requirement ?? "No recurring period"} · Responsible:{" "}
-        {rule.responsible}
-      </p>
-      <ul className="mt-2 list-disc pl-5 text-[13.5px]">
-        {rule.checks.map((check, i) => (
-          <li key={i}>{check.message}</li>
-        ))}
-      </ul>
-      <p className="mt-3 text-[13.5px]">
-        <span className="eyebrow">Source · {rule.source_ref.class}</span>{" "}
-        {rule.source_ref.url ? (
-          <a className="link" href={rule.source_ref.url} target="_blank" rel="noreferrer">
-            {rule.source_ref.citation}
-          </a>
-        ) : (
-          rule.source_ref.citation
-        )}
-      </p>
-      <details className="mt-2 text-[13px]">
-        <summary className="link cursor-pointer">Conditions and checks</summary>
-        <pre className="mt-2 max-h-96 overflow-auto rounded-[9px] bg-[var(--surface-sunken)] p-3">
-          {JSON.stringify({ applies_when: rule.applies_when, checks: rule.checks }, null, 2)}
-        </pre>
-      </details>
-    </article>
+    </details>
   );
 }
 export default async function RulePacksPage({
@@ -58,6 +63,10 @@ export default async function RulePacksPage({
   const pack = loadPack(version, overlay),
     other = loadPack(compareVersion, compareOverlay);
   const changes = comparePacks(other, pack);
+  const search = one(query.q) ?? "";
+  const visibleRules = [...pack.items, ...pack.consistency].filter((r) =>
+    `${r.id} ${r.title} ${r.description}`.toLowerCase().includes(search.toLowerCase()),
+  );
   return (
     <>
       <PageHead
@@ -96,6 +105,10 @@ export default async function RulePacksPage({
               <option value="sample-lender-a">Sample Lender A</option>
             </select>
           </label>
+          <label className="flex flex-col gap-1">
+            <span className="eyebrow">Find a rule</span>
+            <input name="q" defaultValue={search} placeholder="Name or rule code" />
+          </label>
           <button className="btn btn-primary" type="submit">
             View comparison
           </button>
@@ -118,7 +131,10 @@ export default async function RulePacksPage({
           <span className="eyebrow">Filename template</span>{" "}
           <code>{pack.index.filename_template}</code>
         </p>
-        <p className="meta mt-2 break-all text-[12px]">Content hash: {pack.content_hash}</p>
+        <details className="reveal mt-3">
+          <summary>Technical identity</summary>
+          <p className="meta mt-2 break-all">Content hash: {pack.content_hash}</p>
+        </details>
       </Card>
       <Card
         className="mb-5"
@@ -166,7 +182,8 @@ export default async function RulePacksPage({
         description={`${pack.items.length} checklist definitions and ${pack.consistency.length} consistency rules`}
         flush
       >
-        {[...pack.items, ...pack.consistency].map((rule) => (
+        {!visibleRules.length ? <p className="rowline meta">No rules match this search.</p> : null}
+        {visibleRules.map((rule) => (
           <RuleDetail key={rule.id} rule={rule} />
         ))}
       </Card>

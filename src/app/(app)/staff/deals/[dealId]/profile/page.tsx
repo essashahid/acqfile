@@ -4,6 +4,7 @@ import { readDeal, dealDraft } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { loadPack } from "@/lib/rules/loader";
 import { DealEditor } from "../../DealEditor";
+import { formatValue } from "@/components/staff";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
 export default async function Profile({ params }: { params: Promise<{ dealId: string }> }) {
@@ -20,9 +21,15 @@ export default async function Profile({ params }: { params: Promise<{ dealId: st
   const term = (key: string) => {
     const value = profile[key];
     if (value === null || value === undefined || value === "unknown") return "Unknown";
-    if (typeof value === "object") return JSON.stringify(value);
-    if (typeof value === "number") return value.toLocaleString("en-US");
-    return String(value);
+    if (typeof value === "object") return formatValue(value);
+    if (typeof value === "number")
+      return value.toLocaleString(
+        "en-US",
+        ["purchase_price", "total_project_cost"].includes(key)
+          ? { style: "currency", currency: "USD", maximumFractionDigits: 0 }
+          : {},
+      );
+    return String(value).replaceAll("_", " ");
   };
   return (
     <>
@@ -87,7 +94,9 @@ export default async function Profile({ params }: { params: Promise<{ dealId: st
                   <tr key={p.id}>
                     <td className="font-medium">{p.legalName}</td>
                     <td>{p.kind}</td>
-                    <td className="meta">{(p.roles as string[]).join(", ")}</td>
+                    <td className="meta">
+                      {(p.roles as string[]).map((r) => r.replaceAll("_", " ")).join(", ")}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -143,6 +152,10 @@ export default async function Profile({ params }: { params: Promise<{ dealId: st
               ["franchise", "Franchise"],
               ["gift_funds", "Gift funds"],
               ["minority_investor_equity", "Minority investor equity"],
+              ["seller_note", "Seller note"],
+              ["seller_staying", "Seller transition"],
+              ["equity_sources", "Injection sources"],
+              ["paid_agents", "Paid agents"],
               ["target_lender", "Target lender"],
               ["expected_loan_number_date", "Expected loan number"],
               ["target_submission_date", "Target submission"],
