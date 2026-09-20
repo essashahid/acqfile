@@ -2,11 +2,12 @@
 
 A sample-data portal for collecting documents and preparing a business-acquisition loan file. People get a personal link and a short list; advisers see questions, people and the lender file; staff keep the existing review tools. The lender makes every lending decision. `REAL_DATA_MODE=false` is mandatory.
 
-Use Node 22, pnpm 10 and PostgreSQL. Copy `.env.example` to `.env`, set the local database URLs and leave the deterministic provider enabled. Then:
+New here? Follow [docs/SETUP.md](docs/SETUP.md) for the full local setup. The short version, with Node 22, pnpm 10 and PostgreSQL already installed:
 
 ```sh
-export PII_HMAC_KEY=OBVIOUSLY-FAKE-ACQFILE-FIXTURE-KEY-NOT-FOR-PRODUCTION-2026
 pnpm install --frozen-lockfile
+createdb acqfile && createdb acqfile_test
+cp .env.example .env.local   # set AUTH_SECRET and PII_HMAC_KEY
 pnpm db:migrate
 pnpm demo:seed
 pnpm dev
