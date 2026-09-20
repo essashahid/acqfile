@@ -186,10 +186,28 @@
     "segment_id": "gift-letter"
   },
   {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "gift-letter",
+    "attribute": "gift.amount",
+    "kind": "missing_value",
+    "expected": "review"
+  },
+  {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
     "batch": 1,
     "type": "vision",
     "segment_id": "donor-bank"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "donor-bank",
+    "attribute": "bank.ending_balance",
+    "kind": "vision_disagreement",
+    "expected": "review"
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",

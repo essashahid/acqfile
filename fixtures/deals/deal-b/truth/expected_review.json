@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "funding",
+    "attribute": "funding.uses_total",
+    "kind": "wrong_value_real_quote",
+    "expected": "blocked"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/bank-aug.PDF",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "bank-aug",
+    "attribute": "bank.ending_balance",
+    "kind": "weak_evidence",
+    "expected": "review"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2024.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "fin-2024",
+    "attribute": "financial.total_assets",
+    "kind": "verifier_corrects",
+    "expected": "review"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/note.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "note",
+    "attribute": "note.term_months",
+    "kind": "quote_not_in_block",
+    "expected": "blocked"
+  }
+]

@@ -1,11 +1,11 @@
 [
   {
     "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-    "hash": "9870351ce14b7d1d1080db83bf4b87c9aa15110cc18cc5a925f8ec888b97a620",
-    "bytes": 632456,
+    "hash": "acdc501b9f1fae5cff24268b1c7209c756cd35129bd199118625acd541411e2f",
+    "bytes": 631042,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 8,
+    "pages": 7,
     "segments": [
       {
         "id": "1919",
@@ -13,12 +13,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "Signature: ________________; Date: ________________"
+          "page": 4,
+          "source_block": "field:repSig:0",
+          "quote": "repSig: blank; sigDate: blank"
         },
         "page_start": 1,
-        "page_end": 8,
+        "page_end": 7,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
@@ -26,8 +26,8 @@
         "signed": false,
         "dated": false,
         "signature_date": null,
-        "document_date": "2026-08-31",
-        "expected_page_count": 8,
+        "document_date": null,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -66,9 +66,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
+          "page": 1,
+          "source_block": "field:ownName1:0",
+          "quote": "Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
         "confidence": 1,
         "confidence_components": {
@@ -85,6 +85,7 @@
       3,
       9
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -186,6 +187,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -697,6 +699,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -830,6 +833,7 @@
     "planted_items": [
       13
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1026,6 +1030,7 @@
     "planted_items": [
       4
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1180,6 +1185,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1309,6 +1315,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1323,11 +1330,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-    "hash": "d64e266d0ad51f3e237e553e1ac0f6d5134abb9f41b3ce8838d04bc8222bad39",
-    "bytes": 577179,
+    "hash": "3089362c00b5cdcad607eb309362f820c27a5e32002c72c41fdd8c60493c05cb",
+    "bytes": 575457,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 7,
+    "pages": 6,
     "segments": [
       {
         "id": "bea-pfs-old",
@@ -1335,12 +1342,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "page": 4,
+          "source_block": "field:Signature:0",
+          "quote": "Signature: e-signed / SYNTHETIC-bea-pfs-old; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 7,
+        "page_end": 6,
         "doc_type": "SBA_413",
         "party_id": "bea",
         "period": null,
@@ -1349,7 +1356,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2025-01-01",
-        "expected_page_count": 7,
+        "expected_page_count": 6,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1370,9 +1377,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "as of date: 2025-01-01"
+          "page": 2,
+          "source_block": "field:This information is current as of month/day/year:0",
+          "quote": "2025-01-01"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1396,9 +1403,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "cash: 180000"
+          "page": 2,
+          "source_block": "field:Cash on Hand & in banks:0",
+          "quote": "180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1422,9 +1429,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "total assets: 500000"
+          "page": 2,
+          "source_block": "field:TotalAssets:0",
+          "quote": "500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1448,9 +1455,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "total liabilities: 100000"
+          "page": 2,
+          "source_block": "field:TotalLiabilities:0",
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1474,9 +1481,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
-          "page": 7,
-          "source_block": "bea-pfs-old-page-1",
-          "quote": "net worth: 400000"
+          "page": 2,
+          "source_block": "field:Net Worth:0",
+          "quote": "400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1492,6 +1499,7 @@
     "planted_items": [
       11
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1504,11 +1512,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-    "hash": "4b08ad626f3727592870a76a68f492f80e0cc6ec7957bab4aede647efe2ae01a",
-    "bytes": 577180,
+    "hash": "2245e732d0d59532f1620bb0b943a06c5d0851e1bfb8447c8e80aa397f85ba28",
+    "bytes": 575466,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 7,
+    "pages": 6,
     "segments": [
       {
         "id": "bea-pfs",
@@ -1516,12 +1524,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "page": 4,
+          "source_block": "field:Signature:0",
+          "quote": "Signature: e-signed / SYNTHETIC-bea-pfs; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 7,
+        "page_end": 6,
         "doc_type": "SBA_413",
         "party_id": "bea",
         "period": null,
@@ -1530,7 +1538,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 7,
+        "expected_page_count": 6,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1551,9 +1559,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "as of date: 2026-08-31"
+          "page": 2,
+          "source_block": "field:This information is current as of month/day/year:0",
+          "quote": "2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1577,9 +1585,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "cash: 180000"
+          "page": 2,
+          "source_block": "field:Cash on Hand & in banks:0",
+          "quote": "180000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1603,9 +1611,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "total assets: 500000"
+          "page": 2,
+          "source_block": "field:TotalAssets:0",
+          "quote": "500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1629,9 +1637,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "total liabilities: 100000"
+          "page": 2,
+          "source_block": "field:TotalLiabilities:0",
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1655,9 +1663,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-          "page": 7,
-          "source_block": "bea-pfs-page-1",
-          "quote": "net worth: 400000.5"
+          "page": 2,
+          "source_block": "field:Net Worth:0",
+          "quote": "400000.5"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1673,6 +1681,7 @@
     "planted_items": [
       11
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [
@@ -1952,6 +1961,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1976,6 +1986,7 @@
     "planted_items": [
       16
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2260,6 +2271,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2441,6 +2453,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2794,6 +2807,7 @@
       9,
       22
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2903,6 +2917,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3026,6 +3041,7 @@
     "planted_items": [
       21
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3207,6 +3223,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3494,6 +3511,7 @@
     "planted_items": [
       22
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3596,6 +3614,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3749,6 +3768,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4260,6 +4280,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4274,11 +4295,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-    "hash": "1991f4de071d6f0fa19667fa8160c2620721288ae9665495a7bee0813e4ba506",
-    "bytes": 1386379,
+    "hash": "b9dfcaab8f34f79d40b1433d06da1a0f0709217bfc54084255b578e26eb35d7c",
+    "bytes": 1315541,
     "format": "scan_pdf",
     "batch": 1,
-    "pages": 7,
+    "pages": 6,
     "segments": [
       {
         "id": "pfs",
@@ -4286,12 +4307,14 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "Signature: e-signed; Date: 2026-04-28"
+          "page": 4,
+          "source_block": "page-4",
+          "quote": "Signature: e-signed / SYNTHETIC-pfs; Date: 2026-04-28",
+          "region": "Signature",
+          "verbatim": false
         },
         "page_start": 1,
-        "page_end": 7,
+        "page_end": 6,
         "doc_type": "SBA_413",
         "party_id": "alex",
         "period": null,
@@ -4300,7 +4323,7 @@
         "dated": true,
         "signature_date": "2026-04-28",
         "document_date": "2026-04-28",
-        "expected_page_count": 7,
+        "expected_page_count": 6,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -4321,9 +4344,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "as of date: 2026-04-28"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "2026-04-28",
+          "region": "This information is current as of month/day/year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4347,9 +4372,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "cash: 180000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "180000",
+          "region": "Cash on Hand & in banks",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4373,9 +4400,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total assets: 500000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "500000",
+          "region": "TotalAssets",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4399,9 +4428,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total liabilities: 100000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "100000",
+          "region": "TotalLiabilities",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4425,9 +4456,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "net worth: 400000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "400000",
+          "region": "Net Worth",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4442,6 +4475,27 @@
     ],
     "planted_items": [
       2
+    ],
+    "faults": [
+      {
+        "id": "A-F6",
+        "document": "pfs",
+        "attribute": "pfs.cash",
+        "kind": "vision_disagreement",
+        "expected": "review",
+        "description": "Two independent vision reads disagree: 0+0.25+0.30+0.10 = 0.65, review; vision never auto-accepts.",
+        "extractor": {
+          "value": 180000,
+          "quote": "180000",
+          "second_read": 108000
+        },
+        "verifier": {
+          "status": "supported",
+          "corrected_value": 180000,
+          "contradiction": false,
+          "specificity": 1
+        }
+      }
     ],
     "pipeline": {
       "duplicate_of": null,
@@ -4491,6 +4545,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4541,6 +4596,7 @@
     "planted_items": [
       24
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4563,6 +4619,7 @@
     "planted_items": [
       4
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
       "supersedes": [],
@@ -4623,8 +4680,10 @@
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
-          "source_block": "lease-page-1",
-          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "source_block": "page-1",
+          "quote": "14 Velnoric Way, Tazmervale, ZZ 00000",
+          "region": "address",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4649,8 +4708,10 @@
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
-          "source_block": "lease-page-1",
-          "quote": "tenant: Varnholt Climate Services LLC"
+          "source_block": "page-1",
+          "quote": "Varnholt Climate Services LLC",
+          "region": "tenant",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4675,8 +4736,10 @@
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
-          "source_block": "lease-page-1",
-          "quote": "landlord: Zelmivar Premises LLC"
+          "source_block": "page-1",
+          "quote": "Zelmivar Premises LLC",
+          "region": "landlord",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4701,8 +4764,10 @@
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
-          "source_block": "lease-page-1",
-          "quote": "expiry: 2029-09-15"
+          "source_block": "page-1",
+          "quote": "2029-09-15",
+          "region": "expiry",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4727,8 +4792,10 @@
         "locator": {
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
-          "source_block": "lease-page-1",
-          "quote": "option years: 0"
+          "source_block": "page-1",
+          "quote": "0",
+          "region": "option years",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -4745,6 +4812,7 @@
       14,
       20
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4795,6 +4863,7 @@
     "planted_items": [
       15
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4951,6 +5020,7 @@
       17,
       19
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -5452,6 +5522,26 @@
       6,
       23
     ],
+    "faults": [
+      {
+        "id": "A-F1",
+        "document": "loi",
+        "attribute": "deal.purchase_price",
+        "kind": "wrong_value_real_quote",
+        "expected": "blocked",
+        "description": "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
+        "extractor": {
+          "value": 2452000,
+          "quote": "purchase price: 2425000"
+        },
+        "verifier": {
+          "status": "unsupported",
+          "corrected_value": 2425000,
+          "contradiction": true,
+          "specificity": 1
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -5528,6 +5618,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -5712,6 +5803,7 @@
       8,
       10
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -5999,6 +6091,26 @@
     "planted_items": [
       18
     ],
+    "faults": [
+      {
+        "id": "A-F3",
+        "document": "interim",
+        "attribute": "financial.revenue",
+        "kind": "weak_evidence",
+        "expected": "review",
+        "description": "Right value cited to the broad title line only: 0.30+0.20+0.125+0.15+0.04 = 0.815, review.",
+        "extractor": {
+          "value": 900000,
+          "quote": "Interim Income Statement and Balance Sheet"
+        },
+        "verifier": {
+          "status": "partially_supported",
+          "corrected_value": 900000,
+          "contradiction": false,
+          "specificity": 0.4
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -6129,6 +6241,26 @@
     ],
     "planted_items": [
       18
+    ],
+    "faults": [
+      {
+        "id": "A-F2",
+        "document": "ar",
+        "attribute": "aging.as_of_date",
+        "kind": "quote_not_in_block",
+        "expected": "blocked",
+        "description": "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
+        "extractor": {
+          "value": "2026-04-18",
+          "quote": "as of date: 2026-04-19"
+        },
+        "verifier": {
+          "status": "unsupported",
+          "corrected_value": null,
+          "contradiction": false,
+          "specificity": 0
+        }
+      }
     ],
     "pipeline": {
       "duplicate_of": null,
@@ -6319,6 +6451,21 @@
     "planted_items": [
       5
     ],
+    "faults": [
+      {
+        "id": "A-F5",
+        "document": "debt",
+        "attribute": "debt.total",
+        "kind": "missing_value",
+        "expected": "review",
+        "description": "Extractor returns null for a value the schedule states; the gap is a review item, never an accepted absence.",
+        "extractor": {
+          "value": null,
+          "quote": null
+        },
+        "verifier": null
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -6368,6 +6515,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -6390,6 +6538,7 @@
     "planted_items": [
       10
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
       "supersedes": [],
@@ -7060,6 +7209,26 @@
       5,
       17
     ],
+    "faults": [
+      {
+        "id": "A-F4",
+        "document": "tax-2024",
+        "attribute": "tax.gross_receipts",
+        "kind": "verifier_corrects",
+        "expected": "review",
+        "description": "Extractor misreads receipts; the verifier corrects from the cited line: 0.30+0.20+0.125+0.15+0.075 = 0.85, review with a suggested correction.",
+        "extractor": {
+          "value": 1030000,
+          "quote": "gross receipts: 1300000"
+        },
+        "verifier": {
+          "status": "partially_supported",
+          "corrected_value": 1300000,
+          "contradiction": false,
+          "specificity": 0.75
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -7074,11 +7243,11 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-    "hash": "88a1ad690fe59055a4e940dc728dc2dcabaac772bd49494e909af49ee0e2c8bc",
-    "bytes": 632886,
+    "hash": "54968a8df0b719f5688caf80405bb6645d759d38ca3f1fab6b841fad60b3839a",
+    "bytes": 631343,
     "format": "acroform_pdf",
     "batch": 2,
-    "pages": 8,
+    "pages": 7,
     "segments": [
       {
         "id": "1919-fixed",
@@ -7086,12 +7255,12 @@
         "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
         "metadata_locator": {
           "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-          "page": 8,
-          "source_block": "1919-fixed-page-1",
-          "quote": "Signature: e-signed; Date: 2026-09-10"
+          "page": 4,
+          "source_block": "field:repSig:0",
+          "quote": "repSig: e-signed / SYNTHETIC-1919-fixed; sigDate: 2026-09-10"
         },
         "page_start": 1,
-        "page_end": 8,
+        "page_end": 7,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
@@ -7100,7 +7269,7 @@
         "dated": true,
         "signature_date": "2026-09-10",
         "document_date": "2026-09-10",
-        "expected_page_count": 8,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -7139,9 +7308,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
-          "page": 8,
-          "source_block": "1919-fixed-page-1",
-          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
+          "page": 1,
+          "source_block": "field:ownName1:0",
+          "quote": "Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7155,6 +7324,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [
@@ -7266,6 +7436,7 @@
     "planted_items": [
       1
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -7316,6 +7487,7 @@
     "planted_items": [
       21
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],

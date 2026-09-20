@@ -4,9 +4,9 @@
   "files": [
     {
       "path": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-      "sha256": "2d777a71ed8fff378bb373fbd89537fdb425c717584e8bc7822bffedb474686c",
-      "bytes": 632777,
-      "pages": 8,
+      "sha256": "1702288b62e0fc9999a148f29f8c21883a942cfa75c48aedf958aadeed783065",
+      "bytes": 631251,
+      "pages": 7,
       "format": "acroform_pdf",
       "batch": 1,
       "planted_items": [],
@@ -108,9 +108,9 @@
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-      "sha256": "fe47186ae0856f4e9da7be2a2391d2d8239a1849a706ff24f286d517dc77696b",
-      "bytes": 577132,
-      "pages": 7,
+      "sha256": "0a7d27772a8c69925807d5aa8d47464a864c7900d718111f450a34f8124d4f14",
+      "bytes": 575429,
+      "pages": 6,
       "format": "acroform_pdf",
       "batch": 1,
       "planted_items": [
@@ -298,15 +298,15 @@
   "archives": [
     {
       "path": "batch-1.zip",
-      "sha256": "6789cc7889d145a96573edf973d5bb22633ea4e0825b76ac2e177e371e1748b1",
-      "bytes": 834084
+      "sha256": "1e9bcc221331f160beecb28394020adf45ec298bbe60d154f62ec6e44106bdf7",
+      "bytes": 832199
     }
   ],
   "truth": [
     {
       "path": "truth/batch-1/engine_input.json",
-      "sha256": "823634fe600bc8923f0606f2ef7941b578934506f8b58949e46ad5f94a837d27",
-      "bytes": 114309
+      "sha256": "ed2840745cf1feb1b63a4fdd35de2c436c66c1300575b7a6ee2480e3e5939ad8",
+      "bytes": 114383
     },
     {
       "path": "truth/batch-1/expected_checklist.json",
@@ -325,18 +325,18 @@
     },
     {
       "path": "truth/deal.json",
-      "sha256": "d034f1f7f84fb3724ff6c705fce4deb0bb0d6393060e94eb4edd2fefa04dd99e",
-      "bytes": 4289
+      "sha256": "4055ed9036732f1bbb3e5d618cfb9eaf187bcbf31797f124786953a3c554338b",
+      "bytes": 6412
     },
     {
       "path": "truth/documents.json",
-      "sha256": "736381199240eee4cd54b5735d573fcd16d8af3ba2aabd973f5696dc9739b399",
-      "bytes": 126191
+      "sha256": "43edd596c1ce5a842f32358745e20296161f3e8e88a09b39067222581452af57",
+      "bytes": 129026
     },
     {
       "path": "truth/expected_review.json",
-      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-      "bytes": 3
+      "sha256": "05dd28e4de9c69775001f185f7cae88616936b3fefe0f4ce074633dbb772f3d2",
+      "bytes": 1015
     }
   ]
 }

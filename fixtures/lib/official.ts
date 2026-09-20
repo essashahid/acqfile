@@ -3,7 +3,6 @@ import path from "node:path";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { officialForm } from "../../src/lib/config/official-form-fields";
 import type { Doc, Plan } from "../plans/shared";
-import { content } from "./content";
 import { display } from "./truth";
 export async function officialPdf(p: Plan, d: Doc) {
   const spec = officialForm(d.type);
@@ -70,25 +69,24 @@ export async function officialPdf(p: Plan, d: Doc) {
       color: rgb(0.65, 0, 0),
     });
   }
-  const page = pdf.addPage([612, 792]);
-  let y = 758;
-  for (const line of content(p, d)) {
-    const size = Math.min(
-      10,
-      540 / Math.max(1, font.widthOfTextAtSize(line, 1)),
-    );
-    page.drawText(line, { x: 36, y, size, font });
-    y -= 22;
-  }
-  page.drawText(
-    `Synthetic evidence sheet attached to official SBA form | Page ${pdf.getPageCount()} of ${pdf.getPageCount()}`,
-    { x: 36, y: 24, size: 9, font },
-  );
+  // A36: no evidence sheet. Facts live only in the form's own fields and signature area.
   return Buffer.from(await pdf.save({ useObjectStreams: false }));
 }
 export async function verifyOfficial(bytes: Buffer, d: Doc) {
   const spec = officialForm(d.type)!;
-  const form = (await PDFDocument.load(bytes)).getForm();
+  const pdf = await PDFDocument.load(bytes);
+  const form = pdf.getForm();
+  const pages = pdf.getPages();
+  for (const [name, expected] of Object.entries(spec.fieldPages)) {
+    const widget = form.getField(name).acroField.getWidgets()[0]!;
+    if (pages.findIndex((pg) => pg.ref === widget.P()) + 1 !== expected)
+      throw Error(`Official field page mismatch ${d.type}/${name}`);
+  }
+  if (
+    (form.getTextField(spec.signatureDate).getText() ?? "") !==
+    (d.metadata.dated ? String(d.metadata.signature_date ?? "") : "")
+  )
+    throw Error(`Official date mismatch ${d.id}`);
   let count = 0;
   for (const [a, name] of Object.entries(spec.fields)) {
     if (d.facts[a] === undefined) continue;

@@ -14,8 +14,12 @@ export type Row = {item_id:string;scope_key:string;period:string|null;status:str
 export type ExpectedFinding = {rule_id:string;scope_key:string;period:string|null;type:string;severity:string};
 export type Plant = {item:number|string;description:string;documents:string[];batch:number;findings:string[];pipeline?:string};
 export type Trap = {id:string;documents:string[];rules:string[];reason:string};
+// A43 planted extraction faults. Expected routing is authored from A39 by hand, never copied from engine output.
+export const FAULT_KINDS=['wrong_value_real_quote','quote_not_in_block','weak_evidence','verifier_corrects','missing_value','vision_disagreement'] as const;
+export type FaultKind=typeof FAULT_KINDS[number];
+export type Fault={id:string;document:string;attribute:string;kind:FaultKind;expected:'review'|'blocked';description:string;extractor:{value:unknown;quote:string|null;second_read?:unknown};verifier:{status:'supported'|'partially_supported'|'unsupported';corrected_value:unknown;contradiction:boolean;specificity:number}|null};
 export type Model = {price:number;project:number;loan:number;cash:number;note:number;gift:number;investor:number;years:Record<string,{revenue:number;income:number}>;assets:number;liabilities:number;equity:number;personal:{cash:number;assets:number;liabilities:number;netWorth:number}};
-export type Plan = {id:string;pack:string;overlay?:string;as_of:string;profile:DealProfile;parties:Party[];ownership:Ownership[];model:Model;documents:Doc[];tracking:string[];confirmations:{rule:string;scope:string;key:string}[];planted:Plant[];traps:Trap[];batches:{batch:number;checklist:Row[];findings:ExpectedFinding[];resolves:string[]}[]};
+export type Plan = {id:string;pack:string;overlay?:string;as_of:string;profile:DealProfile;parties:Party[];ownership:Ownership[];model:Model;documents:Doc[];tracking:string[];confirmations:{rule:string;scope:string;key:string}[];planted:Plant[];traps:Trap[];faults:Fault[];batches:{batch:number;checklist:Row[];findings:ExpectedFinding[];resolves:string[]}[]};
 export const key = (rule:string,scope="deal",period:string|null=null)=>[rule,scope,period].join("|");
 export const fakeId = (digits="00-1234567")=>maskIdentifier(digits,FIXTURE_HMAC_KEY);
 export function person(seed:number) {const f=new Faker({locale:[en]});f.seed(seed);return f.person.fullName();}
@@ -34,7 +38,7 @@ export function base(id:"deal-a"|"deal-b"|"deal-c"):Plan {
  Object.assign(profile,{purchase_price:price,total_project_cost:model.project,structure:n===1?"stock":"asset",premises:n===0?"leased":"none",franchise:n===2?"yes":"no",franchise_brand:n===2?"Ostrelyva":"none",expected_loan_number_date:n===0?"2026-09-29":"2026-10-30",target_submission_date:"2026-09-30",target_lender:n===1?"Sample Lender A":"Zelmivar Bank",seller_note:{present:model.note?"yes":"no",amount:model.note,counted_toward_injection:model.note?"yes":"no"},gift_funds:n===2?"yes":"no",minority_investor_equity:n===1?"yes":"no",equity_sources:[{id:"cash-alex",party:"alex",kind:"cash",amount:model.cash,source_account_last_four:"4321"}]});
  const parties=data.parties.map(p=>({...p,name_variants:[],identifier:null,jointly_held_assets:"no",affiliates:[]})) as Party[];
  const documents:Doc[]=data.segments.map(s=>({id:s.id,type:s.type as DocumentType,party:s.party,period:"period" in s?s.period:undefined,facts:structuredClone("facts" in s?s.facts:{}) as Record<string,unknown>,metadata:{form_revision:null,signed:true,dated:true,signature_date:"2026-08-31",document_date:"2026-08-31",account_last_four:null,...("metadata" in s?s.metadata:{})},batch:1,format:s.type.startsWith("SBA_")?"acroform_pdf":"text_pdf",path:"",tags:[],notes:[]}));
- const plan:Plan={id,pack:n===0?"sop-50-10-8":"sop-50-10-8-1",...(n===1?{overlay:"sample-lender-a"}:{}),as_of:AS_OF,profile,parties,ownership:data.ownership as Ownership[],model,documents,tracking:data.tracking,confirmations:data.confirmations,planted:[],traps:[],batches:[{batch:1,checklist:[],findings:[],resolves:[]}]};
+ const plan:Plan={id,pack:n===0?"sop-50-10-8":"sop-50-10-8-1",...(n===1?{overlay:"sample-lender-a"}:{}),as_of:AS_OF,profile,parties,ownership:data.ownership as Ownership[],model,documents,tracking:data.tracking,confirmations:data.confirmations,planted:[],traps:[],faults:[],batches:[{batch:1,checklist:[],findings:[],resolves:[]}]};
  for(const d of documents){
   if("party.identifier" in d.facts)d.facts["party.identifier"]=fakeId(d.party==="buyer"?"00-7654321":"00-1234567");
   if("deal.purchase_price" in d.facts)d.facts["deal.purchase_price"]=price;
@@ -69,6 +73,7 @@ export function guarantor(p:Plan,id:string,seed:number){
  }
  p.confirmations.push({rule:"GUA-05",scope:id,key:"citizenship_handling"});
 }
+export function fault(p:Plan,f:Fault){p.faults.push(f);}
 export function finding(p:Plan,rule:string,scope="deal",period:string|null=null,type="conflict",severity="major"){p.batches[0]!.findings.push({rule_id:rule,scope_key:scope,period,type,severity});}
 export function plant(p:Plan,item:number|string,description:string,documents:string[],findings:string[]=[],pipeline?:string){p.planted.push({item,description,documents,batch:1,findings,...(pipeline?{pipeline}:{})});for(const id of documents)if(p.documents.some(d=>d.id===id)&&typeof item==="number")doc(p,id).tags.push(item);}
 export function row(p:Plan,ids:string[],scope:string,status="satisfied",periods:(string|null)[]=[null]){for(const item_id of ids)for(const period of periods)p.batches[0]!.checklist.push({item_id,scope_key:scope,period,status});}
@@ -119,4 +124,6 @@ export function layout(p:Plan,targetFiles:number){
   if(d.tags.includes(14))d.path=`incoming/batch-${d.batch}/Phone/scan0007.pdf`;
  }
  for(const d of p.documents)if(d.duplicate_of)d.format=doc(p,d.duplicate_of).format;
+ // A36: an official form carries no separate document date. Form 413 is dated by its as-of field, Form 1919 by its signature date; an undated form has none.
+ for(const d of p.documents){if(d.type==='SBA_413')d.metadata.document_date=(d.facts['pfs.as_of_date'] as string|undefined)??(d.metadata.dated?d.metadata.signature_date:null)??null;if(d.type==='SBA_1919')d.metadata.document_date=d.metadata.dated?d.metadata.signature_date:null;}
 }

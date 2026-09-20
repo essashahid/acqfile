@@ -1,4 +1,4 @@
-import {base,doc,add,party,checklist,status,finding,plant,key,layout,person} from './shared';
+import {base,doc,add,party,checklist,status,finding,plant,fault,key,layout,person} from './shared';
 export function dealC(){const p=base('deal-c');party(p,'donor',person(20260936),['donor']);
  if(Array.isArray(p.profile.equity_sources))p.profile.equity_sources.push({id:'gift-source',party:'donor',kind:'gift',amount:50000,source_account_last_four:'8765'});
  add(p,'gift-letter','GIFT_LETTER','donor',{'gift.amount':50000,'gift.no_repayment':true,'gift.donor':p.parties.find(x=>x.id==='donor')!.legal_name,'gift.recipient':p.parties.find(x=>x.id==='alex')!.legal_name});
@@ -12,4 +12,7 @@ export function dealC(){const p=base('deal-c');party(p,'donor',person(20260936),
  add(p,'brochure','OTHER_NOT_REQUIRED','target').notes=['Synthetic exercise equipment care brochure'];plant(p,15,'Irrelevant brochure',['brochure'],[],'not_required');
  doc(p,'formation').unreadable=true;doc(p,'formation').format='protected_pdf';status(p,'ENT-02','buyer','missing');finding(p,'ENT-02','buyer',null,'missing');plant(p,16,'Password-protected formation document',['formation'],[key('ENT-02','buyer')],'unreadable: FORMATION_DOC; zero segments and facts');
  add(p,'extension','TAX_EXTENSION','alex',{},'2025').notes=['Form 4868 - 2025 extension; no 2025 return supplied'];status(p,'GUA-02','alex','received_with_issues','2025');finding(p,'GUA-02','alex','2025','info','info');plant(p,25,'Latest personal tax year on extension',['extension'],[key('GUA-02','alex','2025')]);
- doc(p,'fin-2025').format='xlsx';doc(p,'plan').format='docx';layout(p,22);return p;}
+ doc(p,'fin-2025').format='xlsx';doc(p,'plan').format='docx';layout(p,22);
+ fault(p,{id:'C-F1',document:'gift-letter',attribute:'gift.amount',kind:'missing_value',expected:'review',description:'Vision read returns null for the stated gift amount; the gap is a review item.',extractor:{value:null,quote:null},verifier:null});
+ fault(p,{id:'C-F2',document:'donor-bank',attribute:'bank.ending_balance',kind:'vision_disagreement',expected:'review',description:'Two vision reads disagree on the balance: 0.65, review; vision never auto-accepts.',extractor:{value:70000,quote:'70000',second_read:7000},verifier:{status:'supported',corrected_value:70000,contradiction:false,specificity:1}});
+ return p;}

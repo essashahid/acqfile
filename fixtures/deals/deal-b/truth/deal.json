@@ -193,5 +193,79 @@
       ]
     }
   ],
-  "traps": []
+  "traps": [],
+  "planted_faults": [
+    {
+      "id": "B-F1",
+      "document": "funding",
+      "attribute": "funding.uses_total",
+      "kind": "wrong_value_real_quote",
+      "expected": "blocked",
+      "description": "Extractor drops the working-capital line from the uses total; the cited total contradicts it.",
+      "extractor": {
+        "value": 3600000,
+        "quote": "uses total: 3700000"
+      },
+      "verifier": {
+        "status": "unsupported",
+        "corrected_value": 3700000,
+        "contradiction": true,
+        "specificity": 1
+      }
+    },
+    {
+      "id": "B-F2",
+      "document": "note",
+      "attribute": "note.term_months",
+      "kind": "quote_not_in_block",
+      "expected": "blocked",
+      "description": "Right term with an invented quote: exact evidence 0 and unsupported evidence blocks.",
+      "extractor": {
+        "value": 120,
+        "quote": "term months: 60"
+      },
+      "verifier": {
+        "status": "unsupported",
+        "corrected_value": null,
+        "contradiction": false,
+        "specificity": 0
+      }
+    },
+    {
+      "id": "B-F3",
+      "document": "bank-aug",
+      "attribute": "bank.ending_balance",
+      "kind": "weak_evidence",
+      "expected": "review",
+      "description": "Right balance cited only to the statement title: 0.815, review.",
+      "extractor": {
+        "value": 100000,
+        "quote": "Monthly Account Statement"
+      },
+      "verifier": {
+        "status": "partially_supported",
+        "corrected_value": 100000,
+        "contradiction": false,
+        "specificity": 0.4
+      }
+    },
+    {
+      "id": "B-F4",
+      "document": "fin-2024",
+      "attribute": "financial.total_assets",
+      "kind": "verifier_corrects",
+      "expected": "review",
+      "description": "Extractor drops a zero; the verifier corrects from the cited line: 0.85, review.",
+      "extractor": {
+        "value": 50000,
+        "quote": "total assets: 500000"
+      },
+      "verifier": {
+        "status": "partially_supported",
+        "corrected_value": 500000,
+        "contradiction": false,
+        "specificity": 0.75
+      }
+    }
+  ]
 }

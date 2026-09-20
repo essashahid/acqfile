@@ -94,7 +94,7 @@ it("parses every unique deal file with page fields, paragraph and sheet/cell loc
   expect(fields).toBeGreaterThan(100);
   expect(cells).toBeGreaterThan(10);
   expect(paragraphs).toBeGreaterThan(3);
-  expect(images).toBe(50);
+  expect(images).toBe(48);
 }, 60000);
 
 it("redacts passport AcroForm values even without a printed label", async () => {

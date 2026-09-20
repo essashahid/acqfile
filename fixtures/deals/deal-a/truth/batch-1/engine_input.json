@@ -168,12 +168,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 8,
-        "source_block": "1919-page-1",
-        "quote": "Signature: ________________; Date: ________________"
+        "page": 4,
+        "source_block": "field:repSig:0",
+        "quote": "repSig: blank; sigDate: blank"
       },
       "page_start": 1,
-      "page_end": 8,
+      "page_end": 7,
       "doc_type": "SBA_1919",
       "party_id": "buyer",
       "period": null,
@@ -181,8 +181,8 @@
       "signed": false,
       "dated": false,
       "signature_date": null,
-      "document_date": "2026-08-31",
-      "expected_page_count": 8,
+      "document_date": null,
+      "expected_page_count": 7,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -546,12 +546,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "Signature: e-signed; Date: 2026-08-31"
+        "page": 4,
+        "source_block": "field:Signature:0",
+        "quote": "Signature: e-signed / SYNTHETIC-bea-pfs; Date: 2026-08-31"
       },
       "page_start": 1,
-      "page_end": 7,
+      "page_end": 6,
       "doc_type": "SBA_413",
       "party_id": "bea",
       "period": null,
@@ -560,7 +560,7 @@
       "dated": true,
       "signature_date": "2026-08-31",
       "document_date": "2026-08-31",
-      "expected_page_count": 7,
+      "expected_page_count": 6,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1167,12 +1167,14 @@
       "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "Signature: e-signed; Date: 2026-04-28"
+        "page": 4,
+        "source_block": "page-4",
+        "quote": "Signature: e-signed / SYNTHETIC-pfs; Date: 2026-04-28",
+        "region": "Signature",
+        "verbatim": false
       },
       "page_start": 1,
-      "page_end": 7,
+      "page_end": 6,
       "doc_type": "SBA_413",
       "party_id": "alex",
       "period": null,
@@ -1181,7 +1183,7 @@
       "dated": true,
       "signature_date": "2026-04-28",
       "document_date": "2026-04-28",
-      "expected_page_count": 7,
+      "expected_page_count": 6,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1787,9 +1789,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 8,
-        "source_block": "1919-page-1",
-        "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
+        "page": 1,
+        "source_block": "field:ownName1:0",
+        "quote": "Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2545,9 +2547,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "as of date: 2026-08-31"
+        "page": 2,
+        "source_block": "field:This information is current as of month/day/year:0",
+        "quote": "2026-08-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2571,9 +2573,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "cash: 180000"
+        "page": 2,
+        "source_block": "field:Cash on Hand & in banks:0",
+        "quote": "180000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2597,9 +2599,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "total assets: 500000"
+        "page": 2,
+        "source_block": "field:TotalAssets:0",
+        "quote": "500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2623,9 +2625,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "total liabilities: 100000"
+        "page": 2,
+        "source_block": "field:TotalLiabilities:0",
+        "quote": "100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2649,9 +2651,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
-        "page": 7,
-        "source_block": "bea-pfs-page-1",
-        "quote": "net worth: 400000.5"
+        "page": 2,
+        "source_block": "field:Net Worth:0",
+        "quote": "400000.5"
       },
       "confidence": 1,
       "confidence_components": {
@@ -4383,9 +4385,11 @@
       "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "as of date: 2026-04-28"
+        "page": 2,
+        "source_block": "page-2",
+        "quote": "2026-04-28",
+        "region": "This information is current as of month/day/year",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4409,9 +4413,11 @@
       "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "cash: 180000"
+        "page": 2,
+        "source_block": "page-2",
+        "quote": "180000",
+        "region": "Cash on Hand & in banks",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4435,9 +4441,11 @@
       "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "total assets: 500000"
+        "page": 2,
+        "source_block": "page-2",
+        "quote": "500000",
+        "region": "TotalAssets",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4461,9 +4469,11 @@
       "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "total liabilities: 100000"
+        "page": 2,
+        "source_block": "page-2",
+        "quote": "100000",
+        "region": "TotalLiabilities",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4487,9 +4497,11 @@
       "method": "vision",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "net worth: 400000"
+        "page": 2,
+        "source_block": "page-2",
+        "quote": "400000",
+        "region": "Net Worth",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4514,8 +4526,10 @@
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
-        "source_block": "lease-page-1",
-        "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+        "source_block": "page-1",
+        "quote": "14 Velnoric Way, Tazmervale, ZZ 00000",
+        "region": "address",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4540,8 +4554,10 @@
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
-        "source_block": "lease-page-1",
-        "quote": "tenant: Varnholt Climate Services LLC"
+        "source_block": "page-1",
+        "quote": "Varnholt Climate Services LLC",
+        "region": "tenant",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4566,8 +4582,10 @@
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
-        "source_block": "lease-page-1",
-        "quote": "landlord: Zelmivar Premises LLC"
+        "source_block": "page-1",
+        "quote": "Zelmivar Premises LLC",
+        "region": "landlord",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4592,8 +4610,10 @@
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
-        "source_block": "lease-page-1",
-        "quote": "expiry: 2029-09-15"
+        "source_block": "page-1",
+        "quote": "2029-09-15",
+        "region": "expiry",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {
@@ -4618,8 +4638,10 @@
       "locator": {
         "file": "incoming/batch-1/Phone/scan0007.pdf",
         "page": 1,
-        "source_block": "lease-page-1",
-        "quote": "option years: 0"
+        "source_block": "page-1",
+        "quote": "0",
+        "region": "option years",
+        "verbatim": false
       },
       "confidence": 1,
       "confidence_components": {

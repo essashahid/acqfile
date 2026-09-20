@@ -499,5 +499,111 @@
       ],
       "reason": "Earlier stale version is excluded from the current inventory"
     }
+  ],
+  "planted_faults": [
+    {
+      "id": "A-F1",
+      "document": "loi",
+      "attribute": "deal.purchase_price",
+      "kind": "wrong_value_real_quote",
+      "expected": "blocked",
+      "description": "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
+      "extractor": {
+        "value": 2452000,
+        "quote": "purchase price: 2425000"
+      },
+      "verifier": {
+        "status": "unsupported",
+        "corrected_value": 2425000,
+        "contradiction": true,
+        "specificity": 1
+      }
+    },
+    {
+      "id": "A-F2",
+      "document": "ar",
+      "attribute": "aging.as_of_date",
+      "kind": "quote_not_in_block",
+      "expected": "blocked",
+      "description": "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
+      "extractor": {
+        "value": "2026-04-18",
+        "quote": "as of date: 2026-04-19"
+      },
+      "verifier": {
+        "status": "unsupported",
+        "corrected_value": null,
+        "contradiction": false,
+        "specificity": 0
+      }
+    },
+    {
+      "id": "A-F3",
+      "document": "interim",
+      "attribute": "financial.revenue",
+      "kind": "weak_evidence",
+      "expected": "review",
+      "description": "Right value cited to the broad title line only: 0.30+0.20+0.125+0.15+0.04 = 0.815, review.",
+      "extractor": {
+        "value": 900000,
+        "quote": "Interim Income Statement and Balance Sheet"
+      },
+      "verifier": {
+        "status": "partially_supported",
+        "corrected_value": 900000,
+        "contradiction": false,
+        "specificity": 0.4
+      }
+    },
+    {
+      "id": "A-F4",
+      "document": "tax-2024",
+      "attribute": "tax.gross_receipts",
+      "kind": "verifier_corrects",
+      "expected": "review",
+      "description": "Extractor misreads receipts; the verifier corrects from the cited line: 0.30+0.20+0.125+0.15+0.075 = 0.85, review with a suggested correction.",
+      "extractor": {
+        "value": 1030000,
+        "quote": "gross receipts: 1300000"
+      },
+      "verifier": {
+        "status": "partially_supported",
+        "corrected_value": 1300000,
+        "contradiction": false,
+        "specificity": 0.75
+      }
+    },
+    {
+      "id": "A-F5",
+      "document": "debt",
+      "attribute": "debt.total",
+      "kind": "missing_value",
+      "expected": "review",
+      "description": "Extractor returns null for a value the schedule states; the gap is a review item, never an accepted absence.",
+      "extractor": {
+        "value": null,
+        "quote": null
+      },
+      "verifier": null
+    },
+    {
+      "id": "A-F6",
+      "document": "pfs",
+      "attribute": "pfs.cash",
+      "kind": "vision_disagreement",
+      "expected": "review",
+      "description": "Two independent vision reads disagree: 0+0.25+0.30+0.10 = 0.65, review; vision never auto-accepts.",
+      "extractor": {
+        "value": 180000,
+        "quote": "180000",
+        "second_read": 108000
+      },
+      "verifier": {
+        "status": "supported",
+        "corrected_value": 180000,
+        "contradiction": false,
+        "specificity": 1
+      }
+    }
   ]
 }

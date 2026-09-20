@@ -1,11 +1,11 @@
 [
   {
     "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-    "hash": "2d777a71ed8fff378bb373fbd89537fdb425c717584e8bc7822bffedb474686c",
-    "bytes": 632777,
+    "hash": "1702288b62e0fc9999a148f29f8c21883a942cfa75c48aedf958aadeed783065",
+    "bytes": 631251,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 8,
+    "pages": 7,
     "segments": [
       {
         "id": "1919",
@@ -13,12 +13,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "page": 4,
+          "source_block": "field:repSig:0",
+          "quote": "repSig: e-signed / SYNTHETIC-1919; sigDate: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 8,
+        "page_end": 7,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
@@ -27,7 +27,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 8,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -66,9 +66,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "members: Abe Welch / 85; Terrill Bernier / 15"
+          "page": 1,
+          "source_block": "field:ownName1:0",
+          "quote": "Abe Welch / 85; Terrill Bernier / 15"
         },
         "confidence": 1,
         "confidence_components": {
@@ -82,6 +82,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -211,6 +212,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -490,6 +492,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -647,6 +650,26 @@
     "planted_items": [
       22
     ],
+    "faults": [
+      {
+        "id": "B-F3",
+        "document": "bank-aug",
+        "attribute": "bank.ending_balance",
+        "kind": "weak_evidence",
+        "expected": "review",
+        "description": "Right balance cited only to the statement title: 0.815, review.",
+        "extractor": {
+          "value": 100000,
+          "quote": "Monthly Account Statement"
+        },
+        "verifier": {
+          "status": "partially_supported",
+          "corrected_value": 100000,
+          "contradiction": false,
+          "specificity": 0.4
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -800,6 +823,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1112,6 +1136,26 @@
     "planted_items": [
       22
     ],
+    "faults": [
+      {
+        "id": "B-F1",
+        "document": "funding",
+        "attribute": "funding.uses_total",
+        "kind": "wrong_value_real_quote",
+        "expected": "blocked",
+        "description": "Extractor drops the working-capital line from the uses total; the cited total contradicts it.",
+        "extractor": {
+          "value": 3600000,
+          "quote": "uses total: 3700000"
+        },
+        "verifier": {
+          "status": "unsupported",
+          "corrected_value": 3700000,
+          "contradiction": true,
+          "specificity": 1
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1265,6 +1309,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1386,6 +1431,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1462,6 +1508,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1511,6 +1558,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1523,11 +1571,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-    "hash": "fe47186ae0856f4e9da7be2a2391d2d8239a1849a706ff24f286d517dc77696b",
-    "bytes": 577132,
+    "hash": "0a7d27772a8c69925807d5aa8d47464a864c7900d718111f450a34f8124d4f14",
+    "bytes": 575429,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 7,
+    "pages": 6,
     "segments": [
       {
         "id": "pfs",
@@ -1535,12 +1583,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "page": 4,
+          "source_block": "field:Signature:0",
+          "quote": "Signature: e-signed / SYNTHETIC-pfs; Date: 2026-08-31"
         },
         "page_start": 1,
-        "page_end": 7,
+        "page_end": 6,
         "doc_type": "SBA_413",
         "party_id": "alex",
         "period": null,
@@ -1549,7 +1597,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 7,
+        "expected_page_count": 6,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1570,9 +1618,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "as of date: 2026-08-31"
+          "page": 2,
+          "source_block": "field:This information is current as of month/day/year:0",
+          "quote": "2026-08-31"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1596,9 +1644,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "cash: 100000"
+          "page": 2,
+          "source_block": "field:Cash on Hand & in banks:0",
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1622,9 +1670,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total assets: 500000"
+          "page": 2,
+          "source_block": "field:TotalAssets:0",
+          "quote": "500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1648,9 +1696,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total liabilities: 100000"
+          "page": 2,
+          "source_block": "field:TotalLiabilities:0",
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1674,9 +1722,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "net worth: 400000"
+          "page": 2,
+          "source_block": "field:Net Worth:0",
+          "quote": "400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1692,6 +1740,7 @@
     "planted_items": [
       22
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1740,6 +1789,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1847,6 +1897,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1895,6 +1946,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1972,6 +2024,7 @@
     "planted_items": [
       18
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2049,6 +2102,7 @@
     "planted_items": [
       18
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2150,6 +2204,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2198,6 +2253,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2351,6 +2407,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2504,6 +2561,26 @@
       }
     ],
     "planted_items": [],
+    "faults": [
+      {
+        "id": "B-F4",
+        "document": "fin-2024",
+        "attribute": "financial.total_assets",
+        "kind": "verifier_corrects",
+        "expected": "review",
+        "description": "Extractor drops a zero; the verifier corrects from the cited line: 0.85, review.",
+        "extractor": {
+          "value": 50000,
+          "quote": "total assets: 500000"
+        },
+        "verifier": {
+          "status": "partially_supported",
+          "corrected_value": 500000,
+          "contradiction": false,
+          "specificity": 0.75
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2657,6 +2734,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3129,6 +3207,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3285,6 +3364,7 @@
     "planted_items": [
       18
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3333,6 +3413,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3381,6 +3462,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3429,6 +3511,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3582,6 +3665,26 @@
       }
     ],
     "planted_items": [],
+    "faults": [
+      {
+        "id": "B-F2",
+        "document": "note",
+        "attribute": "note.term_months",
+        "kind": "quote_not_in_block",
+        "expected": "blocked",
+        "description": "Right term with an invented quote: exact evidence 0 and unsupported evidence blocks.",
+        "extractor": {
+          "value": 120,
+          "quote": "term months: 60"
+        },
+        "verifier": {
+          "status": "unsupported",
+          "corrected_value": null,
+          "contradiction": false,
+          "specificity": 0
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -4171,6 +4274,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],

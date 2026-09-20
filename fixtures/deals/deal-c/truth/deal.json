@@ -227,5 +227,39 @@
       ]
     }
   ],
-  "traps": []
+  "traps": [],
+  "planted_faults": [
+    {
+      "id": "C-F1",
+      "document": "gift-letter",
+      "attribute": "gift.amount",
+      "kind": "missing_value",
+      "expected": "review",
+      "description": "Vision read returns null for the stated gift amount; the gap is a review item.",
+      "extractor": {
+        "value": null,
+        "quote": null
+      },
+      "verifier": null
+    },
+    {
+      "id": "C-F2",
+      "document": "donor-bank",
+      "attribute": "bank.ending_balance",
+      "kind": "vision_disagreement",
+      "expected": "review",
+      "description": "Two vision reads disagree on the balance: 0.65, review; vision never auto-accepts.",
+      "extractor": {
+        "value": 70000,
+        "quote": "70000",
+        "second_read": 7000
+      },
+      "verifier": {
+        "status": "supported",
+        "corrected_value": 70000,
+        "contradiction": false,
+        "specificity": 1
+      }
+    }
+  ]
 }

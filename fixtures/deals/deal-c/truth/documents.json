@@ -1,11 +1,11 @@
 [
   {
     "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
-    "hash": "aede8a8401aeecfa878567aaabd7f3b5025c3df39c41ce0aa0645062b56ca2fd",
-    "bytes": 631399,
+    "hash": "60ff6f85df21fd5d6a51a18cd871875f2243be7025ee99fe0db0bcb6f8ef8810",
+    "bytes": 630014,
     "format": "acroform_pdf",
     "batch": 1,
-    "pages": 8,
+    "pages": 7,
     "segments": [
       {
         "id": "1919",
@@ -13,12 +13,12 @@
         "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "Signature: ________________; Date: ________________"
+          "page": 4,
+          "source_block": "field:repSig:0",
+          "quote": "repSig: blank; sigDate: blank"
         },
         "page_start": 1,
-        "page_end": 8,
+        "page_end": 7,
         "doc_type": "SBA_1919",
         "party_id": "buyer",
         "period": null,
@@ -26,8 +26,8 @@
         "signed": false,
         "dated": false,
         "signature_date": null,
-        "document_date": "2026-08-31",
-        "expected_page_count": 8,
+        "document_date": null,
+        "expected_page_count": 7,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -58,9 +58,9 @@
         "method": "acroform",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/1919.PDF",
-          "page": 8,
-          "source_block": "1919-page-1",
-          "quote": "members: Providenci Glover / 100"
+          "page": 1,
+          "source_block": "field:ownName1:0",
+          "quote": "Providenci Glover / 100"
         },
         "confidence": 1,
         "confidence_components": {
@@ -76,6 +76,7 @@
     "planted_items": [
       3
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -190,8 +191,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
           "page": 2,
-          "source_block": "id-page-2",
-          "quote": "expiry: 2030-12-31"
+          "source_block": "page-2",
+          "quote": "2030-12-31",
+          "region": "expiry",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -207,6 +210,7 @@
     "planted_items": [
       13
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -269,8 +273,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
           "page": 1,
-          "source_block": "personal-2023-page-1",
-          "quote": "year: 2023"
+          "source_block": "page-1",
+          "quote": "2023",
+          "region": "year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -301,8 +307,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
           "page": 1,
-          "source_block": "personal-2023-page-1",
-          "quote": "identifier: 900-12-3456"
+          "source_block": "page-1",
+          "quote": "900-12-3456",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -318,6 +326,7 @@
     "planted_items": [
       1
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -340,6 +349,7 @@
     "planted_items": [
       16
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -427,8 +437,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 1,
-          "source_block": "donor-bank-page-1",
-          "quote": "legal name: Bradley Wuckert"
+          "source_block": "page-1",
+          "quote": "Bradley Wuckert",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -453,8 +465,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 1,
-          "source_block": "donor-bank-page-1",
-          "quote": "ending balance: 70000"
+          "source_block": "page-1",
+          "quote": "70000",
+          "region": "ending balance",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -479,8 +493,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 1,
-          "source_block": "donor-bank-page-1",
-          "quote": "period end: 2026-08-31"
+          "source_block": "page-1",
+          "quote": "2026-08-31",
+          "region": "period end",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -505,8 +521,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 1,
-          "source_block": "donor-bank-page-1",
-          "quote": "institution: Zelmivar Bank"
+          "source_block": "page-1",
+          "quote": "Zelmivar Bank",
+          "region": "institution",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -520,6 +538,27 @@
       }
     ],
     "planted_items": [],
+    "faults": [
+      {
+        "id": "C-F2",
+        "document": "donor-bank",
+        "attribute": "bank.ending_balance",
+        "kind": "vision_disagreement",
+        "expected": "review",
+        "description": "Two vision reads disagree on the balance: 0.65, review; vision never auto-accepts.",
+        "extractor": {
+          "value": 70000,
+          "quote": "70000",
+          "second_read": 7000
+        },
+        "verifier": {
+          "status": "supported",
+          "corrected_value": 70000,
+          "contradiction": false,
+          "specificity": 1
+        }
+      }
+    ],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -614,8 +653,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
           "page": 1,
-          "source_block": "ein-page-1",
-          "quote": "identifier: 00-7654321"
+          "source_block": "page-1",
+          "quote": "00-7654321",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -629,6 +670,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -727,8 +769,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
           "page": 1,
-          "source_block": "owners-page-1",
-          "quote": "members: Providenci Glover / 100"
+          "source_block": "page-1",
+          "quote": "Providenci Glover / 100",
+          "region": "members",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -742,6 +786,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -830,8 +875,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 2,
-          "source_block": "bank-jul-page-2",
-          "quote": "legal name: Providenci Glover"
+          "source_block": "page-2",
+          "quote": "Providenci Glover",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -856,8 +903,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 2,
-          "source_block": "bank-jul-page-2",
-          "quote": "ending balance: 180000"
+          "source_block": "page-2",
+          "quote": "180000",
+          "region": "ending balance",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -882,8 +931,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 2,
-          "source_block": "bank-jul-page-2",
-          "quote": "period end: 2026-07-31"
+          "source_block": "page-2",
+          "quote": "2026-07-31",
+          "region": "period end",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -908,8 +959,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 2,
-          "source_block": "bank-jul-page-2",
-          "quote": "institution: Zelmivar Bank"
+          "source_block": "page-2",
+          "quote": "Zelmivar Bank",
+          "region": "institution",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -923,6 +976,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1011,8 +1065,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 1,
-          "source_block": "bank-aug-page-1",
-          "quote": "legal name: Providenci Glover"
+          "source_block": "page-1",
+          "quote": "Providenci Glover",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1037,8 +1093,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 1,
-          "source_block": "bank-aug-page-1",
-          "quote": "ending balance: 180000"
+          "source_block": "page-1",
+          "quote": "180000",
+          "region": "ending balance",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1063,8 +1121,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 1,
-          "source_block": "bank-aug-page-1",
-          "quote": "period end: 2026-08-31"
+          "source_block": "page-1",
+          "quote": "2026-08-31",
+          "region": "period end",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1089,8 +1149,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 1,
-          "source_block": "bank-aug-page-1",
-          "quote": "institution: Zelmivar Bank"
+          "source_block": "page-1",
+          "quote": "Zelmivar Bank",
+          "region": "institution",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1115,8 +1177,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 2,
-          "source_block": "fin-2023-page-2",
-          "quote": "revenue: 1200000"
+          "source_block": "page-2",
+          "quote": "1200000",
+          "region": "revenue",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1141,8 +1205,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 2,
-          "source_block": "fin-2023-page-2",
-          "quote": "total assets: 500000"
+          "source_block": "page-2",
+          "quote": "500000",
+          "region": "total assets",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1167,8 +1233,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 2,
-          "source_block": "fin-2023-page-2",
-          "quote": "total liabilities: 100000"
+          "source_block": "page-2",
+          "quote": "100000",
+          "region": "total liabilities",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1193,8 +1261,10 @@
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 2,
-          "source_block": "fin-2023-page-2",
-          "quote": "net income: 120000"
+          "source_block": "page-2",
+          "quote": "120000",
+          "region": "net income",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1208,6 +1278,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1221,11 +1292,11 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-    "hash": "9c4cb96fbdc3e4c38212e9dd9f4f126b686938e609365d4a237273b0e34b9c09",
-    "bytes": 1387445,
+    "hash": "9bf3c5c89e4078d62a8f2b0d2708e1aa871fa4975a4660fc9ce5aa32b7ce0f13",
+    "bytes": 1315947,
     "format": "scan_pdf",
     "batch": 1,
-    "pages": 7,
+    "pages": 6,
     "segments": [
       {
         "id": "pfs",
@@ -1233,12 +1304,14 @@
         "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
         "metadata_locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "page": 4,
+          "source_block": "page-4",
+          "quote": "Signature: e-signed / SYNTHETIC-pfs; Date: 2026-08-31",
+          "region": "Signature",
+          "verbatim": false
         },
         "page_start": 1,
-        "page_end": 7,
+        "page_end": 6,
         "doc_type": "SBA_413",
         "party_id": "alex",
         "period": null,
@@ -1247,7 +1320,7 @@
         "dated": true,
         "signature_date": "2026-08-31",
         "document_date": "2026-08-31",
-        "expected_page_count": 7,
+        "expected_page_count": 6,
         "account_last_four": null,
         "classification_method": "manual",
         "classification_confidence": 1,
@@ -1268,9 +1341,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "as of date: 2026-08-31"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "2026-08-31",
+          "region": "This information is current as of month/day/year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1294,9 +1369,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "cash: 180000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "180000",
+          "region": "Cash on Hand & in banks",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1320,9 +1397,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total assets: 500000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "500000",
+          "region": "TotalAssets",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1346,9 +1425,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "total liabilities: 100000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "100000",
+          "region": "TotalLiabilities",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1372,9 +1453,11 @@
         "method": "vision",
         "locator": {
           "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-          "page": 7,
-          "source_block": "pfs-page-1",
-          "quote": "net worth: 400000"
+          "page": 2,
+          "source_block": "page-2",
+          "quote": "400000",
+          "region": "Net Worth",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1390,6 +1473,7 @@
     "planted_items": [
       12
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1438,6 +1522,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1591,6 +1676,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -1732,8 +1818,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 1,
-          "source_block": "loi-page-1",
-          "quote": "signed by both: Yes"
+          "source_block": "page-1",
+          "quote": "Yes",
+          "region": "signed by both",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1758,8 +1846,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 1,
-          "source_block": "loi-page-1",
-          "quote": "expiry date: 2026-11-30"
+          "source_block": "page-1",
+          "quote": "2026-11-30",
+          "region": "expiry date",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1784,8 +1874,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 1,
-          "source_block": "loi-page-1",
-          "quote": "purchase price: 850000"
+          "source_block": "page-1",
+          "quote": "850000",
+          "region": "purchase price",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1810,8 +1902,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "buyer: Ostrelyva Acquisition LLC"
+          "source_block": "page-2",
+          "quote": "Ostrelyva Acquisition LLC",
+          "region": "buyer",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1836,8 +1930,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "seller: Ostrelyva Fitness LLC"
+          "source_block": "page-2",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "seller",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1862,8 +1958,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "allocation present: Yes"
+          "source_block": "page-2",
+          "quote": "Yes",
+          "region": "allocation present",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1888,8 +1986,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "purchase price: 850000"
+          "source_block": "page-2",
+          "quote": "850000",
+          "region": "purchase price",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1914,8 +2014,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "structure: asset"
+          "source_block": "page-2",
+          "quote": "asset",
+          "region": "structure",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1940,8 +2042,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "outside date: 2026-11-30"
+          "source_block": "page-2",
+          "quote": "2026-11-30",
+          "region": "outside date",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1966,8 +2070,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "legal name: Ostrelyva Fitness LLC"
+          "source_block": "page-2",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -1998,8 +2104,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
-          "source_block": "purchase-page-2",
-          "quote": "identifier: 00-1234567"
+          "source_block": "page-2",
+          "quote": "00-1234567",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2050,8 +2158,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
-          "source_block": "funding-page-3",
-          "quote": "sources: Senior loan / 750000; Cash injection / 150000; Gift / 50000"
+          "source_block": "page-3",
+          "quote": "Senior loan / 750000; Cash injection / 150000; Gift / 50000",
+          "region": "sources",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2094,8 +2204,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
-          "source_block": "funding-page-3",
-          "quote": "uses: Purchase / 850000; Working capital / 100000"
+          "source_block": "page-3",
+          "quote": "Purchase / 850000; Working capital / 100000",
+          "region": "uses",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2120,8 +2232,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
-          "source_block": "funding-page-3",
-          "quote": "sources total: 950000"
+          "source_block": "page-3",
+          "quote": "950000",
+          "region": "sources total",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2146,8 +2260,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
-          "source_block": "funding-page-3",
-          "quote": "uses total: 950000"
+          "source_block": "page-3",
+          "quote": "950000",
+          "region": "uses total",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2172,8 +2288,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
-          "source_block": "funding-page-3",
-          "quote": "purchase price: 850000"
+          "source_block": "page-3",
+          "quote": "850000",
+          "region": "purchase price",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2208,8 +2326,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 4,
-          "source_block": "operating-page-4",
-          "quote": "members: Providenci Glover / 100"
+          "source_block": "page-4",
+          "quote": "Providenci Glover / 100",
+          "region": "members",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2223,6 +2343,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2301,6 +2422,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2389,8 +2511,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 2,
-          "source_block": "gift-letter-page-2",
-          "quote": "amount: 50000"
+          "source_block": "page-2",
+          "quote": "50000",
+          "region": "amount",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2415,8 +2539,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 2,
-          "source_block": "gift-letter-page-2",
-          "quote": "no repayment: Yes"
+          "source_block": "page-2",
+          "quote": "Yes",
+          "region": "no repayment",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2441,8 +2567,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 2,
-          "source_block": "gift-letter-page-2",
-          "quote": "donor: Bradley Wuckert"
+          "source_block": "page-2",
+          "quote": "Bradley Wuckert",
+          "region": "donor",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2467,8 +2595,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 2,
-          "source_block": "gift-letter-page-2",
-          "quote": "recipient: Providenci Glover"
+          "source_block": "page-2",
+          "quote": "Providenci Glover",
+          "region": "recipient",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2483,6 +2613,21 @@
     ],
     "planted_items": [
       10
+    ],
+    "faults": [
+      {
+        "id": "C-F1",
+        "document": "gift-letter",
+        "attribute": "gift.amount",
+        "kind": "missing_value",
+        "expected": "review",
+        "description": "Vision read returns null for the stated gift amount; the gap is a review item.",
+        "extractor": {
+          "value": null,
+          "quote": null
+        },
+        "verifier": null
+      }
     ],
     "pipeline": {
       "duplicate_of": null,
@@ -2560,6 +2705,7 @@
     ],
     "facts": [],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2639,6 +2785,7 @@
       15,
       25
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -2727,8 +2874,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 1,
-          "source_block": "fin-2024-page-1",
-          "quote": "revenue: 1300000"
+          "source_block": "page-1",
+          "quote": "1300000",
+          "region": "revenue",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2753,8 +2902,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 1,
-          "source_block": "fin-2024-page-1",
-          "quote": "total assets: 500000"
+          "source_block": "page-1",
+          "quote": "500000",
+          "region": "total assets",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2779,8 +2930,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 1,
-          "source_block": "fin-2024-page-1",
-          "quote": "total liabilities: 100000"
+          "source_block": "page-1",
+          "quote": "100000",
+          "region": "total liabilities",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2805,8 +2958,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 1,
-          "source_block": "fin-2024-page-1",
-          "quote": "net income: 130000"
+          "source_block": "page-1",
+          "quote": "130000",
+          "region": "net income",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2831,8 +2986,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 2,
-          "source_block": "interim-page-2",
-          "quote": "period end: 2026-08-31"
+          "source_block": "page-2",
+          "quote": "2026-08-31",
+          "region": "period end",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2857,8 +3014,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 2,
-          "source_block": "interim-page-2",
-          "quote": "revenue: 900000"
+          "source_block": "page-2",
+          "quote": "900000",
+          "region": "revenue",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2883,8 +3042,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 2,
-          "source_block": "interim-page-2",
-          "quote": "total assets: 500000"
+          "source_block": "page-2",
+          "quote": "500000",
+          "region": "total assets",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2909,8 +3070,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 2,
-          "source_block": "interim-page-2",
-          "quote": "total liabilities: 100000"
+          "source_block": "page-2",
+          "quote": "100000",
+          "region": "total liabilities",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -2924,6 +3087,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3012,8 +3176,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
           "page": 1,
-          "source_block": "ar-page-1",
-          "quote": "as of date: 2026-08-31"
+          "source_block": "page-1",
+          "quote": "2026-08-31",
+          "region": "as of date",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3038,8 +3204,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
           "page": 2,
-          "source_block": "ap-page-2",
-          "quote": "as of date: 2026-08-31"
+          "source_block": "page-2",
+          "quote": "2026-08-31",
+          "region": "as of date",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3053,6 +3221,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3141,8 +3310,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 1,
-          "source_block": "debt-page-1",
-          "quote": "as of date: 2026-08-31"
+          "source_block": "page-1",
+          "quote": "2026-08-31",
+          "region": "as of date",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3167,8 +3338,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 1,
-          "source_block": "debt-page-1",
-          "quote": "total: 100000"
+          "source_block": "page-1",
+          "quote": "100000",
+          "region": "total",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3193,8 +3366,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 2,
-          "source_block": "4506-page-2",
-          "quote": "legal name: Ostrelyva Fitness LLC"
+          "source_block": "page-2",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3225,8 +3400,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 2,
-          "source_block": "4506-page-2",
-          "quote": "identifier: 00-1234567"
+          "source_block": "page-2",
+          "quote": "00-1234567",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3240,6 +3417,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],
@@ -3263,6 +3441,7 @@
     "planted_items": [
       10
     ],
+    "faults": [],
     "pipeline": {
       "duplicate_of": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
       "supersedes": [],
@@ -3377,8 +3556,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "legal name: Ostrelyva Fitness LLC"
+          "source_block": "page-1",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3409,8 +3590,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "identifier: 00-1234567"
+          "source_block": "page-1",
+          "quote": "00-1234567",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3435,8 +3618,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "gross receipts: 1200000"
+          "source_block": "page-1",
+          "quote": "1200000",
+          "region": "gross receipts",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3461,8 +3646,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "net income: 120000"
+          "source_block": "page-1",
+          "quote": "120000",
+          "region": "net income",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3487,8 +3674,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "year: 2023"
+          "source_block": "page-1",
+          "quote": "2023",
+          "region": "year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3513,8 +3702,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
-          "source_block": "tax-2023-page-1",
-          "quote": "form type: 1120S"
+          "source_block": "page-1",
+          "quote": "1120S",
+          "region": "form type",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3539,8 +3730,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "legal name: Ostrelyva Fitness LLC"
+          "source_block": "page-2",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3571,8 +3764,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "identifier: 00-1234567"
+          "source_block": "page-2",
+          "quote": "00-1234567",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3597,8 +3792,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "gross receipts: 1300000"
+          "source_block": "page-2",
+          "quote": "1300000",
+          "region": "gross receipts",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3623,8 +3820,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "net income: 130000"
+          "source_block": "page-2",
+          "quote": "130000",
+          "region": "net income",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3649,8 +3848,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "year: 2024"
+          "source_block": "page-2",
+          "quote": "2024",
+          "region": "year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3675,8 +3876,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
-          "source_block": "tax-2024-page-2",
-          "quote": "form type: 1120S"
+          "source_block": "page-2",
+          "quote": "1120S",
+          "region": "form type",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3701,8 +3904,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "legal name: Ostrelyva Fitness LLC"
+          "source_block": "page-3",
+          "quote": "Ostrelyva Fitness LLC",
+          "region": "legal name",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3733,8 +3938,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "identifier: 00-1234567"
+          "source_block": "page-3",
+          "quote": "00-1234567",
+          "region": "identifier",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3759,8 +3966,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "gross receipts: 1400000"
+          "source_block": "page-3",
+          "quote": "1400000",
+          "region": "gross receipts",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3785,8 +3994,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "net income: 140000"
+          "source_block": "page-3",
+          "quote": "140000",
+          "region": "net income",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3811,8 +4022,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "year: 2025"
+          "source_block": "page-3",
+          "quote": "2025",
+          "region": "year",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3837,8 +4050,10 @@
         "locator": {
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
-          "source_block": "tax-2025-page-3",
-          "quote": "form type: 1120S"
+          "source_block": "page-3",
+          "quote": "1120S",
+          "region": "form type",
+          "verbatim": false
         },
         "confidence": 1,
         "confidence_components": {
@@ -3852,6 +4067,7 @@
       }
     ],
     "planted_items": [],
+    "faults": [],
     "pipeline": {
       "duplicate_of": null,
       "supersedes": [],

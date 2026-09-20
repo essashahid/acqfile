@@ -50,13 +50,17 @@ async function supersede(
       s.period === c.period &&
       s.accountLastFour === c.account_last_four,
   )) {
+    // A32 with A36: a dated submission is strictly later than a current one that carries no date at all.
     const later = !!(
       (c.document_date &&
         old.documentDate &&
         c.document_date > old.documentDate) ||
       (c.signature_date &&
         old.signatureDate &&
-        c.signature_date > old.signatureDate)
+        c.signature_date > old.signatureDate) ||
+      ((c.document_date || c.signature_date) &&
+        !old.documentDate &&
+        !old.signatureDate)
     );
     if (later || force) {
       await tx

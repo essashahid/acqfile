@@ -1,5 +1,14 @@
 [
   {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "loi",
+    "attribute": "deal.purchase_price",
+    "kind": "wrong_value_real_quote",
+    "expected": "blocked"
+  },
+  {
     "file": "incoming/batch-1/Buyer/Attachments/formation.PDF",
     "batch": 1,
     "type": "unreadable",
@@ -10,6 +19,51 @@
     "batch": 1,
     "type": "vision",
     "segment_id": "pfs"
+  },
+  {
+    "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "pfs",
+    "attribute": "pfs.cash",
+    "kind": "vision_disagreement",
+    "expected": "review"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "tax-2024",
+    "attribute": "tax.gross_receipts",
+    "kind": "verifier_corrects",
+    "expected": "review"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "interim",
+    "attribute": "financial.revenue",
+    "kind": "weak_evidence",
+    "expected": "review"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "ar",
+    "attribute": "aging.as_of_date",
+    "kind": "quote_not_in_block",
+    "expected": "blocked"
+  },
+  {
+    "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
+    "batch": 1,
+    "type": "extraction_fault",
+    "segment_id": "debt",
+    "attribute": "debt.total",
+    "kind": "missing_value",
+    "expected": "review"
   },
   {
     "file": "incoming/batch-1/Phone/scan0007.pdf",

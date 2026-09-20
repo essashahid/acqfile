@@ -73,3 +73,23 @@ Ruling: allow. Guardrail 7 governs derived and stored data.
   6. Screenshots in docs and tests use synthetic files only.
 
   Tests cover conditions 1, 2 and 4.
+
+## Phase 4 rulings (2026-09-20)
+
+A35 implementation accepted: public demo visitors may open synthetic originals, their opens are audited under the fixed visitor identity, and the real-data banner waits for Phase 7.
+
+- **A36. No evidence sheet.** The synthetic evidence sheet appended to each official form does not exist on a real form, and on rasterized copies it would let a vision model read clean printed text instead of the form. Remove it. For AcroForm facts, the locator is the widget's page plus the field name, and the quote is the field value as read. Draw the signature mark and the date inside the form's own signature and date areas. For image-only pages, the locator is the page plus a named region, and the quote is the value as the model read it, flagged as not verbatim. Truth statuses do not change.
+- **A37. Domain prompts.** The inherited extractor and verifier prompts were written for a different kind of document. Replace them with the two prompts in Section 2, verbatim apart from structured-output wrappers.
+- **A38. Extraction schemas come from the fact catalog.** For each extracted type, generate the schema from the catalog entries that (a) that type can produce and (b) an active rule in any shipped pack or overlay consumes. Do not hand-duplicate field lists. A fact no rule consumes is not extracted.
+- **A39. Method order and confidence,** computed in code, never taken from a model's self-report:
+  - `acroform`: read the mapped field. 1.0 when the mapping is known and validators pass; otherwise review. No model call.
+  - `text`: `0.30 exact evidence + 0.20 deterministic validation + 0.25 verifier support + 0.15 cross-pass agreement + 0.10 evidence specificity`. Auto-accept at 0.86 or above, review from 0.65, blocked below. Unsupported evidence or a contradiction blocks regardless of score.
+  - `vision`: `0.35 dual-read agreement + 0.25 deterministic validation + 0.30 verifier support + 0.10 evidence specificity`. A rule-feeding fact read by vision is never auto-accepted.
+  - `manual`: per A14.
+  - Components: exact evidence is 1.0 when the normalized quote occurs in the cited block, else 0.0. Validation is 1.0 all pass, 0.5 warnings only, 0.0 material failure. Verifier support is 1.0, 0.5 or 0.0 for supported, partially supported, unsupported. Cross-pass agreement is 1.0 same value after normalization, 0.75 formatting-only difference, 0.0 materially different. Specificity is the verifier's number. Dual-read agreement is 1.0 when two independent reads agree after normalization, else 0.0.
+  - Classification confidence, left at zero in Phase 3, is also code-computed: 1.0 for a deterministic cue match; for a classifier proposal, from cue agreement, quote verification and the classifier's `uncertain` flag. Every image-only classification and every multi-segment boundary still needs operator confirmation.
+- **A40. Identifiers in extraction.** Per A15: code reads full SSNs, EINs and account numbers from the text layer and AcroForm values and stores HMAC plus last four. Models are asked for the last four only. On image-only pages only the last four exist, so matching falls back to last four plus name, and a mismatch goes to review.
+- **A41. The `facts` table is the single store** for extracted values. The inherited field-value tables are retired in this phase.
+- **A42. Legacy removal.** Delete `fixtures/legacy`, the report schemas, the legacy extraction path, its queries, screens, tests and its 76 evaluation cases. The A27 exemption ends here. Keep the evaluation harness code that Phase 6 will reuse. Until Phase 6, `pnpm eval` runs the Phase 3 and Phase 4 gates.
+- **A43. Planted extraction faults.** The mock provider must misbehave on purpose so routing can be tested. Author about twelve faults in the deal plans, under A21: wrong value with a real quote, right value with a quote that is not in the block, broad weak evidence, a value the verifier corrects, a missing value, a vision dual-read disagreement. Each names its file, attribute, fault and expected routing (`review` or `blocked`).
+- **A44. Optional live smoke test,** only if the owner has put a provider key in the environment. One pass of extraction and verification over Deal C plus ten text documents from Deal A. Hard cap USD 3. Estimate first and abort above the cap. Report fact accuracy by method, routing, false accepts, cost and time. Not a gate. Without a key, skip it and say so.

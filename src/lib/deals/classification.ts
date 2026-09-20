@@ -108,42 +108,62 @@ export function metadata(
   const signature = /Signature:\s*(e-signed|_+);\s*Date:\s*([\d-]+|_+)/i.exec(
     text,
   );
-  const signatureField = spec ? field(spec.signature) : null;
+  // A36: an official form's signature mark is page content inside its signature widget; its date is the form's own date field.
+  const officialMark = spec
+    ? /e-signed \/ SYNTHETIC-[\w-]+|e-signed|envelope/i.exec(text)?.[0]
+    : undefined;
   const dateField = spec ? field(spec.signatureDate) : null;
+  const dateFieldValid = !!dateField && z.iso.date().safeParse(dateField).success;
   const signed = signature
     ? signature[1]!.toLowerCase() === "e-signed"
-    : signatureField && /e-signed|envelope/i.test(signatureField)
-      ? true
+    : spec
+      ? !!officialMark
       : null;
   const dated = signature
     ? !signature[2]!.startsWith("_")
-    : dateField && z.iso.date().safeParse(dateField).success
-      ? true
+    : spec
+      ? dateFieldValid
       : null;
-  const date =
-    dateField && z.iso.date().safeParse(dateField).success
-      ? dateField
-      : signature?.[2];
+  const date = dateFieldValid ? dateField : signature?.[2];
   const signature_date =
     date && z.iso.date().safeParse(date).success ? date : null;
-  const document = line(text, "Document date");
+  const asOf =
+    spec && "documentDate" in spec ? field(spec.documentDate) : null;
+  const document = spec
+    ? asOf && z.iso.date().safeParse(asOf).success
+      ? asOf
+      : signature_date
+    : line(text, "Document date");
   const document_date =
     document && z.iso.date().safeParse(document).success ? document : null;
   const pageCounts = [...text.matchAll(/Page\s+\d+\s+of\s+(\d+)/gi)].map((m) =>
     Number(m[1]),
   );
-  const expected_page_count = pageCounts.length
-    ? Math.max(...pageCounts)
-    : null;
-  const quote = signature?.[0] ?? blocks[0]?.text.slice(0, 180) ?? "";
-  const quote_page = blocks.find((b) => b.text.includes(quote))?.page ?? start;
+  const expected_page_count = spec
+    ? spec.pages
+    : pageCounts.length
+      ? Math.max(...pageCounts)
+      : null;
+  // The quote is always literal block text: the signature mark, else the date field, else the name field.
+  const quote =
+    signature?.[0] ??
+    (spec
+      ? (officialMark ??
+        (dateFieldValid ? dateField : null) ??
+        field(spec.name) ??
+        "")
+      : (blocks[0]?.text.slice(0, 180) ?? ""));
+  const quote_page =
+    blocks.find((b) => quote && b.text.includes(quote))?.page ?? start;
   const evidence = Object.entries({
     party_name,
     period: period_raw,
     form_revision:
-      type === "SBA_1919" && text.includes("02/2025") ? "02/2025" : null,
-    signed: signature?.[0],
-    dated: signature?.[0],
+      spec && "revision" in spec && text.includes(spec.revision)
+        ? spec.revision
+        : null,
+    signed: signature?.[0] ?? officialMark,
+    dated: signature?.[0] ?? (dateFieldValid ? dateField : undefined),
     signature_date,
     document_date,
     account_last_four: line(text, "Account ending"),
@@ -161,7 +181,9 @@ export function metadata(
     period_raw,
     period,
     form_revision:
-      type === "SBA_1919" && /02\/2025/.test(text) ? "02/2025" : null,
+      spec && "revision" in spec && text.includes(spec.revision)
+        ? spec.revision
+        : null,
     signed,
     dated,
     signature_date,

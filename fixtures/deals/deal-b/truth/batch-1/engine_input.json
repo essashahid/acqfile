@@ -123,12 +123,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 8,
-        "source_block": "1919-page-1",
-        "quote": "Signature: e-signed; Date: 2026-08-31"
+        "page": 4,
+        "source_block": "field:repSig:0",
+        "quote": "repSig: e-signed / SYNTHETIC-1919; sigDate: 2026-08-31"
       },
       "page_start": 1,
-      "page_end": 8,
+      "page_end": 7,
       "doc_type": "SBA_1919",
       "party_id": "buyer",
       "period": null,
@@ -137,7 +137,7 @@
       "dated": true,
       "signature_date": "2026-08-31",
       "document_date": "2026-08-31",
-      "expected_page_count": 8,
+      "expected_page_count": 7,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -609,12 +609,12 @@
       "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
       "metadata_locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "Signature: e-signed; Date: 2026-08-31"
+        "page": 4,
+        "source_block": "field:Signature:0",
+        "quote": "Signature: e-signed / SYNTHETIC-pfs; Date: 2026-08-31"
       },
       "page_start": 1,
-      "page_end": 7,
+      "page_end": 6,
       "doc_type": "SBA_413",
       "party_id": "alex",
       "period": null,
@@ -623,7 +623,7 @@
       "dated": true,
       "signature_date": "2026-08-31",
       "document_date": "2026-08-31",
-      "expected_page_count": 7,
+      "expected_page_count": 6,
       "account_last_four": null,
       "classification_method": "manual",
       "classification_confidence": 1,
@@ -1202,9 +1202,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/1919.pdf",
-        "page": 8,
-        "source_block": "1919-page-1",
-        "quote": "members: Abe Welch / 85; Terrill Bernier / 15"
+        "page": 1,
+        "source_block": "field:ownName1:0",
+        "quote": "Abe Welch / 85; Terrill Bernier / 15"
       },
       "confidence": 1,
       "confidence_components": {
@@ -1990,9 +1990,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "as of date: 2026-08-31"
+        "page": 2,
+        "source_block": "field:This information is current as of month/day/year:0",
+        "quote": "2026-08-31"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2016,9 +2016,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "cash: 100000"
+        "page": 2,
+        "source_block": "field:Cash on Hand & in banks:0",
+        "quote": "100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2042,9 +2042,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "total assets: 500000"
+        "page": 2,
+        "source_block": "field:TotalAssets:0",
+        "quote": "500000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2068,9 +2068,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "total liabilities: 100000"
+        "page": 2,
+        "source_block": "field:TotalLiabilities:0",
+        "quote": "100000"
       },
       "confidence": 1,
       "confidence_components": {
@@ -2094,9 +2094,9 @@
       "method": "acroform",
       "locator": {
         "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-        "page": 7,
-        "source_block": "pfs-page-1",
-        "quote": "net worth: 400000"
+        "page": 2,
+        "source_block": "field:Net Worth:0",
+        "quote": "400000"
       },
       "confidence": 1,
       "confidence_components": {
