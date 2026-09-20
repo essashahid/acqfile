@@ -2,9 +2,6 @@ import { env, retryDelaysMs } from "@/lib/env";
 
 /** Pipeline constants. Anything that changes model behaviour is folded into the model config hash. */
 export const PIPELINE_VERSION = env().PIPELINE_VERSION;
-export const SCHEMA_VERSION = "record-v2";
-export const EXTRACT_PROMPT_VERSION = env().EXTRACT_PROMPT_VERSION;
-export const VERIFY_PROMPT_VERSION = env().VERIFY_PROMPT_VERSION;
 
 export const UPLOAD_LIMITS = {
   maxBytes: env().MAX_UPLOAD_MB * 1024 * 1024,
@@ -14,17 +11,6 @@ export const UPLOAD_LIMITS = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
   } as const,
 };
-
-/** Scanned-document heuristic: more than 50% of pages with fewer than 100 characters. */
-export const SCANNED_DETECTION = { minCharsPerPage: 100, maxLowTextPageRatio: 0.5 };
-
-export const CONFIDENCE_WEIGHTS = {
-  evidence_exact_match: 0.3,
-  deterministic_validation: 0.2,
-  verifier_support: 0.25,
-  cross_pass_agreement: 0.15,
-  evidence_specificity: 0.1,
-} as const;
 
 export const ROUTING_THRESHOLDS = { autoAccept: env().AUTO_ACCEPT_THRESHOLD, review: env().REVIEW_THRESHOLD } as const;
 
@@ -57,14 +43,4 @@ export const REGRESSION_RULES = {
   extractionExactAccuracyDropPct: 2,
   provenanceValidityDropPct: 1,
   reviewRecallDropPct: 5,
-} as const;
-
-/** Success criteria (spec section 5). */
-export const SUCCESS_TARGETS = {
-  scalarExactAccuracy: 0.95,
-  listMicroF1: 0.9,
-  classificationAccuracy: 0.95,
-  provenanceValidity: 0.98,
-  reviewRecall: 0.9,
-  reviewPrecision: 0.75,
 } as const;

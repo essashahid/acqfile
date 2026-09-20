@@ -10,16 +10,9 @@ import {
   boolean,
   jsonb,
   numeric,
-  customType,
   primaryKey,
   bigserial,
 } from "drizzle-orm/pg-core";
-
-const textArray = customType<{ data: string[]; driverData: string[] }>({
-  dataType() {
-    return "text[]";
-  },
-});
 
 export const appUsers = pgTable("app_users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -84,21 +77,6 @@ export const documentVersions = pgTable("document_versions", {
   pageCount: integer("page_count"),
   charCount: integer("char_count"),
   uploadedBy: uuid("uploaded_by"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const sourceBlocks = pgTable("source_blocks", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
-  blockType: text("block_type", { enum: ["page", "paragraph"] }).notNull(),
-  blockIndex: integer("block_index").notNull(),
-  locator: text("locator").notNull(),
-  pageNumber: integer("page_number"),
-  paragraphNumber: integer("paragraph_number"),
-  rawText: text("raw_text").notNull(),
-  normalizedText: text("normalized_text").notNull(),
-  charStart: integer("char_start").notNull(),
-  charEnd: integer("char_end").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -176,33 +154,13 @@ export const llmCalls = pgTable("llm_calls", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const extractionRuns = pgTable("extraction_runs", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  processingRunId: uuid("processing_run_id").notNull().references(() => processingRuns.id),
-  documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
-  extractorModel: text("extractor_model").notNull(),
-  verifierModel: text("verifier_model").notNull(),
-  extractorPromptVersion: text("extractor_prompt_version").notNull(),
-  verifierPromptVersion: text("verifier_prompt_version").notNull(),
-  modelConfigHash: text("model_config_hash").notNull(),
-  rawExtractionJson: jsonb("raw_extraction_json").notNull(),
-  verificationJson: jsonb("verification_json"),
-  startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
-  completedAt: timestamp("completed_at", { withTimezone: true }),
-  inputTokens: integer("input_tokens").notNull().default(0),
-  outputTokens: integer("output_tokens").notNull().default(0),
-  costUsd: numeric("cost_usd", { precision: 10, scale: 6 }).notNull().default("0"),
-});
-
 export const recordVersions = pgTable("record_versions", {
   id: uuid("id").primaryKey().defaultRandom(),
   documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
-  extractionRunId: uuid("extraction_run_id"),
   parentRecordVersionId: uuid("parent_record_version_id"),
   versionNumber: integer("version_number").notNull(),
   createdByType: text("created_by_type", { enum: ["model", "reviewer", "reprocess"] }).notNull(),
   createdByUserId: uuid("created_by_user_id"),
-  modelConfigHash: text("model_config_hash"),
   payloadJson: jsonb("payload_json").notNull(),
   changedFields: jsonb("changed_fields").$type<string[]>().notNull().default([]),
   isCurrent: boolean("is_current").notNull().default(true),
@@ -211,122 +169,6 @@ export const recordVersions = pgTable("record_versions", {
 
 export const ROUTING_STATUSES = ["auto_accepted", "review", "blocked", "accepted", "rejected", "needs_source"] as const;
 export type RoutingStatus = (typeof ROUTING_STATUSES)[number];
-
-export const fieldValues = pgTable("field_values", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  recordVersionId: uuid("record_version_id").notNull().references(() => recordVersions.id),
-  fieldPath: text("field_path").notNull(),
-  valueJson: jsonb("value_json"),
-  isRequired: boolean("is_required").notNull().default(false),
-  confidence: numeric("confidence", { precision: 4, scale: 3 }).notNull().default("0"),
-  routingStatus: text("routing_status", { enum: ROUTING_STATUSES }).notNull(),
-  deterministicValidation: numeric("deterministic_validation", { precision: 4, scale: 3 }).notNull().default("0"),
-  evidenceExactMatch: numeric("evidence_exact_match", { precision: 4, scale: 3 }).notNull().default("0"),
-  verifierSupport: numeric("verifier_support", { precision: 4, scale: 3 }).notNull().default("0"),
-  crossPassAgreement: numeric("cross_pass_agreement", { precision: 4, scale: 3 }).notNull().default("0"),
-  evidenceSpecificity: numeric("evidence_specificity", { precision: 4, scale: 3 }).notNull().default("0"),
-  verifierStatus: text("verifier_status"),
-  verifierReason: text("verifier_reason"),
-  ambiguity: text("ambiguity"),
-  contradiction: boolean("contradiction").notNull().default(false),
-  verifierCorrectedValueJson: jsonb("verifier_corrected_value_json"),
-  validationMessages: jsonb("validation_messages").$type<ValidationMessage[]>().notNull().default([]),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export type ValidationMessage = { level: "error" | "warning"; code: string; message: string };
-
-export const fieldEvidence = pgTable("field_evidence", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  fieldValueId: uuid("field_value_id").notNull().references(() => fieldValues.id),
-  sourceBlockId: uuid("source_block_id"),
-  quoteText: text("quote_text").notNull(),
-  quoteStart: integer("quote_start"),
-  quoteEnd: integer("quote_end"),
-  sourceLocator: text("source_locator").notNull(),
-  exactMatch: boolean("exact_match").notNull().default(false),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const reviewItems = pgTable("review_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
-  documentVersionId: uuid("document_version_id").notNull().references(() => documentVersions.id),
-  recordVersionId: uuid("record_version_id").notNull().references(() => recordVersions.id),
-  fieldValueId: uuid("field_value_id").notNull().references(() => fieldValues.id),
-  fieldPath: text("field_path").notNull(),
-  status: text("status", { enum: ["open", "resolved", "rejected", "needs_source", "superseded"] }).notNull().default("open"),
-  priority: text("priority", { enum: ["normal", "high"] }).notNull().default("normal"),
-  reason: text("reason").notNull(),
-  assignedTo: uuid("assigned_to"),
-  resolvedBy: uuid("resolved_by"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  resolvedAt: timestamp("resolved_at", { withTimezone: true }),
-});
-
-export const reviewActions = pgTable("review_actions", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  reviewItemId: uuid("review_item_id").notNull().references(() => reviewItems.id),
-  reviewerUserId: uuid("reviewer_user_id").notNull(),
-  action: text("action", { enum: ["accept", "edit_accept", "reject", "needs_source"] }).notNull(),
-  oldValueJson: jsonb("old_value_json"),
-  newValueJson: jsonb("new_value_json"),
-  comment: text("comment"),
-  resultingRecordVersionId: uuid("resulting_record_version_id"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const EVAL_CASE_TYPES = [
-  "extraction",
-  "provenance",
-  "review_routing",
-  "duplicate",
-  "version",
-  "classification",
-] as const;
-export type EvalCaseType = (typeof EVAL_CASE_TYPES)[number];
-
-export const evalCases = pgTable("eval_cases", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  caseKey: text("case_key").notNull().unique(),
-  caseType: text("case_type", { enum: EVAL_CASE_TYPES }).notNull(),
-  documentLogicalKey: text("document_logical_key"),
-  expectedJson: jsonb("expected_json").notNull(),
-  tags: textArray("tags").notNull().default([]),
-  active: boolean("active").notNull().default(true),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const evalRuns = pgTable("eval_runs", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  workspaceId: uuid("workspace_id").notNull().references(() => workspaces.id),
-  processingRunId: uuid("processing_run_id"),
-  baselineEvalRunId: uuid("baseline_eval_run_id"),
-  provider: text("provider").notNull(),
-  modelConfigHash: text("model_config_hash").notNull(),
-  status: text("status", { enum: ["running", "completed", "failed"] }).notNull().default("running"),
-  aggregateMetricsJson: jsonb("aggregate_metrics_json").$type<Record<string, unknown>>().notNull().default({}),
-  regressionJson: jsonb("regression_json").$type<Record<string, unknown>>().notNull().default({}),
-  regressionPassed: boolean("regression_passed"),
-  isBaseline: boolean("is_baseline").notNull().default(false),
-  startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
-  completedAt: timestamp("completed_at", { withTimezone: true }),
-  errorMessage: text("error_message"),
-});
-
-export const evalResults = pgTable("eval_results", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  evalRunId: uuid("eval_run_id").notNull().references(() => evalRuns.id),
-  evalCaseId: uuid("eval_case_id").notNull().references(() => evalCases.id),
-  passed: boolean("passed").notNull(),
-  metricJson: jsonb("metric_json").$type<Record<string, unknown>>().notNull().default({}),
-  expectedJson: jsonb("expected_json").notNull(),
-  actualJson: jsonb("actual_json"),
-  judgeReason: text("judge_reason"),
-  latencyMs: integer("latency_ms").notNull().default(0),
-  estimatedCostUsd: numeric("estimated_cost_usd", { precision: 10, scale: 6 }).notNull().default("0"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
 
 export const runEvents = pgTable("run_events", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -351,15 +193,4 @@ export const deadLetters = pgTable("dead_letters", {
   status: text("status", { enum: ["open", "retrying", "resolved"] }).notNull().default("open"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   resolvedAt: timestamp("resolved_at", { withTimezone: true }),
-});
-
-export const qaReports = pgTable("qa_reports", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  processingRunId: uuid("processing_run_id").notNull().references(() => processingRuns.id),
-  evalRunId: uuid("eval_run_id"),
-  status: text("status", { enum: ["pending", "generated", "failed"] }).notNull().default("pending"),
-  storagePath: text("storage_path"),
-  errorMessage: text("error_message"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  completedAt: timestamp("completed_at", { withTimezone: true }),
 });

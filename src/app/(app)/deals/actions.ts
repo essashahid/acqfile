@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { requireWorkspace } from "@/lib/workspace";
 import { saveDeal } from "@/lib/deals/service";
 import { processDealRun, extractAfterReview } from "@/lib/deals/process";
+import { reviewFact, resolveGap, reclassifySegment } from "@/lib/extract/review";
 import { reviewFile, undoSupersession } from "@/lib/deals/filing";
 import { assertMutation } from "@/lib/access";
 import { intake } from "@/lib/deals/intake";
@@ -56,4 +57,22 @@ export async function retryDealRunAction(dealId: string, runId: string) {
   await assertMutation(ctx, "deal-retry");
   await processDealRun(ctx, dealId, runId);
   revalidatePath(`/deals/${dealId}`);
+}
+
+export async function reviewFactAction(dealId: string, input: unknown) {
+  const ctx = await requireWorkspace();
+  const result = await reviewFact(ctx, dealId, input);
+  revalidatePath(`/deals/${dealId}`);
+  return result;
+}
+export async function resolveGapAction(dealId: string, input: unknown) {
+  const ctx = await requireWorkspace();
+  await resolveGap(ctx, dealId, input);
+  revalidatePath(`/deals/${dealId}`);
+}
+export async function reclassifyAction(dealId: string, segmentId: string, comment: string) {
+  const ctx = await requireWorkspace();
+  const version = await reclassifySegment(ctx, dealId, segmentId, comment);
+  revalidatePath(`/deals/${dealId}`);
+  return version;
 }

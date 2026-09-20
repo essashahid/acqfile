@@ -17,7 +17,7 @@ beforeAll(async()=>{
 describe('additive domain storage',()=>{
  it('creates all ten tables and keeps legacy documents nullable',async()=>{
   const sql=getSql();const rows=await sql`select tablename from pg_tables where schemaname='public'`;
-  for(const name of ['deals','parties','ownership_links','segments','facts','rule_pack_snapshots','evaluations','checklist_status','findings','events','record_versions','review_items'])expect(rows.map(r=>r.tablename)).toContain(name);
+  for(const name of ['deals','parties','ownership_links','segments','facts','rule_pack_snapshots','evaluations','checklist_status','findings','events','record_versions','attestations'])expect(rows.map(r=>r.tablename)).toContain(name);
   await expect(sql`insert into documents(workspace_id,logical_key,display_name) values (${seed.workspaceId},'LEGACY-NULL','Legacy')`).resolves.toBeDefined();
  });
  it('snapshots exact resolved content idempotently and prevents mutation',async()=>{

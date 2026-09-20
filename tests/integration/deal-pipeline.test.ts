@@ -12,10 +12,6 @@ import {
   type FilingRecord,
 } from "@/lib/deals/filing";
 import { seeded } from "./helpers";
-import { seedEvalCases } from "@/lib/eval/cases";
-import { ingestCorpus } from "@/lib/eval/corpus";
-import { runEvaluation } from "@/lib/eval/run";
-import { listDocuments } from "@/lib/queries/documents";
 import type { SessionContext } from "@/lib/workspace";
 import type { documents } from "../../fixtures/lib/truth";
 it("all three deals and every batch satisfy the Phase 3 pipeline gates", async () => {
@@ -396,26 +392,12 @@ it("all three deals and every batch satisfy the Phase 3 pipeline gates", async (
   await undoSupersession(ctx, aId, event!.id);
   await expect(undoSupersession(ctx, aId, event!.id)).rejects.toThrow("Stale");
   const payloads =
-    await getSql()`select row_to_json(t)::text as payload from source_blocks t union all select row_to_json(t)::text from run_steps t union all select row_to_json(t)::text from run_events t union all select row_to_json(t)::text from record_versions t union all select row_to_json(t)::text from segments t union all select row_to_json(t)::text from events t`;
+    await getSql()`select row_to_json(t)::text as payload from run_steps t union all select row_to_json(t)::text from run_events t union all select row_to_json(t)::text from record_versions t union all select row_to_json(t)::text from segments t union all select row_to_json(t)::text from events t`;
   expect(
     payloads.some((r) =>
       /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/.test(r.payload),
     ),
   ).toBe(false);
-  expect(await listDocuments(seed.workspaceId)).toHaveLength(0);
-  await seedEvalCases();
-  const corpus = await ingestCorpus({
-    workspaceId: seed.workspaceId,
-    userId: seed.adminId,
-  });
-  const legacyEvaluation = await runEvaluation({
-    workspaceId: seed.workspaceId,
-    userId: seed.adminId,
-    processingRunId: corpus.processingRunId,
-    skipResumability: true,
-  });
-  expect(legacyEvaluation.results).toHaveLength(76);
-  expect((await listDocuments(seed.workspaceId)).length).toBeGreaterThan(0);
   fs.writeFileSync(
     "/tmp/acqfile-phase3-pipeline-proof.json",
     JSON.stringify(
@@ -427,7 +409,6 @@ it("all three deals and every batch satisfy the Phase 3 pipeline gates", async (
         undo: "pass",
         equal_date_conflict: "pass",
         identifier_lint: "pass",
-        legacy_coexistence: "pass",
       },
       null,
       2,

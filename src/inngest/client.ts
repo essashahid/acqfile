@@ -1,11 +1,5 @@
 import { Inngest, eventType } from "inngest";
 import { z } from "zod";
-
-const documentJob = z.object({ processingRunId: z.string(), documentVersionId: z.string() });
-
-export const documentProcessRequested = eventType("document.process.requested", { schema: documentJob });
-export const documentRetryRequested = eventType("document.retry.requested", { schema: documentJob });
-
-export const evaluationRequested = eventType("evaluation.requested", { schema: z.object({ evalRunId: z.string().uuid(), workspaceId: z.string().uuid(), userId: z.string().uuid(), processingRunId: z.string().uuid().nullable() }) });
-
+/** A deal processing run requested by an operator; the run itself is durable in the database. */
+export const dealRunRequested = eventType("deal.run.requested", { schema: z.object({ dealId: z.string().uuid(), runId: z.string().uuid(), userId: z.string().uuid() }) });
 export const inngest = new Inngest({ id: "acqfile" });

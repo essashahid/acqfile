@@ -22,19 +22,18 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             actions={
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px]">
                 <span className="text-[var(--muted)]">Try:</span>
-                <Link href="/review" className="font-medium underline underline-offset-2">Decide a flagged value</Link>
-                <Link href="/documents" className="font-medium underline underline-offset-2">Browse documents</Link>
-                <Link href="/evals" className="font-medium underline underline-offset-2">See the quality gate</Link>
+                <Link href="/deals" className="font-medium underline underline-offset-2">Open a deal</Link>
+                <Link href="/rulepacks" className="font-medium underline underline-offset-2">Read the rule packs</Link>
                 {isPublic ? <Link href="/login" className="font-semibold underline underline-offset-2">Sign in to manage</Link> : null}
               </span>
             }
           >
-            Synthetic extraction fixtures.{e.LLM_PROVIDER === "mock" ? " Model output comes from a deterministic test provider." : ""}
+            Synthetic deal fixtures.{e.LLM_PROVIDER === "mock" ? " Model output comes from a deterministic test provider." : ""}
           </Notice>
         ) : null}
         {!isPublic && !jobsConfigured() ? (
           <Notice tone="warn" title="Background processing is not connected." className="mb-5 no-print">
-            Uploads, reprocessing and evaluation runs stay unavailable until Inngest is configured.
+            Batch intake and reprocessing stay unavailable until Inngest is configured.
           </Notice>
         ) : null}
         {children}

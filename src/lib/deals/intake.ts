@@ -254,25 +254,9 @@ export async function parseVersion(
         await getStorage().get(version.storagePath),
         piiKey(),
       );
+      // Source blocks live in this step's durable output (A41: no field-value tables); only counts reach the version row.
+      const cursor = result.blocks.reduce((n, b) => n + b.text.length, 0);
       await db.transaction(async (tx) => {
-        await tx
-          .delete(schema.sourceBlocks)
-          .where(eq(schema.sourceBlocks.documentVersionId, versionId));
-        let cursor = 0;
-        for (const [i, b] of result.blocks.entries()) {
-          await tx.insert(schema.sourceBlocks).values({
-            documentVersionId: versionId,
-            blockType: b.kind === "paragraph" ? "paragraph" : "page",
-            blockIndex: i,
-            locator: b.locator,
-            pageNumber: b.page,
-            rawText: b.text,
-            normalizedText: b.text,
-            charStart: cursor,
-            charEnd: cursor + b.text.length,
-          });
-          cursor += b.text.length;
-        }
         await tx
           .update(schema.documentVersions)
           .set({

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
+import { requestEvaluation } from "@/lib/evaluation/run";
 import { getDb, schema } from "@/lib/db/client";
 import {
   DealProfileSchema,
@@ -80,7 +81,7 @@ export async function saveDeal(
     d.overlay ??
     (d.profile.target_lender === "Sample Lender A" ? "sample-lender-a" : null);
   if (pack) loadPack(pack.version, overlay ?? undefined);
-  return getDb().transaction(async (tx) => {
+  const saved = await getDb().transaction(async (tx) => {
     const dealId = id ?? randomUUID();
     let previous: unknown = null;
     const aliases = new Map<string, string>();
@@ -176,7 +177,12 @@ export async function saveDeal(
     }
     await tx
       .delete(schema.ownershipLinks)
-      .where(eq(schema.ownershipLinks.dealId, dealId));
+      .where(
+        and(
+          eq(schema.ownershipLinks.dealId, dealId),
+          eq(schema.ownershipLinks.origin, "declared"),
+        ),
+      );
     for (const o of d.ownership)
       await tx.insert(schema.ownershipLinks).values({
         dealId,
@@ -197,6 +203,9 @@ export async function saveDeal(
     });
     return dealId;
   });
+  // A profile change re-evaluates the deal (Phase 4 Step B.3).
+  await requestEvaluation(saved);
+  return saved;
 }
 export async function dealDraft(
   context: SessionContext,

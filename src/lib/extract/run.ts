@@ -19,6 +19,7 @@ import type { ExtractionProvider, Usage } from "./provider";
 import { decodeModelValue, normalizeFact, valueText } from "./values";
 import { validateCandidates } from "./validate";
 import { score } from "./confidence";
+import { resolveOwnership } from "./entities";
 export const EXTRACTION_PIPELINE = "deal-extract-v1";
 export const EXTRACTION_STEPS = ["extract", "deterministic_validate", "independent_verify", "calculate_confidence", "route_review", "finalize_segment"] as const;
 let cachedProvider: ExtractionProvider | null = null;
@@ -146,7 +147,7 @@ export async function extractSegment(context: SessionContext, base: StepContext,
         if (c.value === null || v.messages.some((m) => m.code === "type_invalid" || m.code === "date_invalid")) continue;
         const page = c.page ?? segment.pageStart;
         const locator = { file: ctx.documentVersionId, page, source_block: c.source_block_ids[0] ?? `page-${page}`, quote: c.quote && c.quote.length ? c.quote : valueText(c.value), ...(c.method === "vision" ? { region: c.region ?? c.attribute, verbatim: false } : {}) };
-        await tx.insert(schema.facts).values({ dealId, segmentId: segment.id, subjectPartyId: def.subject_kind === "deal" ? null : segment.partyId, attribute: c.attribute, valueJson: c.value as object, normalizedValueJson: normalizeFact(c.attribute, c.value) as object, unit: def.unit, period: def.period_kind === "none" ? null : segment.period, method: c.method, locatorJson: locator, confidence: String(s.confidence), confidenceComponents: s.components, validatorsPassed: v.score > 0, routingStatus: s.routing, recordVersion: maxVersion + 1, isCurrent: true, documentVersionId: ctx.documentVersionId, verifierReason: verdict?.reason ?? null, validationJson: [...v.messages, ...s.reasons.filter((r) => !v.messages.some((m) => m.code === r)).map((code) => ({ code, level: "info" }))], correctedValueJson: verdict && verdict.corrected_value !== null && JSON.stringify(normalizeFact(c.attribute, verdict.corrected_value)) !== JSON.stringify(normalizeFact(c.attribute, c.value)) ? (verdict.corrected_value as object) : null, ambiguity: c.ambiguity });
+        await tx.insert(schema.facts).values({ dealId, segmentId: segment.id, subjectPartyId: def.subject_kind === "deal" ? null : segment.partyId, attribute: c.attribute, valueJson: c.value as object, normalizedValueJson: normalizeFact(c.attribute, c.value) as object, unit: def.unit, period: segment.period, method: c.method, locatorJson: locator, confidence: String(s.confidence), confidenceComponents: s.components, validatorsPassed: v.score > 0, routingStatus: s.routing, recordVersion: maxVersion + 1, isCurrent: true, documentVersionId: ctx.documentVersionId, verifierReason: verdict?.reason ?? null, validationJson: [...v.messages, ...s.reasons.filter((r) => !v.messages.some((m) => m.code === r)).map((code) => ({ code, level: "info" }))], correctedValueJson: verdict && verdict.corrected_value !== null && JSON.stringify(normalizeFact(c.attribute, verdict.corrected_value)) !== JSON.stringify(normalizeFact(c.attribute, c.value)) ? (verdict.corrected_value as object) : null, ambiguity: c.ambiguity });
         facts++;
         byMethod[c.method] = (byMethod[c.method] ?? 0) + 1;
         routing[s.routing] = (routing[s.routing] ?? 0) + 1;
@@ -160,6 +161,7 @@ export async function extractSegment(context: SessionContext, base: StepContext,
         if (party?.identifierLastFour && lastFour && party.identifierLastFour !== lastFour)
           await tx.insert(schema.intakeReviews).values({ dealId, documentVersionId: ctx.documentVersionId, segmentId: segment.id, attribute: c.attribute, type: "identifier_mismatch", priority: "high", reason: "The identifier read from the image does not match the assigned party." }).onConflictDoNothing();
       }
+      if (candidates.some((c) => c.attribute === "ownership.members")) await resolveOwnership(tx, dealId, segment.partyId, ctx.documentVersionId, segment.id);
       await tx.insert(schema.events).values({ dealId, actorId: context.user.id, action: "facts_extracted", entityType: "segment", entityId: segment.id, maskedAfter: { facts, byMethod, routing, gaps: routed.gaps.length, superseded: previous.length } });
       return { segmentId: segment.id, facts, byMethod, routing, gaps: routed.gaps, modelCalls };
     });

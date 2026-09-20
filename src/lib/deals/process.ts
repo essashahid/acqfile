@@ -19,6 +19,7 @@ import {
 } from "./classification";
 import { finalizeSegments, type FilingRecord } from "./filing";
 import { requireDeal } from "./service";
+import { requestEvaluation } from "@/lib/evaluation/run";
 import type { DocumentType } from "@/lib/domain/registry";
 import { extractSegment, extractionConfigHash, EXTRACTION_PIPELINE, type ExtractionSummary } from "@/lib/extract/run";
 export async function processDealVersion(
@@ -196,6 +197,7 @@ export async function processDealRun(
       errorMessage: failed ? "Some files need retry." : null,
     })
     .where(eq(schema.processingRuns.id, runId));
+  await requestEvaluation(dealId);
   return { completed, failed };
 }
 
@@ -251,6 +253,7 @@ export async function extractAfterReview(
     const parsed = await parseVersion(context, dealId, versionId, run!.id, opts);
     const extraction = await extractConfirmed(context, dealId, version, parsed, segments, run!.id, opts);
     await db.update(schema.processingRuns).set({ status: "completed", documentsCompleted: 1, completedAt: new Date() }).where(eq(schema.processingRuns.id, run!.id));
+    await requestEvaluation(dealId);
     return { runId: run!.id, extraction };
   } catch (e) {
     await db.update(schema.processingRuns).set({ status: "failed", documentsFailed: 1, completedAt: new Date(), errorMessage: "Extraction needs retry." }).where(eq(schema.processingRuns.id, run!.id));

@@ -1,12 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { seedWorkspace } from "@/lib/seed";
-import { createProcessingRun, registerUpload } from "@/lib/pipeline/ingest";
-import { runProcessingRunInline } from "@/lib/pipeline/orchestrate";
-import type { RunConfig } from "@/lib/db/schema";
 
 export const noSleep = async () => {};
 
@@ -22,21 +17,8 @@ export async function makePdf(lines: string[], pages = 1): Promise<Buffer> {
   return Buffer.from(await pdf.save());
 }
 
-export function fixture(rel: string): Buffer {
-  return fs.readFileSync(path.resolve(process.cwd(), "fixtures", "legacy", rel));
-}
-
 export async function seeded() {
   return seedWorkspace();
-}
-
-export async function uploadAndProcess(filename: string, bytes: Buffer, config: RunConfig = {}) {
-  const seed = await seedWorkspace();
-  const up = await registerUpload({ workspaceId: seed.workspaceId, userId: seed.adminId, filename, bytes });
-  if (up.kind !== "created") throw new Error(`expected created, got ${up.kind}`);
-  const run = await createProcessingRun({ workspaceId: seed.workspaceId, userId: seed.adminId, runType: "ingest", documentVersionIds: [up.documentVersionId], config });
-  const result = await runProcessingRunInline(run.id, { sleep: noSleep });
-  return { seed, up, run, result };
 }
 
 export async function stepsFor(runId: string) {

@@ -51,8 +51,12 @@ export function valueText(value: unknown): string {
   if (Array.isArray(value)) return value.map(valueText).join("; ");
   return String(value);
 }
-/** Normalized value for storage and conflict detection. Identifiers keep their masked object shape, as the facts table requires. */
-export const normalizeFact = (attribute: string, value: unknown) => (FACTS[attribute]?.value_type === "identifier" ? value : normalizeValue(value));
+/** Normalized value for storage: names are normalized as the engine normalizes them; every other type keeps its catalog shape (the engine normalizes again when it compares). */
+export const normalizeFact = (attribute: string, value: unknown) => {
+  const def = FACTS[attribute];
+  if (def?.value_type === "text" && typeof value === "string") return (normalizeValue(value) as string) || value;
+  return value;
+};
 /** A39 cross-pass agreement: 1 same after normalization, 0.75 formatting-only difference, 0 materially different. */
 export function agreement(a: unknown, b: unknown): 0 | 0.75 | 1 {
   if (b === null || b === undefined) return 0;

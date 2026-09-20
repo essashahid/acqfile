@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getDb, schema } from "@/lib/db/client";
 import { requireWorkspace } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
+import { parsedVersion } from "@/lib/deals/blocks";
 import { sourceUrl } from "@/lib/deals/source-url";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import type { FilingRecord } from "@/lib/deals/filing";
@@ -39,10 +40,7 @@ export default async function FilePage({
     .select()
     .from(schema.parties)
     .where(eq(schema.parties.dealId, dealId));
-  const blocks = await db
-    .select()
-    .from(schema.sourceBlocks)
-    .where(eq(schema.sourceBlocks.documentVersionId, versionId));
+  const blocks = (await parsedVersion(versionId))?.blocks ?? [];
   const reviews = await db
     .select()
     .from(schema.intakeReviews)
@@ -73,7 +71,7 @@ export default async function FilePage({
         unreadable={version.parseStatus === "failed"}
         pdf={version.mimeType === "application/pdf"}
         url={originalAccessAllowed(ctx) ? sourceUrl(dealId, versionId) : null}
-        blocks={blocks.map((b) => ({ locator: b.locator, rawText: b.rawText }))}
+        blocks={blocks.map((b) => ({ locator: b.locator, rawText: b.text }))}
         editable={mutationAllowed(ctx)}
         conflict={reviews.some((r) => r.type === "version_conflict")}
       />

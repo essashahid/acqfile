@@ -6,7 +6,7 @@
 | 1 | Complete | PASS: lint, typecheck, 111 unit / 20 integration / 7 E2E tests, rules:check, review export, migration and production build; 45 authored scenarios, 4,319 deletion checks. See [proof](phase-1-proof.md). | 2026-09-19 |
 | 2 | Complete | PASS: 90 files / 4 batches; all four oracles; 125 unit / 20 integration / 7 E2E tests; lint, typecheck, rules, readability, two deterministic regenerations, 47 unchanged legacy hashes and production build. Step A b505aeb; see [proof](phase-2-proof.md). | 2026-09-19 |
 | 3 | Complete | PASS: 143 unit / 28 integration / 8 E2E; all 90 files, 141 segments; all nine required commands and 4 oracles; A35 originals ruling implemented and tested. Step 0 c4eb406, Step A 0a98e89, Step B this commit; see [proof](phase-3-proof.md). | 2026-09-20 |
-| 4 | Not started | Not run | 2026-09-19 |
+| 4 | Complete | PASS: 133 unit / 15 integration / 2 E2E; 255 facts across 3 deals, 12/12 planted faults routed as planned, exact post-review evaluation for every deal and batch; all ten required commands. Step 0 79d284e, Step A 7d319c9, Step B this commit; see [proof](phase-4-proof.md). | 2026-09-20 |
 | 5 | Not started | Not run | 2026-09-19 |
 | 6 | Not started | Not run | 2026-09-19 |
 | 7 | Not started | Not run | 2026-09-19 |

@@ -100,7 +100,7 @@ it("imports a ZIP batch, parses once, flags unreadable and links exact duplicate
       .sort(),
   ).toEqual(["hash_dedupe", "upload"]);
   const rows =
-    await getSql()`select row_to_json(t)::text as payload from source_blocks t union all select row_to_json(t)::text from run_steps t union all select row_to_json(t)::text from run_events t`;
+    await getSql()`select row_to_json(t)::text as payload from run_steps t union all select row_to_json(t)::text from run_events t`;
   expect(
     rows.some((r) => /\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/.test(r.payload)),
   ).toBe(false);

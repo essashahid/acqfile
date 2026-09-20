@@ -32,8 +32,6 @@ const schema = z.object({
 
   // Pipeline / prompt versions
   PIPELINE_VERSION: z.string().default("acqfile-0"),
-  EXTRACT_PROMPT_VERSION: z.string().default("extract-v1"),
-  VERIFY_PROMPT_VERSION: z.string().default("verify-v1"),
 
   // Thresholds
   AUTO_ACCEPT_THRESHOLD: z.coerce.number().default(0.86),
