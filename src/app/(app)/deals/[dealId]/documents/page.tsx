@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireDeal } from "@/lib/deals/service";
 import { adviserContext, portalData } from "@/lib/portal/service";
 import { Shell, adviserStages } from "@/components/portal/Shell";
+import { signOutAction } from "../../../actions";
 export default async function Documents({ params }: { params: Promise<{ dealId: string }> }) {
   const { dealId } = await params,
     ctx = await adviserContext();
@@ -13,6 +14,8 @@ export default async function Documents({ params }: { params: Promise<{ dealId: 
       contact={p.data.deal.contactName}
       email={p.data.deal.contactEmail}
       stages={adviserStages(p.mapped.ready)}
+      account={ctx.user.email}
+      signOut={signOutAction}
     >
       <Link className="text-link" href={`/deals/${dealId}`}>
         Back to the deal

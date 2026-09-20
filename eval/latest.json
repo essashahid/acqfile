@@ -1,6 +1,6 @@
 {
   "mode": "mock",
-  "recordedAt": "2026-09-20T19:07:05.754Z",
+  "recordedAt": "2026-09-20T19:19:50.877Z",
   "disclaimer": "Mock results say nothing about model quality.",
   "gates": [
     {
@@ -672,7 +672,7 @@
       "reviewItems": 15,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 10269
+      "wallClockMs": 9346
     },
     {
       "deal": "deal-b",
@@ -697,7 +697,7 @@
       "reviewItems": 4,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 4354
+      "wallClockMs": 4701
     },
     {
       "deal": "deal-c",
@@ -722,7 +722,7 @@
       "reviewItems": 60,
       "falseAccepts": [],
       "costUsd": 0,
-      "wallClockMs": 6879
+      "wallClockMs": 7383
     }
   ],
   "facts": {

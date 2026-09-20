@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { adviserContext, portalData } from "@/lib/portal/service";
 import { Shell, adviserStages } from "@/components/portal/Shell";
+import { signOutAction } from "../actions";
 export default async function Deals() {
   const ctx = await adviserContext();
   const deals = await getDb()
@@ -16,6 +17,8 @@ export default async function Deals() {
       contact={all[0]?.data.deal.contactName ?? ctx.user.displayName}
       email={all[0]?.data.deal.contactEmail ?? ctx.user.email}
       stages={adviserStages()}
+      account={ctx.user.email}
+      signOut={signOutAction}
     >
       <h1>Your deals</h1>
       <p className="mb-9">See who needs your help and what happens next.</p>

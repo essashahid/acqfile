@@ -9,6 +9,8 @@ export function Shell({
   stages,
   children,
   home = "/deals",
+  account,
+  signOut,
 }: {
   firm: string;
   contact: string;
@@ -16,6 +18,9 @@ export function Shell({
   stages: Stage[];
   children: ReactNode;
   home?: string;
+  /** Adviser pages only. A recipient holds a link rather than a session, so there is nothing to sign out of. */
+  account?: string;
+  signOut?: () => Promise<void>;
 }) {
   const current = Math.min(
     3,
@@ -32,10 +37,24 @@ export function Shell({
             {firm || "Your adviser"}
           </Link>
           <p className="muted hidden lg:block">Secure document portal</p>
-          <a className="text-link text-sm lg:hidden" href={`mailto:${email}`}>
-            Ask {contact.split(" ")[0] || "your adviser"}
-          </a>
+          {account && signOut ? (
+            <form action={signOut} className="lg:hidden">
+              <button className="text-link text-sm">Sign out</button>
+            </form>
+          ) : (
+            <a className="text-link text-sm lg:hidden" href={`mailto:${email}`}>
+              Ask {contact.split(" ")[0] || "your adviser"}
+            </a>
+          )}
         </div>
+        {account && signOut ? (
+          <div className="mt-5 hidden lg:block">
+            <p className="muted break-words">Signed in as {account}</p>
+            <form action={signOut}>
+              <button className="text-link mt-1">Sign out</button>
+            </form>
+          </div>
+        ) : null}
         <ol className="mt-10 hidden space-y-7 lg:block">
           {stages.map((s, i) => (
             <li key={s.title} className="flex gap-4">

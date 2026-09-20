@@ -7,6 +7,7 @@ import { adviserContext, portalData, latestReminder } from "@/lib/portal/service
 import { personHome } from "@/lib/portal/map";
 import { dateLabel, numberWord } from "@/lib/portal/copy";
 import { Shell, adviserStages } from "@/components/portal/Shell";
+import { signOutAction } from "../../actions";
 import { AdviserAction } from "@/components/portal/AdviserActions";
 export default async function Overview({ params }: { params: Promise<{ dealId: string }> }) {
   const { dealId } = await params,
@@ -30,6 +31,8 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
       contact={deal.contactName}
       email={deal.contactEmail}
       stages={adviserStages(p.mapped.ready)}
+      account={ctx.user.email}
+      signOut={signOutAction}
     >
       <Link className="text-link" href="/deals">
         All deals

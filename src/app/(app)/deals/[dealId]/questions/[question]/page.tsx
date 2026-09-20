@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { requireDeal } from "@/lib/deals/service";
 import { adviserContext, portalData } from "@/lib/portal/service";
 import { Shell, adviserStages } from "@/components/portal/Shell";
+import { signOutAction } from "../../../../actions";
 import { QuestionView } from "@/components/portal/QuestionView";
 export default async function QuestionPage({
   params,
@@ -23,6 +24,8 @@ export default async function QuestionPage({
       contact={p.data.deal.contactName}
       email={p.data.deal.contactEmail}
       stages={adviserStages(p.mapped.ready)}
+      account={ctx.user.email}
+      signOut={signOutAction}
     >
       <Link className="text-link" href={base}>
         Back to the deal
