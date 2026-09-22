@@ -31,6 +31,7 @@ export function validateCandidates(
       typeof c.value === "number"
     ) {
       if (!Number.isFinite(c.value) || Math.abs(c.value) >= 1e12) error("amount_implausible");
+      if (def.nonnegative && c.value < 0) error("negative_not_allowed");
       if (def.unit === "percent" && (c.value < 0 || c.value > 100)) error("percent_range");
       if (def.unit === "months" && (c.value < 0 || !Number.isInteger(c.value)))
         error("months_invalid");
@@ -59,6 +60,23 @@ export function validateCandidates(
         )
       )
         error("funding_amount_invalid");
+      if (
+        def.nonnegative &&
+        def.value_type === "amounts" &&
+        c.value.some((row) => row && typeof row.amount === "number" && row.amount < 0)
+      )
+        error("negative_not_allowed");
+      if (
+        def.nonnegative &&
+        def.value_type === "debts" &&
+        c.value.some(
+          (row) =>
+            row &&
+            ((typeof row.balance === "number" && row.balance < 0) ||
+              (typeof row.payment === "number" && row.payment < 0)),
+        )
+      )
+        error("negative_not_allowed");
       if (
         def.value_type === "owners" &&
         valueValid(def, c.value) &&

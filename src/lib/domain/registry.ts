@@ -110,8 +110,37 @@ const FactDefinition = z.strictObject({
   subject_kind: z.enum(["deal", "party", "account"]),
   period_kind: z.enum(["none", "tax_year", "financial_period", "as_of"]),
   producers: z.array(DocumentTypeSchema).min(1),
+  nonnegative: z.boolean(),
 });
 export type FactDefinition = z.infer<typeof FactDefinition>;
+// Sign is a fact-level rule, not a property of every USD amount. Table entries
+// inherit the rule for their catalog fact; income, net worth and bank balances do not.
+const NONNEGATIVE_FACTS = new Set([
+  "deal.purchase_price",
+  "deal.seller_note_amount",
+  "deal.loan_requested",
+  "funding.sources",
+  "funding.uses",
+  "funding.sources_total",
+  "funding.uses_total",
+  "pfs.cash",
+  "pfs.total_assets",
+  "pfs.total_liabilities",
+  "tax.year",
+  "tax.page_count",
+  "tax.gross_receipts",
+  "financial.revenue",
+  "financial.total_assets",
+  "financial.total_liabilities",
+  "aging.total",
+  "debt.total",
+  "debt.debts",
+  "note.principal",
+  "gift.amount",
+  "lease.option_years",
+  "agent.amount",
+  "report.concluded_value",
+]);
 // This is a registry, not an extraction prompt. Classification-only producers allow
 // evidenced manual facts; no new extractor is introduced by Phase 1.
 const definitions: FactDefinition[] = [];
@@ -129,6 +158,7 @@ function register(
     producers,
     period_kind,
     subject_kind,
+    nonnegative: NONNEGATIVE_FACTS.has(attribute),
     unit:
       unit ??
       (
@@ -253,6 +283,10 @@ register("report.date", "date", ["VALUATION", "QOE"]);
 register("report.concluded_value", "money", ["VALUATION"]);
 // Shared signatures/revisions are metadata (A10), not model-only facts.
 export const FACT_CATALOG = z.array(FactDefinition).parse(definitions);
+if (
+  [...NONNEGATIVE_FACTS].some((attribute) => !FACT_CATALOG.some((f) => f.attribute === attribute))
+)
+  throw new Error("Unknown nonnegative fact");
 if (
   new Set(FACT_CATALOG.map((f) => f.attribute)).size !== FACT_CATALOG.length ||
   new Set(TAXONOMY.map((t) => t.id)).size !== TAXONOMY.length
