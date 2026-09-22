@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { hashObject } from "@/lib/hash";
 import { loadPack } from "@/lib/rules/loader";
-import { mapDeal, type Data, type ResponseRow } from "@/lib/portal/map";
+import { mapDeal, personHome, type Data, type ResponseRow } from "@/lib/portal/map";
 import type { IndexRow } from "@/lib/deliverables/index-build";
 
 const pack = loadPack("sop-50-10-8");
@@ -176,6 +176,77 @@ it("keeps uncertain and staff-owned issues with staff, and reports processing fa
     state: "To do",
     sentence: expect.stringContaining("couldn't read"),
   });
+});
+
+it("uses the accepted file in a multi-file upload without hiding a failed sibling", () => {
+  const d = data([row("satisfied")]);
+  const initial = mapDeal(d).tasks[0]!;
+  const key = initial.key;
+  const upload = reply(key, "upload", { versions: ["accepted", "failed"] });
+  d.versions = [
+    { id: "accepted", processingStatus: "completed", parseStatus: "parsed" },
+    { id: "failed", processingStatus: "failed", parseStatus: "failed" },
+  ] as Data["versions"];
+  d.submittedSegments = [
+    {
+      id: "accepted-segment",
+      documentVersionId: "accepted",
+      docType: initial.accepted[0],
+      period: null,
+      classificationMethod: "manual",
+      status: "confirmed",
+      isCurrent: true,
+      createdAt: new Date("2026-09-15T11:00:00Z"),
+    },
+  ] as Data["segments"];
+  d.evaluation = { createdAt: new Date("2026-09-15T11:30:00Z") } as Data["evaluation"];
+
+  expect(mapDeal(d, [upload]).tasks[0]).toMatchObject({
+    state: "Done",
+    sentence: "We have what we need from you.",
+    versions: expect.arrayContaining(["accepted", "failed"]),
+  });
+  expect(mapDeal(d, [upload]).tasks[0]!.state).toBe("Done");
+});
+
+it("keeps failed-only replacements actionable and viable undecided uploads with staff", () => {
+  const d = data([row("satisfied")]);
+  const key = mapDeal(d).tasks[0]!.key;
+  const upload = reply(key, "upload", { versions: ["latest"] });
+  d.versions = [
+    { id: "latest", processingStatus: "failed", parseStatus: "failed" },
+  ] as Data["versions"];
+  expect(mapDeal(d, [upload]).tasks[0]).toMatchObject({
+    state: "To do",
+    sentence: expect.stringContaining("clear, unlocked copy"),
+  });
+
+  d.index = [row("needs_review")];
+  d.versions[0] = {
+    id: "latest",
+    processingStatus: "processing",
+    parseStatus: "pending",
+  } as Data["versions"][number];
+  expect(mapDeal(d, [upload]).tasks[0]!.state).toBe("With us for review");
+  d.versions[0]!.processingStatus = "completed_with_review";
+  d.versions[0]!.parseStatus = "parsed";
+  expect(mapDeal(d, [upload]).tasks[0]!.state).toBe("With us for review");
+});
+
+it("keeps an unmapped borrower-responsible conflict with staff", () => {
+  const d = question("CON-99", [
+    { id: "a1", attribute: "party.address", value: "First Street" },
+    { id: "a2", attribute: "party.address", value: "Second Street" },
+  ]);
+  d.rules.set("CON-99", { id: "CON-99", responsible: "buyer_owner" } as never);
+  const mapped = mapDeal(d);
+
+  expect(mapped.questions[0]).toMatchObject({ kind: "staff_review", partyId: null });
+  expect(personHome(mapped, "buyer", "Buyer")).toMatchObject({
+    state: "done",
+    questions: [],
+  });
+  expect(mapped.openQuestions).toHaveLength(1);
 });
 
 it("uses the named rule's title and a response shape that matches its facts", () => {

@@ -213,6 +213,11 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
         ["failed", "unsupported", "dead_letter"].includes(v.processingStatus) ||
         v.parseStatus === "failed",
     );
+    const viable = uploaded.some(
+      (v) =>
+        !["failed", "unsupported", "dead_letter"].includes(v.processingStatus) &&
+        v.parseStatus !== "failed",
+    );
     const inFlight =
       upload && uploaded.some((v) => ["queued", "processing"].includes(v.processingStatus));
     const raw = (data.submittedSegments ?? []).filter((s) =>
@@ -226,23 +231,23 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
       !data.evaluation || !latestFiling || data.evaluation.createdAt.getTime() >= latestFiling;
     // A photo's upload record remains in history. A current, confirmed staff filing
     // and the latest checks supersede its earlier "we are reading it" state.
-    const decided = raw.some(
+    const acceptedFiling = raw.some(
       (s) =>
-        (s.isCurrent &&
-          s.status === "confirmed" &&
-          task.accepted.includes(s.docType) &&
-          (!task.periods.some(Boolean) || task.periods.includes(s.period ?? "")) &&
-          evaluationCurrent &&
-          ["manual", "signature"].includes(s.classificationMethod)) ||
-        s.status === "rejected",
+        s.isCurrent &&
+        s.status === "confirmed" &&
+        task.accepted.includes(s.docType) &&
+        (!task.periods.some(Boolean) || task.periods.includes(s.period ?? "")) &&
+        evaluationCurrent &&
+        ["manual", "signature"].includes(s.classificationMethod),
     );
+    const decided = acceptedFiling || raw.some((s) => s.status === "rejected");
     const certainProblem = raw.some(
       (s) =>
         s.classificationMethod === "signature" &&
         (!task.accepted.includes(s.docType) ||
           (task.periods.some(Boolean) && !task.periods.includes(s.period ?? ""))),
     );
-    const waitingUpload = !!upload && !failed && !certainProblem && !decided;
+    const waitingUpload = !!upload && viable && !certainProblem && !decided;
     const checks = task.rows.flatMap((r) => r.checks).filter((c) => c.result === "fail");
     const repairable = checks.some((c) =>
       [
@@ -262,11 +267,14 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
         .at(-1) &&
         !decided);
     const staffIssue = task.rows.some((r) => r.status === "received_with_issues") && !repairable;
-    task.state =
-      failed && upload
-        ? "To do"
-        : inFlight || waitingUpload
-          ? "With us for review"
+    const authoritativeComplete = complete && acceptedFiling;
+    const failedRequiresAction = !!upload && failed && !acceptedFiling;
+    task.state = authoritativeComplete
+      ? "Done"
+      : inFlight || waitingUpload
+        ? "With us for review"
+        : failedRequiresAction
+          ? "To do"
           : complete
             ? "Done"
             : pending || staffIssue
@@ -283,7 +291,7 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
         ? "We have what we need from you."
         : task.state === "With us for review"
           ? "A person on our team is checking this. We'll tell you if anything is unclear."
-          : failed
+          : failedRequiresAction
             ? "We couldn't read this copy. Please send a clear, unlocked copy."
             : task.rows.some((r) => r.status === "missing")
               ? "Please send a complete copy so we can prepare your loan file."
@@ -440,6 +448,7 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
         kind,
         evidenceKey,
         partyId:
+          kind !== "staff_review" &&
           owner &&
           sources.every(
             (s) =>
