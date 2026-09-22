@@ -15,6 +15,7 @@ operations:
     collection: items
     rule:
       id: TXN-10a
+      submission_stage: preparation
       title: Non-compete agreement
       description: Non-compete agreement. Evidence preparation check for lender review.
       scope: deal
@@ -38,6 +39,7 @@ operations:
     collection: items
     rule:
       id: TGT-11
+      submission_stage: preparation
       title: Add-back schedule with support
       description: Add-back schedule with support. Evidence preparation check for lender review.
       scope: target_business
@@ -61,6 +63,7 @@ operations:
     collection: items
     rule:
       id: TXN-10b
+      submission_stage: preparation
       title: Confidential information memorandum
       description: Confidential information memorandum. Optional definition for later lender configuration.
       scope: deal
@@ -82,6 +85,7 @@ operations:
     collection: items
     rule:
       id: TXN-10c
+      submission_stage: preparation
       title: Escrow evidence
       description: Escrow evidence. Optional definition for later lender configuration.
       scope: deal
@@ -103,6 +107,7 @@ operations:
     collection: items
     rule:
       id: TGT-12a
+      submission_stage: preparation
       title: Key contracts
       description: Key contracts. Optional definition for later lender configuration.
       scope: target_business
@@ -124,6 +129,7 @@ operations:
     collection: items
     rule:
       id: TGT-12b
+      submission_stage: preparation
       title: Employee roster
       description: Employee roster. Optional definition for later lender configuration.
       scope: target_business
@@ -145,6 +151,7 @@ operations:
     collection: items
     rule:
       id: TGT-12c
+      submission_stage: preparation
       title: Seller good standing
       description: Seller good standing. Optional definition for later lender configuration.
       scope: target_business

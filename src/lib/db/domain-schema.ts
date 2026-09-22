@@ -149,6 +149,7 @@ export const evaluations = pgTable("evaluations", {
     .notNull()
     .references(() => rulePackSnapshots.contentHash),
   factsHash: text("facts_hash").notNull(),
+  inputHash: text("input_hash"),
   resultHash: text("result_hash").notNull(),
   durationMs: integer("duration_ms").notNull(),
   asOfDate: date("as_of_date").notNull(),

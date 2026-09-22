@@ -109,5 +109,5 @@ export const adviserStages = (ready = false): Stage[] => [
     done: ready,
   },
   { title: "Final check", note: "We read everything side by side", done: ready },
-  { title: "Ready for the lender", note: "One complete, organised file", done: ready },
+  { title: "Ready for the lender", note: "Prepared for lender review", done: ready },
 ];

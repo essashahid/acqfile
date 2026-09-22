@@ -59,7 +59,7 @@ export default async function Requirements({
     <>
       <PageHead
         title="Requirements"
-        subtitle={`${c.required.done} of ${c.required.applicable} applicable requirements satisfied or waived. ${c.notApplicable} not applicable, excluded from that count.`}
+        subtitle={`${c.required.done} of ${c.required.applicable} applicable preparation requirements satisfied or waived. ${c.notApplicable} not applicable, excluded from that count.`}
       />
       <Card className="mb-5">
         <div className="flex flex-wrap items-center gap-2">

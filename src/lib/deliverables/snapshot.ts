@@ -4,7 +4,10 @@ import { assertMutation } from "@/lib/access";
 import { requireDeal } from "@/lib/deals/service";
 import { requestEvaluation } from "@/lib/evaluation/run";
 import type { SessionContext } from "@/lib/workspace";
-import { buildIndex, footer, readiness, type IndexRow, type SourceRow } from "./index-build";
+import { buildIndex, footer, type IndexRow, type SourceRow } from "./index-build";
+
+import { questionPolicy } from "@/lib/portal/map";
+import type { PreparationReadiness } from "./readiness";
 
 export type SnapshotContent = {
   number: number;
@@ -12,11 +15,16 @@ export type SnapshotContent = {
   created_at: string;
   event_ids: string[];
   readiness: { satisfied: number; applicable: number };
+  preparation?: PreparationReadiness;
   footer: string;
   index: IndexRow[];
   findings: {
     finding_key: string;
     rule_id: string;
+    title?: string;
+    description?: string;
+    responsible?: string;
+    submission_stage?: string;
     type: string;
     severity: string;
     party: string;
@@ -24,7 +32,22 @@ export type SnapshotContent = {
     status: string;
     message: string;
     reason: string | null;
-    sides: { value: string; file: string; page: number | null; quote: string }[];
+    sides: {
+      value: string;
+      file: string;
+      page: number | null;
+      quote: string;
+      package_path?: string;
+    }[];
+  }[];
+  segment_locations?: {
+    id: string;
+    type: string;
+    subject: string;
+    original_filename: string;
+    page_start: number;
+    page_end: number;
+    package_path: string;
   }[];
   source_record: SourceRow[];
   change_log: { at: string; action: string; detail: string }[];
@@ -34,11 +57,17 @@ export type SnapshotContent = {
 const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
 
 /** Freeze the evaluation, the index and a manifest with file hashes. Immutable and numbered per deal. */
-export async function createSnapshot(context: SessionContext, dealId: string) {
+export async function createSnapshot(
+  context: SessionContext,
+  dealId: string,
+  options: { requirePrepared?: boolean } = {},
+) {
   await assertMutation(context, "deal-snapshot");
   await requireDeal(context, dealId);
   await requestEvaluation(dealId);
   const built = await buildIndex(dealId);
+  if (options.requirePrepared && !built.preparation.ready)
+    throw Error("The current file is not prepared for lender review.");
   if (!built.evaluation) throw Error("Evaluate the deal before taking a snapshot");
   const db = getDb();
   const previous = await latestSnapshot(dealId);
@@ -72,7 +101,11 @@ export async function createSnapshot(context: SessionContext, dealId: string) {
     },
     created_at: new Date().toISOString(),
     event_ids: events.map((e) => e.id),
-    readiness: readiness(built.index, built.rules),
+    readiness: {
+      satisfied: built.preparation.satisfied + built.preparation.waived,
+      applicable: built.preparation.applicable,
+    },
+    preparation: built.preparation,
     footer: footer(built.pack),
     index: built.index,
     findings: built.findings
@@ -90,6 +123,13 @@ export async function createSnapshot(context: SessionContext, dealId: string) {
         return {
           finding_key: f.findingKey,
           rule_id: f.ruleId,
+          title:
+            questionPolicy[f.ruleId]?.title ??
+            built.rules.get(f.ruleId)?.title ??
+            "Staff review needed",
+          description: built.rules.get(f.ruleId)?.description ?? details.message,
+          responsible: built.responsibility(f.responsibleRole),
+          submission_stage: built.rules.get(f.ruleId)?.submission_stage ?? "unknown",
           type: f.type,
           severity: f.severity,
           party:
@@ -101,12 +141,27 @@ export async function createSnapshot(context: SessionContext, dealId: string) {
           sides: details.details.map((d) => ({
             value: show(d.value),
             file: built.versions.some((v) => v.id === d.file) ? built.originalPath(d.file) : d.file,
+            package_path: [...built.paths].find(([, id]) => id === d.file)?.[0] ?? "",
             page: d.page,
             quote: d.quote,
           })),
         };
       })
       .sort((a, b) => a.finding_key.localeCompare(b.finding_key)),
+    segment_locations: built.segments
+      .map((s) => ({
+        id: s.id,
+        type: s.docType,
+        subject: built.partyName(s.partyId),
+        original_filename: built.originalPath(s.documentVersionId),
+        page_start: s.pageStart,
+        page_end: s.pageEnd,
+        package_path: [...built.paths].find(([, id]) => id === s.documentVersionId)?.[0] ?? "",
+      }))
+      .sort(
+        (a, b) =>
+          a.original_filename.localeCompare(b.original_filename) || a.page_start - b.page_start,
+      ),
     source_record: built.sourceRecord,
     change_log: events
       .filter((e) => !priorEvents.has(e.id))

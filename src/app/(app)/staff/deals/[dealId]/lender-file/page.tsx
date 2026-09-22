@@ -34,7 +34,7 @@ export default async function LenderFile({
   const c = v.counts;
   const editable = mutationAllowed(ctx);
   const canDownload = originalAccessAllowed(ctx);
-  const complete = c.required.done === c.required.applicable && c.blockers === 0;
+  const complete = v.preparation.ready;
   const selected = (await searchParams).version;
   const latest = v.snapshots.find((s) => String(s.number) === selected) ?? v.snapshots[0];
   return (
@@ -44,14 +44,13 @@ export default async function LenderFile({
         subtitle="The organised set of documents and review results you hand to the lender. Creating or downloading a version does not send it anywhere."
       />
       <div className="space-y-5">
-        <Card title="Preparation status">
+        <Card title="Preparation status" description={v.preparation.policy}>
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className={`pill ${complete ? "pill-ok" : "pill-warn"}`}>
-              {complete ? "Meets the configured checks" : "Work outstanding"}
+              {v.preparation.label}
             </span>
             <p className="meta">
-              Meeting the configured checks is not lender approval, nor a credit, legal, tax or
-              eligibility determination.
+              This status covers the agreed preparation work. The lender makes its own decisions.
             </p>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -60,7 +59,9 @@ export default async function LenderFile({
               <p className="mt-1 text-[20px] font-semibold tabular-nums">
                 {c.required.done} of {c.required.applicable}
               </p>
-              <p className="meta">satisfied or waived</p>
+              <p className="meta">
+                {v.preparation.satisfied} satisfied; {v.preparation.waived} waived
+              </p>
             </div>
             <div>
               <p className="eyebrow">Blockers</p>
@@ -76,23 +77,20 @@ export default async function LenderFile({
             </div>
           </div>
           {!complete ? (
-            <ul className="mt-4 space-y-2 border-t border-[var(--line)] pt-4">
-              {v.work
-                .filter((w) => w.kind === "blocker" || w.kind === "unresolved")
-                .slice(0, 5)
-                .map((w) => (
-                  <li key={w.key} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className={`pill ${w.kind === "blocker" ? "pill-bad" : "pill-warn"}`}>
-                      {w.kind === "blocker" ? "Blocker" : "Open"}
-                    </span>
-                    <Link className="link" href={w.href}>
-                      {w.title}
-                    </Link>
-                    <span className="meta">{w.party}</span>
-                  </li>
-                ))}
+            <ul className="mt-4 space-y-2">
+              {v.preparation.unresolved.map((issue) => (
+                <li key={issue}>{issue}</li>
+              ))}
             </ul>
           ) : null}
+          <div className="mt-4 border-t border-[var(--line)] pt-4">
+            <h3>Later lender work</h3>
+            {v.preparation.later.map((row) => (
+              <p key={row.item}>
+                {row.title} · {row.responsible} · {row.status}
+              </p>
+            ))}
+          </div>
           {editable ? (
             <div className="mt-5 border-t border-[var(--line)] pt-4">
               <CreateVersion action={snapshotAction.bind(null, dealId)} complete={complete} />
@@ -131,7 +129,7 @@ export default async function LenderFile({
                 <>
                   <div className="grid gap-4 sm:grid-cols-3">
                     <div>
-                      <p className="eyebrow">Requirements at that time</p>
+                      <p className="eyebrow">Preparation requirements at that time</p>
                       <p className="mt-1 text-[20px] font-semibold tabular-nums">
                         {content.readiness.satisfied} of {content.readiness.applicable}
                       </p>
@@ -150,9 +148,12 @@ export default async function LenderFile({
                     </div>
                   </div>
                   <p className="meta mt-4">
-                    Contains a printable report, a workbook of the index, missing items, conflicts
-                    and the source record, and a folder of renamed original copies. Identifiers are
-                    masked in generated reports; originals retain their supplied contents.
+                    Historical version:{" "}
+                    {content.preparation?.label ?? "Preparation boundary not recorded"}. This is not
+                    a verification of later evidence. Contains a printable report, a workbook of the
+                    index, missing items, conflicts and the source record, and a folder of renamed
+                    original copies. Identifiers are masked in generated reports; originals retain
+                    their supplied contents.
                   </p>
                   <div className="mt-4 border-t border-[var(--line)] pt-4">
                     <p className="eyebrow mb-2">Changed since the previous version</p>

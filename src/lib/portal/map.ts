@@ -56,7 +56,7 @@ export const valueLabel = (value: unknown): string => {
   }
   return String(value ?? "Not stated");
 };
-const questionPolicy: Record<string, { title: string; kind: Question["kind"] }> = {
+export const questionPolicy: Record<string, { title: string; kind: Question["kind"] }> = {
   "CON-01": { title: "Can you clarify the seller's name and tax number?", kind: "clarification" },
   "CON-02": { title: "Can you clarify the owners and their shares?", kind: "clarification" },
   "CON-03": { title: "Which purchase price is right?", kind: "choice" },
@@ -486,17 +486,15 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
     }
   }
   const openQuestions = questions.filter((q) => !q.answered);
-  const ready =
-    data.index.every((r) => ["not_applicable", "satisfied", "waived"].includes(r.status)) &&
-    !data.findings.some((f) => active(f.status)) &&
-    !tasks.some((t) => t.state !== "Done");
+  const ready = data.preparation?.ready ?? false;
   return {
     tasks,
     questions,
     openQuestions,
     ready,
-    lenderOrdered: data.index.filter((r) =>
-      data.rules.get(r.item_id)?.checks.some((c) => c.type === "tracking"),
+    preparation: data.preparation,
+    lenderOrdered: data.index.filter(
+      (r) => data.rules.get(r.item_id)?.submission_stage === "later_lender",
     ),
   };
 }
@@ -526,7 +524,7 @@ export function personHome(mapped: ReturnType<typeof mapDeal>, partyId: string, 
       done: state === "done",
     },
     { title: "We check everything", note: "We read the documents together", done: mapped.ready },
-    { title: "Ready for the lender", note: "One complete loan file", done: mapped.ready },
+    { title: "Ready for the lender", note: "Prepared for lender review", done: mapped.ready },
   ];
   return { tasks, todo, waiting, done, questions, state, headline, first, stages };
 }

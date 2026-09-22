@@ -288,7 +288,8 @@ test("Admin profile editor supports a long business name and an empty file witho
   await shot(page, "admin-empty-library");
   await page.goto(base + "/lender-file");
   await expect(page.getByRole("heading", { name: "No version yet" })).toBeVisible();
-  await expect(page.getByText("Work outstanding", { exact: true })).toBeVisible();
+  // The shared Pass 3 status names the preparation boundary; an empty file still cannot be ready.
+  await expect(page.getByText("Preparation work outstanding", { exact: true })).toBeVisible();
   await shot(page, "admin-empty-version");
   await page.goto(base + "/documents/00000000-0000-0000-0000-000000000000");
   await expect(page.getByRole("heading", { name: "This view could not be opened" })).toBeVisible();

@@ -1,3 +1,4 @@
+import { listSnapshots, type SnapshotContent } from "@/lib/deliverables/snapshot";
 import { sourceUrl } from "@/lib/deals/source-url";
 import Link from "next/link";
 import { and, eq, isNull } from "drizzle-orm";
@@ -13,9 +14,12 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
   const { dealId } = await params,
     ctx = await adviserContext();
   await requireDeal(ctx, dealId);
-  const p = await portalData(dealId),
-    base = `/deals/${dealId}`,
+  const [p, snapshots] = await Promise.all([portalData(dealId), listSnapshots(dealId)]);
+  const base = `/deals/${dealId}`,
     deal = p.data.deal;
+  const preparedVersions = snapshots.filter(
+    (version) => (version.contentJson as SnapshotContent).preparation?.ready,
+  );
   const people = p.data.parties
     .map((person) => ({ person, home: personHome(p.mapped, person.id, person.legalName) }))
     .filter((p) => p.home.tasks.length);
@@ -172,19 +176,31 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
         })}
       </section>
       <section className="aside-panel mt-9">
-        <h2>{p.mapped.ready ? "The lender file is ready" : "The lender file isn't ready yet"}</h2>
+        <h2>{p.mapped.ready ? "Prepared for lender review" : "The lender file isn't ready yet"}</h2>
         <p className="mt-2">
           {p.mapped.ready
             ? "Everything needed to prepare this file is complete. The lender's decision comes later."
             : "We're still collecting documents, clarifying answers or checking what was sent."}
         </p>
-        <p className="muted mt-2">
-          {p.mapped.lenderOrdered.every((r) =>
-            ["satisfied", "waived", "not_applicable"].includes(r.status),
-          )
-            ? "Nothing else is needed from the lender right now."
-            : "The lender is arranging its own documents."}
-        </p>
+        <p className="muted mt-2">{p.data.preparation.policy}</p>
+        {!p.data.preparation.current && (
+          <p>We are checking the latest changes before confirming this file is prepared.</p>
+        )}
+        <div className="mt-4">
+          <h3>Later lender work</h3>
+          {p.mapped.lenderOrdered.map((row) => (
+            <p key={`${row.item_id}-${row.scope_key}-${row.period}`}>
+              {row.item}:{" "}
+              {row.status === "satisfied"
+                ? "Satisfied"
+                : row.status === "waived"
+                  ? "Waived"
+                  : row.status === "not_applicable"
+                    ? "Not applicable"
+                    : "Still outstanding"}
+            </p>
+          ))}
+        </div>
         <div className="mt-4 flex flex-wrap items-center gap-5">
           <Link className="text-link" href={`${base}/documents`}>
             See every document
@@ -199,6 +215,24 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
           )}
         </div>
       </section>
+      {preparedVersions.length > 0 && (
+        <section className="mt-9">
+          <h2>Earlier prepared versions</h2>
+          <p>
+            These files record the documents at the date shown. They do not include later changes.
+          </p>
+          {preparedVersions.map((version) => (
+            <p className="row" key={version.id}>
+              <a
+                className="text-link"
+                href={`${base}/download?${sourceUrl(dealId, dealId).split("?")[1]}&version=${version.number}`}
+              >
+                Download version {version.number} · {dateLabel(version.createdAt)}
+              </a>
+            </p>
+          ))}
+        </section>
+      )}
       <details className="mt-9">
         <summary className="text-link cursor-pointer">Contact and dates</summary>
         <form action={`${base}/action`} method="post" className="mt-4 space-y-4">

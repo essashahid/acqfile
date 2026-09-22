@@ -95,7 +95,8 @@ export default async function DealsPage({
                     {v ? (
                       <>
                         <p>
-                          {v.counts.required.done} of {v.counts.required.applicable} required
+                          {v.counts.required.done} of {v.counts.required.applicable} preparation
+                          requirements
                         </p>
                         <p className="meta">
                           Satisfied or waived · {v.counts.notApplicable} excluded

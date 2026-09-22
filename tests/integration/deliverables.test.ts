@@ -126,6 +126,8 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     "Conflicts",
     "Source record",
     "Change log",
+    "Segment locations",
+    "Status summary",
   ]);
   for (const name of book.SheetNames) {
     const rows = XLSX.utils.sheet_to_json(book.Sheets[name]!, { header: 1 }) as unknown[][];

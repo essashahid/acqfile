@@ -34,13 +34,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
   const v = await dealView(dealId);
   const c = v.counts;
   const base = `/staff/deals/${dealId}`;
-  const position = c.blockers
-    ? `${c.blockers} blocker${c.blockers === 1 ? "" : "s"} prevent${c.blockers === 1 ? "s" : ""} a complete lender file.`
-    : c.findingsOpen
-      ? "No blockers. Open items remain before the file is complete under the configured checks."
-      : c.required.done === c.required.applicable
-        ? "Every applicable required requirement is satisfied or waived under the configured checks."
-        : "No open findings. Some requirements still have no accepted evidence.";
+  const position = `${v.preparation.label}. ${v.preparation.policy}.`;
   const editable = mutationAllowed(ctx);
   const actionable = v.work.filter(
     (w) => w.kind !== "info" && (editable || w.kind !== "follow-up"),
@@ -151,8 +145,8 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
         ) : null}
         <div className="grid gap-5 lg:grid-cols-2">
           <Card
-            title="Requirements"
-            description="Applicable requirements only."
+            title="Preparation requirements"
+            description="Applicable preparation requirements only."
             actions={
               <Link className="link" href={`${base}/requirements`}>
                 Open

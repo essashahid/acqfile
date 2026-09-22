@@ -37,7 +37,7 @@ export default async function Deals() {
                 {people.length
                   ? `Waiting on ${people.map((p) => p.legalName).join(", ")}.`
                   : p.mapped.ready
-                    ? "The lender file is ready."
+                    ? "Prepared for lender review."
                     : "We're checking the documents."}
               </p>
             </div>

@@ -1,6 +1,7 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
-import { buildIndex, readiness, type IndexRow } from "@/lib/deliverables/index-build";
+import { stageOf } from "@/lib/deliverables/readiness";
+import { buildIndex, type IndexRow } from "@/lib/deliverables/index-build";
 import { listRequests, ageInDays } from "@/lib/deliverables/requests";
 import { listSnapshots } from "@/lib/deliverables/snapshot";
 import { PENDING } from "@/lib/evaluation/run";
@@ -88,11 +89,13 @@ export async function dealView(dealId: string) {
       db.select().from(schema.facts).where(eq(schema.facts.dealId, dealId)),
     ]);
 
-  const ready = readiness(built.index, built.rules);
+  const ready = built.preparation;
   const byStatus: Record<string, number> = {};
   for (const r of built.index) byStatus[r.status] = (byStatus[r.status] ?? 0) + 1;
   const open = built.findings.filter((f) => ["open", "requested"].includes(f.status));
-  const blockers = open.filter((f) => f.severity === "blocker");
+  const blockers = open.filter(
+    (f) => f.severity === "blocker" && stageOf(built.rules.get(f.ruleId)) !== "later_lender",
+  );
   const informational = open.filter((f) => f.type === "info" || f.severity === "info");
   const failedFiles = arrivals.filter(
     (r) =>
@@ -197,7 +200,7 @@ export async function dealView(dealId: string) {
     });
 
   const counts: DealCounts = {
-    required: { done: ready.satisfied, applicable: ready.applicable },
+    required: { done: ready.satisfied + ready.waived, applicable: ready.applicable },
     notApplicable: byStatus.not_applicable ?? 0,
     byStatus,
     findingsOpen: open.length,

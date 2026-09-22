@@ -2,7 +2,7 @@ import { checkAttributes } from "@/lib/extract/schema";
 import { FACTS } from "@/lib/domain/registry";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
-import { hashObject } from "@/lib/hash";
+import { hashObject, stableStringify } from "@/lib/hash";
 import { EngineInputSchema, type EngineInput } from "@/lib/rules/input";
 import { evaluateDeal } from "@/lib/rules/engine";
 import { loadPack } from "@/lib/rules/loader";
@@ -170,6 +170,23 @@ export async function buildEngineInput(
   });
   return { input, deal };
 }
+/** Stable across database row ordering; includes revisions, pending values and provenance. */
+export function engineInputHash(input: EngineInput) {
+  const ordered = Object.fromEntries(
+    Object.entries(input).map(([key, value]) => [
+      key,
+      Array.isArray(value)
+        ? [...value].sort((a, b) => stableStringify(a).localeCompare(stableStringify(b)))
+        : key === "evidence_inventory"
+          ? {
+              segment_ids: [...input.evidence_inventory.segment_ids].sort(),
+              fact_ids: [...input.evidence_inventory.fact_ids].sort(),
+            }
+          : value,
+    ]),
+  );
+  return hashObject(ordered);
+}
 /** Evaluate a deal from the database and persist the evaluation, checklist rows and findings. */
 export async function evaluateDealNow(dealId: string) {
   const { input, deal } = await buildEngineInput(dealId);
@@ -186,6 +203,7 @@ export async function evaluateDealNow(dealId: string) {
         dealId,
         rulePackHash: snapshot!.contentHash,
         factsHash: hashObject(input.accepted_facts.map((f) => [f.id, f.normalized_value])),
+        inputHash: engineInputHash(input),
         resultHash: result.result_hash,
         durationMs: Date.now() - started,
         asOfDate: input.as_of,

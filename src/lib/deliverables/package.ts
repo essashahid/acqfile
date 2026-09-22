@@ -22,7 +22,7 @@ const table = (headers: string[], rows: unknown[][]) =>
     .map((r) => `<tr>${r.map((c) => `<td>${escape(c)}</td>`).join("")}</tr>`)
     .join("")}</tbody></table>`;
 
-/** A47: one printable page with status summary, index, missing items, conflicts and change log. */
+/** Printable multi-page report. Sources remain the original, unchanged files in this ZIP. */
 export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
   const missing = content.index.filter((r) =>
     ["missing", "received_with_issues", "needs_review"].includes(r.status),
@@ -30,25 +30,111 @@ export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
   const conflicts = content.findings.filter(
     (f) => f.type === "conflict" && ["open", "requested"].includes(f.status),
   );
-  const half = Math.ceil(content.index.length / 2);
-  const index = (rows: SnapshotContent["index"]) =>
-    table(
-      ["Item", "Party / period", "Status"],
-      rows.map((r) => [r.item_id, `${r.party} ${r.period}`, r.status]),
-    );
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(content.deal.code)} package ${content.number}</title><style>@page{size:A3 landscape;margin:10mm}body{font:10px system-ui;margin:0;color:#111}h1{font-size:18px}h2{font-size:12px;margin:8px 0}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:2px;text-align:left;vertical-align:top}.columns{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:14px}footer{margin-top:10px;font-size:9px}</style></head><body>
-<h1>${escape(content.deal.code)} · ${escape(content.deal.name)} · Snapshot ${content.number}</h1>
-<p>Required rows satisfied or waived: ${content.readiness.satisfied} of ${content.readiness.applicable}. Blockers: ${content.findings.filter((f) => f.severity === "blocker" && ["open", "requested"].includes(f.status)).length}. Files: ${content.manifest.length}. All rules unverified. ${escape(content.created_at)}</p>
-<div class="columns"><section><h2>Index</h2>${index(content.index.slice(0, half))}</section><section><h2>Index continued</h2>${index(content.index.slice(half))}</section><section><h2>Missing and incomplete items</h2>${table(
-    ["Item", "Party / period", "Status"],
-    missing.map((r) => [r.item_id, `${r.party} ${r.period}`, r.status]),
-  )}<h2>Conflicts — for lender review</h2>${table(
-    ["Rule", "Subject", "Status"],
-    conflicts.map((f) => [f.rule_id, `${f.party} ${f.period ?? ""}`, f.status]),
-  )}<h2>Change log</h2>${table(
-    ["Change", "Count"],
-    Object.entries(diff).map(([k, v]) => [k.replaceAll("_", " "), Array.isArray(v) ? v.length : v]),
-  )}<p>The workbook contains full item titles, package paths, each conflict's values with file/page/quoted evidence, accepted source records, and the detailed change log.</p></section></div><footer>${escape(content.footer)}</footer></body></html>`;
+  const status = content.preparation;
+  const index = content.index.flatMap((r) =>
+    (r.segments.length ? r.segments : [null]).map((segment, i) => [
+      r.item_id,
+      r.item,
+      r.party,
+      r.period,
+      r.status,
+      r.decision_reason ?? "",
+      r.responsible ?? "Unassigned — needs assignment",
+      segment?.originalFile ?? r.original_filenames[i] ?? "",
+      segment ? `${segment.page}–${segment.endPage ?? segment.page}` : "",
+      segment?.packagePath ?? r.package_paths[i] ?? "",
+      segment ? `${segment.page}–${segment.endPage ?? segment.page} (unchanged original)` : "",
+    ]),
+  );
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(content.deal.code)} package ${content.number}</title><style>@page{size:A3 landscape;margin:14mm}body{font:14px system-ui;margin:24px;color:#111}h1{font-size:24px}h2{font-size:19px;margin-top:28px}table{border-collapse:collapse;width:100%;table-layout:auto}td,th{border:1px solid #ccc;padding:7px;text-align:left;vertical-align:top;overflow-wrap:anywhere}thead{display:table-header-group}tr{break-inside:avoid}footer{margin-top:24px;font-size:12px}</style></head><body>
+<h1>${escape(content.deal.code)} · ${escape(content.deal.name)} · Version ${content.number}</h1>
+<p>${escape(content.created_at)} · ${escape(status?.policy ?? "Historical version; preparation boundary was not recorded")}</p>
+<h2>${escape(status?.label ?? "Historical preparation status not assessed")}</h2>
+<p>Preparation requirements: ${status?.satisfied ?? content.readiness.satisfied} satisfied; ${status?.waived ?? "not recorded"} waived; ${content.readiness.applicable} applicable. Not applicable: ${status?.notApplicable ?? "not recorded"}. All rules unverified.</p>
+${table(
+  ["Unresolved preparation work"],
+  (status?.unresolved ?? []).map((issue) => [issue]),
+)}
+<h2>Later lender work</h2>${table(
+    ["Item", "Title", "Subject", "Responsible", "Status"],
+    (status?.later ?? []).map((r) => [r.item, r.title, r.subject, r.responsible, r.status]),
+  )}
+<h2>Index</h2>${table(["Item", "Title", "Subject", "Period", "Status", "Decision reason", "Responsible", "Original source file", "Original pages", "Exported path", "Output pages"], index)}
+<h2>Document segments</h2><p>Files retain their original bytes and page numbering. A bundled file may be referenced by more than one requirement.</p>${table(
+    [
+      "Segment",
+      "Type",
+      "Subject",
+      "Original source file",
+      "Original pages",
+      "Exported path",
+      "Output pages",
+    ],
+    (content.segment_locations ?? []).map((r) => [
+      r.id,
+      r.type,
+      r.subject,
+      r.original_filename,
+      `${r.page_start}–${r.page_end}`,
+      r.package_path,
+      `${r.page_start}–${r.page_end}`,
+    ]),
+  )}
+<h2>Missing and incomplete items</h2>${table(
+    [
+      "Item",
+      "Title",
+      "Subject",
+      "Responsible provider / role",
+      "Period",
+      "Stage",
+      "Status",
+      "What is needed",
+    ],
+    missing.map((r) => [
+      r.item_id,
+      r.item,
+      r.party,
+      r.responsible ?? "Unassigned — needs assignment",
+      r.period,
+      r.submission_stage ?? "unknown",
+      r.status,
+      r.checks
+        .filter((c) => c.result !== "pass")
+        .map((c) => c.message)
+        .join("; "),
+    ]),
+  )}
+<h2>Conflicts — for lender review</h2>${conflicts
+    .map(
+      (f) =>
+        `<h3>${escape(f.title ?? f.message ?? f.rule_id)}</h3><p>${escape(f.description ?? f.message)} ${escape(f.message)}</p><p>${escape(f.rule_id)} · ${escape(f.party)} · ${escape(f.period ?? "")} · Responsible: ${escape(f.responsible ?? "Unassigned — needs assignment")} · ${escape(f.status)}</p>${table(
+          [
+            "Source value or relationship detail",
+            "Original file",
+            "Supporting page",
+            "Quoted evidence",
+            "Exported path",
+          ],
+          f.sides.map((side) => [
+            side.value,
+            side.file,
+            side.page,
+            side.quote,
+            side.package_path ?? "",
+          ]),
+        )}<p>${escape(f.reason ?? "")}</p>`,
+    )
+    .join("")}
+<h2>Files in this version</h2><ul>${content.manifest.map((m) => `<li><a href="${escape(m.package_path.split("/").map(encodeURIComponent).join("/"))}">${escape(m.package_path)}</a> — ${escape(m.original_filename)}</li>`).join("")}</ul>
+<h2>Change log</h2>${table(
+    ["Change", "Detail"],
+    Object.entries(diff).map(([k, v]) => [
+      k.replaceAll("_", " "),
+      Array.isArray(v) ? v.join("; ") : v,
+    ]),
+  )}
+<p>The workbook includes the current source record, supporting pages and review history. This version records the evidence at the date above; it does not assert the current deal is ready after later changes.</p><footer>${escape(content.footer)}</footer></body></html>`;
 }
 
 /** A47: tabs Index, Missing items, Conflicts, Source record, Change log, each ending with the footer. */
@@ -63,7 +149,7 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
   const add = (name: string, headers: string[], rows: unknown[][]) => {
     const sheet = XLSX.utils.aoa_to_sheet([
       headers,
-      ...rows.map((r) => r.map(mask)),
+      ...rows.map((r) => r.map((value) => (typeof value === "number" ? value : mask(value)))),
       [],
       [content.footer],
     ]);
@@ -84,20 +170,34 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Rule",
       "Original filenames",
       "SHA-256",
+      "Responsible provider / role",
+      "Submission stage",
+      "Decision reason",
+      "Original page start",
+      "Original page end",
+      "Output pages",
     ],
-    content.index.map((r) => [
-      r.item_id,
-      r.item,
-      r.party,
-      r.period,
-      r.status,
-      r.package_paths.join("; "),
-      r.document_date,
-      r.open_findings,
-      r.rule_verified,
-      r.original_filenames.join("; "),
-      r.file_hashes.join("; "),
-    ]),
+    content.index.flatMap((r) =>
+      (r.segments.length ? r.segments : [null]).map((segment, i) => [
+        r.item_id,
+        r.item,
+        r.party,
+        r.period,
+        r.status,
+        segment?.packagePath ?? r.package_paths[i] ?? "",
+        r.document_date,
+        r.open_findings,
+        r.rule_verified,
+        segment?.originalFile ?? r.original_filenames[i] ?? "",
+        r.file_hashes[i] ?? "",
+        r.responsible ?? "Unassigned — needs assignment",
+        r.submission_stage ?? "unknown",
+        r.decision_reason ?? "",
+        segment?.page ?? "",
+        segment?.endPage ?? segment?.page ?? "",
+        segment ? `${segment.page}–${segment.endPage ?? segment.page} (unchanged original)` : "",
+      ]),
+    ),
   );
   add(
     "Missing items",
@@ -107,7 +207,7 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       .map((r) => [
         r.item_id,
         r.item,
-        content.findings.find((f) => f.rule_id === r.item_id && f.party === r.party)?.party ?? "",
+        r.responsible ?? "Unassigned — needs assignment",
         r.party,
         r.period,
         r.status,
@@ -130,6 +230,10 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Page",
       "Quote",
       "Reviewer note",
+      "Issue title",
+      "Description / question",
+      "Responsible provider / role",
+      "Package path",
     ],
     content.findings
       .filter((f) => f.type === "conflict")
@@ -145,6 +249,10 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
           s.page,
           s.quote,
           f.reason ?? "",
+          f.title ?? f.message,
+          f.description ?? f.message,
+          f.responsible ?? "Unassigned — needs assignment",
+          "package_path" in s ? s.package_path : "",
         ]),
       ),
   );
@@ -166,6 +274,9 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Reviewer",
       "Reviewed at",
       "File hash",
+      "Record version",
+      "Audit event",
+      "Support kind",
     ],
     content.source_record.map((f) => [
       f.fact_id,
@@ -183,6 +294,9 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       f.reviewer,
       f.reviewed_at,
       f.file_hash,
+      f.record_version ?? "",
+      f.audit_event ?? "",
+      f.support_kind ?? "",
     ]),
   );
   add(
@@ -198,6 +312,63 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       ["", "dismissals", diff.dismissals.join("; ") || "none"],
       ["", "waivers", diff.waivers.join("; ") || "none"],
       ...content.change_log.map((e) => [e.at, e.action, e.detail]),
+    ],
+  );
+  add(
+    "Segment locations",
+    [
+      "Segment",
+      "Type",
+      "Subject",
+      "Original filename",
+      "Original page start",
+      "Original page end",
+      "Package path",
+      "Output page start",
+      "Output page end",
+    ],
+    (content.segment_locations ?? []).map((r) => [
+      r.id,
+      r.type,
+      r.subject,
+      r.original_filename,
+      r.page_start,
+      r.page_end,
+      r.package_path,
+      r.page_start,
+      r.page_end,
+    ]),
+  );
+  add(
+    "Status summary",
+    ["Section", "Item", "Subject", "Responsible", "Status / detail"],
+    [
+      [
+        "Policy",
+        "",
+        "",
+        "",
+        content.preparation?.policy ?? "Historical preparation boundary not recorded",
+      ],
+      ["Version", content.number, "", "", content.created_at],
+      ["Preparation", "", "", "", content.preparation?.label ?? "Historical status not assessed"],
+      ["Satisfied", "", "", "", content.preparation?.satisfied ?? content.readiness.satisfied],
+      ["Waived", "", "", "", content.preparation?.waived ?? "not recorded"],
+      ["Not applicable", "", "", "", content.preparation?.notApplicable ?? "not recorded"],
+      ...(content.preparation?.unresolved ?? []).map((text) => [
+        "Unresolved preparation",
+        "",
+        "",
+        "",
+        text,
+      ]),
+      ...(content.preparation?.later ?? []).map((r) => [
+        "Later lender work",
+        r.title,
+        r.subject,
+        r.responsible,
+        r.status,
+      ]),
     ],
   );
   return XLSX.write(book, { type: "buffer", bookType: "xlsx", compression: true }) as Buffer;

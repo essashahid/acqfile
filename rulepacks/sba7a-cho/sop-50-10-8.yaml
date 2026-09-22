@@ -28,6 +28,7 @@ index:
   filename_template: "{item_id}_{doc_label}_{party}_{period}{original_extension}"
 items:
   - id: TXN-01
+    submission_stage: preparation
     title: Signed letter of intent
     description: Signed letter of intent. Evidence preparation check for lender review.
     scope: deal
@@ -63,6 +64,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed letter of intent"
     verified: false
   - id: TXN-02
+    submission_stage: preparation
     title: Purchase agreement with allocation
     description: Purchase agreement with allocation. Evidence preparation check for lender review.
     scope: deal
@@ -96,6 +98,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: TXN-03
+    submission_stage: preparation
     title: Sources and uses
     description: Sources and uses. Evidence preparation check for lender review.
     scope: deal
@@ -142,6 +145,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sources and uses"
     verified: false
   - id: TXN-04
+    submission_stage: preparation
     title: Seller note or term sheet
     description: Seller note or term sheet. Evidence preparation check for lender review.
     scope: deal
@@ -167,6 +171,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller note or term sheet"
     verified: false
   - id: TXN-05
+    submission_stage: later_lender
     title: Standby agreement
     description: Standby agreement. Evidence preparation check for lender review.
     scope: deal
@@ -197,6 +202,7 @@ items:
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
   - id: TXN-06
+    submission_stage: preparation
     title: Seller consulting or transition agreement
     description: Seller consulting or transition agreement. Evidence preparation check for lender review.
     scope: deal
@@ -220,6 +226,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller consulting or transition agreement"
     verified: false
   - id: TXN-07
+    submission_stage: preparation
     title: SBA Form 159 for paid agent
     description: SBA Form 159 for paid agent. Evidence preparation check for lender review.
     scope: per_paid_agent
@@ -248,6 +255,7 @@ items:
       url: https://legacy.sba.gov/sites/default/files/2022-02/SBA%20Form%20159_2.10.22-508_0.pdf
     verified: false
   - id: TXN-08
+    submission_stage: later_lender
     title: Independent business valuation
     description: Independent business valuation. Evidence preparation check for lender review.
     scope: deal
@@ -271,6 +279,7 @@ items:
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
   - id: ENT-01
+    submission_stage: preparation
     title: SBA Form 1919
     description: SBA Form 1919. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -305,6 +314,7 @@ items:
       url: https://statementsready.com/blog/how-to-fill-out-sba-form-1919
     verified: false
   - id: ENT-02
+    submission_stage: preparation
     title: Formation documents
     description: Formation documents. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -326,6 +336,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: ENT-03
+    submission_stage: preparation
     title: Operating agreement or bylaws
     description: Operating agreement or bylaws. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -351,6 +362,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: ENT-04
+    submission_stage: preparation
     title: EIN confirmation letter
     description: EIN confirmation letter. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -370,6 +382,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): EIN confirmation letter"
     verified: false
   - id: ENT-05
+    submission_stage: preparation
     title: Certificate of good standing
     description: Certificate of good standing. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -390,6 +403,7 @@ items:
         secondary article citation to 13 CFR 120.420"
     verified: false
   - id: ENT-06
+    submission_stage: preparation
     title: Post-closing ownership chart
     description: Post-closing ownership chart. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -410,6 +424,7 @@ items:
         permitted"
     verified: false
   - id: ENT-07a
+    submission_stage: preparation
     title: Business plan
     description: Business plan. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -428,6 +443,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Business plan"
     verified: false
   - id: ENT-07b
+    submission_stage: preparation
     title: Projections with assumptions
     description: Projections with assumptions. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -446,6 +462,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Projections with assumptions"
     verified: false
   - id: GUA-01
+    submission_stage: preparation
     title: Personal financial statement
     description: Personal financial statement. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -485,6 +502,7 @@ items:
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
   - id: GUA-02
+    submission_stage: preparation
     title: Personal federal tax return
     description: Personal federal tax return. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -508,6 +526,7 @@ items:
     verified: false
     period_requirement: last_three_tax_years
   - id: GUA-03
+    submission_stage: preparation
     title: Resume or management profile
     description: Resume or management profile. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -526,6 +545,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Resume or management profile"
     verified: false
   - id: GUA-04
+    submission_stage: preparation
     title: Government photo identification
     description: Government photo identification. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -551,6 +571,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Government photo identification"
     verified: false
   - id: GUA-05
+    submission_stage: preparation
     title: Citizenship evidence
     description: Citizenship evidence. Evidence preparation check for lender review.
     scope: per_owner_or_guarantor
@@ -575,6 +596,7 @@ items:
         RULE_CANDIDATES.md."
     verified: false
   - id: GUA-06
+    submission_stage: preparation
     title: Credit authorization
     description: Credit authorization. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -599,6 +621,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: GUA-07
+    submission_stage: preparation
     title: Equity source monthly bank statement
     description: Equity source monthly bank statement. Evidence preparation check for lender review.
     scope: per_equity_source
@@ -627,6 +650,7 @@ items:
     verified: false
     period_requirement: last_two_months
   - id: GUA-08a
+    submission_stage: preparation
     title: Gift letter
     description: Gift letter. Evidence preparation check for lender review.
     scope: per_equity_source
@@ -663,6 +687,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: GUA-08b
+    submission_stage: preparation
     title: Donor bank statement
     description: Donor bank statement. Evidence preparation check for lender review.
     scope: per_equity_source
@@ -692,6 +717,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: GUA-08c
+    submission_stage: preparation
     title: Gift transfer evidence
     description: Gift transfer evidence. Evidence preparation check for lender review.
     scope: per_equity_source
@@ -717,6 +743,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: GUA-09a
+    submission_stage: preparation
     title: Affiliate business tax return
     description: Affiliate business tax return. Evidence preparation check for lender review.
     scope: per_affiliate
@@ -738,6 +765,7 @@ items:
     verified: false
     period_requirement: last_three_tax_years
   - id: GUA-09b
+    submission_stage: preparation
     title: Affiliate interim financial statements
     description: Affiliate interim financial statements. Evidence preparation check for lender review.
     scope: per_affiliate
@@ -766,6 +794,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: GUA-09c
+    submission_stage: preparation
     title: Affiliate debt schedule
     description: Affiliate debt schedule. Evidence preparation check for lender review.
     scope: per_affiliate
@@ -792,6 +821,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: TGT-01
+    submission_stage: preparation
     title: Target business tax return
     description: Target business tax return. Evidence preparation check for lender review.
     scope: target_business
@@ -821,6 +851,7 @@ items:
     verified: false
     period_requirement: last_three_tax_years
   - id: TGT-02
+    submission_stage: preparation
     title: Year-end income statement and balance sheet
     description: Year-end income statement and balance sheet. Evidence preparation check for lender review.
     scope: target_business
@@ -848,6 +879,7 @@ items:
     verified: false
     period_requirement: last_three_fiscal_year_ends
   - id: TGT-03
+    submission_stage: preparation
     title: Interim income statement and balance sheet
     description: Interim income statement and balance sheet. Evidence preparation check for lender review.
     scope: target_business
@@ -876,6 +908,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: TGT-04a
+    submission_stage: preparation
     title: Receivables aging
     description: Receivables aging. Evidence preparation check for lender review.
     scope: target_business
@@ -905,6 +938,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Receivables aging"
     verified: false
   - id: TGT-04b
+    submission_stage: preparation
     title: Payables aging
     description: Payables aging. Evidence preparation check for lender review.
     scope: target_business
@@ -934,6 +968,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Payables aging"
     verified: false
   - id: TGT-05
+    submission_stage: preparation
     title: Business debt schedule
     description: Business debt schedule. Evidence preparation check for lender review.
     scope: target_business
@@ -957,6 +992,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: TGT-06
+    submission_stage: preparation
     title: IRS Form 4506-C
     description: IRS Form 4506-C. Evidence preparation check for lender review.
     scope: target_business
@@ -984,6 +1020,7 @@ items:
         synthetic seed convention, not a claim about IRS validity"
     verified: false
   - id: TGT-07a
+    submission_stage: preparation
     title: Business premises lease
     description: Business premises lease. Evidence preparation check for lender review.
     scope: target_business
@@ -1011,6 +1048,7 @@ items:
       url: https://www.pioneercapitaladvisory.com/post/the-complete-sba-documentation-checklist-for-business-buyers
     verified: false
   - id: TGT-07b
+    submission_stage: preparation
     title: Lease assignment, consent or new terms
     description: Lease assignment, consent or new terms. Evidence preparation check for lender review.
     scope: target_business
@@ -1033,6 +1071,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Lease assignment, consent or new terms"
     verified: false
   - id: TGT-08a
+    submission_stage: preparation
     title: Equipment list
     description: Equipment list. Evidence preparation check for lender review.
     scope: target_business
@@ -1051,6 +1090,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Equipment list"
     verified: false
   - id: TGT-08b
+    submission_stage: preparation
     title: Inventory summary
     description: Inventory summary. Evidence preparation check for lender review.
     scope: target_business
@@ -1069,6 +1109,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Inventory summary"
     verified: false
   - id: TGT-09
+    submission_stage: preparation
     title: Operating licenses and permits
     description: Operating licenses and permits. Evidence preparation check for lender review.
     scope: target_business
@@ -1090,6 +1131,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits"
     verified: false
   - id: TGT-10a
+    submission_stage: preparation
     title: Franchise agreement
     description: Franchise agreement. Evidence preparation check for lender review.
     scope: target_business
@@ -1118,6 +1160,7 @@ items:
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
     verified: false
   - id: TGT-10b
+    submission_stage: preparation
     title: Franchise disclosure document
     description: Franchise disclosure document. Evidence preparation check for lender review.
     scope: target_business
@@ -1140,6 +1183,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document"
     verified: false
   - id: RE-01
+    submission_stage: preparation
     title: Real estate purchase contract
     description: Real estate purchase contract. Evidence preparation check for lender review.
     scope: deal
@@ -1162,6 +1206,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate purchase contract"
     verified: false
   - id: RE-02
+    submission_stage: later_lender
     title: Real estate appraisal
     description: Real estate appraisal. Evidence preparation check for lender review.
     scope: deal
@@ -1183,6 +1228,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate appraisal"
     verified: false
   - id: RE-03
+    submission_stage: later_lender
     title: Environmental review
     description: Environmental review. Evidence preparation check for lender review.
     scope: deal
@@ -1204,6 +1250,7 @@ items:
       citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Environmental review"
     verified: false
   - id: LND-01
+    submission_stage: later_lender
     title: Credit reports
     description: Credit reports. Evidence preparation check for lender review.
     scope: deal
@@ -1222,6 +1269,7 @@ items:
         borrower evidence requested"
     verified: false
   - id: LND-02
+    submission_stage: later_lender
     title: IRS transcripts
     description: IRS transcripts. Evidence preparation check for lender review.
     scope: deal
@@ -1240,6 +1288,7 @@ items:
         borrower evidence requested"
     verified: false
   - id: LND-03
+    submission_stage: later_lender
     title: Lien searches
     description: Lien searches. Evidence preparation check for lender review.
     scope: deal
@@ -1258,6 +1307,7 @@ items:
         borrower evidence requested"
     verified: false
   - id: LND-04
+    submission_stage: later_lender
     title: Insurance
     description: Insurance. Evidence preparation check for lender review.
     scope: deal
@@ -1277,6 +1327,7 @@ items:
     verified: false
 consistency:
   - id: CON-01
+    submission_stage: preparation
     title: Seller identity agrees
     description: Seller identity agrees. Evidence preparation check for lender review.
     scope: target_business
@@ -1309,6 +1360,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-02
+    submission_stage: preparation
     title: Ownership agrees and totals 100
     description: Ownership agrees and totals 100. Evidence preparation check for lender review.
     scope: buyer_entity
@@ -1336,6 +1388,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-03
+    submission_stage: preparation
     title: Purchase prices agree
     description: Purchase prices agree. Evidence preparation check for lender review.
     scope: deal
@@ -1363,6 +1416,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-04
+    submission_stage: preparation
     title: Sources total equals uses total
     description: Sources total equals uses total. Evidence preparation check for lender review.
     scope: deal
@@ -1387,6 +1441,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-05
+    submission_stage: preparation
     title: Seller note amount and terms agree
     description: Seller note amount and terms agree. Evidence preparation check for lender review.
     scope: deal
@@ -1438,6 +1493,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-06
+    submission_stage: preparation
     title: "Seller standby wording: for lender review"
     description: "Seller standby wording: for lender review. Evidence preparation check for lender review."
     scope: deal
@@ -1474,6 +1530,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-07
+    submission_stage: preparation
     title: "Limited-source arithmetic: for lender review"
     description: "Limited-source arithmetic: for lender review. Evidence preparation check for lender review."
     scope: deal
@@ -1507,6 +1564,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-08
+    submission_stage: preparation
     title: Cash injection and account balance
     description: Cash injection and account balance. Evidence preparation check for lender review.
     scope: per_equity_source
@@ -1535,6 +1593,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-09
+    submission_stage: preparation
     title: Personal statement cash and bank balances
     description: Personal statement cash and bank balances. Evidence preparation check for lender review.
     scope: per_guarantor
@@ -1567,6 +1626,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-10
+    submission_stage: preparation
     title: Tax receipts and year-end revenue
     description: Tax receipts and year-end revenue. Evidence preparation check for lender review.
     scope: target_business
@@ -1608,6 +1668,7 @@ consistency:
     finding_type: conflict
     period_requirement: last_three_tax_years
   - id: CON-11
+    submission_stage: preparation
     title: Transaction structure agrees
     description: Transaction structure agrees. Evidence preparation check for lender review.
     scope: deal
@@ -1631,6 +1692,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-12
+    submission_stage: preparation
     title: Business addresses agree
     description: Business addresses agree. Evidence preparation check for lender review.
     scope: target_business
@@ -1660,6 +1722,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-13
+    submission_stage: preparation
     title: "Lease horizon: for lender review"
     description: "Lease horizon: for lender review. Evidence preparation check for lender review."
     scope: target_business
@@ -1695,6 +1758,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-14
+    submission_stage: preparation
     title: "Consulting duration: for lender review"
     description: "Consulting duration: for lender review. Evidence preparation check for lender review."
     scope: deal
@@ -1725,6 +1789,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-15
+    submission_stage: preparation
     title: Transaction dates remain current
     description: Transaction dates remain current. Evidence preparation check for lender review.
     scope: deal
@@ -1759,6 +1824,7 @@ consistency:
     verified: false
     finding_type: conflict
   - id: CON-16
+    submission_stage: preparation
     title: Document party assignment
     description: Document party assignment. Evidence preparation check for lender review.
     scope: deal

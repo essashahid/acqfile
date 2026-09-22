@@ -187,6 +187,7 @@ export const RuleSchema = z.strictObject({
   applies_when: ExprSchema,
   accepts: z.array(DocumentTypeSchema),
   required: z.boolean(),
+  submission_stage: z.enum(["preparation", "later_lender", "unknown"]).optional(),
   severity: z.enum(["blocker", "major", "minor", "info"]),
   responsible: z.string().min(1),
   checks: z.array(CheckSchema).min(1),
