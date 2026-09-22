@@ -37,6 +37,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ dea
         key,
         String(data.get("choice")),
         String(data.get("note") ?? ""),
+        String(data.get("evidenceKey") ?? ""),
       );
     else if (kind === "settings") {
       const s = z
@@ -84,7 +85,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ dea
     if (["settings", "waive"].includes(kind))
       return Response.redirect(new URL(`/deals/${dealId}`, request.url), 303);
     return Response.json({ saved: true });
-  } catch {
-    return Response.json({ message: "Please check your answer and try again." }, { status: 400 });
+  } catch (error) {
+    const message =
+      error instanceof Error && error.message.startsWith("Please ")
+        ? error.message
+        : "Please check your answer and try again.";
+    return Response.json({ message }, { status: 400 });
   }
 }

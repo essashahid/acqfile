@@ -81,8 +81,17 @@ it("three distinct prices, one adviser answer, correction asks and no edited fac
     q = before.mapped.questions.find((q) => q.title === "Which purchase price is right?")!;
   expect(q.values.sort()).toEqual(["2,400,000", "2,410,000", "2,425,000"]);
   expect(q.partyId).toBeNull();
-  await expect(answerQuestion(a.ctx, a.deal.id, q.key, q.values[0]!, "", a)).rejects.toThrow();
-  await answerQuestion(a.ctx, a.deal.id, q.key, "2,400,000", "Confirmed with the seller.");
+  await expect(
+    answerQuestion(a.ctx, a.deal.id, q.key, q.values[0]!, "", q.evidenceKey, a),
+  ).rejects.toThrow();
+  await answerQuestion(
+    a.ctx,
+    a.deal.id,
+    q.key,
+    "2,400,000",
+    "Confirmed with the seller.",
+    q.evidenceKey,
+  );
   const after = await portalData(a.deal.id);
   expect(after.data.facts).toEqual(before.data.facts);
   expect(after.mapped.openQuestions.some((x) => x.key === q.key)).toBe(false);

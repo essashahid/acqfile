@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 import { getDb, schema } from "@/lib/db/client";
@@ -233,23 +233,62 @@ export async function answerQuestion(
   key: string,
   choice: string,
   note: string,
+  evidenceKey: string,
   access?: PortalAccess,
 ) {
   await requireDeal(ctx, dealId);
-  const { mapped } = await portalData(dealId),
-    q = mapped.questions.find((q) => q.key === key);
-  if (!q || (access && q.partyId !== access.party.id)) throw Error("Question not found");
-  if (!q.values.includes(choice) && !["neither", "unsure"].includes(choice))
-    throw Error("Please choose one of the answers.");
-  return recordResponse(
-    ctx,
-    dealId,
-    q.partyId,
-    key,
-    "answer",
-    { choice, note: z.string().max(2000).parse(note) },
-    access?.link.id ?? null,
-  );
+  return getDb().transaction(async (tx) => {
+    // Filing and fact review use this deal lock too. The page's evidence key is
+    // checked after the lock, so a simultaneous replacement cannot take its answer.
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
+    const { mapped } = await portalData(dealId),
+      q = mapped.questions.find((q) => q.key === key);
+    if (!q) throw Error("Please refresh this question. The details have changed.");
+    if (access && q.partyId !== access.party.id) throw Error("Question not found");
+    if (!evidenceKey || q.evidenceKey !== evidenceKey || q.answered)
+      throw Error("Please refresh this question. The documents or answer have changed.");
+    if (q.kind === "staff_review") throw Error("Please ask your adviser to review this question.");
+    if (
+      (q.kind === "choice" &&
+        !q.values.includes(choice) &&
+        !["neither", "unsure"].includes(choice)) ||
+      (q.kind === "clarification" && !["clarification", "unsure"].includes(choice))
+    )
+      throw Error("Please choose one of the answers.");
+    const cleanNote = z.string().trim().max(2000).parse(note);
+    if (q.kind === "clarification" && choice === "clarification" && !cleanNote)
+      throw Error("Please explain these details before sending your answer.");
+    const payload = { choice, note: cleanNote, evidenceKey };
+    const [event] = await tx
+      .insert(schema.events)
+      .values({
+        dealId,
+        actorId: ctx.user.id,
+        action: "portal_answer",
+        entityType: "deal",
+        entityId: dealId,
+        maskedAfter: scrubPayload({
+          partyId: q.partyId,
+          linkId: access?.link.id ?? null,
+          taskKey: key,
+          ...payload,
+        }),
+      })
+      .returning();
+    const [response] = await tx
+      .insert(schema.portalResponses)
+      .values({
+        dealId,
+        partyId: q.partyId,
+        linkId: access?.link.id ?? null,
+        taskKey: key,
+        kind: "answer",
+        payload: scrubPayload(payload),
+        auditEventId: event!.id,
+      })
+      .returning();
+    return response!;
+  });
 }
 export function ownTask(rows: ReturnType<typeof mapDeal>, partyId: string, key: string) {
   const task = rows.tasks.find((t) => t.key === key && t.partyId === partyId);

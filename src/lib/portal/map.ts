@@ -24,6 +24,8 @@ export type Task = {
 export type Question = {
   key: string;
   title: string;
+  kind: "choice" | "clarification" | "staff_review";
+  evidenceKey: string;
   partyId: string | null;
   values: string[];
   sources: {
@@ -36,6 +38,7 @@ export type Question = {
   }[];
   answered: boolean;
   answer?: ResponseRow;
+  history: ResponseRow[];
 };
 const active = (status: string) => ["open", "requested"].includes(status);
 export const valueLabel = (value: unknown): string => {
@@ -53,23 +56,57 @@ export const valueLabel = (value: unknown): string => {
   }
   return String(value ?? "Not stated");
 };
-const questionNames: Record<string, string> = {
-  "CON-01": "Which business tax number should be used?",
-  "CON-02": "Who will own the business?",
-  "CON-03": "Which purchase price is right?",
-  "CON-04": "How should the funding plan balance?",
-  "CON-05": "What are the seller loan terms?",
-  "CON-06": "How will the seller loan be repaid?",
-  "CON-07": "How will the purchase be funded?",
-  "CON-08": "Which money will you use for the purchase?",
-  "CON-09": "Which cash balance is current?",
-  "CON-10": "Which business revenue is right?",
-  "CON-11": "Which date should we use?",
-  "CON-12": "Which business name should be used?",
-  "CON-13": "What are the lease terms?",
-  "CON-14": "What are the franchise arrangements?",
-  "CON-15": "Is the letter of intent still current?",
-  "CON-16": "Who does this document belong to?",
+const questionPolicy: Record<string, { title: string; kind: Question["kind"] }> = {
+  "CON-01": { title: "Can you clarify the seller's name and tax number?", kind: "clarification" },
+  "CON-02": { title: "Can you clarify the owners and their shares?", kind: "clarification" },
+  "CON-03": { title: "Which purchase price is right?", kind: "choice" },
+  "CON-04": { title: "How should the funding plan balance?", kind: "clarification" },
+  "CON-05": { title: "Can you clarify the seller loan amount and terms?", kind: "clarification" },
+  "CON-06": { title: "Can you clarify the seller loan's standby terms?", kind: "clarification" },
+  "CON-07": { title: "Can you explain the planned funding amounts?", kind: "clarification" },
+  "CON-08": {
+    title: "Can you explain the cash contribution and account balance?",
+    kind: "clarification",
+  },
+  "CON-09": { title: "Can you explain the cash and bank balances?", kind: "clarification" },
+  "CON-10": {
+    title: "Can you explain the tax receipts and year-end revenue?",
+    kind: "clarification",
+  },
+  "CON-11": { title: "What is the purchase structure?", kind: "choice" },
+  "CON-12": { title: "Which business address should we use?", kind: "choice" },
+  "CON-13": {
+    title: "Can you clarify the lease expiry and renewal options?",
+    kind: "clarification",
+  },
+  "CON-14": { title: "What is the consulting period?", kind: "clarification" },
+  "CON-15": { title: "Can you clarify the transaction dates?", kind: "clarification" },
+  "CON-16": { title: "Can you clarify who this document belongs to?", kind: "clarification" },
+};
+const dependencies = (node: unknown, field: "profile" | "param"): string[] => {
+  if (!node || typeof node !== "object") return [];
+  if (Array.isArray(node)) return node.flatMap((item) => dependencies(item, field));
+  const obj = node as Record<string, unknown>;
+  return [
+    ...Object.entries(obj)
+      .filter(
+        ([key, value]) =>
+          typeof value === "string" &&
+          (field === "profile" ? key === "profile" : key === "param" || key.endsWith("_param")),
+      )
+      .map(([, value]) => value as string),
+    ...Object.values(obj).flatMap((value) => dependencies(value, field)),
+  ];
+};
+const profileValue = (profile: unknown, path: string): unknown => {
+  let value = profile;
+  for (const part of path.replace("[]", "").split(".")) {
+    if (Array.isArray(value))
+      value = value.map((item) => (item as Record<string, unknown>)?.[part]);
+    else
+      value = value && typeof value === "object" ? (value as Record<string, unknown>)[part] : null;
+  }
+  return value ?? null;
 };
 export function mapDeal(data: Data, responses: ResponseRow[] = []) {
   const parties = data.parties;
@@ -162,25 +199,42 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
     const replies = responses
       .filter((r) => r.taskKey === task.key)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-    const latest = replies.at(-1);
     task.response = replies.filter((r) => ["cant_send", "accept_later"].includes(r.kind)).at(-1);
     task.versions = [...new Set(task.rows.flatMap((r) => r.segments.map((s) => s.versionId)))];
     for (const r of replies.filter((r) => r.kind === "upload"))
       for (const id of (r.payload.versions as string[]) ?? [])
         if (!task.versions.includes(id)) task.versions.push(id);
     const complete = task.rows.every((r) => ["satisfied", "waived"].includes(r.status));
-    const pending =
-      task.rows.some((r) => r.status === "needs_review") || latest?.kind === "keep_document";
     const upload = replies.filter((r) => r.kind === "upload").at(-1);
+    const uploadedIds = (upload?.payload.versions as string[] | undefined) ?? [];
+    const uploaded = data.versions.filter((v) => uploadedIds.includes(v.id));
+    const failed = uploaded.some(
+      (v) =>
+        ["failed", "unsupported", "dead_letter"].includes(v.processingStatus) ||
+        v.parseStatus === "failed",
+    );
     const inFlight =
-      upload &&
-      (upload.payload.versions as string[]).some((id) =>
-        data.versions.some(
-          (v) => v.id === id && ["queued", "processing"].includes(v.processingStatus),
-        ),
-      );
-    const raw = (data.submittedSegments ?? []).filter(
-      (s) => upload && (upload.payload.versions as string[]).includes(s.documentVersionId),
+      upload && uploaded.some((v) => ["queued", "processing"].includes(v.processingStatus));
+    const raw = (data.submittedSegments ?? []).filter((s) =>
+      uploadedIds.includes(s.documentVersionId),
+    );
+    const latestFiling = raw
+      .filter((s) => s.isCurrent && task.accepted.includes(s.docType))
+      .map((s) => s.createdAt?.getTime() ?? 0)
+      .reduce((latest, time) => Math.max(latest, time), 0);
+    const evaluationCurrent =
+      !data.evaluation || !latestFiling || data.evaluation.createdAt.getTime() >= latestFiling;
+    // A photo's upload record remains in history. A current, confirmed staff filing
+    // and the latest checks supersede its earlier "we are reading it" state.
+    const decided = raw.some(
+      (s) =>
+        (s.isCurrent &&
+          s.status === "confirmed" &&
+          task.accepted.includes(s.docType) &&
+          (!task.periods.some(Boolean) || task.periods.includes(s.period ?? "")) &&
+          evaluationCurrent &&
+          ["manual", "signature"].includes(s.classificationMethod)) ||
+        s.status === "rejected",
     );
     const certainProblem = raw.some(
       (s) =>
@@ -188,47 +242,73 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
         (!task.accepted.includes(s.docType) ||
           (task.periods.some(Boolean) && !task.periods.includes(s.period ?? ""))),
     );
-    const waitingUpload =
-      upload &&
-      !certainProblem &&
-      (upload.payload.photos || raw.some((s) => s.classificationMethod !== "signature")) &&
-      (upload.payload.versions as string[]).some((id) =>
-        data.versions.some(
-          (v) =>
-            v.id === id &&
-            !["failed", "unsupported"].includes(v.processingStatus) &&
-            v.parseStatus !== "failed",
-        ),
-      );
-    task.state = complete
-      ? "Done"
-      : pending || inFlight || waitingUpload
-        ? "With us for review"
-        : "To do";
+    const waitingUpload = !!upload && !failed && !certainProblem && !decided;
+    const checks = task.rows.flatMap((r) => r.checks).filter((c) => c.result === "fail");
+    const repairable = checks.some((c) =>
+      [
+        "signed_and_dated",
+        "page_completeness",
+        "freshness",
+        "form_revision",
+        "period_coverage",
+      ].includes(c.type),
+    );
+    const pending =
+      task.rows.some((r) => r.status === "needs_review") ||
+      (!!replies
+        .filter(
+          (r) => r.kind === "keep_document" && r.createdAt >= (upload?.createdAt ?? new Date(0)),
+        )
+        .at(-1) &&
+        !decided);
+    const staffIssue = task.rows.some((r) => r.status === "received_with_issues") && !repairable;
+    task.state =
+      failed && upload
+        ? "To do"
+        : inFlight || waitingUpload
+          ? "With us for review"
+          : complete
+            ? "Done"
+            : pending || staffIssue
+              ? "With us for review"
+              : "To do";
     if (
       task.response?.kind === "cant_send" &&
       !complete &&
       (!upload || task.response.createdAt > upload.createdAt)
     )
       task.state = "To do";
-    const checks = task.rows.flatMap((r) => r.checks).filter((c) => c.result === "fail");
     task.sentence =
       task.state === "Done"
         ? "We have what we need from you."
         : task.state === "With us for review"
           ? "A person on our team is checking this. We'll tell you if anything is unclear."
-          : task.rows.some((r) => r.status === "missing")
-            ? "Please send a complete copy so we can prepare your loan file."
-            : checks.some((c) => /type|period|year/.test(c.type))
-              ? "Please send the document for the period shown here."
-              : checks.some((c) => c.type === "signed_and_dated")
-                ? "Please sign and date a fresh copy."
-                : checks.some((c) => /fresh|age|date/.test(c.type))
-                  ? "Please send a more recent copy."
-                  : "Please take another look at this document with your adviser.";
-    if (task.response?.kind === "accept_later" && !complete)
+          : failed
+            ? "We couldn't read this copy. Please send a clear, unlocked copy."
+            : task.rows.some((r) => r.status === "missing")
+              ? "Please send a complete copy so we can prepare your loan file."
+              : checks.some((c) => /type|period|year/.test(c.type))
+                ? "Please send the document for the period shown here."
+                : checks.some((c) => c.type === "signed_and_dated")
+                  ? "Please sign and date a fresh copy."
+                  : checks.some((c) => c.type === "page_completeness")
+                    ? "Please send every page of this document."
+                    : checks.some((c) => c.type === "form_revision")
+                      ? "Please send the current version of this form."
+                      : checks.some((c) => /fresh|age|date/.test(c.type))
+                        ? "Please send a more recent copy."
+                        : "Please take another look at this document with your adviser.";
+    if (
+      task.response?.kind === "accept_later" &&
+      !complete &&
+      (!upload || task.response.createdAt > upload.createdAt)
+    )
       task.sentence = `Your adviser knows you plan to send this${task.response.payload.date ? " by " + dateLabel(String(task.response.payload.date)) : " later"}.`;
-    if (task.response?.kind === "cant_send" && !complete) {
+    if (
+      task.response?.kind === "cant_send" &&
+      !complete &&
+      (!upload || task.response.createdAt > upload.createdAt)
+    ) {
       const reason = task.response.payload.reason;
       task.sentence =
         reason === "later"
@@ -241,6 +321,10 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
   const questions: Question[] = data.findings
     .filter((f) => active(f.status) && f.type === "conflict")
     .map((f) => {
+      const policy = questionPolicy[f.ruleId] ?? {
+        title: "Your adviser needs to review these details",
+        kind: "staff_review" as const,
+      };
       const details =
         (
           f.detailsJson as {
@@ -254,6 +338,32 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
           }
         ).details ?? [];
       const rule = data.rules.get(f.ruleId);
+      const evidence = {
+        rule: rule ?? null,
+        scope: f.scopeKey,
+        period: f.period,
+        parameters: [...new Set(dependencies(rule, "param"))]
+          .sort()
+          .map((key) => [key, data.pack?.parameters[key] ?? null]),
+        profile: [...new Set(dependencies(rule, "profile"))]
+          .sort()
+          .map((path) => [path, profileValue(data.deal.profileJson, path)]),
+        evidence: details
+          .filter((d) => d.file !== "Declared deal profile")
+          .map((d) => {
+            const fact = data.facts.find((x) => x.id === d.fact_id);
+            const segment = data.segments.find((s) => s.id === fact?.segmentId);
+            return {
+              fact: d.fact_id,
+              attribute: fact?.attribute ?? null,
+              revision: fact?.recordVersion ?? null,
+              segment: segment?.id ?? null,
+              version: segment?.documentVersionId ?? d.file,
+              value: d.value,
+            };
+          })
+          .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
+      };
       const responsible = rule?.responsible;
       const owner = [
         "buyer",
@@ -271,20 +381,20 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
       const sources = details
         .filter(
           (d) =>
-            (d.fact_id &&
-              (f.ruleId !== "CON-01" ||
-                data.facts.find((f) => f.id === d.fact_id)?.attribute === "party.identifier")) ||
-            (f.ruleId === "CON-03" &&
+            d.fact_id ||
+            (["CON-03", "CON-11"].includes(f.ruleId) &&
               d.value &&
               typeof d.value === "object" &&
-              "purchase_price" in d.value),
+              (f.ruleId === "CON-03" ? "purchase_price" : "structure") in d.value),
         )
         .map((d) => {
           const fact = data.facts.find((x) => x.id === d.fact_id),
             seg = data.segments.find((s) => s.id === fact?.segmentId);
           const raw =
-            !d.fact_id && f.ruleId === "CON-03"
-              ? (d.value as Record<string, unknown>).purchase_price
+            !d.fact_id && ["CON-03", "CON-11"].includes(f.ruleId)
+              ? (d.value as Record<string, unknown>)[
+                  f.ruleId === "CON-03" ? "purchase_price" : "structure"
+                ]
               : (fact?.valueJson ?? d.value);
           return {
             label: seg ? labelFor(seg.docType) : "Information you supplied",
@@ -319,12 +429,16 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
           value,
         });
       }
-      const answer = responses
-        .filter((r) => r.taskKey === f.findingKey && r.kind === "answer")
-        .at(-1);
+      const history = responses.filter((r) => r.taskKey === f.findingKey && r.kind === "answer");
+      const values = policy.kind === "choice" ? [...new Set(sources.map((s) => s.value))] : [];
+      const kind = policy.kind === "choice" && values.length < 2 ? "clarification" : policy.kind;
+      const evidenceKey = hashObject({ ...evidence, kind });
+      const answer = history.filter((r) => r.payload.evidenceKey === evidenceKey).at(-1);
       return {
         key: f.findingKey,
-        title: questionNames[f.ruleId] ?? "Could you help us clarify this?",
+        title: policy.title,
+        kind,
+        evidenceKey,
         partyId:
           owner &&
           sources.every(
@@ -336,22 +450,19 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
           )
             ? owner.id
             : null,
-        values: [...new Set(sources.map((s) => s.value))],
+        values: kind === "choice" ? values : [],
         sources,
-        answered: !!answer && answer.payload.choice !== "unsure",
+        answered:
+          !!answer &&
+          !["unsure", "neither"].includes(String(answer.payload.choice)) &&
+          kind !== "staff_review",
         answer,
+        history,
       };
     });
-  // A74: a response creates one correction task per affected document, without changing a fact.
-  for (const q of questions.filter((q) => q.answered)) {
-    if (data.findings.some((f) => f.findingKey === q.key && f.ruleId === "CON-07")) {
-      const funding = tasks.find((t) => t.type === "SOURCES_USES");
-      if (funding) {
-        funding.state = "To do";
-        funding.sentence =
-          "Your adviser has asked for an updated funding plan. Please send the current figures.";
-      }
-    }
+  // Only a selected value for the same fact supports asking for a different copy.
+  // Explanations of relationships go to staff and never imply that a document is wrong.
+  for (const q of questions.filter((q) => q.answered && q.kind === "choice")) {
     for (const source of q.sources.filter(
       (s) => s.versionId && s.value !== q.answer?.payload.choice,
     )) {

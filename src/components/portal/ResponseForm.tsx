@@ -6,6 +6,8 @@ export function ResponseForm({
   task,
   kind,
   choices,
+  answerMode = "choice",
+  evidenceKey,
   contact = "your adviser",
   back,
 }: {
@@ -13,6 +15,8 @@ export function ResponseForm({
   task: string;
   kind: "cant_send" | "answer" | "keep_document";
   choices?: string[];
+  answerMode?: "choice" | "clarification";
+  evidenceKey?: string;
   contact?: string;
   back: string;
 }) {
@@ -28,6 +32,7 @@ export function ResponseForm({
         const data = new FormData(e.currentTarget);
         data.set("kind", kind);
         data.set("task", task);
+        if (kind === "answer") data.set("evidenceKey", evidenceKey ?? "");
         try {
           const res = await fetch(action, { method: "POST", body: data });
           if (res.ok) {
@@ -50,7 +55,9 @@ export function ResponseForm({
           </legend>
           {(kind === "cant_send"
             ? ["later", "already", "not_applicable"]
-            : [...(choices ?? []), "neither", "unsure"]
+            : answerMode === "clarification"
+              ? ["clarification", "unsure"]
+              : [...(choices ?? []), "neither", "unsure"]
           ).map((c) => (
             <label
               className={`block cursor-pointer rounded-[14px] border bg-white p-5 ${choice === c ? "border-2 border-[var(--accent)]" : "border-[#c3c0b8]"}`}
@@ -72,6 +79,7 @@ export function ResponseForm({
                       already: "I've already sent this",
                       not_applicable: "This doesn't apply to me",
                       neither: "Neither. The information has changed.",
+                      clarification: "I can explain this below",
                       unsure: "I'm not sure yet",
                     } as Record<string, string>
                   )[c] ?? c}
@@ -90,9 +98,19 @@ export function ResponseForm({
       {kind !== "keep_document" && (
         <>
           <label htmlFor="response-note" className="mb-2 block font-semibold">
-            Add a few words (optional)
+            {kind === "answer" && answerMode === "clarification" && choice !== "unsure"
+              ? "Please explain what these details mean or what supporting material you can send"
+              : "Add a few words (optional)"}
           </label>
-          <textarea id="response-note" name="note" rows={3} maxLength={2000} />
+          <textarea
+            id="response-note"
+            name="note"
+            rows={3}
+            maxLength={2000}
+            required={
+              kind === "answer" && answerMode === "clarification" && choice === "clarification"
+            }
+          />
         </>
       )}
       <p role="status" className="my-3">

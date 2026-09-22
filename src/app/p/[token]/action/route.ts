@@ -34,6 +34,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tok
         task,
         String(data.get("choice")),
         String(data.get("note") ?? ""),
+        String(data.get("evidenceKey") ?? ""),
         access,
       );
     else if (kind === "cant_send")

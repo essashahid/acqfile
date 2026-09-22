@@ -2,11 +2,15 @@ import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { PDFDocument } from "pdf-lib";
+import { and, eq } from "drizzle-orm";
+import { getDb, schema, closeDb } from "../../src/lib/db/client";
 import { login } from "./helpers";
 import { customerBanned } from "../../src/lib/portal/copy";
 import type { seedPortal } from "../../scripts/seed-portal";
 const deals = (): Awaited<ReturnType<typeof seedPortal>> =>
   JSON.parse(fs.readFileSync("/tmp/acqfile-browser-deals.json", "utf8"));
+process.env.ACQFILE_DB = "test";
+test.afterAll(closeDb);
 const shots = "docs/screenshots/phase-7";
 async function customerProof(page: Page) {
   const text = await page.locator(".portal").evaluate((node) => {
@@ -162,8 +166,9 @@ test("Kiel uploads the wrong year, sees a gentle note and sends the correction",
   await page.getByRole("link", { name: "Back to your list", exact: true }).click();
   await customerProof(page);
 });
-test("the adviser sees three prices, answers once and can manage scoped links", async ({
+test("the adviser answers a price question, then sees it reopen after a staff correction", async ({
   page,
+  browser,
 }) => {
   const a = deals()["deal-a"]!,
     person = a.people.find((p) => p.name.startsWith("Jaylan"))!;
@@ -214,6 +219,59 @@ test("the adviser sees three prices, answers once and can manage scoped links", 
   await expect(row.getByText(/Last reminder/)).toBeVisible();
   await row.getByRole("button", { name: "Turn off this link" }).click();
   await expect.poll(async () => (await page.request.get(`/p/${person.token}`)).status()).toBe(404);
+  const [fact] = await getDb()
+    .select()
+    .from(schema.facts)
+    .where(
+      and(
+        eq(schema.facts.dealId, a.id),
+        eq(schema.facts.attribute, "deal.purchase_price"),
+        eq(schema.facts.isCurrent, true),
+        eq(schema.facts.valueJson, 2400000),
+      ),
+    );
+  expect(fact).toBeDefined();
+  const locator = fact!.locatorJson as { page: number; quote: string };
+  const reviewer = await browser.newPage();
+  await login(reviewer, { email: "reviewer@example.com", password: "acqfile-reviewer" });
+  await reviewer.goto(
+    `/staff/deals/${a.id}/documents/${fact!.documentVersionId}/values/${fact!.segmentId}`,
+  );
+  const decision = reviewer.getByRole("group", {
+    name: "Decision deal.purchase_price",
+    exact: true,
+  });
+  await decision.getByRole("button", { name: "Correct value", exact: true }).click();
+  await decision.getByLabel("Edit value deal.purchase_price", { exact: true }).fill("2400000");
+  await decision
+    .getByLabel("Supporting page deal.purchase_price", { exact: true })
+    .fill(String(locator.page));
+  await decision
+    .getByLabel("Source quote deal.purchase_price", { exact: true })
+    .fill(locator.quote);
+  await decision
+    .getByLabel("Decision reason deal.purchase_price", { exact: true })
+    .fill("Confirmed the same amount against the current source");
+  await decision.getByRole("button", { name: "Save correction", exact: true }).click();
+  await expect(reviewer.getByRole("status").filter({ hasText: "Decision saved" })).toBeVisible();
+  await reviewer.close();
+  await page.reload();
+  await page
+    .locator(".row")
+    .filter({ has: page.getByRole("heading", { name: "Which purchase price is right?" }) })
+    .getByRole("link", { name: "Answer" })
+    .click();
+  await expect(page.getByRole("heading", { name: "Earlier answers" })).toBeVisible();
+  await expect(
+    page.getByText("The documents or values have changed since this answer."),
+  ).toBeVisible();
+  await page.getByRole("radio", { name: "2,400,000", exact: true }).check();
+  await page.getByRole("button", { name: "Send my answer" }).click();
+  await expect(page).toHaveURL(`/deals/${a.id}`);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Which purchase price is right?" })).toHaveCount(
+    0,
+  );
 });
 test("Abe waits for review and Terrill sees all done on a phone", async ({ page }) => {
   const b = deals()["deal-b"]!,
