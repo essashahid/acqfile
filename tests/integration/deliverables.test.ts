@@ -219,6 +219,12 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     expected_record_version: revenue!.recordVersion,
     action: "edit_accept",
     value: 1000000,
+    source: {
+      page: (revenue!.locatorJson as { page: number }).page,
+      quote: "1000000",
+      kind: "transcription",
+      region: "Revenue",
+    },
     comment: "Synthetic conflict",
   });
   const conflict = (await buildIndex(b.id)).findings.find(
@@ -231,6 +237,7 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     expected_record_version: wrong.recordVersion,
     action: "edit_accept",
     value: revenue!.valueJson,
+    source: { ...(revenue!.locatorJson as object), kind: "quote" },
     comment: "Restored source value",
   });
   expect((await buildIndex(b.id)).findings.find((f) => f.id === conflict.id)!.status).toBe(
@@ -242,6 +249,12 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     expected_record_version: restored.recordVersion,
     action: "edit_accept",
     value: 1000000,
+    source: {
+      page: (revenue!.locatorJson as { page: number }).page,
+      quote: "1000000",
+      kind: "transcription",
+      region: "Revenue",
+    },
     comment: "Repeated synthetic conflict",
   });
   expect((await buildIndex(b.id)).findings.find((f) => f.id === conflict.id)!.status).toBe("open");

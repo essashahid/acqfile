@@ -1,3 +1,4 @@
+import { parseDate } from "./parse-value";
 import { FACTS } from "@/lib/domain/registry";
 import type { Source } from "@/lib/deals/parse";
 import { normalizeText } from "@/lib/text";
@@ -6,7 +7,7 @@ import { valueValid } from "./values";
 const plausibleDate = (v: unknown) =>
   typeof v === "string" &&
   /^\d{4}-\d{2}-\d{2}$/.test(v) &&
-  !Number.isNaN(Date.parse(v)) &&
+  parseDate(v) === v &&
   Number(v.slice(0, 4)) >= 1990 &&
   Number(v.slice(0, 4)) <= 2100;
 /** Deterministic validation before confidence (Phase 4 Step A.3). Runs on every candidate, every method. */
@@ -34,6 +35,12 @@ export function validateCandidates(
       if (def.unit === "months" && (c.value < 0 || !Number.isInteger(c.value)))
         error("months_invalid");
     }
+    if (
+      def.value_type === "money" &&
+      typeof c.value === "number" &&
+      Math.abs(c.value * 100 - Math.round(c.value * 100)) > 0.001
+    )
+      error("money_precision");
     if (Array.isArray(c.value)) {
       const seen = new Set<string>();
       for (const item of c.value) {
@@ -42,7 +49,19 @@ export function validateCandidates(
         seen.add(key);
       }
       if (
+        def.value_type === "amounts" &&
+        c.value.some(
+          (row) =>
+            !row ||
+            typeof row.amount !== "number" ||
+            Math.abs(row.amount) >= 1e12 ||
+            Math.abs(row.amount * 100 - Math.round(row.amount * 100)) > 0.001,
+        )
+      )
+        error("funding_amount_invalid");
+      if (
         def.value_type === "owners" &&
+        valueValid(def, c.value) &&
         (c.value as { percent: number }[]).reduce((n, o) => n + o.percent, 0) > 100.01
       )
         error("owners_over_100");
@@ -69,6 +88,9 @@ export function validateCandidates(
         const list = byAttribute.get(rows)?.value;
         if (
           Array.isArray(list) &&
+          list.every(
+            (row) => row && typeof row.amount === "number" && Number.isFinite(row.amount),
+          ) &&
           Math.abs((list as { amount: number }[]).reduce((n, r) => n + r.amount, 0) - c.value) > 1
         )
           error("total_disagrees_with_rows");

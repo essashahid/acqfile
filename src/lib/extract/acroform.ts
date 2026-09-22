@@ -1,6 +1,8 @@
 import { officialForm } from "@/lib/config/official-form-fields";
 import type { Parsed } from "@/lib/deals/parse";
 import type { DocumentType, FactDefinition } from "@/lib/domain/registry";
+import { decodeModelValue } from "./values";
+import { parseNumber } from "./parse-value";
 import type { Candidate } from "./candidate";
 /** A39 acroform: read mapped fields from the parsed widget blocks. No model call. */
 export function readAcroform(
@@ -31,7 +33,7 @@ export function readAcroform(
         if (!name?.text) continue;
         owners.push({
           name: name.text,
-          percent: Number(percent?.text ?? ""),
+          percent: parseNumber(percent?.text),
           ...(title?.text ? { title: title.text } : {}),
         });
         cited.push(name.locator, ...(percent ? [percent.locator] : []));
@@ -43,7 +45,11 @@ export function readAcroform(
           attribute: def.attribute,
           method: "acroform",
           value: owners,
-          raw: JSON.stringify(owners),
+          raw: JSON.stringify(
+            blocks
+              .filter((b) => cited.includes(b.locator))
+              .map((b) => ({ field: b.name, text: b.text })),
+          ),
           source_block_ids: cited,
           quote: owners[0]!.name,
           region: null,
@@ -59,9 +65,8 @@ export function readAcroform(
     if (!block?.text) continue;
     const text = block.text.trim();
     let value: unknown = text;
-    if (def.value_type === "money" || def.value_type === "number")
-      value = Number(text.replace(/[^0-9.-]/g, ""));
-    if (def.value_type === "boolean") value = /^(yes|true|x)$/i.test(text);
+    if (["money", "number", "boolean", "date"].includes(def.value_type))
+      value = decodeModelValue(def, text).value;
     if (def.value_type === "identifier") {
       const lastFour = /(\d{4})\]?$/.exec(text)?.[1];
       const read = parsed.identifiers.find(

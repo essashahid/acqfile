@@ -115,6 +115,8 @@ export async function confirmBoundaries(ctx: SessionContext, d: FixtureDeal) {
           s.page_start === t.page_start &&
           s.page_end === t.page_end &&
           s.period === t.period &&
+          s.signed === t.signed &&
+          s.dated === t.dated &&
           s.party_id === (t.party_id === "outside-party" ? null : d.internal(t.party_id!))
         );
       });
@@ -163,14 +165,18 @@ export async function reviewTruth(ctx: SessionContext, d: FixtureDeal) {
     .select()
     .from(schema.facts)
     .where(and(eq(schema.facts.dealId, d.id), eq(schema.facts.isCurrent, true)))) {
-    if (!(PENDING as readonly string[]).includes(f.routingStatus)) continue;
+    if (
+      !(PENDING as readonly string[]).includes(f.routingStatus) ||
+      !segments.some((s) => s.id === f.segmentId && s.isCurrent && s.status === "confirmed")
+    )
+      continue;
     const t = expected(f.segmentId, f.attribute);
     await unlimited();
     await reviewFact(ctx, d.id, {
       fact_id: f.id,
       expected_record_version: f.recordVersion,
-      action: !t ? "reject" : equalValue(f.valueJson, t.value) ? "accept" : "edit_accept",
-      ...(t ? { value: t.value } : {}),
+      action: !t ? "reject" : "edit_accept",
+      ...(t ? { value: t.value, source: truthSource(t) } : {}),
       comment: "Compared with supplied source",
     });
   }
@@ -189,7 +195,7 @@ export async function reviewTruth(ctx: SessionContext, d: FixtureDeal) {
     await resolveGap(ctx, d.id, {
       review_id: gap.id,
       action: t ? "enter" : "dismiss",
-      ...(t ? { value: t.value, page: t.locator.page, quote: t.locator.quote } : {}),
+      ...(t ? { value: t.value, source: truthSource(t) } : {}),
       comment: t ? "Entered from source" : "Not stated in the source",
     });
   }
@@ -225,5 +231,22 @@ export async function currentResult(d: FixtureDeal) {
       type: f.type,
       severity: f.severity,
     })),
+  };
+}
+
+/** The fixture operator reads the authored source, including explicitly labelled image transcriptions. */
+export function truthSource(t: {
+  method: string;
+  attribute: string;
+  locator: { page: number; quote: string; region?: string; verbatim?: boolean };
+}) {
+  return {
+    page: t.locator.page,
+    quote: t.locator.quote,
+    kind:
+      t.method === "vision" || t.locator.verbatim === false
+        ? ("transcription" as const)
+        : ("quote" as const),
+    region: t.locator.region ?? t.attribute,
   };
 }

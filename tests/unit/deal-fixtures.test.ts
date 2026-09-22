@@ -134,3 +134,15 @@ describe("rendered fixture proof without the application pipeline", () => {
     ).not.toThrow();
   });
 });
+
+it("fixture manifests use exact tracked filename casing on every filesystem", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const paths = new Set(
+    execFileSync("git", ["ls-files", "-z", "fixtures/deals"], { encoding: "utf8" }).split("\0"),
+  );
+  for (const code of ["deal-a", "deal-b", "deal-c"]) {
+    const manifest = JSON.parse(fs.readFileSync(`fixtures/deals/${code}/manifest.json`, "utf8"));
+    for (const file of manifest.files)
+      expect(paths.has(`fixtures/deals/${code}/${file.path}`), file.path).toBe(true);
+  }
+});

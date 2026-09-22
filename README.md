@@ -7,7 +7,7 @@ New here? Follow [docs/SETUP.md](docs/SETUP.md) for the full local setup. The sh
 ```sh
 pnpm install --frozen-lockfile
 createdb acqfile && createdb acqfile_test
-cp .env.example .env.local   # set AUTH_SECRET and PII_HMAC_KEY
+cp .env.example .env.local   # set AUTH_SECRET, ACQFILE_SAMPLE_MODE=true; leave PII_HMAC_KEY empty
 pnpm db:migrate
 pnpm demo:seed
 pnpm dev

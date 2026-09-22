@@ -1,5 +1,5 @@
 import { portalWorkspace } from "../fixtures/portal/workspace";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { hashPassword } from "@/lib/auth/password";
 import { seedWorkspace } from "@/lib/seed";
@@ -12,10 +12,10 @@ import {
   confirmBoundaries,
   reviewTruth,
 } from "../tests/helpers/deal-proof";
-import { FIXTURE_HMAC_KEY } from "../fixtures/plans/shared";
+import { assertSampleKey } from "@/lib/deals/identifiers";
 import type { SessionContext } from "@/lib/workspace";
 export async function seedPortal() {
-  process.env.PII_HMAC_KEY = FIXTURE_HMAC_KEY;
+  assertSampleKey();
   const seed = await seedWorkspace(),
     db = getDb();
   // Local, sample-only credentials. Hosted auth must provision the adviser through its provider.
@@ -68,7 +68,12 @@ export async function seedPortal() {
     const [existing] = await db
       .select()
       .from(schema.deals)
-      .where(eq(schema.deals.code, `Portal-${code}`));
+      .where(
+        and(
+          eq(schema.deals.code, `Portal-${code}`),
+          eq(schema.deals.workspaceId, seed.workspaceId),
+        ),
+      );
     let id = existing?.id;
     if (!id) {
       const d = await fixtureDeal(ctx, code, "Portal");

@@ -302,9 +302,23 @@ export async function extractSegment(
   );
   // 5. route_review: routing per candidate plus gaps for expected attributes the extractor left null
   const routed = await retry("route_review", async () => {
-    const gaps = expectedAttributes(segment.docType).filter(
-      (a) => !candidates.some((c) => c.attribute === a),
-    );
+    const unusable = candidates
+      .filter(
+        (c) =>
+          c.value === null ||
+          validations
+            .find((v) => v.attribute === c.attribute)
+            ?.messages.some((m) => m.code === "type_invalid" || m.code === "date_invalid"),
+      )
+      .map((c) => c.attribute);
+    const gaps = [
+      ...new Set([
+        ...expectedAttributes(segment.docType).filter(
+          (a) => !candidates.some((c) => c.attribute === a),
+        ),
+        ...unusable,
+      ]),
+    ];
     return { gaps, routing: Object.fromEntries(scores.map((s) => [s.attribute, s.routing])) };
   });
   // 6. finalize_segment: immutable fact rows, gap review items, audit event

@@ -35,7 +35,7 @@ The first is your working database. The second is wiped by the integration and b
 
 ## 4. Write your environment file
 
-Copy the example and fill in three values:
+Copy the example and configure the sample environment:
 
 ```sh
 cp .env.example .env.local
@@ -45,7 +45,8 @@ Then edit `.env.local`:
 
 ```sh
 AUTH_SECRET=<paste the output of: openssl rand -hex 32>
-PII_HMAC_KEY=<paste the output of: openssl rand -hex 24>
+ACQFILE_SAMPLE_MODE=true
+PII_HMAC_KEY=
 PUBLIC_DEMO_MODE=false
 DEMO_MUTATIONS_ENABLED=true
 DEMO_ADMIN_PASSWORD=acqfile-admin
@@ -58,7 +59,7 @@ Leave `LLM_PROVIDER=mock`. The deterministic provider answers from the committed
 Why each value matters:
 
 - `AUTH_SECRET` signs your session cookie and the short-lived links to original documents.
-- `PII_HMAC_KEY` is the key that turns identifiers into stored hashes. Intake refuses to run without at least 32 characters. Use a throwaway value locally; it is unrelated to the fixture key.
+- `PII_HMAC_KEY` is the key that turns identifiers into stored hashes. Intake refuses to run without at least 32 characters. For these samples, `ACQFILE_SAMPLE_MODE=true` selects the public fixture key in both seed and server processes. Leave `PII_HMAC_KEY` empty; a conflicting key fails clearly. Never use this mode for real data or change real credentials.
 - `PUBLIC_DEMO_MODE=false` and `DEMO_MUTATIONS_ENABLED=true` let a signed-in operator actually change things, which is what you want while developing.
 
 ## 5. Migrate and seed
@@ -128,7 +129,7 @@ pnpm exec playwright install chromium
 
 ## When something goes wrong
 
-**`Configure PII_HMAC_KEY with at least 32 characters before deal intake.`** The key is missing or too short in `.env.local`. Scripts read `.env.local` first, then `.env`.
+**`Configure PII_HMAC_KEY with at least 32 characters before deal intake.`** For sample setup, set `ACQFILE_SAMPLE_MODE=true` and leave `PII_HMAC_KEY` empty in `.env.local`. Scripts read `.env.local` first, then `.env`.
 
 **`Deal not found` or empty screens after signing in.** The seed did not finish. Re-run `pnpm demo:seed` and watch for an error.
 

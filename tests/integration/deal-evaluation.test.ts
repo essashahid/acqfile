@@ -1,3 +1,4 @@
+import { truthSource } from "../helpers/deal-proof";
 import fs from "node:fs";
 import { it, expect } from "vitest";
 import { and, eq } from "drizzle-orm";
@@ -134,7 +135,15 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
             ),
           );
         const filed = (record?.payloadJson as FilingRecord | undefined)?.segments ?? [];
-        if (!filed.some((s) => s.status === "proposed")) continue;
+        if (
+          !filed.some(
+            (s, i) =>
+              s.status === "proposed" ||
+              s.signed !== expected.segments[i]?.signed ||
+              s.dated !== expected.segments[i]?.dated,
+          )
+        )
+          continue;
         const matches =
           filed.length === expected.segments.length &&
           filed.every(
@@ -147,7 +156,11 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
         await unlimited();
         await reviewFile(ctx, dealId, arrival.documentVersionId, {
           record_id: record!.id,
-          segments: filed,
+          segments: filed.map((s, i) => ({
+            ...s,
+            signed: expected.segments[i]!.signed,
+            dated: expected.segments[i]!.dated,
+          })),
           note: "Confirmed proposed boundaries against the supplied pages.",
         });
         await extractAfterReview(ctx, dealId, arrival.documentVersionId, { sleep: async () => {} });
@@ -211,6 +224,7 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
           .select()
           .from(schema.segments)
           .where(eq(schema.segments.id, f.segmentId));
+        if (!segment?.isCurrent || segment.status !== "confirmed") continue;
         const version = truth.find(
           (d) =>
             d.segments.some((s) => s.page_start === segment!.pageStart) &&
@@ -241,8 +255,10 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
           await reviewFact(ctx, dealId, {
             fact_id: f.id,
             expected_record_version: f.recordVersion,
-            action: "accept",
-            comment: "Matches the page.",
+            action: "edit_accept",
+            value: truthFact.value,
+            source: truthSource(truthFact),
+            comment: "Matches the page; refreshed supporting source.",
           });
           accepted++;
         } else {
@@ -251,6 +267,7 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
             expected_record_version: f.recordVersion,
             action: "edit_accept",
             value: truthFact.value,
+            source: truthSource(truthFact),
             comment: "Corrected from the page.",
           });
           edited++;
@@ -300,6 +317,7 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
           value: typeof value === "object" && value && "hmac" in value ? value : value,
           page: truthFact.locator.page,
           quote: truthFact.locator.quote,
+          source: truthSource(truthFact),
           comment: "Entered from the page.",
         });
         entered++;
@@ -339,6 +357,12 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
         expected_record_version: fact!.recordVersion,
         action: "edit_accept",
         value: 1_000_000,
+        source: {
+          page: (fact!.locatorJson as { page: number }).page,
+          quote: "1000000",
+          kind: "transcription",
+          region: "Revenue",
+        },
         comment: "Test correction that disagrees with the return.",
       });
       const [old] = await db.select().from(schema.facts).where(eq(schema.facts.id, fact!.id));
@@ -360,6 +384,7 @@ it("Phase 4 Step B: evaluation before and after simulated review equals the auth
         expected_record_version: v2.recordVersion,
         action: "edit_accept",
         value: fact!.valueJson,
+        source: { ...(fact!.locatorJson as object), kind: "quote" },
         comment: "Restored from the page.",
       });
       expect((await dealCounts(dealId)).findingsTotal).toBe(start);

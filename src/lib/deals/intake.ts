@@ -1,3 +1,4 @@
+import { assertSampleKey } from "./identifiers";
 import { randomUUID } from "node:crypto";
 import { env, failureInjectionFromEnv } from "@/lib/env";
 import { durable } from "./durable";
@@ -30,7 +31,8 @@ export async function intake(
   } = {},
 ) {
   await assertMutation(context, "deal-intake", undefined, 10);
-  await requireDeal(context, dealId);
+  const deal = await requireDeal(context, dealId);
+  if (/^Portal-deal-[abc]$/.test(deal.code)) assertSampleKey();
   piiKey();
   const files = arrivalFiles(uploads);
   const db = getDb();

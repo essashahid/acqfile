@@ -237,3 +237,8 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 159. Inspect older version contents through a URL selection rather than a new workflow or table; all roles may inspect the saved record while downloads keep their existing restriction.
 160. Preserve Adviser source and isolate new CSS under `.staff`; no customer workflow changes are needed. Remove unused components pointing to retired staff routes.
 161. Describe arithmetic, date-order and other relationship conflicts as an unmet comparison, not a choice between two competing values; a lease expiry and its option years are different fields, so that wording would misstate the evidence.
+
+162. Fix pass 1 uses an explicit `ACQFILE_SAMPLE_MODE=true` in the shared sample environment, rejects conflicting identifier keys, and never changes real credentials; seeding preserves existing sample deals and reissues links.
+163. Parse only bounded US numeric forms and ISO or US month/day/year dates; unsupported values remain unknown and require review. A numeric parse does not change field validity or applicability.
+164. A correction rebuilds its locator from the current segment’s stored source; exact quotes must match, while human transcriptions require a named region and remain non-verbatim. Manual confidence is computed from validation and exact evidence, and current related totals are validated on save.
+165. Ownership tables may be partial; reject totals over 100% without inventing a requirement that every list total exactly 100%. Blank official form fields do not prove the absence of a signature image; staff confirmation retains the existing filing workflow.

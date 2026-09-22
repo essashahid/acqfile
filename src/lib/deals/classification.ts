@@ -1,3 +1,4 @@
+import { parseDate } from "@/lib/extract/parse-value";
 import { z } from "zod";
 import { DocumentTypeSchema, DOCUMENT_TYPES, type DocumentType } from "@/lib/domain/registry";
 import { DOCUMENT_SIGNATURES } from "@/lib/config/document-signatures";
@@ -90,28 +91,38 @@ export function metadata(
     (spec ? field(spec.name) : null) ?? line(text, "Named party") ?? line(text, "Name");
   const period_raw = line(text, "Period");
   const period = period_raw && /^\d{4}(?:-\d{2})?$/.test(period_raw) ? period_raw : null;
-  const signature = /Signature:\s*(e-signed|_+);\s*Date:\s*([\d-]+|_+)/i.exec(text);
+  const signature = /Signature:\s*(e-signed|_+);\s*Date:\s*([\d/-]+|_+)/i.exec(text);
   // A36: an official form's signature mark is page content inside its signature widget; its date is the form's own date field.
   const officialMark = spec
     ? /e-signed \/ SYNTHETIC-[\w-]+|e-signed|envelope/i.exec(text)?.[0]
     : undefined;
   const dateField = spec ? field(spec.signatureDate) : null;
-  const dateFieldValid = !!dateField && z.iso.date().safeParse(dateField).success;
+  const normalizedDate = parseDate(dateField);
+  const dateFieldValid = normalizedDate !== null;
   const signed = signature
     ? signature[1]!.toLowerCase() === "e-signed"
     : spec
-      ? !!officialMark
+      ? officialMark
+        ? true
+        : null
       : null;
-  const dated = signature ? !signature[2]!.startsWith("_") : spec ? dateFieldValid : null;
-  const date = dateFieldValid ? dateField : signature?.[2];
-  const signature_date = date && z.iso.date().safeParse(date).success ? date : null;
+  const dated = signature
+    ? signature[2]!.startsWith("_")
+      ? false
+      : parseDate(signature[2])
+        ? true
+        : null
+    : spec && dateFieldValid
+      ? true
+      : null;
+  const signature_date = normalizedDate ?? parseDate(signature?.[2]);
   const asOf = spec && "documentDate" in spec ? field(spec.documentDate) : null;
   const document = spec
-    ? asOf && z.iso.date().safeParse(asOf).success
-      ? asOf
+    ? parseDate(asOf)
+      ? parseDate(asOf)
       : signature_date
     : line(text, "Document date");
-  const document_date = document && z.iso.date().safeParse(document).success ? document : null;
+  const document_date = parseDate(document);
   const pageCounts = [...text.matchAll(/Page\s+\d+\s+of\s+(\d+)/gi)].map((m) => Number(m[1]));
   const expected_page_count = spec
     ? spec.pages

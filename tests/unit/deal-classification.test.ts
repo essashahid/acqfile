@@ -1,3 +1,4 @@
+import { officialForm } from "@/lib/config/official-form-fields";
 import fs from "node:fs";
 import { it, expect } from "vitest";
 import { deterministicSegments, assignParty, validateBoundaries } from "@/lib/deals/classification";
@@ -52,6 +53,7 @@ it("signatures and mock fallbacks match all document metadata", async () => {
           errors.push(`${p.id}/${doc.file}: extra segment`);
           continue;
         }
+        // Blank official widgets cannot prove there is no image signature/date. Final truth is staff-confirmed.
         for (const field of [
           "doc_type",
           "page_start",
@@ -60,7 +62,14 @@ it("signatures and mock fallbacks match all document metadata", async () => {
           "signed",
           "dated",
         ] as const)
-          if (s[field] !== expected[field])
+          if (
+            signature &&
+            officialForm(s.doc_type) &&
+            (field === "signed" || field === "dated") &&
+            expected[field] === false
+          ) {
+            expect(s[field], `${doc.file}: blank official ${field} requires review`).toBeNull();
+          } else if (s[field] !== expected[field])
             errors.push(`${p.id}/${doc.file}/${i}/${field}: ${s[field]} != ${expected[field]}`);
         const party = assignParty(
           s,

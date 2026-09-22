@@ -9,10 +9,10 @@ import {
   confirmBoundaries,
   reviewTruth,
 } from "../tests/helpers/deal-proof";
-import { FIXTURE_HMAC_KEY } from "../fixtures/plans/shared";
+import { assertSampleKey } from "@/lib/deals/identifiers";
 import type { SessionContext } from "@/lib/workspace";
 async function main() {
-  process.env.PII_HMAC_KEY = FIXTURE_HMAC_KEY;
+  assertSampleKey();
   const seed = await seedWorkspace(),
     db = getDb();
   const [deal] = await db.select().from(schema.deals).where(eq(schema.deals.code, "Portal-deal-b"));

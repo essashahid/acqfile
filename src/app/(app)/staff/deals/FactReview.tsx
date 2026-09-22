@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { SourceEditor, ValueEditor, type SourceDraft } from "./ValueEditor";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import { reviewFactAction, resolveGapAction, reclassifyAction } from "./actions";
 import { PdfPage } from "./PdfPage";
@@ -101,12 +102,31 @@ export function FactReview({
   const [busy, setBusy] = useState(false);
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [comments, setComments] = useState<Record<string, string>>({});
+  const [sources, setSources] = useState<Record<string, SourceDraft>>({});
+  const [correcting, setCorrecting] = useState<string | null>(null);
+  const sourceFor = (id: string): SourceDraft =>
+    sources[id] ?? { page, quote: "", kind: "quote", region: "" };
+  const sourceInput = (id: string) => ({
+    ...sourceFor(id),
+    region: sourceFor(id).region || undefined,
+  });
+  const sourceEditor = (id: string, label: string) => (
+    <SourceEditor
+      label={label}
+      value={sourceFor(id)}
+      min={pageStart}
+      max={pageEnd}
+      onChange={(v) => setSources({ ...sources, [id]: v })}
+    />
+  );
   const [reclassifyNote, setReclassifyNote] = useState("");
   const run = async (label: string, fn: () => Promise<unknown>) => {
     setBusy(true);
     setMessage("");
     try {
-      await fn();
+      const result = await fn();
+      if (result && typeof result === "object" && "error" in result)
+        throw Error(String(result.error));
       setMessage(label);
       router.refresh();
     } catch (e) {
@@ -115,13 +135,17 @@ export function FactReview({
       setBusy(false);
     }
   };
-  const decide = (f: ReviewFact, action: "accept" | "edit_accept" | "reject" | "needs_source") =>
+  const decide = (
+    f: ReviewFact,
+    action: "accept" | "edit_accept" | "reject" | "needs_source" | "reopen",
+  ) =>
     run("Decision saved", () =>
       reviewFactAction(dealId, {
         fact_id: f.id,
         expected_record_version: f.recordVersion,
         action,
-        value: action === "edit_accept" ? edits[f.id] : undefined,
+        value: action === "edit_accept" ? (edits[f.id] ?? show(f.value)) : undefined,
+        source: action === "edit_accept" ? sourceInput(f.id) : undefined,
         comment: comments[f.id] ?? "",
       }),
     );
@@ -262,15 +286,11 @@ export function FactReview({
                 {editable ? (
                   <>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                      <label className="flex flex-col gap-1">
-                        <span className="eyebrow">Edit value</span>
-                        <input
-                          aria-label={`Edit value ${f.attribute}`}
-                          className="font-mono"
-                          value={edits[f.id] ?? show(f.value)}
-                          onChange={(e) => setEdits({ ...edits, [f.id]: e.target.value })}
-                        />
-                      </label>
+                      <ValueEditor
+                        attribute={f.attribute}
+                        value={edits[f.id] ?? show(f.value)}
+                        onChange={(v) => setEdits({ ...edits, [f.id]: v })}
+                      />
                       <label className="flex flex-col gap-1">
                         <span className="eyebrow">Comment (required)</span>
                         <input
@@ -282,6 +302,7 @@ export function FactReview({
                       </label>
                     </div>
 
+                    {sourceEditor(f.id, f.attribute)}
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button
                         type="button"
@@ -349,15 +370,12 @@ export function FactReview({
                   {g.type === "extraction_gap" && editable ? (
                     <>
                       <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                        <label className="flex flex-col gap-1">
-                          <span className="eyebrow">Value from the page</span>
-                          <input
-                            aria-label={`Enter value ${g.attribute}`}
-                            className="font-mono"
-                            value={edits[g.id] ?? ""}
-                            onChange={(e) => setEdits({ ...edits, [g.id]: e.target.value })}
-                          />
-                        </label>
+                        <ValueEditor
+                          attribute={g.attribute!}
+                          label="Enter value"
+                          value={edits[g.id] ?? ""}
+                          onChange={(v) => setEdits({ ...edits, [g.id]: v })}
+                        />
                         <label className="flex flex-col gap-1">
                           <span className="eyebrow">Comment</span>
                           <input
@@ -367,6 +385,7 @@ export function FactReview({
                           />
                         </label>
                       </div>
+                      {sourceEditor(g.id, g.attribute!)}
                       <div className="mt-3 flex flex-wrap gap-2">
                         <button
                           type="button"
@@ -377,7 +396,7 @@ export function FactReview({
                                 review_id: g.id,
                                 action: "enter",
                                 value: edits[g.id],
-                                page,
+                                source: sourceInput(g.id),
                                 comment: comments[g.id] ?? "",
                               }),
                             )
@@ -427,31 +446,95 @@ export function FactReview({
                 </thead>
                 <tbody>
                   {decided.map((f) => (
-                    <tr key={f.id}>
-                      <td className="font-medium">
-                        {attributeName(f.attribute)}
-                        <button
-                          type="button"
-                          className="link block mt-1"
-                          onClick={() => setPage(f.page)}
-                        >
-                          Show page {f.page}
-                        </button>
-                        <blockquote className="meta mt-2 italic">
-                          {f.quote}
-                          {f.verbatim ? "" : " (as read, not verbatim)"}
-                        </blockquote>
-                      </td>
-                      <td className="min-w-28">{display(f)}</td>
-                      <td>
-                        <span className={`pill ${TONE[f.routing] ?? "pill-quiet"}`}>
-                          {f.routing.replaceAll("_", " ")}
-                        </span>
-                        <p className="meta mt-1">{f.method}</p>
-                        {f.reviewNote ? <p className="meta">{f.reviewNote}</p> : null}
-                      </td>
-                      <td className="num">v{f.recordVersion}</td>
-                    </tr>
+                    <Fragment key={f.id}>
+                      <tr>
+                        <td className="font-medium">
+                          {attributeName(f.attribute)}
+                          <button
+                            type="button"
+                            className="link block mt-1"
+                            onClick={() => setPage(f.page)}
+                          >
+                            Show page {f.page}
+                          </button>
+                          <blockquote className="meta mt-2 italic">
+                            {f.quote}
+                            {f.verbatim ? "" : " (as read, not verbatim)"}
+                          </blockquote>
+                        </td>
+                        <td className="min-w-28">{display(f)}</td>
+                        <td>
+                          <span className={`pill ${TONE[f.routing] ?? "pill-quiet"}`}>
+                            {f.routing.replaceAll("_", " ")}
+                          </span>
+                          <p className="meta mt-1">{f.method}</p>
+                          {f.reviewNote ? <p className="meta">{f.reviewNote}</p> : null}
+                        </td>
+                        <td className="num">v{f.recordVersion}</td>
+                      </tr>
+                      {editable ? (
+                        <tr>
+                          <td colSpan={4}>
+                            <fieldset
+                              disabled={busy}
+                              aria-label={`Decision ${f.attribute}`}
+                              className="mt-2 space-y-2"
+                            >
+                              <button
+                                className="btn btn-sm"
+                                type="button"
+                                onClick={() => setCorrecting(correcting === f.id ? null : f.id)}
+                              >
+                                Correct value
+                              </button>
+                              {correcting === f.id ? (
+                                <>
+                                  <ValueEditor
+                                    attribute={f.attribute}
+                                    value={edits[f.id] ?? show(f.value)}
+                                    onChange={(v) => setEdits({ ...edits, [f.id]: v })}
+                                  />
+                                  {sourceEditor(f.id, f.attribute)}
+                                </>
+                              ) : null}
+                              <label className="block">
+                                Reason (required)
+                                <input
+                                  aria-label={`Decision reason ${f.attribute}`}
+                                  value={comments[f.id] ?? ""}
+                                  onChange={(e) =>
+                                    setComments({ ...comments, [f.id]: e.target.value })
+                                  }
+                                />
+                              </label>
+                              {correcting === f.id ? (
+                                <button
+                                  className="btn btn-primary btn-sm"
+                                  type="button"
+                                  onClick={() => decide(f, "edit_accept")}
+                                >
+                                  Save correction
+                                </button>
+                              ) : null}
+                              <button
+                                className="btn btn-sm"
+                                type="button"
+                                onClick={() => decide(f, "reopen")}
+                              >
+                                Reopen review
+                              </button>
+                              <button
+                                className="btn btn-sm"
+                                type="button"
+                                onClick={() => decide(f, "reject")}
+                              >
+                                Reject
+                              </button>
+                            </fieldset>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </Fragment>
                   ))}
                 </tbody>
               </table>

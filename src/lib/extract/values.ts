@@ -1,3 +1,4 @@
+import { parseNumber, parseBoolean, parseDate } from "./parse-value";
 import { VALUE_SCHEMAS } from "@/lib/domain/evidence";
 import { FACTS, type FactDefinition } from "@/lib/domain/registry";
 import { normalizeValue } from "@/lib/rules/expressions";
@@ -9,9 +10,12 @@ export function decodeModelValue(def: FactDefinition, raw: unknown): Decoded {
   let value: unknown = raw;
   if (typeof raw === "string" && def.value_type !== "text" && def.value_type !== "date") {
     try {
-      value = JSON.parse(raw);
+      value =
+        ["money", "number"].includes(def.value_type) && !/^[{"]/.test(raw.trim())
+          ? raw
+          : JSON.parse(raw);
     } catch {
-      return { value: null, error: "value_unparseable" };
+      value = raw;
     }
   } else if (typeof raw === "string" && (def.value_type === "text" || def.value_type === "date")) {
     try {
@@ -29,6 +33,9 @@ export function decodeModelValue(def: FactDefinition, raw: unknown): Decoded {
       value = money.amount;
     }
   }
+  if (def.value_type === "money" || def.value_type === "number") value = parseNumber(value);
+  if (def.value_type === "boolean") value = parseBoolean(value);
+  if (def.value_type === "date") value = parseDate(value);
   if (def.value_type === "identifier") {
     if (value && typeof value === "object" && "last_four" in value) return { value, error: null };
     return { value: null, error: "identifier_shape" };
@@ -39,7 +46,18 @@ export function decodeModelValue(def: FactDefinition, raw: unknown): Decoded {
         ? { ...(o as Record<string, unknown>), title: undefined }
         : o,
     );
-  return { value, error: null };
+  if (Array.isArray(value) && ["owners", "amounts", "debts"].includes(def.value_type))
+    value = value.map((row) => {
+      if (!row || typeof row !== "object") return row;
+      const keys =
+        def.value_type === "owners"
+          ? ["percent"]
+          : def.value_type === "amounts"
+            ? ["amount"]
+            : ["balance", "payment"];
+      return { ...row, ...Object.fromEntries(keys.map((key) => [key, parseNumber(row[key])])) };
+    });
+  return { value, error: value === null ? "value_missing_or_unsupported" : null };
 }
 export function valueValid(def: FactDefinition, value: unknown) {
   if (def.value_type === "identifier")

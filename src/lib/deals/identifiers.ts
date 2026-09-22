@@ -1,6 +1,18 @@
+import { SAMPLE_HMAC_KEY } from "@/lib/config/sample";
 import { maskIdentifier, scrubIdentifiers } from "@/lib/domain/evidence";
 export function piiKey() {
-  const key = process.env.PII_HMAC_KEY;
+  const configured = process.env.PII_HMAC_KEY;
+  const sample = process.env.ACQFILE_SAMPLE_MODE === "true";
+  if (
+    (sample || configured === SAMPLE_HMAC_KEY) &&
+    ["true", "1"].includes(process.env.REAL_DATA_MODE ?? "")
+  )
+    throw Error("The sample identifier key cannot be used with real data.");
+  if (sample && configured && configured !== SAMPLE_HMAC_KEY)
+    throw Error(
+      "Sample identifier key mismatch. Remove PII_HMAC_KEY in the sample-only environment; do not replace real credentials.",
+    );
+  const key = sample ? SAMPLE_HMAC_KEY : configured;
   if (!key || key.length < 32)
     throw Error("Configure PII_HMAC_KEY with at least 32 characters before deal intake.");
   return key;
@@ -55,4 +67,11 @@ export function scrubPayload<T>(value: T): T {
   if (value && typeof value === "object")
     return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, scrubPayload(v)])) as T;
   return value;
+}
+
+export function assertSampleKey() {
+  if (piiKey() !== SAMPLE_HMAC_KEY)
+    throw Error(
+      "Sample identifier key mismatch. Set ACQFILE_SAMPLE_MODE=true in the shared sample seed/server environment and leave PII_HMAC_KEY unset.",
+    );
 }

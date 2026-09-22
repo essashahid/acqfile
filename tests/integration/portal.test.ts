@@ -1,3 +1,6 @@
+import { intake, parseVersion } from "@/lib/deals/intake";
+import { seedWorkspace } from "@/lib/seed";
+import type { SessionContext } from "@/lib/workspace";
 import fs from "node:fs";
 import { beforeAll, it, expect } from "vitest";
 import { eq } from "drizzle-orm";
@@ -243,4 +246,49 @@ it("a wrong-person upload cannot replace or add that person's current evidence",
     before.data.facts.filter((f) => f.subjectPartyId === other.id),
   );
   expect((await uploadResult(a, work.response.id)).notice).toContain("2023");
+});
+
+it("sample reseed preserves existing deals, facts and decisions while reissuing links", async () => {
+  const db = getDb();
+  const before = await db.select().from(schema.facts);
+  const versions = await db.select().from(schema.documentVersions);
+  const again = await seedPortal();
+  for (const code of Object.keys(seeded)) expect(again[code]!.id).toBe(seeded[code]!.id);
+  expect(await db.select().from(schema.facts)).toEqual(before);
+  expect(await db.select().from(schema.documentVersions)).toEqual(versions);
+});
+
+it("follow-up uploads hash a repeated synthetic identifier like the seed, and reject server key drift", async () => {
+  const seed = await seedWorkspace();
+  const ctx: SessionContext = {
+    user: { id: seed.adminId, email: "admin@example.com", displayName: "Sample operator" },
+    workspace: { workspaceId: seed.workspaceId, slug: "default", name: "Sample", role: "admin" },
+  };
+  const dealId = seeded["deal-a"]!.id;
+  const facts = await getDb().select().from(schema.facts).where(eq(schema.facts.dealId, dealId));
+  const parties = await getDb()
+    .select()
+    .from(schema.parties)
+    .where(eq(schema.parties.dealId, dealId));
+  const target = parties.find((p) => p.externalKey === "target")!;
+  const identifier = facts.find(
+    (f) =>
+      f.attribute === "party.identifier" &&
+      f.subjectPartyId === target.id &&
+      (f.valueJson as { last_four: string }).last_four === "4567",
+  )!.valueJson as { hmac: string };
+  const bytes = await makePdf(["SYNTHETIC follow-up identifier", "EIN: 00-1234567"]);
+  await unlimited();
+  const upload = await intake(ctx, dealId, [{ path: "identifier-follow-up.pdf", bytes }]);
+  const parsed = await parseVersion(ctx, dealId, upload.rows[0]!.documentVersionId, upload.runId);
+  expect(parsed.identifiers.find((i) => i.last_four === "4567")!.hmac).toBe(identifier.hmac);
+  const previous = process.env.PII_HMAC_KEY;
+  try {
+    process.env.PII_HMAC_KEY = "different-server-key-that-is-long-enough";
+    await expect(intake(ctx, dealId, [{ path: "another-follow-up.pdf", bytes }])).rejects.toThrow(
+      /key mismatch/,
+    );
+  } finally {
+    process.env.PII_HMAC_KEY = previous;
+  }
 });

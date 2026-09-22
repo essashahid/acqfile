@@ -1,4 +1,6 @@
 "use server";
+import { ZodError } from "zod";
+import { ReviewInputError } from "@/lib/extract/review-error";
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/workspace";
 import { saveDeal } from "@/lib/deals/service";
@@ -80,14 +82,29 @@ export async function retryDealRunAction(dealId: string, runId: string) {
 
 export async function reviewFactAction(dealId: string, input: unknown) {
   const ctx = await requireStaff();
-  const result = await reviewFact(ctx, dealId, input);
-  revalidatePath(`/staff/deals/${dealId}`, "layout");
-  return result;
+  try {
+    const result = await reviewFact(ctx, dealId, input);
+    revalidatePath(`/staff/deals/${dealId}`, "layout");
+    return result;
+  } catch (error) {
+    if (error instanceof ReviewInputError) return { error: error.message };
+    if (error instanceof ZodError)
+      return { error: "Enter a reason, valid value, and supporting source fields before saving." };
+    throw error;
+  }
 }
 export async function resolveGapAction(dealId: string, input: unknown) {
   const ctx = await requireStaff();
-  await resolveGap(ctx, dealId, input);
-  revalidatePath(`/staff/deals/${dealId}`, "layout");
+  try {
+    await resolveGap(ctx, dealId, input);
+    revalidatePath(`/staff/deals/${dealId}`, "layout");
+    return { saved: true };
+  } catch (error) {
+    if (error instanceof ReviewInputError) return { error: error.message };
+    if (error instanceof ZodError)
+      return { error: "Enter a reason, valid value, and supporting source fields before saving." };
+    throw error;
+  }
 }
 export async function reclassifyAction(dealId: string, segmentId: string, comment: string) {
   const ctx = await requireStaff();
