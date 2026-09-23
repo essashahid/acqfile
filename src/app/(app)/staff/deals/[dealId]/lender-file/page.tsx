@@ -7,7 +7,14 @@ import { dealView } from "@/lib/staff/deal-view";
 import type { SnapshotContent, SnapshotDiff } from "@/lib/deliverables/snapshot";
 import { snapshotAction } from "../../deliverable-actions";
 import { CreateVersion } from "../../CreateVersion";
-import { Card, Empty, PageHead } from "@/components/staff";
+import { Card, Empty, PageHead, Pill } from "@/components/staff";
+
+/** The readiness module composes its sentences with raw status words; an operator reads names. */
+const readable = (issue: string) =>
+  issue.replace(
+    /\b(needs_review|received_with_issues|not_applicable|needs_source|auto_accepted)\b/g,
+    (s) => s.replaceAll("_", " "),
+  );
 
 const DIFF_LABEL: Record<keyof SnapshotDiff, string> = {
   newly_satisfied: "Requirements newly satisfied",
@@ -77,19 +84,26 @@ export default async function LenderFile({
             </div>
           </div>
           {!complete ? (
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-4 space-y-2 border-t border-[var(--line)] pt-4">
               {v.preparation.unresolved.map((issue) => (
-                <li key={issue}>{issue}</li>
+                <li key={issue}>{readable(issue)}</li>
               ))}
             </ul>
           ) : null}
-          <div className="mt-4 border-t border-[var(--line)] pt-4">
-            <h3>Later lender work</h3>
-            {v.preparation.later.map((row) => (
-              <p key={row.item}>
-                {row.title} · {row.responsible} · {row.status}
-              </p>
-            ))}
+          <div className="mt-5 border-t border-[var(--line)] pt-4">
+            <h3 className="mb-1">Later lender work</h3>
+            <p className="meta mb-3">
+              Outside the preparation boundary. These do not hold up a lender-file version.
+            </p>
+            <ul className="space-y-1.5">
+              {v.preparation.later.map((row) => (
+                <li key={row.item} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <Pill value={row.status} />
+                  <span className="font-medium">{row.title}</span>
+                  <span className="meta">{row.responsible}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           {editable ? (
             <div className="mt-5 border-t border-[var(--line)] pt-4">

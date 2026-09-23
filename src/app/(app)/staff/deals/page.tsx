@@ -87,11 +87,14 @@ export default async function DealsPage({
                     {v ? (
                       <>
                         <p>
-                          {v.counts.blockers} blockers ·{" "}
-                          {v.counts.findingsOpen - v.counts.informational} actionable findings
+                          {v.counts.blockers} blocker{v.counts.blockers === 1 ? "" : "s"} ·{" "}
+                          {v.counts.findingsOpen - v.counts.informational} actionable finding
+                          {v.counts.findingsOpen - v.counts.informational === 1 ? "" : "s"}
                         </p>
                         <p className="meta">
-                          {v.counts.documentsNeedingAttention} source files need attention
+                          {v.counts.documentsNeedingAttention} source file
+                          {v.counts.documentsNeedingAttention === 1 ? "" : "s"} need
+                          {v.counts.documentsNeedingAttention === 1 ? "s" : ""} attention
                         </p>
                       </>
                     ) : (
