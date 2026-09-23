@@ -1,3 +1,5 @@
+import { availableCases } from "@/lib/demo/service";
+import { env } from "@/lib/env";
 import type { ReactNode } from "react";
 import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
@@ -15,6 +17,7 @@ export default async function DealLayout({
   const { dealId } = await params;
   const ctx = await requireStaff();
   const deal = await requireDeal(ctx, dealId);
+  const demo = (await availableCases(ctx)).find((c) => c.seededDealId === dealId);
   const counts =
     deal.rulePackVersion === "unknown"
       ? {
@@ -37,7 +40,20 @@ export default async function DealLayout({
   return (
     <div className="deal-shell">
       <DealRail dealId={dealId} code={deal.code} name={deal.name} counts={counts} />
-      <div className="min-w-0">{children}</div>
+      <div className="min-w-0">
+        {demo ? (
+          <aside className="mb-5 border-b pb-4" aria-label="Synthetic demo">
+            <p className="eyebrow">
+              Synthetic demo ·{" "}
+              {env().LLM_PROVIDER === "mock"
+                ? "Prepared sample extraction"
+                : "Prepared seed; live reading of new synthetic files"}
+            </p>
+            <p>{demo.description}</p>
+          </aside>
+        ) : null}
+        {children}
+      </div>
     </div>
   );
 }

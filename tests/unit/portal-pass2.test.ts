@@ -367,3 +367,17 @@ it("reopens a question when its rule changes, even if the quoted amounts do not"
   };
   expect(mapDeal(d, [answer]).questions[0]!.evidenceKey).not.toBe(after.evidenceKey);
 });
+
+it("asks for consulting clarification while its duration is awaiting review, without treating an answer as evidence", () => {
+  const d = question("CON-14", [{ id: "duration", attribute: "consulting.term_months", value: 6 }]);
+  d.findings[0]!.type = "needs_review";
+  const q = mapDeal(d).questions[0]!;
+  expect(q).toMatchObject({
+    title: "What is the consulting period?",
+    kind: "clarification",
+    values: [],
+    answered: false,
+  });
+  d.findings[0]!.status = "resolved";
+  expect(mapDeal(d).questions).toHaveLength(0);
+});

@@ -1,0 +1,494 @@
+{
+  "id": "D05",
+  "draft": {
+    "as_of": "2026-09-15",
+    "profile": {
+      "transaction_category": "initial_acquisition",
+      "structure": "asset",
+      "purchase_price": 1000000,
+      "total_project_cost": 1100000,
+      "real_estate_included": "no",
+      "premises": "leased",
+      "franchise": "no",
+      "franchise_brand": "none",
+      "seller_note": {
+        "present": "yes",
+        "amount": 50000,
+        "counted_toward_injection": "no"
+      },
+      "gift_funds": "no",
+      "minority_investor_equity": "no",
+      "seller_staying": {
+        "present": "yes",
+        "role": "consultant",
+        "months": 6
+      },
+      "target_lender": "Zelmivar Bank",
+      "expected_loan_number_date": "2026-09-15",
+      "target_submission_date": "2026-09-30",
+      "paid_agents": [],
+      "equity_sources": [
+        {
+          "id": "cash-alex",
+          "party": "alex",
+          "kind": "cash",
+          "amount": 150000,
+          "source_account_last_four": "4321"
+        }
+      ]
+    },
+    "parties": [
+      {
+        "id": "buyer",
+        "kind": "entity",
+        "roles": [
+          "buyer_entity"
+        ],
+        "legal_name": "Varnholt Acquisition LLC",
+        "affiliates": [],
+        "name_variants": [],
+        "identifier": null,
+        "jointly_held_assets": "no"
+      },
+      {
+        "id": "target",
+        "kind": "entity",
+        "roles": [
+          "seller_entity"
+        ],
+        "legal_name": "Varnholt Climate Services LLC",
+        "affiliates": [],
+        "name_variants": [],
+        "identifier": null,
+        "jointly_held_assets": "no"
+      },
+      {
+        "id": "alex",
+        "kind": "individual",
+        "roles": [
+          "buyer_owner",
+          "guarantor"
+        ],
+        "legal_name": "Kiel McDermott",
+        "jointly_held_assets": "no",
+        "affiliates": [],
+        "name_variants": [],
+        "identifier": null
+      },
+      {
+        "id": "bea",
+        "kind": "individual",
+        "roles": [
+          "buyer_owner",
+          "guarantor"
+        ],
+        "legal_name": "Jaylan Heller",
+        "affiliates": [],
+        "jointly_held_assets": "no",
+        "name_variants": [],
+        "identifier": null
+      },
+      {
+        "id": "broker",
+        "kind": "individual",
+        "roles": [
+          "broker"
+        ],
+        "legal_name": "Morgan Vale",
+        "affiliates": [],
+        "jointly_held_assets": "no",
+        "name_variants": [],
+        "identifier": null
+      }
+    ],
+    "ownership": [
+      {
+        "owner_party_id": "alex",
+        "owned_party_id": "buyer",
+        "percent": 60,
+        "stage": "post_closing",
+        "origin": "declared"
+      },
+      {
+        "owner_party_id": "bea",
+        "owned_party_id": "buyer",
+        "percent": 40,
+        "stage": "post_closing",
+        "origin": "declared"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "initial/Seller/attachment-1.pdf",
+      "stored": "shared/daa03b5778dfa4961936.pdf",
+      "sha256": "703314973d8eddf7f07800cb34497719d64d3581b9145680a9590c34bac04444",
+      "batch": 1,
+      "document": "loi"
+    },
+    {
+      "path": "initial/Seller/attachment-2.pdf",
+      "stored": "shared/0b35dadf459d1fd0096f.pdf",
+      "sha256": "772115bdf85dc8db05fe464019b5de092472b76ea254c718c8ea2fbfbbaf89e3",
+      "batch": 1,
+      "document": "purchase"
+    },
+    {
+      "path": "initial/Buyer/attachment-3.pdf",
+      "stored": "shared/3f3eb9e12899a4642c39.pdf",
+      "sha256": "4e6ab5b3f08d01e8970923e655d9ae06d01545904d65179cb174a29a4dfc8a11",
+      "batch": 1,
+      "document": "funding"
+    },
+    {
+      "path": "initial/Buyer/attachment-4.pdf",
+      "stored": "shared/7ded605537c1fd98cc78.pdf",
+      "sha256": "60910cd8ec8035ac4e026fd2af79b7f0fc35b970f21c0ce09c737274e2760b42",
+      "batch": 1,
+      "document": "1919"
+    },
+    {
+      "path": "initial/Buyer/attachment-5.pdf",
+      "stored": "shared/5f432a109ef9a0537e7f.pdf",
+      "sha256": "d0c0c9beb753217417135c84830f85f3449ddb9352c5959a2ce3d79f27fcf3f0",
+      "batch": 1,
+      "document": "formation"
+    },
+    {
+      "path": "initial/Buyer/attachment-6.pdf",
+      "stored": "shared/11883bfa44295f2df675.pdf",
+      "sha256": "57fa74525062d6c03fb71ce4dd3b6ba640e0ea472e7abb623146b3b50837da07",
+      "batch": 1,
+      "document": "operating"
+    },
+    {
+      "path": "initial/Buyer/attachment-7.pdf",
+      "stored": "shared/e45bda97c3ef87bb2038.pdf",
+      "sha256": "398afa09eb23c0bb0a1505c2be8e23938fe0fafed8adacd0e5425c8c1caadb0d",
+      "batch": 1,
+      "document": "ein"
+    },
+    {
+      "path": "initial/Buyer/attachment-8.pdf",
+      "stored": "shared/fdb0966a61b4720580aa.pdf",
+      "sha256": "3a5498e24f802430124a30efb9d16189b57dfca41017b100ba53c100dcddb37f",
+      "batch": 1,
+      "document": "good"
+    },
+    {
+      "path": "initial/Buyer/attachment-9.pdf",
+      "stored": "shared/9850215f4ee1aa9c46ca.pdf",
+      "sha256": "ca7c19272a139ab0f48dd119a1bd8a8290b1689acb9224f7bb7c89969d2677a4",
+      "batch": 1,
+      "document": "owners"
+    },
+    {
+      "path": "initial/Buyer/attachment-10.docx",
+      "stored": "shared/90065c708c1f266950fd.docx",
+      "sha256": "7f927f9534bb6de68f658d26bc64d38ff23cf3a6d6969f52bbd604dcb0ea38bb",
+      "batch": 1,
+      "document": "plan"
+    },
+    {
+      "path": "initial/Buyer/attachment-11.pdf",
+      "stored": "shared/331f966bfc6a094f409f.pdf",
+      "sha256": "a67791ab8b59b2a70d81a1da6eb67d200acfa18e7261033ad2c51ad1e16df115",
+      "batch": 1,
+      "document": "projections"
+    },
+    {
+      "path": "initial/Buyer/attachment-12.pdf",
+      "stored": "shared/987a43927808cd68438e.pdf",
+      "sha256": "80f68c186daadb4dc328f9e77b9242fb7d9eb882331afa6a6edcf8a367979674",
+      "batch": 1,
+      "document": "pfs"
+    },
+    {
+      "path": "initial/Buyer/attachment-13.pdf",
+      "stored": "shared/0117c464ca80ac372699.pdf",
+      "sha256": "e3bb200ae91eae26bf5c68a545a8760cc84b45ef600c73d69f11c04fd0d58957",
+      "batch": 1,
+      "document": "personal-2023"
+    },
+    {
+      "path": "initial/Buyer/attachment-14.pdf",
+      "stored": "shared/469891ee75687fdcfb90.pdf",
+      "sha256": "976d6985c94d8585434053553acc1255034d67811c33e88e872716ec0c35addb",
+      "batch": 1,
+      "document": "personal-2024"
+    },
+    {
+      "path": "initial/Buyer/attachment-15.pdf",
+      "stored": "shared/3c157c15601f1e44a87c.pdf",
+      "sha256": "77a9a68ebd1c58b562f86d89c9f144d33fc26db4228360d727f9d15fb7f64fa6",
+      "batch": 1,
+      "document": "personal-2025"
+    },
+    {
+      "path": "initial/Buyer/attachment-16.pdf",
+      "stored": "shared/6498753ad9377c9ffc44.pdf",
+      "sha256": "0d750140a24e19c91c438c4aaf71ccf41198e1441d15da3321735f7d832e3b8f",
+      "batch": 1,
+      "document": "resume"
+    },
+    {
+      "path": "initial/Buyer/attachment-17.pdf",
+      "stored": "shared/19d905cb7cdd1e018157.pdf",
+      "sha256": "a82c0a12daccdfe19608cf35d2b27acd128358bf4ab524991606edff29be7a84",
+      "batch": 1,
+      "document": "id"
+    },
+    {
+      "path": "initial/Buyer/attachment-18.pdf",
+      "stored": "shared/11323d7b6194a3479fb6.pdf",
+      "sha256": "b1e6388a8b38ebe31eab0a7365a40943758216fefc459f65bb61aba309cf398a",
+      "batch": 1,
+      "document": "citizen"
+    },
+    {
+      "path": "initial/Buyer/attachment-19.pdf",
+      "stored": "shared/997d03b56776faafd39c.pdf",
+      "sha256": "5cf2f37d41628de257ecaf5de184e22275c4bedd633ea21ac9ef07ef9a05596b",
+      "batch": 1,
+      "document": "credit"
+    },
+    {
+      "path": "initial/Buyer/attachment-20.pdf",
+      "stored": "shared/0d913fa5de38df845572.pdf",
+      "sha256": "9557471d1bf5da80bf68aad230784b1f132e3b8f72684adccc0cbb20c34131e8",
+      "batch": 1,
+      "document": "bank-jul"
+    },
+    {
+      "path": "initial/Buyer/attachment-21.pdf",
+      "stored": "shared/756385c1494f54ec2e46.pdf",
+      "sha256": "c58db44eaaefa8bd01d448dc16b93b5abfdbd73226facdf549cd06e5f07a5beb",
+      "batch": 1,
+      "document": "bank-aug"
+    },
+    {
+      "path": "initial/Seller/attachment-22.pdf",
+      "stored": "shared/fb01d96cbe9232925d81.pdf",
+      "sha256": "936662a056326b873b77294b5a34a5d325f4d713e57809e9d8140db1a33f4d76",
+      "batch": 1,
+      "document": "tax-2023"
+    },
+    {
+      "path": "initial/Seller/attachment-23.pdf",
+      "stored": "shared/1d08497ebe1d27a05358.pdf",
+      "sha256": "43852b4cda1f710013b20ce676446ac9f5e3ae4ab170fb979c1b5fd4f68c906c",
+      "batch": 1,
+      "document": "tax-2024"
+    },
+    {
+      "path": "initial/Seller/attachment-24.pdf",
+      "stored": "shared/45cae041039ccd4682ec.pdf",
+      "sha256": "29d366ed16c9ba8860a451c115c659cfe91aa749d965bbd5ad48d26511b8a01a",
+      "batch": 1,
+      "document": "tax-2025"
+    },
+    {
+      "path": "initial/Seller/attachment-25.pdf",
+      "stored": "shared/cc6c6bbd298301193e9a.pdf",
+      "sha256": "61a81f29d29d04e5986c4e4cb097a6125a55db2a6730a1d5eeb1fd954fbe31d6",
+      "batch": 1,
+      "document": "fin-2023"
+    },
+    {
+      "path": "initial/Seller/attachment-26.pdf",
+      "stored": "shared/8c253f7fbc9fabd3f8c7.pdf",
+      "sha256": "0c43fba01924cecda203175a8e57a450fe4c39650536e6407656ed79d3e87b52",
+      "batch": 1,
+      "document": "fin-2024"
+    },
+    {
+      "path": "initial/Seller/attachment-27.xlsx",
+      "stored": "shared/41d0ec11dadadfe05b23.xlsx",
+      "sha256": "5741bc2d7b3fc40e5cdcb19b004c73e289155a909a9511cc7697c1d69cac58f6",
+      "batch": 1,
+      "document": "fin-2025"
+    },
+    {
+      "path": "initial/Seller/attachment-28.pdf",
+      "stored": "shared/4b65b097696969327695.pdf",
+      "sha256": "9173d13b4a78ee6f6f0f37821d75da3cecad5191ea8e8764c3b4b0777154b9dd",
+      "batch": 1,
+      "document": "interim"
+    },
+    {
+      "path": "initial/Seller/attachment-29.pdf",
+      "stored": "shared/fffa46ce4c8cb3ac6732.pdf",
+      "sha256": "5cbef9dbd8921c83d97daa2a3f260434b148b833fa2fba1a3e611bcfcf9a20fe",
+      "batch": 1,
+      "document": "ar"
+    },
+    {
+      "path": "initial/Seller/attachment-30.pdf",
+      "stored": "shared/47326a669d18c8da5ede.pdf",
+      "sha256": "bd3907cfa7e59c8c3f8c7520c73a8404c4c62e4abbc6be7cd971c1ea73f2571b",
+      "batch": 1,
+      "document": "ap"
+    },
+    {
+      "path": "initial/Seller/attachment-31.pdf",
+      "stored": "shared/4adbbdf431bac0bbb879.pdf",
+      "sha256": "9c4cca5a35905cb42416abb93b18582cf9d2a1b0f3a6ba5bb73f76588fcb73ad",
+      "batch": 1,
+      "document": "debt"
+    },
+    {
+      "path": "initial/Seller/attachment-32.pdf",
+      "stored": "shared/a800422ace961455ef66.pdf",
+      "sha256": "eecbbe4d892efc4d1cfbada00491002c95233b3a85810b1ff692877a68fb6fae",
+      "batch": 1,
+      "document": "4506"
+    },
+    {
+      "path": "initial/Seller/attachment-33.pdf",
+      "stored": "shared/05e0722639562b333db5.pdf",
+      "sha256": "0be807ea2856e8184eeb72e26893d6e58bb8f7f0437f1286339c4167841f3af2",
+      "batch": 1,
+      "document": "equipment"
+    },
+    {
+      "path": "initial/Seller/attachment-34.pdf",
+      "stored": "shared/53524fc3057715b3ac24.pdf",
+      "sha256": "100f9a6d1f393d4f742ceab1bb45941a63d4e2ace2d6dd55ba6f6917c1a68548",
+      "batch": 1,
+      "document": "inventory"
+    },
+    {
+      "path": "initial/Seller/attachment-35.pdf",
+      "stored": "shared/f3ea7caaaa52b0728fe3.pdf",
+      "sha256": "89485120a94ade6b5fe8f57131dfb2cf1766ad6bd855b4d82db714a10daf988b",
+      "batch": 1,
+      "document": "license"
+    },
+    {
+      "path": "initial/Seller/attachment-36.pdf",
+      "stored": "shared/f1dcc8dad97834b4f87f.pdf",
+      "sha256": "17b3d93926d4b13797d37baf3776522f74b617850fe8a6185538c3b616612913",
+      "batch": 1,
+      "document": "note"
+    },
+    {
+      "path": "initial/Buyer/attachment-37.pdf",
+      "stored": "shared/500900750e76d7a69024.pdf",
+      "sha256": "62f5c825c2a9c204301395003a01a638a686971e0a9e84e8c40c97ce38244579",
+      "batch": 1,
+      "document": "bea-pfs"
+    },
+    {
+      "path": "initial/Buyer/attachment-38.pdf",
+      "stored": "shared/8d2afbb42a0c474e5b3f.pdf",
+      "sha256": "be45ef899f60a7511636348e79fa8a44da931d4613208f50fa1ffa999e66bee7",
+      "batch": 1,
+      "document": "bea-personal-2023"
+    },
+    {
+      "path": "initial/Buyer/attachment-39.pdf",
+      "stored": "shared/1ae14c4511aa24de7b92.pdf",
+      "sha256": "7c3c99d3f5c4b0f4ce0186a9aa0fd83c894dbb1603e666cac696946f4a1ca109",
+      "batch": 1,
+      "document": "bea-personal-2024"
+    },
+    {
+      "path": "initial/Buyer/attachment-40.pdf",
+      "stored": "shared/901dd9a595b55bbdbc92.pdf",
+      "sha256": "c48302f845b2e040088cdc088b54d7f684e8da4987458d551953483a1fb8a9d3",
+      "batch": 1,
+      "document": "bea-personal-2025"
+    },
+    {
+      "path": "initial/Buyer/attachment-41.pdf",
+      "stored": "shared/7470f8bfad9719998075.pdf",
+      "sha256": "3a3d6f1f3534e3e889a7aee82441149fb68fb1009e1a39f26e4712ee3464beac",
+      "batch": 1,
+      "document": "bea-resume"
+    },
+    {
+      "path": "initial/Buyer/attachment-42.pdf",
+      "stored": "shared/f4e726a334c42b9ce408.pdf",
+      "sha256": "7ca24964d50e41092c025ec463d158b2505c42cbb32189079931c7987bf1f9cb",
+      "batch": 1,
+      "document": "bea-id"
+    },
+    {
+      "path": "initial/Buyer/attachment-43.pdf",
+      "stored": "shared/9c86dba6d35f1f1f0474.pdf",
+      "sha256": "95c968e5e2e6341deadc842a99df130ff10950cfdeb7a3840b390ab7ac4dfd6f",
+      "batch": 1,
+      "document": "bea-citizen"
+    },
+    {
+      "path": "initial/Buyer/attachment-44.pdf",
+      "stored": "shared/a945db21792fe592c2e9.pdf",
+      "sha256": "d2227c1ac7b5be5dcc9eb1f544a9e6f8184893bec7065cadbf3bffa31bcc83ce",
+      "batch": 1,
+      "document": "bea-credit"
+    },
+    {
+      "path": "initial/Buyer/attachment-45.pdf",
+      "stored": "shared/3c82164cd2a35d269304.pdf",
+      "sha256": "b912b6cbc20a57cc0e113d332c4200b753fb4b66767b23c158f94a89b08eac93",
+      "batch": 1,
+      "document": "bea-bank-jul"
+    },
+    {
+      "path": "initial/Buyer/attachment-46.pdf",
+      "stored": "shared/80f0b428e877b2cb3356.pdf",
+      "sha256": "c658459f0cd0264db8665897fd917d01b903554c38841b1409f02b0dce15e4a1",
+      "batch": 1,
+      "document": "bea-bank-aug"
+    },
+    {
+      "path": "corrections/round-2/purchase-round-2.pdf",
+      "stored": "D05/corrections/round-2/purchase-round-2.pdf",
+      "sha256": "66ea69c213d059ff9d49780d10c1ea02ce6e88e7c21ca41eeed9539099d31a44",
+      "batch": 2,
+      "document": "purchase-round-2"
+    },
+    {
+      "path": "initial/Seller/notes-6.pdf",
+      "stored": "shared/f8f9682631c76fbf62e0.pdf",
+      "sha256": "8736564aa43b00e253d9fc6ba0920d058aaf2ce451e1c60f8e4de1dab2d6ddd5",
+      "batch": 1,
+      "document": "consult-6"
+    },
+    {
+      "path": "initial/Seller/notes-12.pdf",
+      "stored": "shared/20c5ede33bd2831e1d4c.pdf",
+      "sha256": "d4ad1b60c5e2cbb519634be1559d096cc4c64edc5f4fbd8e131a6195121bcf98",
+      "batch": 1,
+      "document": "consult-12"
+    },
+    {
+      "path": "corrections/round-2/consult-12-round-2.pdf",
+      "stored": "D05/corrections/round-2/consult-12-round-2.pdf",
+      "sha256": "e06af14506f248a3278ace1c46f760db006ebb093ffa60479898567c658e9cdc",
+      "batch": 2,
+      "document": "consult-12-round-2"
+    },
+    {
+      "path": "initial/Seller/scan0007.pdf",
+      "stored": "shared/3d47457b0dececebbc42.pdf",
+      "sha256": "a33360bc07fb020b99ef767fc9dd623b48fb0b642d67744cb66233baa0467de3",
+      "batch": 1,
+      "document": "lease"
+    },
+    {
+      "path": "corrections/round-2/lease-round-2.pdf",
+      "stored": "D05/corrections/round-2/lease-round-2.pdf",
+      "sha256": "ef6c979949b509af8a913b8493759024e2917e6f7a5c93db16a822a19a9f65b4",
+      "batch": 2,
+      "document": "lease-round-2"
+    },
+    {
+      "path": "corrections/round-2/consent.pdf",
+      "stored": "D05/corrections/round-2/consent.pdf",
+      "sha256": "f3ee7ec388be80367aa2bacf64f62e96c968f0cea55b074f325d3c7f6fee7810",
+      "batch": 2,
+      "document": "consent"
+    }
+  ]
+}

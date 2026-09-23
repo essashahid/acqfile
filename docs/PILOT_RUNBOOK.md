@@ -13,3 +13,7 @@ A slow or unsuccessful read leaves a usable list after at most 20 seconds. Staff
 Run the [Phase 7 proof](phase-7-proof.md) before sharing a build. No owner provider key was present for the recorded proof: live extraction, especially scans, is the largest open risk. `pnpm eval:live` performs the existing USD 5 preflight and cap when a key is supplied. No real borrower data or lender acceptance is claimed.
 
 Staff can now use **Correct value** or **Reopen review** on a decided value. Give a reason; corrections also need a supporting page and exact quote, or a clearly labelled transcription with its source region. Ownership and funding tables have row editors. Unsupported numbers and dates must stay in review; dates accept ISO or US month/day/year. Reopening removes the value from current accepted evidence and recalculates the file. Earlier decisions and exported versions remain preserved.
+
+## Eight-case meeting rehearsal
+
+Use [DEMO_CASES.md](DEMO_CASES.md) for the separate D01–D08 corpus, explicit sample workspace/actor configuration, one-case reset, operator scripts and measured results. For these cases, do not use `demo:b-ready` or a truth-acceptance helper. Start with D01, D04 and D06. Keep U01's live reading status separate from prepared extraction results.

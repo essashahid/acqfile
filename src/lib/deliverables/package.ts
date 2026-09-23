@@ -399,6 +399,11 @@ export async function packageZip(dealId: string, snapshotId: string) {
     if (sha256(bytes) !== entry.sha256) throw Error("Snapshot original hash differs");
     zip.file(entry.package_path, bytes, { date: FIXED_DATE });
   }
+  // JSZip creates parent directories with the wall clock, even when files have fixed dates.
+  // Normalize those entries too so historical downloads retain identical bytes.
+  zip.forEach((_path, entry) => {
+    entry.date = FIXED_DATE;
+  });
   return {
     filename: `${content.deal.code}_snapshot_${content.number}.zip`,
     bytes: await zip.generateAsync({

@@ -1,5 +1,6 @@
 import { reserveLiveCall } from "@/lib/eval/live-budget";
 import fs from "node:fs";
+import { preparedDemoFiles } from "@/lib/demo/prepared";
 import path from "node:path";
 import { PDFDocument } from "pdf-lib";
 import OpenAI from "openai";
@@ -39,9 +40,14 @@ export async function classifyFile(
   const started = Date.now();
   if (provider === "mock") {
     // Truth is accessible only inside this explicit mock-provider branch.
-    for (const deal of ["deal-a", "deal-b", "deal-c"]) {
+    for (const deal of ["deal-a", "deal-b", "deal-c", "demo"]) {
       const root = path.join(process.cwd(), "fixtures/deals", deal, "truth");
-      const docs = JSON.parse(fs.readFileSync(path.join(root, "documents.json"), "utf8")) as {
+      const docs = (
+        deal === "demo"
+          ? preparedDemoFiles()
+          : JSON.parse(fs.readFileSync(path.join(root, "documents.json"), "utf8"))
+      ) as {
+        parties?: { id: string; legal_name: string }[];
         hash: string;
         segments: {
           page_start: number;
@@ -61,7 +67,10 @@ export async function classifyFile(
       }[];
       const match = docs.find((d) => d.hash === hash && d.segments.length);
       if (!match) continue;
-      const profile = JSON.parse(fs.readFileSync(path.join(root, "deal.json"), "utf8"));
+      const profile =
+        deal === "demo"
+          ? { parties: match.parties ?? [] }
+          : JSON.parse(fs.readFileSync(path.join(root, "deal.json"), "utf8"));
       const segments = match.segments.map((s) => ({
         ...s,
         party_name:

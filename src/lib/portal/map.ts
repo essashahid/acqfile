@@ -327,7 +327,13 @@ export function mapDeal(data: Data, responses: ResponseRow[] = []) {
     }
   }
   const questions: Question[] = data.findings
-    .filter((f) => active(f.status) && f.type === "conflict")
+    .filter(
+      (f) =>
+        active(f.status) &&
+        (f.type === "conflict" ||
+          // An unresolved consulting duration needs clarification even before a numeric comparison is possible.
+          (f.type === "needs_review" && f.ruleId === "CON-14")),
+    )
     .map((f) => {
       const policy = questionPolicy[f.ruleId] ?? {
         title: "Your adviser needs to review these details",

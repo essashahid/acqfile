@@ -1,5 +1,6 @@
 pnpm-lock.yaml
 fixtures/deals
+fixtures/demo/generated
 docs/RULEPACK_REVIEW.html
 /eval/
 .next

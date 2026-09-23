@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       "./eval/baselines/**/*",
       "./rulepacks/**/*.yaml",
       "./fixtures/deals/*/truth/*.json",
+      "./fixtures/demo/generated/prepared-candidates.json",
     ],
   },
   experimental: {

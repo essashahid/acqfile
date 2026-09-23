@@ -3,7 +3,7 @@ import { ACCEPTED } from "@/lib/evaluation/run";
 import fs from "node:fs";
 import { and, eq, inArray } from "drizzle-orm";
 import { reviewFact } from "@/lib/extract/review";
-import { it, expect } from "vitest";
+import { it, expect, vi } from "vitest";
 import JSZip from "jszip";
 import * as XLSX from "xlsx";
 import { getDb, schema, getSql } from "@/lib/db/client";
@@ -112,7 +112,17 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
   await expect(getSql()`update snapshots set number=9 where id=${first.id}`).rejects.toThrow(
     "Immutable",
   );
-  const zip = await JSZip.loadAsync((await packageZip(d.id, second.id)).bytes);
+  let firstDownload: Buffer;
+  vi.useFakeTimers({ toFake: ["Date"] });
+  try {
+    vi.setSystemTime(new Date("2026-09-23T10:00:00Z"));
+    firstDownload = (await packageZip(d.id, second.id)).bytes;
+    vi.setSystemTime(new Date("2026-09-24T11:00:00Z"));
+    expect((await packageZip(d.id, second.id)).bytes).toEqual(firstDownload);
+  } finally {
+    vi.useRealTimers();
+  }
+  const zip = await JSZip.loadAsync(firstDownload!);
   for (const f of content.manifest)
     expect(sha256(await zip.file(f.package_path)!.async("nodebuffer"))).toBe(f.sha256);
   const html = await zip.file("00_Package_Report.html")!.async("string");

@@ -31,7 +31,9 @@
     "fixtures:check": "tsx scripts/check-deal-fixtures.ts",
     "eval:live": "tsx scripts/run-live-evals.ts",
     "demo:seed": "tsx scripts/seed-demo.ts",
-    "demo:b-ready": "tsx scripts/demo-b-ready.ts"
+    "demo:b-ready": "tsx scripts/demo-b-ready.ts",
+    "demo:cases": "tsx scripts/demo-cases.ts",
+    "demo:generate": "tsx scripts/generate-demo-cases.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.3.3",

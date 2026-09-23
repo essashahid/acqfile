@@ -4,6 +4,7 @@
  * only here; deterministic code never imports it.
  */
 import fs from "node:fs";
+import { preparedDemoFiles } from "@/lib/demo/prepared";
 import path from "node:path";
 import { normalizeText, canonical } from "@/lib/text";
 import type { ExtractionProvider, ExtractRequest } from "./provider";
@@ -62,7 +63,9 @@ const modelShape = (value: unknown, valueType: string) => {
   return JSON.stringify(value);
 };
 function locate(request: ExtractRequest) {
-  const record = loadTruthFiles().find((d) => d.hash === request.hash);
+  const record = [...loadTruthFiles(), ...(preparedDemoFiles() as TruthFile[])].find(
+    (d) => d.hash === request.hash,
+  );
   const segment = record?.segments.find((s) => s.page_start === request.pageStart);
   return { record, segment };
 }
@@ -142,7 +145,9 @@ export function createMockExtractionProvider(): ExtractionProvider {
       return { output, usage: usage("mock", request.blocks, output) };
     },
     async verify(request) {
-      const record = loadTruthFiles().find((d) => d.hash === request.hash);
+      const record = [...loadTruthFiles(), ...(preparedDemoFiles() as TruthFile[])].find(
+        (d) => d.hash === request.hash,
+      );
       const segment = record?.segments.find((s) => s.page_start === request.pageStart);
       const items = request.items.map((item) => {
         const fault =

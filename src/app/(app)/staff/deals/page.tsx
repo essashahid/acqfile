@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { availableCases } from "@/lib/demo/service";
+import { DemoCaseSelector } from "@/components/staff/DemoCaseSelector";
 import { eq, desc } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { requireStaff } from "@/lib/workspace";
@@ -13,6 +15,7 @@ export default async function DealsPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const ctx = await requireStaff();
+  const cases = await availableCases(ctx);
   const deals = await getDb()
     .select()
     .from(schema.deals)
@@ -22,6 +25,7 @@ export default async function DealsPage({
   const focus = staffFocus(ctx.workspace.role);
   const rows = await Promise.all(
     deals
+      .filter((d) => d.status !== "archived")
       .filter((d) => !query || `${d.name} ${d.code}`.toLowerCase().includes(query.toLowerCase()))
       .map(async (deal) => ({
         deal,
@@ -41,6 +45,9 @@ export default async function DealsPage({
           ) : null
         }
       />
+      {cases.length ? (
+        <DemoCaseSelector cases={cases.map(({ id, label }) => ({ id, label }))} />
+      ) : null}
       <form className="mb-5 flex items-end gap-3">
         <label className="flex flex-col gap-1">
           <span className="eyebrow">Find a deal</span>
