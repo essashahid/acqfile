@@ -722,8 +722,7 @@ body {
   }
 }
 .staff .deal-rail {
-  position: sticky;
-  top: 76px;
+  position: static;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -886,13 +885,14 @@ body {
   .staff .deal-shell {
     grid-template-columns: 208px minmax(0, 1fr);
   }
+  .staff .deal-rail {
+    position: sticky;
+    top: 76px;
+  }
 }
 @media (max-width: 900px) {
   .staff .split {
     grid-template-columns: 1fr;
-  }
-  .staff .deal-rail {
-    position: static;
   }
 }
 .staff {

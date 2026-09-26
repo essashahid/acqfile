@@ -26,6 +26,74 @@ async function layoutCheck(page: Page) {
   );
   expect(unnamed).toBe(0);
 }
+
+test("Deal navigation reserves layout space and keeps every section accessible", async ({
+  page,
+}) => {
+  await login(page);
+  const base = `/staff/deals/${deals()["deal-a"]!.id}`;
+  const labels = [
+    "Overview",
+    "Documents",
+    "Requirements",
+    "Review",
+    "Follow-ups",
+    "Lender file",
+    "Profile and rules",
+  ];
+
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 1024, height: 768 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto(base);
+    const navigation = page.getByRole("navigation", { name: "Deal sections" });
+    const content = page.locator(".deal-shell > .min-w-0");
+
+    for (const label of labels)
+      await expect(
+        navigation.getByRole("link", { name: new RegExp(`^${label}\\b`) }),
+      ).toBeVisible();
+    await expect(navigation.getByRole("link", { name: "Overview", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+
+    await page.evaluate(() => scrollTo(0, 250));
+    const [navigationBox, contentBox] = await Promise.all([
+      navigation.boundingBox(),
+      content.boundingBox(),
+    ]);
+    expect(navigationBox).not.toBeNull();
+    expect(contentBox).not.toBeNull();
+    const horizontalOverlap = Math.max(
+      0,
+      Math.min(navigationBox!.x + navigationBox!.width, contentBox!.x + contentBox!.width) -
+        Math.max(navigationBox!.x, contentBox!.x),
+    );
+    const verticalOverlap = Math.max(
+      0,
+      Math.min(navigationBox!.y + navigationBox!.height, contentBox!.y + contentBox!.height) -
+        Math.max(navigationBox!.y, contentBox!.y),
+    );
+    expect(horizontalOverlap * verticalOverlap).toBe(0);
+  }
+
+  await page.evaluate(() => scrollTo(0, 0));
+  await page
+    .getByRole("navigation", { name: "Deal sections" })
+    .getByRole("link", { name: /^Documents\b/ })
+    .click();
+  await expect(page).toHaveURL(`${base}/documents`);
+  await expect(
+    page
+      .getByRole("navigation", { name: "Deal sections" })
+      .getByRole("link", { name: /^Documents\b/ }),
+  ).toHaveAttribute("aria-current", "page");
+});
+
 for (const [role, account, heading] of [
   ["admin", "admin", "Workspace oversight"],
   ["operator", "reviewer", "Work to move forward"],
