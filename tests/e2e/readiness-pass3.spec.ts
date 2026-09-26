@@ -96,7 +96,11 @@ test("finishes preparation on screen and downloads a file with later lender work
   await expect(
     page.getByText("Illustrative checklist, awaiting lender review", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByText("Credit reports · lender · tracking", { exact: true })).toBeVisible();
+  // Later lender work names the item, its state and who owns it. The staff page reads these as
+  // words, so the row is asserted by its parts rather than by a raw "title · role · status" string.
+  const later = page.locator("li").filter({ hasText: "Credit reports" }).first();
+  await expect(later.getByText("Tracking", { exact: true })).toBeVisible();
+  await expect(later.getByText("Lender", { exact: true })).toBeVisible();
   const adviser = await browser.newContext();
   const customer = await adviser.newPage();
   await login(customer, { email: "adviser@example.com", password: "acqfile-adviser" });

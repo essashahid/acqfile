@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  attentionKind,
   attributeName,
   documentName,
   factValue,
   findingHeadline,
+  responsibleName,
   STATUS_MEANING,
 } from "@/lib/staff/labels";
 import { draftItems } from "@/lib/deliverables/requests";
@@ -192,4 +194,25 @@ it("keeps technical messages out of the actual outgoing draft", () => {
     () => "Document",
   );
   expect(items[0]!.because).not.toMatch(/source_account|parameters|unknown:|[{}]/);
+});
+
+describe("operator-facing names for stored keys", () => {
+  it("names the responsible party without altering the stored key", () => {
+    expect(responsibleName("buyer")).toBe("Buyer");
+    expect(responsibleName("buyer attorney")).toBe("Buyer's attorney");
+    // buildDrafts composes "role · party" as the identity of a recorded request. Only the role is
+    // renamed; the party is already a proper name and the key itself is never rewritten.
+    expect(responsibleName("buyer · Providenci Glover")).toBe("Buyer · Providenci Glover");
+    // An unknown role still reads as a word rather than a bare token.
+    expect(responsibleName("escrow agent")).toBe("Escrow agent");
+  });
+
+  it("says what a stalled file needs rather than which stage stopped", () => {
+    expect(attentionKind("extraction_gap")).toBe("Values not found");
+    expect(attentionKind("party_assignment")).toBe("Party unclear");
+    expect(attentionKind("version_conflict")).toBe("Replaces an earlier file");
+    expect(attentionKind("unreadable")).toBe("Could not be read");
+    // An unmapped type must still not reach an operator as snake_case.
+    expect(attentionKind("some_new_stage")).toBe("Some new stage");
+  });
 });

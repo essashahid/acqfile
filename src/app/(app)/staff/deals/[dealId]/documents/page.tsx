@@ -3,7 +3,7 @@ import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { dealView } from "@/lib/staff/deal-view";
-import { documentName } from "@/lib/staff/labels";
+import { attentionKind, documentName } from "@/lib/staff/labels";
 import { retryFileAction } from "../../deliverable-actions";
 import { undoAction, retryDealRunAction } from "../../actions";
 import { IntakeForm } from "../../IntakeForm";
@@ -63,7 +63,7 @@ export default async function Documents({
       key: `review-${r.id}`,
       versionId: r.documentVersionId,
       name: v.versions.find((x) => x.id === r.documentVersionId)?.sourceFilename ?? "Unknown file",
-      kind: r.type.replaceAll("_", " "),
+      kind: attentionKind(r.type),
       tone: r.priority === "high" ? "pill-bad" : "pill-warn",
       why: r.reason,
       retry: false,
@@ -111,7 +111,7 @@ export default async function Documents({
     <>
       <PageHead
         title="Documents"
-        subtitle={`${v.counts.arrivals} source files received · ${v.counts.filed} documents filed from them · ${v.counts.documentsNeedingAttention} source files needing attention`}
+        subtitle={`${v.counts.arrivals} source file${v.counts.arrivals === 1 ? "" : "s"} received · ${v.counts.filed} document${v.counts.filed === 1 ? "" : "s"} filed from them · ${v.counts.documentsNeedingAttention} needing attention`}
       />
       <div className="space-y-5">
         {editable ? (

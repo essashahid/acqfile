@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { reviewFactAction, resolveGapAction, reclassifyAction } from "./actions";
 import { PdfPage } from "./PdfPage";
 import { Pill } from "@/components/staff";
-import { attributeName, factValue } from "@/lib/staff/labels";
+import { attentionKind, attributeName, factValue } from "@/lib/staff/labels";
 import { FACTS } from "@/lib/domain/registry";
 const display = (f: ReviewFact, value: unknown = f.value) =>
   factValue(f.attribute, FACTS[f.attribute]?.unit ?? "text", value);
@@ -285,24 +285,33 @@ export function FactReview({
 
                 {editable ? (
                   <>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                      <ValueEditor
-                        attribute={f.attribute}
-                        value={edits[f.id] ?? show(f.value)}
-                        onChange={(v) => setEdits({ ...edits, [f.id]: v })}
+                    <label className="mt-3 flex flex-col gap-1">
+                      <span className="eyebrow">Comment (required)</span>
+                      <input
+                        aria-label={`Comment ${f.attribute}`}
+                        required
+                        value={comments[f.id] ?? ""}
+                        onChange={(e) => setComments({ ...comments, [f.id]: e.target.value })}
                       />
-                      <label className="flex flex-col gap-1">
-                        <span className="eyebrow">Comment (required)</span>
-                        <input
-                          aria-label={`Comment ${f.attribute}`}
-                          required
-                          value={comments[f.id] ?? ""}
-                          onChange={(e) => setComments({ ...comments, [f.id]: e.target.value })}
-                        />
-                      </label>
-                    </div>
+                    </label>
 
-                    {sourceEditor(f.id, f.attribute)}
+                    {/*
+                     * Only a correction carries a new value and its supporting source; accepting,
+                     * rejecting and asking for a better copy all ignore them. Revealing the editor
+                     * on demand keeps the common decision to one comment and one button, and
+                     * matches how a decided value is corrected further down this screen.
+                     */}
+                    {correcting === f.id ? (
+                      <div className="mt-3 space-y-3">
+                        <ValueEditor
+                          attribute={f.attribute}
+                          value={edits[f.id] ?? show(f.value)}
+                          onChange={(v) => setEdits({ ...edits, [f.id]: v })}
+                        />
+                        {sourceEditor(f.id, f.attribute)}
+                      </div>
+                    ) : null}
+
                     <div className="mt-3 flex flex-wrap gap-2">
                       <button
                         type="button"
@@ -314,10 +323,20 @@ export function FactReview({
                       <button
                         type="button"
                         className="btn btn-sm"
-                        onClick={() => decide(f, "edit_accept")}
+                        aria-expanded={correcting === f.id}
+                        onClick={() => setCorrecting(correcting === f.id ? null : f.id)}
                       >
-                        Edit and accept
+                        {correcting === f.id ? "Cancel correction" : "Correct value"}
                       </button>
+                      {correcting === f.id ? (
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          onClick={() => decide(f, "edit_accept")}
+                        >
+                          Save correction
+                        </button>
+                      ) : null}
                       <button
                         type="button"
                         className="btn btn-sm"
@@ -363,8 +382,8 @@ export function FactReview({
                 >
                   <legend className="sr-only">{g.attribute ?? g.type}</legend>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1.5">
-                    <h3>{g.attribute ?? "document"}</h3>
-                    <span className="pill pill-quiet">{g.type.replaceAll("_", " ")}</span>
+                    <h3>{g.attribute ? attributeName(g.attribute) : "This document"}</h3>
+                    <span className="pill pill-quiet">{attentionKind(g.type)}</span>
                   </div>
                   <p className="meta mt-1.5">{g.reason}</p>
                   {g.type === "extraction_gap" && editable ? (

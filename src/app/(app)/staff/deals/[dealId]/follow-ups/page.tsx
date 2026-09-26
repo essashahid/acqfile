@@ -3,7 +3,7 @@ import { requireDeal } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { buildDrafts, ageInDays } from "@/lib/deliverables/requests";
 import { dealView } from "@/lib/staff/deal-view";
-import { findingHeadline } from "@/lib/staff/labels";
+import { findingHeadline, responsibleName } from "@/lib/staff/labels";
 import { sentAction } from "../../deliverable-actions";
 import { CopyDraft } from "../../CopyDraft";
 import { RecordSent } from "../../RecordSent";
@@ -29,7 +29,7 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
         {drafts.map((d) => (
           <Card
             key={d.responsible}
-            title={d.responsible}
+            title={responsibleName(d.responsible)}
             description={`${d.findingKeys.length - d.informational} request${d.findingKeys.length - d.informational === 1 ? "" : "s"}${d.informational ? ` · ${d.informational} informational finding kept out of the message` : ""}`}
             actions={
               <>
@@ -43,7 +43,8 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
             <p className="meta mb-2">
               This is what the recipient reads. Internal evidence stays on the Review screen.
             </p>
-            <pre className="max-h-[24rem] overflow-auto whitespace-pre-wrap rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6">
+            {/* The draft is what gets copied and sent, so it is never cut off mid-sentence. */}
+            <pre className="whitespace-pre-wrap rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6">
               {d.body}
             </pre>
           </Card>
@@ -110,14 +111,16 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
                   return (
                     <tr key={r.id}>
                       <td className="font-medium">
-                        {r.responsible}
+                        {responsibleName(r.responsible)}
                         <details className="reveal mt-2">
                           <summary>Recorded message</summary>
                           <pre className="mt-2 whitespace-pre-wrap font-sans text-sm">{r.body}</pre>
                         </details>
                       </td>
                       <td className="num">{r.sentAt?.toISOString().slice(0, 10) ?? "—"}</td>
-                      <td className="num">{ageInDays(r.sentAt)} days</td>
+                      <td className="num">
+                        {ageInDays(r.sentAt)} day{ageInDays(r.sentAt) === 1 ? "" : "s"}
+                      </td>
                       <td className="num">{r.findingKeys.length}</td>
                       <td>
                         {stillOpen ? (

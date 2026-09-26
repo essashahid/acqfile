@@ -13,6 +13,7 @@ import {
   factValue,
   findingHeadline,
   attributeName,
+  responsibleName,
   reviewSubject,
 } from "@/lib/staff/labels";
 import {
@@ -254,7 +255,9 @@ export default async function Review({
               <select name="responsible" defaultValue={q.responsible ?? ""}>
                 <option value="">Anyone</option>
                 {[...new Set(v.findings.map((f) => f.responsibleRole))].sort().map((s) => (
-                  <option key={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {responsibleName(s)}
+                  </option>
                 ))}
               </select>
             </label>
@@ -306,8 +309,8 @@ export default async function Review({
                     <h2 className="text-[19px]">{title(selected)}</h2>
                     <p className="meta mt-1">
                       {v.party(selected.scopeKey)}
-                      {selected.period ? ` · ${selected.period}` : ""} · responsible{" "}
-                      {selected.responsibleRole}
+                      {selected.period ? ` · ${selected.period}` : ""} · responsible:{" "}
+                      {responsibleName(selected.responsibleRole)}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">

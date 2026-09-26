@@ -7,6 +7,7 @@ import { dealView } from "@/lib/staff/deal-view";
 import type { SnapshotContent, SnapshotDiff } from "@/lib/deliverables/snapshot";
 import { snapshotAction } from "../../deliverable-actions";
 import { CreateVersion } from "../../CreateVersion";
+import { responsibleName } from "@/lib/staff/labels";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
 /** The readiness module composes its sentences with raw status words; an operator reads names. */
@@ -100,7 +101,7 @@ export default async function LenderFile({
                 <li key={row.item} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <Pill value={row.status} />
                   <span className="font-medium">{row.title}</span>
-                  <span className="meta">{row.responsible}</span>
+                  <span className="meta">{responsibleName(row.responsible)}</span>
                 </li>
               ))}
             </ul>

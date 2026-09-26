@@ -206,3 +206,42 @@ export function reviewSubject(title: string) {
     .replace(/\s+agrees?\b.*$/i, "")
     .replace(/\s+equals?\b.*$/i, " comparison");
 }
+
+/**
+ * The party an operator addresses. `requests.responsible` is a stored key, and `buildDrafts`
+ * composes it as either a role or "role · party", so this renames for display only and leaves the
+ * key that identifies a recorded request untouched.
+ */
+export function responsibleName(responsible: string): string {
+  const ROLES: Record<string, string> = {
+    buyer: "Buyer",
+    seller: "Seller",
+    broker: "Broker",
+    lender: "Lender",
+    adviser: "Adviser",
+    "buyer attorney": "Buyer's attorney",
+    "seller attorney": "Seller's attorney",
+    accountant: "Accountant",
+  };
+  const name = (part: string) => {
+    const key = part.trim().toLowerCase();
+    return ROLES[key] ?? part.trim().replace(/^./, (c) => c.toUpperCase());
+  };
+  const [role, ...rest] = responsible.split("·");
+  // A composite keeps its party, which is already a proper name and is not re-cased.
+  return rest.length ? `${name(role ?? "")} · ${rest.join("·").trim()}` : name(responsible);
+}
+
+/**
+ * Why a source file is waiting on a person. Intake review types name the stage that stopped, which
+ * an operator does not share; each one says what is actually needed instead.
+ */
+export const attentionKind = (type: string): string =>
+  ({
+    unreadable: "Could not be read",
+    extraction_gap: "Values not found",
+    party_assignment: "Party unclear",
+    segmentation: "Filing unclear",
+    version_conflict: "Replaces an earlier file",
+    duplicate: "Possible duplicate",
+  })[type] ?? type.replaceAll("_", " ").replace(/^./, (c) => c.toUpperCase());

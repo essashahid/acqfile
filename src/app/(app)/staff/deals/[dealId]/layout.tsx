@@ -33,7 +33,9 @@ export default async function DealLayout({
             (v.counts.byStatus.missing ?? 0) +
             (v.counts.byStatus.received_with_issues ?? 0) +
             (v.counts.byStatus.needs_review ?? 0),
-          findingsOpen: v.counts.findingsOpen,
+          // A badge means "look here", and an informational finding needs no action, so it is not
+          // counted as work. The Review screen still lists it under "For information".
+          findingsOpen: v.counts.findingsOpen - v.counts.informational,
           followUps: v.counts.followUpsToPrepare,
           versions: v.counts.versions,
         }));
