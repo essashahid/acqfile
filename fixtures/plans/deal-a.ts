@@ -1,3 +1,4 @@
+import { factQuote } from "../lib/doc/quotes";
 import {
   base,
   doc,
@@ -369,7 +370,7 @@ export function dealA() {
     expected: "blocked",
     description:
       "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
-    extractor: { value: 2452000, quote: "purchase price: 2425000" },
+    extractor: { value: 2452000, quote: factQuote(doc(p, "loi"), "deal.purchase_price", 2425000) },
     verifier: {
       status: "unsupported",
       corrected_value: 2425000,
@@ -385,7 +386,10 @@ export function dealA() {
     expected: "blocked",
     description:
       "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
-    extractor: { value: "2026-04-18", quote: "as of date: 2026-04-19" },
+    extractor: {
+      value: "2026-04-18",
+      quote: factQuote(doc(p, "ar"), "aging.as_of_date", "2026-04-19"),
+    },
     verifier: {
       status: "unsupported",
       corrected_value: null,
@@ -417,7 +421,10 @@ export function dealA() {
     expected: "review",
     description:
       "Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.",
-    extractor: { value: 1030000, quote: "gross receipts: 1300000" },
+    extractor: {
+      value: 1030000,
+      quote: factQuote(doc(p, "tax-2024"), "tax.gross_receipts", 1300000),
+    },
     verifier: {
       status: "partially_supported",
       corrected_value: 1300000,

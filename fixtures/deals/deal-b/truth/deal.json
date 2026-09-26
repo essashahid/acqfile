@@ -204,7 +204,7 @@
       "description": "Extractor drops the working-capital line from the uses total; the cited total contradicts it.",
       "extractor": {
         "value": 3600000,
-        "quote": "uses total: 3700000"
+        "quote": "Total uses $3,700,000"
       },
       "verifier": {
         "status": "unsupported",
@@ -222,7 +222,7 @@
       "description": "Right term with an invented quote: exact evidence 0 and unsupported evidence blocks.",
       "extractor": {
         "value": 120,
-        "quote": "term months: 60"
+        "quote": "The entire unpaid principal balance of this Note shall be due and payable 60 months after the Closing Date"
       },
       "verifier": {
         "status": "unsupported",
@@ -258,7 +258,7 @@
       "description": "Extractor drops a zero; the verifier corrects from the cited line and the passes disagree: 0.70, review.",
       "extractor": {
         "value": 50000,
-        "quote": "total assets: 500000"
+        "quote": "Total assets $500,000"
       },
       "verifier": {
         "status": "partially_supported",

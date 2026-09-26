@@ -43,6 +43,27 @@ type TruthFile = {
   facts: TruthFact[];
   faults: TruthFault[];
 };
+const MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+/**
+ * Values as a reader compares them: "$1,300,000" states 1300000 and "August 31, 2026" or
+ * "08/31/2026" states 2026-08-31, as they would to the live verifier.
+ */
+export function comparable(input: string) {
+  const iso = (y: string, m: number, d: string) =>
+    `${y}-${String(m).padStart(2, "0")}-${d.padStart(2, "0")}`;
+  return canonical(
+    normalizeText(input)
+      .replace(
+        /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.? (\d{1,2}), (\d{4})\b/gi,
+        (_, m: string, d: string, y: string) =>
+          iso(y, MONTH.indexOf(m.slice(0, 3).toLowerCase()) + 1, d),
+      )
+      .replace(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/g, (_, m: string, d: string, y: string) =>
+        iso(y, Number(m), d),
+      )
+      .replace(/(\d),(?=\d{3}(?!\d))/g, "$1"),
+  );
+}
 let cache: TruthFile[] | null = null;
 export function loadTruthFiles(root = path.join(process.cwd(), "fixtures/deals")) {
   if (cache) return cache;
@@ -128,7 +149,9 @@ export function createMockExtractionProvider(): ExtractionProvider {
             ambiguity: null,
           };
         const onPage = request.blocks.filter((b) => b.page === fact.locator.page);
+        // A spreadsheet cell that is the value itself beats one that merely contains it.
         const cited =
+          onPage.find((b) => quote && normalizeText(b.text) === normalizeText(quote)) ??
           onPage.find((b) => quote && normalizeText(b.text).includes(normalizeText(quote))) ??
           onPage.find((b) => b.source_block_id === `page-${fact.locator.page}`) ??
           onPage[0];
@@ -168,10 +191,12 @@ export function createMockExtractionProvider(): ExtractionProvider {
           };
         }
         const candidate = JSON.parse(item.candidate) as unknown;
-        const text = canonical(valueText(candidate));
-        const quoteText = canonical(item.evidence_quote ?? "");
-        const citedText = canonical(item.cited_blocks.map((b) => b.text).join(" "));
-        const contextText = canonical(item.context.map((b) => b.text).join(" "));
+        // Yes/no facts are stated as clauses ("No repayment is expected"), not the words Yes or No,
+        // so a real verifier judges the cited clause; the mock checks the clause is on the page.
+        const text = typeof candidate === "boolean" ? "" : comparable(valueText(candidate));
+        const quoteText = comparable(item.evidence_quote ?? "");
+        const citedText = comparable(item.cited_blocks.map((b) => b.text).join(" "));
+        const contextText = comparable(item.context.map((b) => b.text).join(" "));
         const imageOnly = item.cited_blocks.some((b) => b.image_only);
         if (imageOnly || (quoteText && citedText.includes(quoteText) && quoteText.includes(text)))
           return {

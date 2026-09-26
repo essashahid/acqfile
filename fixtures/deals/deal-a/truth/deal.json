@@ -510,7 +510,7 @@
       "description": "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
       "extractor": {
         "value": 2452000,
-        "quote": "purchase price: 2425000"
+        "quote": "The total purchase price will be $2,425,000"
       },
       "verifier": {
         "status": "unsupported",
@@ -528,7 +528,7 @@
       "description": "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
       "extractor": {
         "value": "2026-04-18",
-        "quote": "as of date: 2026-04-19"
+        "quote": "Aged as of April 19, 2026"
       },
       "verifier": {
         "status": "unsupported",
@@ -564,7 +564,7 @@
       "description": "Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.",
       "extractor": {
         "value": 1030000,
-        "quote": "gross receipts: 1300000"
+        "quote": "1,300,000"
       },
       "verifier": {
         "status": "partially_supported",

@@ -56,7 +56,9 @@ export function validateBoundaries(segments: Candidate[], pages: number) {
   return sorted;
 }
 function signature(text: string): DocumentType | null {
-  const header = text.split("\n").slice(0, 8).join(" ").toLowerCase();
+  // PDF text extraction emits word gaps as separate whitespace items ("Form   4506-C"), so compare
+  // titles with whitespace collapsed; the window is still the first eight extracted lines.
+  const header = text.split("\n").slice(0, 8).join(" ").replace(/\s+/g, " ").toLowerCase();
   const scored = DOCUMENT_TYPES.map((type) => {
     const sig = DOCUMENT_SIGNATURES[type];
     const score = Math.max(

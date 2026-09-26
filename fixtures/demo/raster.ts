@@ -2,6 +2,7 @@
 import { createRequire } from "node:module";
 import { PDFDocument } from "pdf-lib";
 import { FIXED_DATE, textPdf } from "../lib/render";
+import { fingerprint } from "../lib/doc";
 import type { Doc, Plan } from "../plans/shared";
 const require = createRequire(import.meta.url);
 const canvas = createRequire(require.resolve("pdfjs-dist/package.json"))("@napi-rs/canvas") as {
@@ -13,15 +14,16 @@ const canvas = createRequire(require.resolve("pdfjs-dist/package.json"))("@napi-
 export async function demoRaster(p: Plan, d: Doc) {
   const source = await PDFDocument.load(await textPdf(p, [d]));
   source.getForm().flatten();
-  return rasterBytes(Buffer.from(await source.save()));
+  return rasterBytes(Buffer.from(await source.save()), fingerprint([d]));
 }
-export async function rasterBytes(bytes: Buffer) {
+export async function rasterBytes(bytes: Buffer, keywords?: string) {
   const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
   const task = getDocument({ data: new Uint8Array(bytes), verbosity: 0, useSystemFonts: true });
   const pdf = await task.promise;
   const result = await PDFDocument.create();
   result.setCreationDate(FIXED_DATE);
   result.setModificationDate(FIXED_DATE);
+  if (keywords) result.setKeywords([keywords]);
   const images: Buffer[] = [];
   try {
     for (let i = 1; i <= pdf.numPages; i++) {

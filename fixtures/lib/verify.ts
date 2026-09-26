@@ -13,6 +13,7 @@ import { plans } from "./plans";
 import { groups, documents } from "./truth";
 import { content, cue, sheetContent } from "./content";
 import { PASSWORD, verifyAcroform } from "./render";
+import { isIrs } from "./doc";
 import type { Manifest } from "../../scripts/generate-deal-fixtures";
 export const hash = (b: Buffer) => createHash("sha256").update(b).digest("hex");
 const normalize = (s: string) => s.replace(/\s+/g, " ").trim();
@@ -97,16 +98,23 @@ export async function verifyFiles() {
       if (first.format === "xlsx") {
         const book = XLSX.read(bytes, { type: "buffer" });
         assert.deepEqual(book.SheetNames, ["Income Statement", "Balance Sheet"]);
-        for (const name of book.SheetNames) {
-          const text = XLSX.utils.sheet_to_csv(book.Sheets[name]!);
+        for (const [i, name] of book.SheetNames.entries()) {
+          // The intake reads each cell's raw value, so check exactly that, not formatted CSV.
+          const cells = Object.entries(book.Sheets[name]!)
+            .filter(([ref]) => !ref.startsWith("!"))
+            .map(([, cell]) => String((cell as XLSX.CellObject).v ?? ""));
+          const text = cells.join("\n");
           assert.ok(text.includes("SYNTHETIC"));
           lintSynthetic(text);
-          for (const d of docs)
+          for (const d of docs) {
             for (const line of sheetContent(p, d, name))
+              assert.ok(cells.includes(line), `${file}/${name}: XLSX missing cell ${line}`);
+            for (const fact of record.facts.filter((f) => f.locator.page === i + 1))
               assert.ok(
-                text.includes(line.replaceAll('"', '""')),
-                `${file}/${name}: XLSX missing ${line}`,
+                cells.includes(fact.locator.quote),
+                `${file}/${name}: no cell ${fact.locator.quote}`,
               );
+          }
         }
         continue;
       }
@@ -145,7 +153,9 @@ export async function verifyFiles() {
           }
           const d = docs[page - 1]!;
           assert.ok(
-            normalize(text).includes(normalize(cue(d))),
+            normalize(text)
+              .toLowerCase()
+              .includes(normalize(cue(d)).toLowerCase()),
             `${file}: classification cue missing`,
           );
           for (const line of content(p, d))
@@ -156,9 +166,10 @@ export async function verifyFiles() {
           for (const fact of record.facts.filter((f) => f.locator.page === page))
             assert.ok(
               normalize(text).includes(normalize(fact.locator.quote)),
-              `${file}: truth quote absent`,
+              `${file}: truth quote absent: ${fact.locator.quote}`,
             );
-          lintSynthetic(text);
+          // Decision 55 again: an official IRS page prints agency contacts; lint what we authored.
+          lintSynthetic(isIrs(d) ? content(p, d).join("\n") : text);
         }
       }
       // A36: official-form facts are field values on the widget's page; the signature mark is page content inside the signature widget.

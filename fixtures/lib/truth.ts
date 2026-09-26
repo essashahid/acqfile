@@ -11,36 +11,13 @@ import {
 import { FACTS } from "../../src/lib/domain/registry";
 import { EngineInputSchema } from "../../src/lib/rules/input";
 import { hashObject } from "../../src/lib/hash";
-import { fakeId, type Doc, type Plan } from "../plans/shared";
+import { type Doc, type Plan } from "../plans/shared";
+import { display } from "./doc/display";
+import { factQuote, signatureLine } from "./doc/quotes";
 export const json = (value: unknown) => JSON.stringify(value, null, 2) + "\n";
-export function display(value: unknown): string {
-  if (value && typeof value === "object" && !Array.isArray(value) && "hmac" in value) {
-    for (const clear of [
-      "00-1234567",
-      "00-1234568",
-      "00-7654321",
-      "00-5556789",
-      "00-5566789",
-      "900-12-3456",
-      "901-23-4567",
-    ])
-      if (fakeId(clear).hmac === (value as { hmac: string }).hmac) return clear;
-    throw Error("Unknown synthetic identifier");
-  }
-  if (Array.isArray(value))
-    return value
-      .map((v) =>
-        typeof v === "object" && v !== null
-          ? Object.values(v).map(display).join(" / ")
-          : display(v),
-      )
-      .join("; ");
-  return typeof value === "boolean" ? (value ? "Yes" : "No") : String(value);
-}
-export const quote = (attribute: string, value: unknown) =>
-  `${attribute.split(".").at(-1)!.replaceAll("_", " ")}: ${display(value)}`;
-export const metadataQuote = (d: Doc) =>
-  `Signature: ${d.metadata.signed ? "e-signed" : "________________"}; Date: ${d.metadata.dated ? d.metadata.signature_date : "________________"}`;
+export { display };
+/** The signature record a document prints; the intake reads signed/dated from this line. */
+export const metadataQuote = (d: Doc) => signatureLine(d);
 export const label = (attribute: string) => attribute.split(".").at(-1)!.replaceAll("_", " ");
 // A36 locators: AcroForm facts cite the widget's page and field name with the field value; image-only facts cite a page and named region with the value as read, not verbatim.
 export function factLocator(
@@ -66,7 +43,12 @@ export function factLocator(
     };
   if (method === "acroform" && field)
     return { file, page: fieldPage, source_block: `field:${field}:0`, quote: display(value) };
-  return { file, page, source_block: `${d.id}-page-${page}`, quote: quote(attribute, value) };
+  return {
+    file,
+    page,
+    source_block: `${d.id}-page-${page}`,
+    quote: factQuote(d, attribute, value),
+  };
 }
 export function metadataLocator(file: string, d: Doc, page: number, vision: boolean) {
   const spec = officialForm(d.type);
@@ -144,8 +126,14 @@ export function documents(p: Plan) {
               method,
               locator: {
                 ...factLocator(file, d, page, method, attribute, value),
-                ...(first.format === "xlsx" && attribute.startsWith("financial.total_")
-                  ? { page: 2, source_block: `${d.id}-sheet-2` }
+                // A workbook value is its own numeric cell; balance-sheet totals sit on sheet 2.
+                ...(first.format === "xlsx"
+                  ? {
+                      quote: display(value),
+                      ...(attribute.startsWith("financial.total_")
+                        ? { page: 2, source_block: `${d.id}-sheet-2` }
+                        : {}),
+                    }
                   : {}),
               },
               confidence: 1,

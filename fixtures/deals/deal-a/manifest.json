@@ -13,71 +13,71 @@
         3,
         9
       ],
-      "plan_hash": "3428c72a8b709603af3799adec6d8046141c8b4932c70aecdd264748e4488b4a"
+      "plan_hash": "d0ed482a811c53da27d3c7b58829f33878d6a1408151c26801156355fe3a5c05"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
-      "sha256": "52107848637f9b0cf9a36e637e569f75bdb619b743b7f0f704800af9f91fbf8e",
-      "bytes": 2339,
+      "sha256": "aa71b227bbaedf25ba5ff472e2d6136f3354556a16466d4cd2e028ac465cdc49",
+      "bytes": 5705,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "cf4ba7eb0c94af42b498516f5dce649b89720905e4f2518a64ac17e51f430884"
+      "plan_hash": "d3efe1c153bd93736fa54efea338ad7a0b00c6fa0bddc01450728a66d4e3cd6c"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
-      "sha256": "3bbc5a62c68d525abdce8d23a09bd6e44fa7839f768885fac4409832daddb364",
-      "bytes": 5985,
+      "sha256": "6be73622c06dfa71b3dd45dca6c8cbbdf290e72c5e77074fb88e1ae9971f47c2",
+      "bytes": 155132,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "47be0eab81c8ea91511171e4858a9967555c0846d1e1995616bb31d0e83768b1"
+      "plan_hash": "c011f40d0d4e8cc430b060cb06f3d855bbc5a739392812482ed0b7ac2e23c84f"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
-      "sha256": "6e6a09abc2925e9b59fc4ace948c6d6b2daca133b1199375ff37979f1fc2c732",
-      "bytes": 5078,
+      "sha256": "cda607b50240e865fa9c4759141c509f181918a498baf3144cc789c1c00e1f9e",
+      "bytes": 11794,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         13
       ],
-      "plan_hash": "58fbe665b6c3149b9422ddd73fa6bf259437428f0f697a859959d1ab548706ed"
+      "plan_hash": "f01325e20e55666c0cb9a25fd2ab55563fd60221a1fd04c3453c592a8f17f9b8"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
-      "sha256": "25c1d2418375369c0b65ee5b5e2d6ddaa80e08a9d7c6a04e8a3721a7ea2c0047",
-      "bytes": 3928,
+      "sha256": "2df176bb2edc9699e6155bfc3f15461663518020f6cab3dd31fc22e682b653eb",
+      "bytes": 110841,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         4
       ],
-      "plan_hash": "b0169f75c915dec2a86f39d9f0c10c107b2786d48017e88b604f7d64685dcc41"
+      "plan_hash": "33ac811a7f0115e3b8a8e006ff5afa0098c58c45f5d7aba3b569825258fbca9d"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
-      "sha256": "0ebc43fdbb33dc87023e1fbe6b2a20a9fa8bf9368b357f54bd865698f2f49a73",
-      "bytes": 2523,
+      "sha256": "900f9e06aaad1a6407644c2f338a2b5142a72c9094f93de670d73e74760a1d0d",
+      "bytes": 8807,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "1f0ba1aa7978f9cd99b4fe463df01e8e3764aae83b0ec5eea0d30408fb85f447"
+      "plan_hash": "fbd106fcc94a98c8315dd80e13b866026c00ea4c3d8a9fc676194805f57f8aa2"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
-      "sha256": "b79237bddba3cac44a89c6684ff773bdb35fd1066008983afa3a259f3c717234",
-      "bytes": 5080,
+      "sha256": "4a7f8f37fe043d61c62dbc9eddc9f52752ed6481cab8cbfdef0f591bc5a816ba",
+      "bytes": 11790,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "2d1d6647da10bf913d37c74df861c470b3db48a63ec83b8388280b349821702c"
+      "plan_hash": "b33443777c751b550fd7cef4165b88f03f6697d37de826cf992e06abd6dd6477"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/bea-pfs-old.pdf",
@@ -89,7 +89,7 @@
       "planted_items": [
         11
       ],
-      "plan_hash": "57c523f1dcdbfab591990054938e1c9cf7042438f4cfba93b4c1528615e29e03"
+      "plan_hash": "99b942a0f97bf4b25b71e4cd51b7d22bfbb8a29a7dbacd0aa19e468d6d547cee"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/bea-pfs.PDF",
@@ -101,54 +101,54 @@
       "planted_items": [
         11
       ],
-      "plan_hash": "fe1c2bd1e8673307b2d9f04c94e6011c2dcdd3ee0c5f31b10daba4aab379c4aa"
+      "plan_hash": "586379de0d5b54e98609040684db02b25c411cf52cf21e30dc46fef5dc888c07"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
-      "sha256": "a285b0bc31b3c9f13b4fec3edfbe538c25eb2f189c02a8734b05aa9da40a35fa",
-      "bytes": 5475,
+      "sha256": "d2e889b10ab3ba792322c2f79cfc351ce74da10f667a97980b48e57910e55c67",
+      "bytes": 161105,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "c4e521d1461c4b3af358f7bb1a31de30e23bb0422aeb3ca62dfbc03b8ae35ecb"
+      "plan_hash": "283d3cb6679817ccc34d3e1a857c0bb2a5c7d4cedcf382559e50379f3adf09fb"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/formation.PDF",
-      "sha256": "1180664351ab0b7c7dc81dd5e12cd0d3cf8ad5c1d46b332de0d398754c270055",
-      "bytes": 3634,
+      "sha256": "8e866b7b7318a44cd212257ea483a467f34d14e3625e2611910079114b439d97",
+      "bytes": 5124,
       "pages": 1,
       "format": "protected_pdf",
       "batch": 1,
       "planted_items": [
         16
       ],
-      "plan_hash": "2164942c76555373ae40cb03f0411cd44fc23faf2770efef3c890d0be915bfe8"
+      "plan_hash": "9802dead2cb61a7ec71f35116d23454c44da70a3a548ad9c84d72b529d4ac889"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
-      "sha256": "0183d7967854d0b923b7f5004a3d09449a0cecb98576a75328207e02bfa81707",
-      "bytes": 4191,
+      "sha256": "8c83fcd1a87b6db9b35149d31d13ccc5a24e45fa74844ff2627c9a539c34f156",
+      "bytes": 15845,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "34d9d024ec27bb465598fd67fed4cdae1344c46e3d6944ee24ab0251ed0ff9ee"
+      "plan_hash": "30d10b0e20973e5a8df79d4fa7915b79f0adaf4a5122c9a0b23ac7f95e28a8bf"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
-      "sha256": "cff214b1f2d534a3d27de70a69b5de3f360b08849f39123aed03cf092a47ddaa",
-      "bytes": 3867,
+      "sha256": "51c98cc13520c94f0fabdfe55483a2819623ea57ef7de38d7539e6be6d7a8399",
+      "bytes": 10998,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "184fa36bc30194ff2809576d083ddaa56b76c501786d25ead9d4a3ffebee9a78"
+      "plan_hash": "76459858ec43dae113b344107707ede05435c715b8f7f374cade06b9ee64efde"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
-      "sha256": "dd5443dc4e513309718123abd11172adbe95f69036882bf2a7f47fb64621ff01",
-      "bytes": 4181,
+      "sha256": "b2f36bdd14cd152ab1ae8e8dcf614f25d628f36fa6fba7d3f9467802958cb9a5",
+      "bytes": 8661,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
@@ -159,132 +159,132 @@
         9,
         22
       ],
-      "plan_hash": "a8cf9e99840d493b651cecdac9b39dd3287a1794e2232e1891882e2c6c440fdf"
+      "plan_hash": "c77de0dfc1133a64c84387214cd9acb031a90910a564e6b2768f3ef32b179007"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
-      "sha256": "a30aae65ef3b7410eefbec4374c7c7e2556087eefa715b9f7d296a655ade9547",
-      "bytes": 3679,
+      "sha256": "35549c42f7711c882bc627f40a30604c0e506541380e27232ba7aa803c5ef847",
+      "bytes": 8831,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "b64812327c43e83ca49fc4d700b7625b3e40423c3eb5402523a31bb5f8e79dbb"
+      "plan_hash": "a0eeac5b2683b8880578cc3e1c956de83a995a3a94c0a574572ef4e0b13be362"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
-      "sha256": "019b421b639da3b910da15979e529ba5d12d305e4af4f4975c1dd5a63ffc7620",
-      "bytes": 3716,
+      "sha256": "45cd8c4026d043bbfdc8dc2e1d5a05a66d33af27ebefc06f4dba4a6b6a79ce2d",
+      "bytes": 7682,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         21
       ],
-      "plan_hash": "fda82febca46654e2fdddb5f5dc619e4a00c384fb760433c78405961dee3291f"
+      "plan_hash": "39176da741ec3b566ff637952a1e1ad7437b85adfa0425222d8ea17725733c3f"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
-      "sha256": "c891d8ccfc76222392423d3c53e6fd43c69c43d2860a0ba5358b2b600087defb",
-      "bytes": 3905,
+      "sha256": "397f7ad3dd1df3751917571fc38fe8543f01e4ee68bf155f7d846c7c1672759c",
+      "bytes": 12469,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "44521ee2c2889498ac72efd96df8d52308708bfaa3719db278d7eb8583a4ef69"
+      "plan_hash": "5b7b0024aaa2cfe1b386bd43a5d62747a333ceb7d3e4f4c07b58dd4d78d773cc"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
-      "sha256": "c0be9e19172972d63560a402fb935e77cd2f2242e7928ad6c5bdb5d6e781287c",
-      "bytes": 4143,
+      "sha256": "80775c7d0fdb9ee97e9853ed81a2aefc40121f8f05c3828212ea7f9d6793200d",
+      "bytes": 14441,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         22
       ],
-      "plan_hash": "e06f784aa09e0fab6bd1dc2f68dd7552783e202d5bc72b3ee32a0294087af795"
+      "plan_hash": "45cb7ae3c7b835e81c45d2bfb8810b5f646b528982abfd8f74bbefce45d5a4bb"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
-      "sha256": "0dc8cd6fa252a7d9f63447ee078c9be9ab290338816a84a1480c61788f01fa47",
-      "bytes": 2333,
+      "sha256": "569c2e488351f4ee52b15c207544ff4937cd92a4c9cf40140248301a4fc1e8ae",
+      "bytes": 5694,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "a116a693e98b1032b54c27a38ab512c779756426fae37404317e442510881938"
+      "plan_hash": "e928005c13a19cea2afa04ff456343f0a6b77f561d2ab5c3db0f133b8c5837b5"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
-      "sha256": "bae1f4ee8ab7a4f1aca08743df619eea8c79534eeb63fe1f3eb2f58e68bbdbcf",
-      "bytes": 2465,
+      "sha256": "4f4fa0cb51c1ca9bb1cceacdacc13671c3883278cd6f46830b4fbb7f4d2d4c83",
+      "bytes": 7245,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "9c37bc2fbbe14662416cef247f724337d96e4d1c7438b451be96fbe5577abae6"
+      "plan_hash": "25f622f0c5f25285e2ba18c1a34975171fc391ae75f0fa5c18f01f5fa1f9181d"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
-      "sha256": "e3720a9d5ddf3297bff97cb59dd18dfc0f99b356d308b485bd7b8eb3fd7c5c33",
-      "bytes": 5966,
+      "sha256": "3095477f0b7457fba96c98d892c4cf2e6dd1223d84ad4c61b4999d9bcdaf73ba",
+      "bytes": 154876,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "8e27760c0d92dbb0c3e71ff7aaedc2de208b7363493977dcfb06e3721102d1c7"
+      "plan_hash": "cfaf3633903c943f0c814606ca72b4211da513b1eec5e647001b3bb11d7a9c4a"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-      "sha256": "b9dfcaab8f34f79d40b1433d06da1a0f0709217bfc54084255b578e26eb35d7c",
-      "bytes": 1315541,
+      "sha256": "8f06a4700de28cc27bff63727cfb386243169f4d6d7d4f626c368081cbe00136",
+      "bytes": 1315730,
       "pages": 6,
       "format": "scan_pdf",
       "batch": 1,
       "planted_items": [
         2
       ],
-      "plan_hash": "42c9ccfe7dcfcebcebeb2703aa05cebbb3b9a964ad524ffbae20d58a15de8b67"
+      "plan_hash": "b2f034339c72e871950f489e623627fd30eee0b9f8ccdbfff325dcd6fcf23ddc"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/plan.docx",
-      "sha256": "750c672ceabc06ca5420764eaf94d1f9bae43b87775edfa806e981894c45c2cc",
-      "bytes": 10448,
+      "sha256": "d716de3fe62442729ccb30ab5360e928d9d1da784998e00882f21b8ef4e0476c",
+      "bytes": 11799,
       "pages": 1,
       "format": "docx",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "be9197a1234f83ce9f9c33a2d0db316dbae67c1077da8ca579ae959230f9dc84"
+      "plan_hash": "e70292e6a5f9392b9b473b3522e6228449b9c610a0c9797fa6ba0871ab1f6993"
     },
     {
       "path": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
-      "sha256": "b2ce1f0667ce11505917ab682870ac9beb6b30003ae07f549eea826c840c9d88",
-      "bytes": 2291,
+      "sha256": "6a2ff1f24c811d8571c24cfdfdcae27dfa30c93cf8a773fda741cb0785518537",
+      "bytes": 3839,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [
         24
       ],
-      "plan_hash": "2de8c856e923f2dbc8b997aaa7cdf6846888896256766e71354c6379432e93a5"
+      "plan_hash": "eb15353e9e8897a03470a8ff4b5b2435799ef79a7d8c69b5d8e246a8de22a5b8"
     },
     {
       "path": "incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF",
-      "sha256": "25c1d2418375369c0b65ee5b5e2d6ddaa80e08a9d7c6a04e8a3721a7ea2c0047",
-      "bytes": 3928,
+      "sha256": "2df176bb2edc9699e6155bfc3f15461663518020f6cab3dd31fc22e682b653eb",
+      "bytes": 110841,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         4
       ],
-      "plan_hash": "1324eac76664ae030e5cf0c4a9dc8ccca3043a481665a417ad673ab8fe4dc6ca"
+      "plan_hash": "00e7da44eb59d0b116128a08dbcf775cb0d3558f82003feda4cfa63d2675a8dc"
     },
     {
       "path": "incoming/batch-1/Phone/scan0007.pdf",
-      "sha256": "3aef789054df594103353429ecd94caaea1e2e017cae7c2b9afe3404767d88e0",
-      "bytes": 71761,
+      "sha256": "9a159190402255314f71f6c233587b226ca71b72c298df6efe004866afdd0948",
+      "bytes": 139042,
       "pages": 1,
       "format": "scan_pdf",
       "batch": 1,
@@ -292,24 +292,24 @@
         14,
         20
       ],
-      "plan_hash": "12e1eaf25005ec8659f6ab8d3f85aff78b72672c836e9514aa7d517fc20c8026"
+      "plan_hash": "c55de067e1427681bc5dc281ea90126ba9da946b022786023ba7546a833be2e3"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/brochure.PDF",
-      "sha256": "f4bbff72898ef928fd7282808a45c8231a1ee574972424c086d7311edba7ed8a",
-      "bytes": 2330,
+      "sha256": "4ab11d000a4eec1be28c93a17d962623307a30b35c31c879ddf34134709a46e3",
+      "bytes": 3834,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [
         15
       ],
-      "plan_hash": "ee8e65447857e6b0f9359434d99096df2fbae23f004e247e6f7ed8d178aa2b12"
+      "plan_hash": "d3fed0043beeb98e4f3c31e74c9bf82d9e4f1a49fc58ce390089cdd6ac211ad4"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-      "sha256": "7646c7aac3cada5550f75e53fdf284a4382a9631ca3994116dbaeb1c820fb602",
-      "bytes": 7149,
+      "sha256": "77d85b85a0ce66decd464b170fcd31c032573848071de544e7041fd24d203160",
+      "bytes": 7428,
       "pages": 2,
       "format": "xlsx",
       "batch": 1,
@@ -317,12 +317,12 @@
         17,
         19
       ],
-      "plan_hash": "b2d384de1f52ce3b0037c421c67c5b8a36cda4f21d40edd45ecfb84bf0f8a552"
+      "plan_hash": "ab8416dcfd8bd8937ccdedab72ecfad8c702e31b615d99e708ae44442a48d935"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
-      "sha256": "5f7b7ebf6994624c84e4c0bc3d96cab229a37afbbf30d2edb9ff28a17feda550",
-      "bytes": 4595,
+      "sha256": "d88e33d25bb70e1650da2a4c520a8f2908a4f974c27ed0f1fdb2ce0bf531e547",
+      "bytes": 11300,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
@@ -330,22 +330,22 @@
         6,
         23
       ],
-      "plan_hash": "cd46320b552da3bcf8871051267a37a8a0a8e19fdca2704cd2692b6db7f9e67c"
+      "plan_hash": "a8cabc1ba10cf601f9e060c9b7504d886d6f611b2922d64aea58325a4dfe45f9"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
-      "sha256": "ac6033b3bf5fac79f83e27c2b39cf35ccb29d12926a42042b28595c3498c78aa",
-      "bytes": 3633,
+      "sha256": "13f5e2b31eeacd1ea06f8a64e735fb0a45b0fd11589090a48d542fabd46aabb9",
+      "bytes": 10204,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "954d326e449c40c241d8e03b348846ac76511558e9dfb09c21300421602620ac"
+      "plan_hash": "c9ae423276a1243c13bf22bd3f069b34598ead00598b7399acad8eceaa382cc8"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
-      "sha256": "6acf2b3fe5ce880c76ec5fbf29e5c405b7fe7e46337d6cb199f1a1bc3a48529c",
-      "bytes": 3865,
+      "sha256": "81dcea8a2f76e4bbec113b81692bf7d0601fbc825398a20cfdf88545e549ede3",
+      "bytes": 8110,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
@@ -353,70 +353,70 @@
         8,
         10
       ],
-      "plan_hash": "927fe297df803c7cffebc49a5aeeb11aaeacb137ba7aa0f786a4ae402dcb625f"
+      "plan_hash": "e60b605202fcb27dd226b0a7b981a2a1fdb130e7743b9e3133f5bc46580c2c60"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
-      "sha256": "ae3ec476acba29f94398a82afded322da240a2d648a47a485dc91df63d23f47d",
-      "bytes": 4104,
+      "sha256": "5deba22b0e34e6d1f28d80a58b95f2d6932d8f38643a0a28780ae21a41ebcd4f",
+      "bytes": 13019,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         18
       ],
-      "plan_hash": "c7fbf38992f558952de8cc8ecaee222e1262161f5d4e76ddf9528219bd36974d"
+      "plan_hash": "fab8ff428498320269ce13a718ca221086697d851e58ac9f0e334d6ea86cb12f"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
-      "sha256": "8b9397d88ad75a40fae0c3b40a213e0b4cb0503ca79845806392b1324071bbc1",
-      "bytes": 3724,
+      "sha256": "4694416c30bd005e6e92fc5a32366ada02c59443214e455dceece84c280fba77",
+      "bytes": 13374,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         18
       ],
-      "plan_hash": "112667a6d1c16bfc137c4b7c4e1d173a31c5d86f6e1ec7623707ae12027d34fc"
+      "plan_hash": "dc57716e554cca22130a4bd334a25b457b7c9ab41915d39538850ef1dd9cbc75"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
-      "sha256": "93665d8b8b93e9115c0768032ce14ad95deab62f79473347074f0d2c534bd5de",
-      "bytes": 3895,
+      "sha256": "0186f3a7bc830d6a8543a7f0f8fb4632ede222846267fbbfb5f13ce0fc234a63",
+      "bytes": 28008,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         5
       ],
-      "plan_hash": "66a49e190026f0119c4d3157d1b01bf44a3c36eaf3b9abef0d58596dc90e711f"
+      "plan_hash": "71982a0712bfca21e13f3d9777ce8e87821d8014b9b2b6223bc39fcb0c043b2b"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/lease-consent.pdf",
-      "sha256": "9e3b1bdef25213722eee75e3b30e002e6e4810165a817edbe3bc28a00b39526f",
-      "bytes": 2241,
+      "sha256": "d05dff5e6b5b6ffaffdd76a7c71418fd793e90e5296765b706110214a6be4ce4",
+      "bytes": 5249,
       "pages": 1,
       "format": "text_pdf",
       "batch": 1,
       "planted_items": [],
-      "plan_hash": "0242c14fc0007740c966700665cfc59cf0984cc7a52f57a995ea09e64c804e3f"
+      "plan_hash": "10dcae183841786d1192de1f4513ebca7166952607c2f12bc40e15614af2c71c"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/license-resend.PDF",
-      "sha256": "6acf2b3fe5ce880c76ec5fbf29e5c405b7fe7e46337d6cb199f1a1bc3a48529c",
-      "bytes": 3865,
+      "sha256": "81dcea8a2f76e4bbec113b81692bf7d0601fbc825398a20cfdf88545e549ede3",
+      "bytes": 8110,
       "pages": 2,
       "format": "bundle_pdf",
       "batch": 1,
       "planted_items": [
         10
       ],
-      "plan_hash": "fce3a4c45d6edf5bb0e6fd46bc83a1691a2250051915d72889cb453952ae030d"
+      "plan_hash": "1c4e0a1f8a2605e3a4ddc55ca23fb48f5ce249a1a631e951b6e9e545d3892426"
     },
     {
       "path": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
-      "sha256": "7cc121267661593b3e38ecda630a80c5e25d07810495d0bea8aa2056ad4f6687",
-      "bytes": 6276,
+      "sha256": "ff50cdd37b7707ba89cf9582393d55b76cc2a5b047e674fd577e1c7070fe2efa",
+      "bytes": 155213,
       "pages": 3,
       "format": "bundle_pdf",
       "batch": 1,
@@ -424,7 +424,7 @@
         5,
         17
       ],
-      "plan_hash": "33489c1a094ff7ce9a39f79dfed793ee50eb01a4f54911e73afd325448ec0f63"
+      "plan_hash": "6065d446cc1dcea3fe16320f88a8fb244a72c73130264248fb3f2455c2ddf2a0"
     },
     {
       "path": "incoming/batch-2/Buyer/Attachments/1919-fixed.PDF",
@@ -434,50 +434,50 @@
       "format": "acroform_pdf",
       "batch": 2,
       "planted_items": [],
-      "plan_hash": "e2820c6abf8392de73ecffffc4af7a2d30199d3f496a555dc4c25da55f55360d"
+      "plan_hash": "b36f582849b77ef764b1007bf0b25e2bde82f4c21c21d06a82b196624cbce396"
     },
     {
       "path": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
-      "sha256": "172d811d06cc3925151e81829beed231381d83a499be3ce99beef94f38a54313",
-      "bytes": 2386,
+      "sha256": "badb0c10f571e47861772187c6d98189cb70a408952a320529cc7251983ccbf3",
+      "bytes": 52195,
       "pages": 1,
       "format": "text_pdf",
       "batch": 2,
       "planted_items": [
         1
       ],
-      "plan_hash": "b53ca680e0a6723e800f5c12a981cb750937e6a386813e0abb0155e3b5bc7c0f"
+      "plan_hash": "c7c1d9060cbe3e5e33910334060051ab9085283e942e262becd0458d735fbbd2"
     },
     {
       "path": "incoming/batch-2/Buyer/Attachments/bea-citizen.PDF",
-      "sha256": "f854089145647dc7683dc77a07a653fe76f9134b354bfb8b4463b73e2338db27",
-      "bytes": 2230,
+      "sha256": "39061f8c103f7ae0caf49c8a22e466f6c71f779135c849dcf4951889c62b5f1e",
+      "bytes": 5434,
       "pages": 1,
       "format": "text_pdf",
       "batch": 2,
       "planted_items": [
         21
       ],
-      "plan_hash": "f1e1c49938bbc3e3bd40b00fd15921a6184adcca8df647168e30aa7b26e7d7cc"
+      "plan_hash": "12fe2449b0d9db042734d2abaa1454cc3ff096a406dc4f6b391bbb0756693361"
     }
   ],
   "archives": [
     {
       "path": "batch-1.zip",
-      "sha256": "5ebd6cf61a04c99f204c04c73c0264e76fea4dac6a683bdf7c6fe0e3bfa97f6f",
-      "bytes": 2518867
+      "sha256": "bc2e6e71ba2cd7482529ce086416031438b1cdc1edb0d776e66d85a9d8d47e6f",
+      "bytes": 3323181
     },
     {
       "path": "batch-2.zip",
-      "sha256": "fbc8f10f869b05a3efde2cfa6899ef23531ab77cbb1d841b54a6788f369b1f6e",
-      "bytes": 406663
+      "sha256": "3e848a828e4e5b6c224d42eac25912a03b8dcb98088471c5c51066a232f957e1",
+      "bytes": 447877
     }
   ],
   "truth": [
     {
       "path": "truth/batch-1/engine_input.json",
-      "sha256": "a1aa64acd7852a778575bf054e7413528499b0d97172d09f48b5afa47fd3379f",
-      "bytes": 194916
+      "sha256": "3116a5eb441dca96748c4dfb2dcd9fd5ff218507e0dde2f71f557a17e3dbfcb4",
+      "bytes": 195688
     },
     {
       "path": "truth/batch-1/expected_checklist.json",
@@ -496,8 +496,8 @@
     },
     {
       "path": "truth/batch-2/engine_input.json",
-      "sha256": "6dd080acf5315705dcf8a03871c97b537dc9112b7660e7daad3a6abe1cacd3c8",
-      "bytes": 198617
+      "sha256": "8503286f290f8fd9cac7d63c7f79ae0b6d9449c0013b2279283df5c7d0b08a44",
+      "bytes": 199383
     },
     {
       "path": "truth/batch-2/expected_checklist.json",
@@ -516,13 +516,13 @@
     },
     {
       "path": "truth/deal.json",
-      "sha256": "a3bfed0d50d0e2d84a51d1beb7c7c671d335657b42fede37714c66683bef819a",
-      "bytes": 13892
+      "sha256": "ad4a735c5286d95286b6fcd97dbdd97c01e661f069c65ffc4a018ec65ac2fe65",
+      "bytes": 13901
     },
     {
       "path": "truth/documents.json",
-      "sha256": "2ef5db74497b5d967cfdfd622a0b47a97a05064552c1a0bb97c25ff038f7dad6",
-      "bytes": 228953
+      "sha256": "5a4de1a852aac10fd582a748e0a103f699824baec1dcceef376b76d19729cddd",
+      "bytes": 229753
     },
     {
       "path": "truth/expected_review.json",

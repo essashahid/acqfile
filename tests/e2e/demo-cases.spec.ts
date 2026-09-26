@@ -260,7 +260,10 @@ test("D08 adviser downloads preparation with deferred work; a new price blocker 
   await later.getByRole("button", { name: "Save tracking", exact: true }).click();
   await expect(later.getByRole("status")).toContainText("Saved.");
   await preparation(page, dealId);
-  await expect(page.getByText("Credit reports · lender · tracking", { exact: true })).toBeVisible();
+  // Later lender work reads as words: the item, a "Lender tracking" status and its owner.
+  const deferred = page.locator("li").filter({ hasText: "Credit reports" }).first();
+  await expect(deferred.getByText("Lender tracking", { exact: true })).toBeVisible();
+  await expect(deferred.getByText("Lender", { exact: true })).toBeVisible();
   const client = await browser.newPage();
   await login(client, { email: "demo-adviser@example.com", password: "synthetic-adviser-local" });
   await client.goto(`/deals/${dealId}`);

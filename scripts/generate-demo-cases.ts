@@ -6,9 +6,10 @@ import JSZip from "jszip";
 import { DEMO_CASES } from "../src/lib/demo/registry";
 import { demoRaster } from "../fixtures/demo/raster";
 import { casePlan } from "../fixtures/demo/plans";
-import { content } from "../fixtures/lib/content";
 import { documents } from "../fixtures/lib/truth";
 import { textPdf, docx, xlsx, protectedPdf, FIXED_DATE } from "../fixtures/lib/render";
+import { templateOps } from "../fixtures/lib/doc";
+import { drawPdfLib, embedFonts } from "../fixtures/lib/doc/sheet";
 import type { Doc, Plan } from "../fixtures/plans/shared";
 const root = "fixtures/demo/generated";
 const hash = (b: Buffer | string) => createHash("sha256").update(b).digest("hex");
@@ -45,7 +46,9 @@ async function main() {
         const target = path.join(root, file);
         // Protected and raster files are canonical artifacts, independent of local raster/encryption randomness.
         const canonical =
-          ["scan_pdf", "protected_pdf"].includes(original.format) && fs.existsSync(target);
+          !process.argv.includes("--rebuild-scans") &&
+          ["scan_pdf", "protected_pdf"].includes(original.format) &&
+          fs.existsSync(target);
         const bytes = canonical ? fs.readFileSync(target) : await render(p, original, c.id);
         fs.mkdirSync(path.dirname(target), { recursive: true });
         fs.writeFileSync(target, bytes);
@@ -84,7 +87,13 @@ async function main() {
           });
         // Authored narrative wording on original page 1.
       }
-      if (!d.duplicate_of) candidates.set(sha, { ...candidate, hash: sha, parties: p.parties });
+      if (!d.duplicate_of) {
+        // The mock reads answers by file hash: one file may not carry two different answers.
+        const prior = candidates.get(sha) as { facts: unknown } | undefined;
+        if (prior && JSON.stringify(prior.facts) !== JSON.stringify(candidate.facts))
+          throw Error(`${c.id}/${d.id}: renders identical to a document with different facts`);
+        candidates.set(sha, { ...candidate, hash: sha, parties: p.parties });
+      }
       const zip = archives.get(d.batch) ?? new JSZip();
       zip.file(d.path, rendered.bytes, { date: FIXED_DATE });
       archives.set(d.batch, zip);
@@ -117,6 +126,7 @@ async function render(p: Plan, d: Doc, caseId: string) {
     pdf.setCreationDate(FIXED_DATE);
     pdf.setModificationDate(FIXED_DATE);
     const font = await pdf.embedFont(StandardFonts.Helvetica);
+    const fonts = await embedFonts(pdf);
     const names = [
       "Varnholt Acquisition LLC / Varnholt Climate Services LLC",
       p.parties.find((p) => p.id === "alex")!.legal_name,
@@ -125,25 +135,27 @@ async function render(p: Plan, d: Doc, caseId: string) {
     for (let i = 0; i < 6; i++) {
       const page = pdf.addPage([612, 792]);
       const title = i < 2 ? "Purchase agreement" : "Personal financial statement (supplement)";
+      // Page 1 is the agreement's own first page; the rest keep the authored packet wording.
+      if (i === 0) {
+        drawPdfLib(page, fonts, await templateOps(p, d, { pageLabel: "Page 1 of 2" }));
+        continue;
+      }
       page.drawText(
-        (i === 0
-          ? [...content(p, d), "Page 1 of 2"]
-          : [
-              "SYNTHETIC - demonstration only",
-              title,
-              names[Math.floor(i / 2)]!,
-              `Original packet position ${i + 1} / 6`,
-              `Page ${(i % 2) + 1} of 2`,
-              `Name: ${i < 2 ? p.parties.find((p) => p.id === "target")!.legal_name : names[Math.floor(i / 2)]}`,
-              i < 2
-                ? "Asset purchase price: $1,000,000"
-                : "Assets $500,000; liabilities $100,000; net worth $400,000",
-              "Date: August 31, 2026",
-              "Full signed official statements are supplied separately.",
-              "Broker: Morgan Vale, broker@example.com",
-              "Signed: Synthetic specimen",
-            ]
-        ).join("\n"),
+        [
+          "SYNTHETIC - demonstration only",
+          title,
+          names[Math.floor(i / 2)]!,
+          `Original packet position ${i + 1} / 6`,
+          `Page ${(i % 2) + 1} of 2`,
+          `Name: ${i < 2 ? p.parties.find((p) => p.id === "target")!.legal_name : names[Math.floor(i / 2)]}`,
+          i < 2
+            ? "Asset purchase price: $1,000,000"
+            : "Assets $500,000; liabilities $100,000; net worth $400,000",
+          "Date: August 31, 2026",
+          "Full signed official statements are supplied separately.",
+          "Broker: Morgan Vale, broker@example.com",
+          "Signed: Synthetic specimen",
+        ].join("\n"),
         { x: 36, y: 740, size: 11, font, lineHeight: 20 },
       );
     }

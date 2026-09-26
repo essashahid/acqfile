@@ -62,7 +62,7 @@ async function generate(p: Plan, root: string, rebuild: boolean) {
         hashObject({
           documents: docs,
           content: docs.map((d) => content(p, d)),
-          raster_layout_version: 4,
+          raster_layout_version: 5,
         }),
         "Scan plan changed: use --rebuild-scans",
       );
@@ -112,7 +112,7 @@ async function generate(p: Plan, root: string, rebuild: boolean) {
       plan_hash: hashObject({
         documents: docs,
         content: docs.map((d) => content(p, d)),
-        raster_layout_version: 4,
+        raster_layout_version: 5,
       }),
     };
     files.push(entry);

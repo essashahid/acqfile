@@ -89,8 +89,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
-    "hash": "efbbe4d0bec58e3d1d396fd74a35fd1f3817608a6867d914d5b73bc3e32a9ab5",
-    "bytes": 168270,
+    "hash": "2dc09f9d00581d55fb8589cf6f68336cd591bc6ce48b5b5f7fe07bfd58043e9e",
+    "bytes": 324709,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 3,
@@ -103,7 +103,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
           "page": 1,
           "source_block": "resume-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -130,7 +130,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
           "page": 2,
           "source_block": "id-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -157,7 +157,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.PDF",
           "page": 3,
           "source_block": "credit-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -225,8 +225,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
-    "hash": "41cd3239936bb445703e7136773f05b7e38f69bdf03656cfcf04c79c9008b11c",
-    "bytes": 64394,
+    "hash": "26e734b7fbd18da6a33e643d37cf9131ccdde83400b3f90ef6f9c015d7361ab0",
+    "bytes": 289942,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 1,
@@ -239,7 +239,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.pdf",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -339,8 +339,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/formation.pdf",
-    "hash": "d05a185775402e35cc3cf48b1c5e5616c08f6c61582882793d65f65b4f8daf93",
-    "bytes": 3634,
+    "hash": "1dc68019c70247e39bcc58c067ca8ad3f30eb4876ad15cc7f9b98be9c5588e99",
+    "bytes": 5114,
     "format": "protected_pdf",
     "batch": 1,
     "pages": 1,
@@ -362,8 +362,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
-    "hash": "62f8b17c087389ceb75aa795b94696db78ae789f72ab568f363b7f8c8f72de3d",
-    "bytes": 124576,
+    "hash": "4406aec130f05d777d92b243fae97cffbfe2cfafe80a75f326e06d08f5a97344",
+    "bytes": 284848,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -376,7 +376,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 1,
           "source_block": "donor-bank-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -403,7 +403,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.pdf",
           "page": 2,
           "source_block": "gift-transfer-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -572,8 +572,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
-    "hash": "f0b1da0eec2e36b1ce084a4f917fc221fa5490976de0425394ed2be8f7140698",
-    "bytes": 113086,
+    "hash": "f8471f73fdc4e7300ef2ff8812c6900b3cbe3d1b36c77a2a0f32733a13727e8e",
+    "bytes": 310298,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -586,7 +586,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
           "page": 1,
           "source_block": "ein-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -613,7 +613,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.pdf",
           "page": 2,
           "source_block": "good-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -684,8 +684,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
-    "hash": "6a7167d65807943af7f77a0963bd5666ff87dbe43a2bf466ddb90f7352169e6f",
-    "bytes": 116241,
+    "hash": "89b6802b0f271c14235b3add12fedbd8a885d3bda86a2626b7b425ff42f77c93",
+    "bytes": 178772,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -698,7 +698,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
           "page": 1,
           "source_block": "owners-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -725,7 +725,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.pdf",
           "page": 2,
           "source_block": "projections-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -800,8 +800,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
-    "hash": "1024a93cf24a535fd06b346898eb8b8dbc173bead56a12af992de3baa80e8cd0",
-    "bytes": 123965,
+    "hash": "f7c07f228d0c5851b9bcaf47bbbd4c12e761e6de304dcb83754a08bbd85c9aaa",
+    "bytes": 288550,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -814,7 +814,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 1,
           "source_block": "citizen-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -841,7 +841,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.PDF",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -990,8 +990,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
-    "hash": "c30a528050dbeb2d92c259cf630c50192e423ee5b8fb8afee919954e9d836391",
-    "bytes": 136682,
+    "hash": "cdfb3e220c2bdf6b9d9bb66e3dd92d701a187f25384c80d83ae58556bb0bca71",
+    "bytes": 346624,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -1004,7 +1004,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1031,7 +1031,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.pdf",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -1292,8 +1292,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.PDF",
-    "hash": "9bf3c5c89e4078d62a8f2b0d2708e1aa871fa4975a4660fc9ce5aa32b7ce0f13",
-    "bytes": 1315947,
+    "hash": "1542eb9b02eba7f69d38351d081ce96b4ea194b1271379676424fea765fa465a",
+    "bytes": 1316136,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 6,
@@ -1486,8 +1486,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/plan.DOCX",
-    "hash": "412cb35dafa36263c9fb051dd83363680cca76739a61fc7ce96f2eb09431ecd6",
-    "bytes": 10450,
+    "hash": "94dffc399cfa98da6930dbf8b5cedd8f83a421b6f24e20fc3d8021061b93648a",
+    "bytes": 11789,
     "format": "docx",
     "batch": 1,
     "pages": 1,
@@ -1500,7 +1500,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/plan.DOCX",
           "page": 1,
           "source_block": "plan-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1535,8 +1535,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
-    "hash": "4749ea9feffcf95a806f3771fecf9f7a10cd569800fa0a5cfc9577461a70caa6",
-    "bytes": 7135,
+    "hash": "5c989e52ba71c1552db37513bad1ba7c5680df36c21dc1f6558bd993c1a712e3",
+    "bytes": 7411,
     "format": "xlsx",
     "batch": 1,
     "pages": 2,
@@ -1549,7 +1549,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 2,
@@ -1584,7 +1584,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "revenue: 1400000"
+          "quote": "1400000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1610,7 +1610,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
           "page": 2,
           "source_block": "fin-2025-sheet-2",
-          "quote": "total assets: 500000"
+          "quote": "500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1636,7 +1636,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
           "page": 2,
           "source_block": "fin-2025-sheet-2",
-          "quote": "total liabilities: 100000"
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1662,7 +1662,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.xlsx",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "net income: 140000"
+          "quote": "140000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1689,8 +1689,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
-    "hash": "c37b069814ad88fb3ff10000b4a7c596a069fd531297cf6885f24167d674b4e7",
-    "bytes": 278643,
+    "hash": "7e0f71137de4d0fb4c68bf68182a5045d792759e04fa8fa2c6fde1c51ddf09f6",
+    "bytes": 598532,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 4,
@@ -1703,7 +1703,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1730,7 +1730,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -1757,7 +1757,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 3,
           "source_block": "funding-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -1784,7 +1784,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.pdf",
           "page": 4,
           "source_block": "operating-page-4",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 4,
         "page_end": 4,
@@ -2359,8 +2359,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.pdf",
-    "hash": "ee36234df97eea85a7a964191022184161302f57bec7530693ec4beaf4269cb7",
-    "bytes": 111328,
+    "hash": "ec13df8202b9fbe422ce000298d648b4f4dd81576a850f1cea6ab659e55a08c8",
+    "bytes": 187301,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -2373,7 +2373,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.pdf",
           "page": 1,
           "source_block": "equipment-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2400,7 +2400,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.pdf",
           "page": 2,
           "source_block": "inventory-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2436,8 +2436,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
-    "hash": "8c4acce57cb352b4f86f08f180810a4413c85d692d3087ac468deb7738967fe6",
-    "bytes": 120784,
+    "hash": "771a299e55fcd9d74de365fcc4a03be17508c9bc6d58c99e2c5240abcdbbe386",
+    "bytes": 197450,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -2450,7 +2450,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 1,
           "source_block": "license-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2477,7 +2477,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.pdf",
           "page": 2,
           "source_block": "gift-letter-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2642,8 +2642,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-13.pdf",
-    "hash": "4f1bf6fc81c733c649409eda7bbfd6e64537d9ef062d4f2b98e641fbcfc7e893",
-    "bytes": 117916,
+    "hash": "14b0f0793f84c5d69c4b791a7acfd56459c9d1b9c9298cbc06299995479113ab",
+    "bytes": 295631,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -2656,7 +2656,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-13.pdf",
           "page": 1,
           "source_block": "franchise-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2683,7 +2683,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-13.pdf",
           "page": 2,
           "source_block": "disclosure-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2719,8 +2719,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
-    "hash": "9b38bd8e6ded60a3bad71fb722c782e1a07bff1b7f268d727248054125de1bd7",
-    "bytes": 122533,
+    "hash": "5470177c68d9daa6678ee4207210b9ce4bc4f21e7aa247c5d4573a09d54d2bb2",
+    "bytes": 439790,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -2733,7 +2733,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
           "page": 1,
           "source_block": "brochure-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2760,7 +2760,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-14.PDF",
           "page": 2,
           "source_block": "extension-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2799,8 +2799,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
-    "hash": "de1ed9c05ef16f048e84e2cf037ef2764aa806b163525d6d44a7004ce4234654",
-    "bytes": 133569,
+    "hash": "8d92aa125cdc665f4d29f4ac5d7249e1121c4db59955fd2c258f17be3e0d802a",
+    "bytes": 332207,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -2813,7 +2813,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2840,7 +2840,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.PDF",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3101,8 +3101,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
-    "hash": "33e4be04b7f68f911a4d767453cad9a256b2c0a9e1a4285ab974a533dd569b02",
-    "bytes": 113338,
+    "hash": "2a9d9b8f0eb03f14b354859cd605f9513800bf7f98cbb3bc778ba813d5c9ee1a",
+    "bytes": 214396,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -3115,7 +3115,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
           "page": 1,
           "source_block": "ar-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3142,7 +3142,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.pdf",
           "page": 2,
           "source_block": "ap-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3235,8 +3235,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
-    "hash": "556d3602f62d9e45d36cf1684c3ccd8a68d9b0bf3d0804cf9664ce0521fd2b2c",
-    "bytes": 126136,
+    "hash": "2f2e3b984bac44f7c62d6ba95e966741b1bfa2e7b6ad043e041ca699508dc6f7",
+    "bytes": 341141,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -3249,7 +3249,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3276,7 +3276,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.pdf",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3431,8 +3431,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/license-resend.pdf",
-    "hash": "8c4acce57cb352b4f86f08f180810a4413c85d692d3087ac468deb7738967fe6",
-    "bytes": 120784,
+    "hash": "771a299e55fcd9d74de365fcc4a03be17508c9bc6d58c99e2c5240abcdbbe386",
+    "bytes": 197450,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 2,
@@ -3454,8 +3454,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
-    "hash": "b4c2c0aa30a917e58676f896e3f5950c103428039b9c68f70b33d829d2c72575",
-    "bytes": 223185,
+    "hash": "4bb87992f12809a6d7f141cd0e8fc774f4c32619942a2a7594c79ddf95164492",
+    "bytes": 900509,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 3,
@@ -3468,7 +3468,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3495,7 +3495,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3522,7 +3522,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.PDF",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,

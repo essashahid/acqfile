@@ -1,3 +1,4 @@
+import { factQuote } from "../lib/doc/quotes";
 import {
   base,
   doc,
@@ -79,7 +80,10 @@ export function dealB() {
     expected: "blocked",
     description:
       "Extractor drops the working-capital line from the uses total; the cited total contradicts it.",
-    extractor: { value: 3600000, quote: "uses total: 3700000" },
+    extractor: {
+      value: 3600000,
+      quote: factQuote(doc(p, "funding"), "funding.uses_total", 3700000),
+    },
     verifier: {
       status: "unsupported",
       corrected_value: 3700000,
@@ -95,7 +99,7 @@ export function dealB() {
     expected: "blocked",
     description:
       "Right term with an invented quote: exact evidence 0 and unsupported evidence blocks.",
-    extractor: { value: 120, quote: "term months: 60" },
+    extractor: { value: 120, quote: factQuote(doc(p, "note"), "note.term_months", 60) },
     verifier: {
       status: "unsupported",
       corrected_value: null,
@@ -126,7 +130,10 @@ export function dealB() {
     expected: "review",
     description:
       "Extractor drops a zero; the verifier corrects from the cited line and the passes disagree: 0.70, review.",
-    extractor: { value: 50000, quote: "total assets: 500000" },
+    extractor: {
+      value: 50000,
+      quote: factQuote(doc(p, "fin-2024"), "financial.total_assets", 500000),
+    },
     verifier: {
       status: "partially_supported",
       corrected_value: 500000,

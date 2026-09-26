@@ -98,8 +98,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
-    "hash": "52107848637f9b0cf9a36e637e569f75bdb619b743b7f0f704800af9f91fbf8e",
-    "bytes": 2339,
+    "hash": "aa71b227bbaedf25ba5ff472e2d6136f3354556a16466d4cd2e028ac465cdc49",
+    "bytes": 5705,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -112,7 +112,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
           "page": 1,
           "source_block": "affiliate-debt-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -147,7 +147,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
           "page": 1,
           "source_block": "affiliate-debt-page-1",
-          "quote": "as of date: 2026-08-31"
+          "quote": "Balances as of August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -173,7 +173,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-debt.pdf",
           "page": 1,
           "source_block": "affiliate-debt-page-1",
-          "quote": "total: 20000"
+          "quote": "Total present balance $20,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -200,8 +200,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
-    "hash": "3bbc5a62c68d525abdce8d23a09bd6e44fa7839f768885fac4409832daddb364",
-    "bytes": 5985,
+    "hash": "6be73622c06dfa71b3dd45dca6c8cbbdf290e72c5e77074fb88e1ae9971f47c2",
+    "bytes": 155132,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -214,7 +214,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -241,7 +241,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -268,7 +268,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -303,7 +303,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "legal name: Zelmivar Equipment LLC"
+          "quote": "Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -335,7 +335,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "identifier: 00-5556789"
+          "quote": "00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -361,7 +361,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "gross receipts: 100000"
+          "quote": "100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -387,7 +387,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "net income: 10000"
+          "quote": "10,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -413,7 +413,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 1,
           "source_block": "affiliate-tax-2023-page-1",
-          "quote": "year: 2023"
+          "quote": "For calendar year 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -439,7 +439,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "legal name: Zelmivar Equipment LLC"
+          "quote": "Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -471,7 +471,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "identifier: 00-5556789"
+          "quote": "00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -497,7 +497,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "gross receipts: 100000"
+          "quote": "100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -523,7 +523,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "net income: 10000"
+          "quote": "10,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -549,7 +549,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 2,
           "source_block": "affiliate-tax-2024-page-2",
-          "quote": "year: 2024"
+          "quote": "For calendar year 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -575,7 +575,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "legal name: Zelmivar Equipment LLC"
+          "quote": "Zelmivar Equipment LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -607,7 +607,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "identifier: 00-5556789"
+          "quote": "00-5556789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -633,7 +633,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "gross receipts: 100000"
+          "quote": "100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -659,7 +659,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "net income: 10000"
+          "quote": "10,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -685,7 +685,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/affiliate-taxes.pdf",
           "page": 3,
           "source_block": "affiliate-tax-2025-page-3",
-          "quote": "year: 2025"
+          "quote": "For calendar year 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -714,8 +714,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
-    "hash": "6e6a09abc2925e9b59fc4ace948c6d6b2daca133b1199375ff37979f1fc2c732",
-    "bytes": 5078,
+    "hash": "cda607b50240e865fa9c4759141c509f181918a498baf3144cc789c1c00e1f9e",
+    "bytes": 11794,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -728,7 +728,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
           "page": 1,
           "source_block": "resume-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -755,7 +755,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
           "page": 2,
           "source_block": "id-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -782,7 +782,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
           "page": 3,
           "source_block": "credit-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -817,7 +817,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-identity.pdf",
           "page": 2,
           "source_block": "id-page-2",
-          "quote": "expiry: 2030-12-31"
+          "quote": "4b EXP 12/31/2030"
         },
         "confidence": 1,
         "confidence_components": {
@@ -848,8 +848,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
-    "hash": "25c1d2418375369c0b65ee5b5e2d6ddaa80e08a9d7c6a04e8a3721a7ea2c0047",
-    "bytes": 3928,
+    "hash": "2df176bb2edc9699e6155bfc3f15461663518020f6cab3dd31fc22e682b653eb",
+    "bytes": 110841,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -862,7 +862,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -889,7 +889,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 2,
           "source_block": "personal-2025-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -924,7 +924,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "year: 2023"
+          "quote": "Form 1040 (2023)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -956,7 +956,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 1,
           "source_block": "personal-2023-page-1",
-          "quote": "identifier: 900-12-3456"
+          "quote": "900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -982,7 +982,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 2,
           "source_block": "personal-2025-page-2",
-          "quote": "year: 2025"
+          "quote": "Form 1040 (2025)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1014,7 +1014,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/alex-taxes-b1.PDF",
           "page": 2,
           "source_block": "personal-2025-page-2",
-          "quote": "identifier: 900-12-3456"
+          "quote": "900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1044,8 +1044,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
-    "hash": "0ebc43fdbb33dc87023e1fbe6b2a20a9fa8bf9368b357f54bd865698f2f49a73",
-    "bytes": 2523,
+    "hash": "900f9e06aaad1a6407644c2f338a2b5142a72c9094f93de670d73e74760a1d0d",
+    "bytes": 8807,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -1058,7 +1058,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1093,7 +1093,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "legal name: Kiel McDermott"
+          "quote": "Account owner Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1119,7 +1119,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "ending balance: 180000"
+          "quote": "Ending balance on April 30, 2026 $180,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1145,7 +1145,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "period end: 2026-04-30"
+          "quote": "Statement period: April 1, 2026 through April 30, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1171,7 +1171,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bank-april.pdf",
           "page": 1,
           "source_block": "bank-april-page-1",
-          "quote": "institution: Zelmivar Bank"
+          "quote": "Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1198,8 +1198,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
-    "hash": "b79237bddba3cac44a89c6684ff773bdb35fd1066008983afa3a259f3c717234",
-    "bytes": 5080,
+    "hash": "4a7f8f37fe043d61c62dbc9eddc9f52752ed6481cab8cbfdef0f591bc5a816ba",
+    "bytes": 11790,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -1212,7 +1212,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
           "page": 1,
           "source_block": "bea-resume-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1239,7 +1239,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
           "page": 2,
           "source_block": "bea-id-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -1266,7 +1266,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
           "page": 3,
           "source_block": "bea-credit-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -1301,7 +1301,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-identity.PDF",
           "page": 2,
           "source_block": "bea-id-page-2",
-          "quote": "expiry: 2030-12-31"
+          "quote": "4b EXP 12/31/2030"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1696,8 +1696,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
-    "hash": "a285b0bc31b3c9f13b4fec3edfbe538c25eb2f189c02a8734b05aa9da40a35fa",
-    "bytes": 5475,
+    "hash": "d2e889b10ab3ba792322c2f79cfc351ce74da10f667a97980b48e57910e55c67",
+    "bytes": 161105,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -1710,7 +1710,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 1,
           "source_block": "bea-personal-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -1737,7 +1737,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 2,
           "source_block": "bea-personal-2024-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -1764,7 +1764,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 3,
           "source_block": "bea-personal-2025-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -1799,7 +1799,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 1,
           "source_block": "bea-personal-2023-page-1",
-          "quote": "year: 2023"
+          "quote": "Form 1040 (2023)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1831,7 +1831,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 1,
           "source_block": "bea-personal-2023-page-1",
-          "quote": "identifier: 901-23-4567"
+          "quote": "901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1857,7 +1857,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 2,
           "source_block": "bea-personal-2024-page-2",
-          "quote": "year: 2024"
+          "quote": "Form 1040 (2024)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1889,7 +1889,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 2,
           "source_block": "bea-personal-2024-page-2",
-          "quote": "identifier: 901-23-4567"
+          "quote": "901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1915,7 +1915,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 3,
           "source_block": "bea-personal-2025-page-3",
-          "quote": "year: 2025"
+          "quote": "Form 1040 (2025)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1947,7 +1947,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/bea-taxes-b1.pdf",
           "page": 3,
           "source_block": "bea-personal-2025-page-3",
-          "quote": "identifier: 901-23-4567"
+          "quote": "901-23-4567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -1976,8 +1976,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/formation.PDF",
-    "hash": "1180664351ab0b7c7dc81dd5e12cd0d3cf8ad5c1d46b332de0d398754c270055",
-    "bytes": 3634,
+    "hash": "8e866b7b7318a44cd212257ea483a467f34d14e3625e2611910079114b439d97",
+    "bytes": 5124,
     "format": "protected_pdf",
     "batch": 1,
     "pages": 1,
@@ -1999,8 +1999,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
-    "hash": "0183d7967854d0b923b7f5004a3d09449a0cecb98576a75328207e02bfa81707",
-    "bytes": 4191,
+    "hash": "8c83fcd1a87b6db9b35149d31d13ccc5a24e45fa74844ff2627c9a539c34f156",
+    "bytes": 15845,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2013,7 +2013,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2040,7 +2040,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2075,7 +2075,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "legal name: Jaylan Heller"
+          "quote": "Account owner Jaylan Heller"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2101,7 +2101,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "ending balance: 180000"
+          "quote": "Ending balance on July 31, 2026 $180,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2127,7 +2127,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "period end: 2026-07-31"
+          "quote": "Statement period: July 1, 2026 through July 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2153,7 +2153,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 1,
           "source_block": "bea-bank-jul-page-1",
-          "quote": "institution: Zelmivar Bank"
+          "quote": "Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2179,7 +2179,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "legal name: Jaylan Heller"
+          "quote": "Account owner Jaylan Heller"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2205,7 +2205,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "ending balance: 180000"
+          "quote": "Ending balance on August 31, 2026 $180,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2231,7 +2231,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "period end: 2026-08-31"
+          "quote": "Statement period: August 1, 2026 through August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2257,7 +2257,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-12.PDF",
           "page": 2,
           "source_block": "bea-bank-aug-page-2",
-          "quote": "institution: Zelmivar Bank"
+          "quote": "Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2285,8 +2285,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
-    "hash": "cff214b1f2d534a3d27de70a69b5de3f360b08849f39123aed03cf092a47ddaa",
-    "bytes": 3867,
+    "hash": "51c98cc13520c94f0fabdfe55483a2819623ea57ef7de38d7539e6be6d7a8399",
+    "bytes": 10998,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2299,7 +2299,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 1,
           "source_block": "holding-citizen-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2326,7 +2326,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2361,7 +2361,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "period end: 2026-08-31"
+          "quote": "For the period from January 1, 2026 to August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2387,7 +2387,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "revenue: 70000"
+          "quote": "Total revenue $70,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2413,7 +2413,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "total assets: 100000"
+          "quote": "Total assets $100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2439,7 +2439,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-13.PDF",
           "page": 2,
           "source_block": "affiliate-interim-page-2",
-          "quote": "total liabilities: 20000"
+          "quote": "Total liabilities $20,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2467,8 +2467,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
-    "hash": "dd5443dc4e513309718123abd11172adbe95f69036882bf2a7f47fb64621ff01",
-    "bytes": 4181,
+    "hash": "b2f36bdd14cd152ab1ae8e8dcf614f25d628f36fa6fba7d3f9467802958cb9a5",
+    "bytes": 8661,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2481,7 +2481,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2508,7 +2508,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 2,
           "source_block": "operating-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2569,7 +2569,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "sources: Senior loan / 2085000; Cash injection / 150000; Seller note / 240000"
+          "quote": "Senior loan $2,085,000 Cash injection $150,000 Seller note $240,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2613,7 +2613,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "uses: Purchase / 2400000; Working capital / 100000"
+          "quote": "Purchase $2,400,000 Working capital $100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2639,7 +2639,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "sources total: 2475000"
+          "quote": "Total sources $2,475,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2665,7 +2665,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "uses total: 2500000"
+          "quote": "Total uses $2,500,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2691,7 +2691,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "purchase price: 2410000"
+          "quote": "Purchase price $2,410,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2717,7 +2717,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "seller note amount: 240000"
+          "quote": "Seller note amount $240,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2743,7 +2743,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 1,
           "source_block": "funding-page-1",
-          "quote": "seller note terms: 24-month standby, then monthly payments"
+          "quote": "Seller note terms 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2787,7 +2787,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-2.PDF",
           "page": 2,
           "source_block": "operating-page-2",
-          "quote": "members: Kiel McDermott / 55; Zelmivar Holdings LLC / 45"
+          "quote": "Kiel McDermott 55% Zelmivar Holdings LLC 45%"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2821,8 +2821,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
-    "hash": "a30aae65ef3b7410eefbec4374c7c7e2556087eefa715b9f7d296a655ade9547",
-    "bytes": 3679,
+    "hash": "35549c42f7711c882bc627f40a30604c0e506541380e27232ba7aa803c5ef847",
+    "bytes": 8831,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2835,7 +2835,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
           "page": 1,
           "source_block": "ein-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2862,7 +2862,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
           "page": 2,
           "source_block": "good-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -2903,7 +2903,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-3.PDF",
           "page": 1,
           "source_block": "ein-page-1",
-          "quote": "identifier: 00-7654321"
+          "quote": "We assigned you EIN 00-7654321"
         },
         "confidence": 1,
         "confidence_components": {
@@ -2931,8 +2931,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
-    "hash": "019b421b639da3b910da15979e529ba5d12d305e4af4f4975c1dd5a63ffc7620",
-    "bytes": 3716,
+    "hash": "45cd8c4026d043bbfdc8dc2e1d5a05a66d33af27ebefc06f4dba4a6b6a79ce2d",
+    "bytes": 7682,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -2945,7 +2945,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
           "page": 1,
           "source_block": "owners-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -2972,7 +2972,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
           "page": 2,
           "source_block": "projections-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3025,7 +3025,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-4.PDF",
           "page": 1,
           "source_block": "owners-page-1",
-          "quote": "members: Kiel McDermott / 60; Zelmivar Holdings LLC / 40"
+          "quote": "Kiel McDermott 60% Zelmivar Holdings LLC 40%"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3055,8 +3055,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
-    "hash": "c891d8ccfc76222392423d3c53e6fd43c69c43d2860a0ba5358b2b600087defb",
-    "bytes": 3905,
+    "hash": "397f7ad3dd1df3751917571fc38fe8543f01e4ee68bf155f7d846c7c1672759c",
+    "bytes": 12469,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -3069,7 +3069,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 1,
           "source_block": "citizen-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3096,7 +3096,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3131,7 +3131,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "legal name: Kiel McDermott"
+          "quote": "Account owner Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3157,7 +3157,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "ending balance: 180000"
+          "quote": "Ending balance on July 31, 2026 $180,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3183,7 +3183,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "period end: 2026-07-31"
+          "quote": "Statement period: July 1, 2026 through July 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3209,7 +3209,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-5.pdf",
           "page": 2,
           "source_block": "bank-jul-page-2",
-          "quote": "institution: Zelmivar Bank"
+          "quote": "Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3237,8 +3237,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
-    "hash": "c0be9e19172972d63560a402fb935e77cd2f2242e7928ad6c5bdb5d6e781287c",
-    "bytes": 4143,
+    "hash": "80775c7d0fdb9ee97e9853ed81a2aefc40121f8f05c3828212ea7f9d6793200d",
+    "bytes": 14441,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -3251,7 +3251,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3278,7 +3278,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3313,7 +3313,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "legal name: Kiel McDermott"
+          "quote": "Account owner Kiel McDermott"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3339,7 +3339,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "ending balance: 100000"
+          "quote": "Ending balance on August 31, 2026 $100,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3365,7 +3365,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "period end: 2026-08-31"
+          "quote": "Statement period: August 1, 2026 through August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3391,7 +3391,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 1,
           "source_block": "bank-aug-page-1",
-          "quote": "institution: Zelmivar Bank"
+          "quote": "Zelmivar Bank"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3417,7 +3417,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "revenue: 1200000"
+          "quote": "Total revenue $1,200,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3443,7 +3443,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "total assets: 500000"
+          "quote": "Total assets $500,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3469,7 +3469,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "total liabilities: 100000"
+          "quote": "Total liabilities $100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3495,7 +3495,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/forwarded-packet-6.PDF",
           "page": 2,
           "source_block": "fin-2023-page-2",
-          "quote": "net income: 120000"
+          "quote": "Net income $120,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3525,8 +3525,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
-    "hash": "0dc8cd6fa252a7d9f63447ee078c9be9ab290338816a84a1480c61788f01fa47",
-    "bytes": 2333,
+    "hash": "569c2e488351f4ee52b15c207544ff4937cd92a4c9cf40140248301a4fc1e8ae",
+    "bytes": 5694,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -3539,7 +3539,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
           "page": 1,
           "source_block": "holding-debt-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3574,7 +3574,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
           "page": 1,
           "source_block": "holding-debt-page-1",
-          "quote": "as of date: 2026-08-31"
+          "quote": "Balances as of August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3600,7 +3600,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-debt.PDF",
           "page": 1,
           "source_block": "holding-debt-page-1",
-          "quote": "total: 0"
+          "quote": "Total present balance $0.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3627,8 +3627,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
-    "hash": "bae1f4ee8ab7a4f1aca08743df619eea8c79534eeb63fe1f3eb2f58e68bbdbcf",
-    "bytes": 2465,
+    "hash": "4f4fa0cb51c1ca9bb1cceacdacc13671c3883278cd6f46830b4fbb7f4d2d4c83",
+    "bytes": 7245,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -3641,7 +3641,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3676,7 +3676,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "period end: 2026-08-31"
+          "quote": "For the period from January 1, 2026 to August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3702,7 +3702,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "revenue: 0"
+          "quote": "Total revenue $0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3728,7 +3728,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "total assets: 400000"
+          "quote": "Total assets $400,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3754,7 +3754,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-interim.pdf",
           "page": 1,
           "source_block": "holding-interim-page-1",
-          "quote": "total liabilities: 0"
+          "quote": "Total liabilities $0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3781,8 +3781,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
-    "hash": "e3720a9d5ddf3297bff97cb59dd18dfc0f99b356d308b485bd7b8eb3fd7c5c33",
-    "bytes": 5966,
+    "hash": "3095477f0b7457fba96c98d892c4cf2e6dd1223d84ad4c61b4999d9bcdaf73ba",
+    "bytes": 154876,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -3795,7 +3795,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -3822,7 +3822,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -3849,7 +3849,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -3884,7 +3884,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "legal name: Zelmivar Holdings LLC"
+          "quote": "Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3916,7 +3916,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "identifier: 00-5566789"
+          "quote": "00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3942,7 +3942,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "gross receipts: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3968,7 +3968,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "net income: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -3994,7 +3994,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 1,
           "source_block": "holding-tax-2023-page-1",
-          "quote": "year: 2023"
+          "quote": "For calendar year 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4020,7 +4020,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "legal name: Zelmivar Holdings LLC"
+          "quote": "Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4052,7 +4052,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "identifier: 00-5566789"
+          "quote": "00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4078,7 +4078,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "gross receipts: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4104,7 +4104,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "net income: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4130,7 +4130,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 2,
           "source_block": "holding-tax-2024-page-2",
-          "quote": "year: 2024"
+          "quote": "For calendar year 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4156,7 +4156,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "legal name: Zelmivar Holdings LLC"
+          "quote": "Zelmivar Holdings LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4188,7 +4188,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "identifier: 00-5566789"
+          "quote": "00-5566789"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4214,7 +4214,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "gross receipts: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4240,7 +4240,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "net income: 0"
+          "quote": "0"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4266,7 +4266,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/holding-taxes.PDF",
           "page": 3,
           "source_block": "holding-tax-2025-page-3",
-          "quote": "year: 2025"
+          "quote": "For calendar year 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4295,8 +4295,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/pfs.pdf",
-    "hash": "b9dfcaab8f34f79d40b1433d06da1a0f0709217bfc54084255b578e26eb35d7c",
-    "bytes": 1315541,
+    "hash": "8f06a4700de28cc27bff63727cfb386243169f4d6d7d4f626c368081cbe00136",
+    "bytes": 1315730,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 6,
@@ -4509,8 +4509,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/plan.docx",
-    "hash": "750c672ceabc06ca5420764eaf94d1f9bae43b87775edfa806e981894c45c2cc",
-    "bytes": 10448,
+    "hash": "d716de3fe62442729ccb30ab5360e928d9d1da784998e00882f21b8ef4e0476c",
+    "bytes": 11799,
     "format": "docx",
     "batch": 1,
     "pages": 1,
@@ -4523,7 +4523,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/plan.docx",
           "page": 1,
           "source_block": "plan-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -4558,8 +4558,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
-    "hash": "b2ce1f0667ce11505917ab682870ac9beb6b30003ae07f549eea826c840c9d88",
-    "bytes": 2291,
+    "hash": "6a2ff1f24c811d8571c24cfdfdcae27dfa30c93cf8a773fda741cb0785518537",
+    "bytes": 3839,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -4572,7 +4572,7 @@
           "file": "incoming/batch-1/Buyer/Attachments/unmatched.pdf",
           "page": 1,
           "source_block": "unmatched-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -4609,8 +4609,8 @@
   },
   {
     "file": "incoming/batch-1/Buyer/Tax/Fwd - 2024 return.PDF",
-    "hash": "25c1d2418375369c0b65ee5b5e2d6ddaa80e08a9d7c6a04e8a3721a7ea2c0047",
-    "bytes": 3928,
+    "hash": "2df176bb2edc9699e6155bfc3f15461663518020f6cab3dd31fc22e682b653eb",
+    "bytes": 110841,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -4632,8 +4632,8 @@
   },
   {
     "file": "incoming/batch-1/Phone/scan0007.pdf",
-    "hash": "3aef789054df594103353429ecd94caaea1e2e017cae7c2b9afe3404767d88e0",
-    "bytes": 71761,
+    "hash": "9a159190402255314f71f6c233587b226ca71b72c298df6efe004866afdd0948",
+    "bytes": 139042,
     "format": "scan_pdf",
     "batch": 1,
     "pages": 1,
@@ -4646,7 +4646,7 @@
           "file": "incoming/batch-1/Phone/scan0007.pdf",
           "page": 1,
           "source_block": "lease-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -4825,8 +4825,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/brochure.PDF",
-    "hash": "f4bbff72898ef928fd7282808a45c8231a1ee574972424c086d7311edba7ed8a",
-    "bytes": 2330,
+    "hash": "4ab11d000a4eec1be28c93a17d962623307a30b35c31c879ddf34134709a46e3",
+    "bytes": 3834,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -4839,7 +4839,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/brochure.PDF",
           "page": 1,
           "source_block": "brochure-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -4876,8 +4876,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
-    "hash": "7646c7aac3cada5550f75e53fdf284a4382a9631ca3994116dbaeb1c820fb602",
-    "bytes": 7149,
+    "hash": "77d85b85a0ce66decd464b170fcd31c032573848071de544e7041fd24d203160",
+    "bytes": 7428,
     "format": "xlsx",
     "batch": 1,
     "pages": 2,
@@ -4890,7 +4890,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 2,
@@ -4925,7 +4925,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "revenue: 1484000"
+          "quote": "1484000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4951,7 +4951,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 2,
           "source_block": "fin-2025-sheet-2",
-          "quote": "total assets: 500000"
+          "quote": "500000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -4977,7 +4977,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 2,
           "source_block": "fin-2025-sheet-2",
-          "quote": "total liabilities: 100000"
+          "quote": "100000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5003,7 +5003,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/fin-2025.XLSX",
           "page": 1,
           "source_block": "fin-2025-page-1",
-          "quote": "net income: 140000"
+          "quote": "140000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5033,8 +5033,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
-    "hash": "5f7b7ebf6994624c84e4c0bc3d96cab229a37afbbf30d2edb9ff28a17feda550",
-    "bytes": 4595,
+    "hash": "d88e33d25bb70e1650da2a4c520a8f2908a4f974c27ed0f1fdb2ce0bf531e547",
+    "bytes": 11300,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5047,7 +5047,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -5074,7 +5074,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -5109,7 +5109,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "signed by both: Yes"
+          "quote": "Agreed and accepted by Buyer and Seller as of the date first written above"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5135,7 +5135,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "expiry date: 2026-09-01"
+          "quote": "This letter will expire if not accepted in writing by September 1, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5161,7 +5161,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "purchase price: 2425000"
+          "quote": "The total purchase price will be $2,425,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5187,7 +5187,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "seller note amount: 240000"
+          "quote": "a promissory note from Buyer to Seller in the principal amount of $240,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5213,7 +5213,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 1,
           "source_block": "loi-page-1",
-          "quote": "seller note terms: 24-month standby, then monthly payments"
+          "quote": "The Seller Note will be repaid on the following terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5239,7 +5239,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "buyer: Varnholt Acquisition LLC"
+          "quote": "by and between Varnholt Acquisition LLC (“Buyer”)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5265,7 +5265,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "seller: Varn Holt Climate Services L.L.C."
+          "quote": "and Varn Holt Climate Services L.L.C. (“Seller”)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5291,7 +5291,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "allocation present: Yes"
+          "quote": "The Purchase Price shall be allocated among the Purchased Assets as set forth on Schedule 2.4"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5317,7 +5317,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "purchase price: 2400000"
+          "quote": "The aggregate purchase price is $2,400,000 (the “Purchase Price”)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5343,7 +5343,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "structure: asset"
+          "quote": "Seller shall sell, assign and transfer to Buyer substantially all of the assets used in the Business (an asset purchase)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5369,7 +5369,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "outside date: 2026-11-30"
+          "quote": "if the Closing has not occurred on or before November 30, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5395,7 +5395,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "legal name: Varnholt Climate Services LLC"
+          "quote": "SELLER: Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5427,7 +5427,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "identifier: 00-1234567"
+          "quote": "Seller’s federal employer identification number is 00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5453,7 +5453,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "seller note amount: 240000"
+          "quote": "the Seller Note in the original principal amount of $240,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5479,7 +5479,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "seller note terms: 24-month standby, then monthly payments"
+          "quote": "The Seller Note shall be repaid on the following terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5505,7 +5505,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-1.PDF",
           "page": 2,
           "source_block": "purchase-page-2",
-          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "Seller’s principal place of business is 14 Velnoric Way, Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5532,7 +5532,7 @@
         "description": "Extractor transposes digits although the cited line states the price; the verifier contradicts it.",
         "extractor": {
           "value": 2452000,
-          "quote": "purchase price: 2425000"
+          "quote": "The total purchase price will be $2,425,000"
         },
         "verifier": {
           "status": "unsupported",
@@ -5555,8 +5555,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
-    "hash": "ac6033b3bf5fac79f83e27c2b39cf35ccb29d12926a42042b28595c3498c78aa",
-    "bytes": 3633,
+    "hash": "13f5e2b31eeacd1ea06f8a64e735fb0a45b0fd11589090a48d542fabd46aabb9",
+    "bytes": 10204,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5569,7 +5569,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
           "page": 1,
           "source_block": "equipment-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -5596,7 +5596,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-10.PDF",
           "page": 2,
           "source_block": "inventory-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -5632,8 +5632,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
-    "hash": "6acf2b3fe5ce880c76ec5fbf29e5c405b7fe7e46337d6cb199f1a1bc3a48529c",
-    "bytes": 3865,
+    "hash": "81dcea8a2f76e4bbec113b81692bf7d0601fbc825398a20cfdf88545e549ede3",
+    "bytes": 8110,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5646,7 +5646,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 1,
           "source_block": "license-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -5673,7 +5673,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -5708,7 +5708,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "principal: 240000"
+          "quote": "the principal sum of Two Hundred Forty Thousand and 00/100 Dollars ($240,000.00)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5734,7 +5734,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "term months: 120"
+          "quote": "The entire unpaid principal balance of this Note shall be due and payable 120 months after the Closing Date"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5760,7 +5760,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "full standby: No"
+          "quote": "Payments may be made on this Note after the standby period described in Section 3"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5786,7 +5786,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-11.PDF",
           "page": 2,
           "source_block": "note-page-2",
-          "quote": "seller note terms: 24-month standby, then monthly payments"
+          "quote": "Repayment terms: 24-month standby, then monthly payments"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5817,8 +5817,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
-    "hash": "ae3ec476acba29f94398a82afded322da240a2d648a47a485dc91df63d23f47d",
-    "bytes": 4104,
+    "hash": "5deba22b0e34e6d1f28d80a58b95f2d6932d8f38643a0a28780ae21a41ebcd4f",
+    "bytes": 13019,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -5831,7 +5831,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -5858,7 +5858,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -5893,7 +5893,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "revenue: 1300000"
+          "quote": "Total revenue $1,300,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5919,7 +5919,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "total assets: 500000"
+          "quote": "Total assets $500,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5945,7 +5945,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "total liabilities: 100000"
+          "quote": "Total liabilities $100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5971,7 +5971,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 1,
           "source_block": "fin-2024-page-1",
-          "quote": "net income: 130000"
+          "quote": "Net income $130,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -5997,7 +5997,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "period end: 2026-04-18"
+          "quote": "For the period from January 1, 2026 to April 18, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6023,7 +6023,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "revenue: 900000"
+          "quote": "Total revenue $900,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6049,7 +6049,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "total assets: 500000"
+          "quote": "Total assets $500,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6075,7 +6075,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-7.pdf",
           "page": 2,
           "source_block": "interim-page-2",
-          "quote": "total liabilities: 100000"
+          "quote": "Total liabilities $100,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6124,8 +6124,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
-    "hash": "8b9397d88ad75a40fae0c3b40a213e0b4cb0503ca79845806392b1324071bbc1",
-    "bytes": 3724,
+    "hash": "4694416c30bd005e6e92fc5a32366ada02c59443214e455dceece84c280fba77",
+    "bytes": 13374,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -6138,7 +6138,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 1,
           "source_block": "ar-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -6165,7 +6165,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 2,
           "source_block": "ap-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -6200,7 +6200,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 1,
           "source_block": "ar-page-1",
-          "quote": "as of date: 2026-04-18"
+          "quote": "Aged as of April 18, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6226,7 +6226,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-8.PDF",
           "page": 2,
           "source_block": "ap-page-2",
-          "quote": "as of date: 2026-04-18"
+          "quote": "Aged as of April 18, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6252,7 +6252,7 @@
         "description": "Right value, but the cited quote does not occur in the cited block: exact evidence 0 and unsupported evidence blocks.",
         "extractor": {
           "value": "2026-04-18",
-          "quote": "as of date: 2026-04-19"
+          "quote": "Aged as of April 19, 2026"
         },
         "verifier": {
           "status": "unsupported",
@@ -6275,8 +6275,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
-    "hash": "93665d8b8b93e9115c0768032ce14ad95deab62f79473347074f0d2c534bd5de",
-    "bytes": 3895,
+    "hash": "0186f3a7bc830d6a8543a7f0f8fb4632ede222846267fbbfb5f13ce0fc234a63",
+    "bytes": 28008,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -6289,7 +6289,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -6316,7 +6316,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -6351,7 +6351,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "as of date: 2026-08-31"
+          "quote": "Balances as of August 31, 2026"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6377,7 +6377,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 1,
           "source_block": "debt-page-1",
-          "quote": "total: 100000"
+          "quote": "Total present balance $100,000.00"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6403,7 +6403,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "legal name: Varnholt Climate Services LLC"
+          "quote": "Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6435,7 +6435,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/forwarded-packet-9.PDF",
           "page": 2,
           "source_block": "4506-page-2",
-          "quote": "identifier: 00-1234568"
+          "quote": "00-1234568"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6479,8 +6479,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/lease-consent.pdf",
-    "hash": "9e3b1bdef25213722eee75e3b30e002e6e4810165a817edbe3bc28a00b39526f",
-    "bytes": 2241,
+    "hash": "d05dff5e6b5b6ffaffdd76a7c71418fd793e90e5296765b706110214a6be4ce4",
+    "bytes": 5249,
     "format": "text_pdf",
     "batch": 1,
     "pages": 1,
@@ -6493,7 +6493,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/lease-consent.pdf",
           "page": 1,
           "source_block": "lease-consent-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -6528,8 +6528,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/license-resend.PDF",
-    "hash": "6acf2b3fe5ce880c76ec5fbf29e5c405b7fe7e46337d6cb199f1a1bc3a48529c",
-    "bytes": 3865,
+    "hash": "81dcea8a2f76e4bbec113b81692bf7d0601fbc825398a20cfdf88545e549ede3",
+    "bytes": 8110,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 2,
@@ -6551,8 +6551,8 @@
   },
   {
     "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
-    "hash": "7cc121267661593b3e38ecda630a80c5e25d07810495d0bea8aa2056ad4f6687",
-    "bytes": 6276,
+    "hash": "ff50cdd37b7707ba89cf9582393d55b76cc2a5b047e674fd577e1c7070fe2efa",
+    "bytes": 155213,
     "format": "bundle_pdf",
     "batch": 1,
     "pages": 3,
@@ -6565,7 +6565,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -6592,7 +6592,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 2,
         "page_end": 2,
@@ -6619,7 +6619,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 3,
         "page_end": 3,
@@ -6654,7 +6654,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "legal name: Varnholt Climate Services LLC"
+          "quote": "Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6686,7 +6686,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "identifier: 00-1234567"
+          "quote": "00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6712,7 +6712,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "gross receipts: 1200000"
+          "quote": "1,200,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6738,7 +6738,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "net income: 120000"
+          "quote": "120,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6764,7 +6764,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "year: 2023"
+          "quote": "For calendar year 2023"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6790,7 +6790,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "form type: 1120S"
+          "quote": "Form 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6816,7 +6816,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 1,
           "source_block": "tax-2023-page-1",
-          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "14 Velnoric Way Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6842,7 +6842,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "legal name: Varnholt Climate Services LLC"
+          "quote": "Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6874,7 +6874,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "identifier: 00-1234567"
+          "quote": "00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6900,7 +6900,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "gross receipts: 1300000"
+          "quote": "1,300,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6926,7 +6926,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "net income: 130000"
+          "quote": "130,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6952,7 +6952,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "year: 2024"
+          "quote": "For calendar year 2024"
         },
         "confidence": 1,
         "confidence_components": {
@@ -6978,7 +6978,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "form type: 1120S"
+          "quote": "Form 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7004,7 +7004,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 2,
           "source_block": "tax-2024-page-2",
-          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "14 Velnoric Way Tazmervale, ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7030,7 +7030,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "legal name: Varnholt Climate Services LLC"
+          "quote": "Varnholt Climate Services LLC"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7062,7 +7062,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "identifier: 00-1234567"
+          "quote": "00-1234567"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7088,7 +7088,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "gross receipts: 1400000"
+          "quote": "1,400,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7114,7 +7114,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "net income: 140000"
+          "quote": "140,000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7140,7 +7140,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "year: 2025"
+          "quote": "For calendar year 2025"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7166,7 +7166,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "form type: 1120S"
+          "quote": "Form 1120S"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7192,7 +7192,7 @@
           "file": "incoming/batch-1/Seller/Fwd - closing docs/target-taxes.pdf",
           "page": 3,
           "source_block": "tax-2025-page-3",
-          "quote": "address: 14 Velnoric Way, Tazmervale, ZZ 00000"
+          "quote": "14 Velnoric Way Tazmervale ZZ 00000"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7219,7 +7219,7 @@
         "description": "Extractor misreads receipts; the verifier corrects from the cited line, so the passes disagree: 0.30+0.20+0.125+0+0.075 = 0.70, review with a suggested correction.",
         "extractor": {
           "value": 1030000,
-          "quote": "gross receipts: 1300000"
+          "quote": "1,300,000"
         },
         "verifier": {
           "status": "partially_supported",
@@ -7339,8 +7339,8 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
-    "hash": "172d811d06cc3925151e81829beed231381d83a499be3ce99beef94f38a54313",
-    "bytes": 2386,
+    "hash": "badb0c10f571e47861772187c6d98189cb70a408952a320529cc7251983ccbf3",
+    "bytes": 52195,
     "format": "text_pdf",
     "batch": 2,
     "pages": 1,
@@ -7353,7 +7353,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
           "page": 1,
           "source_block": "personal-2024-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,
@@ -7388,7 +7388,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
           "page": 1,
           "source_block": "personal-2024-page-1",
-          "quote": "year: 2024"
+          "quote": "Form 1040 (2024)"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7420,7 +7420,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/alex-taxes-b2.pdf",
           "page": 1,
           "source_block": "personal-2024-page-1",
-          "quote": "identifier: 900-12-3456"
+          "quote": "900-12-3456"
         },
         "confidence": 1,
         "confidence_components": {
@@ -7449,8 +7449,8 @@
   },
   {
     "file": "incoming/batch-2/Buyer/Attachments/bea-citizen.PDF",
-    "hash": "f854089145647dc7683dc77a07a653fe76f9134b354bfb8b4463b73e2338db27",
-    "bytes": 2230,
+    "hash": "39061f8c103f7ae0caf49c8a22e466f6c71f779135c849dcf4951889c62b5f1e",
+    "bytes": 5434,
     "format": "text_pdf",
     "batch": 2,
     "pages": 1,
@@ -7463,7 +7463,7 @@
           "file": "incoming/batch-2/Buyer/Attachments/bea-citizen.PDF",
           "page": 1,
           "source_block": "bea-citizen-page-1",
-          "quote": "Signature: e-signed; Date: 2026-08-31"
+          "quote": "Signature: e-signed; Date: 08/31/2026"
         },
         "page_start": 1,
         "page_end": 1,

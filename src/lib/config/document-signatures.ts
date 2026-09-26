@@ -62,3 +62,15 @@ set("CREDIT_AUTH", { titles: ["Authorization to Obtain Credit Report"] });
 set("FORMATION_DOC", { titles: ["Articles of Organization"] });
 set("ADDBACK_SCHEDULE", { titles: ["Schedule of Add-backs"] });
 set("GIFT_LETTER", { titles: ["Gift Letter"] });
+// Titles these documents carry in practice. Each keeps its type-name cue, so nothing that matched
+// before stops matching; the IRS notice is recognised by its heading and notice number.
+set("EIN_LETTER", {
+  forms: ["CP 575"],
+  titles: ["ein letter", "We assigned you an employer identification number"],
+});
+set("AGING_AR", { titles: ["aging ar", "Accounts Receivable Aging"] });
+set("AGING_AP", { titles: ["aging ap", "Accounts Payable Aging"] });
+set("CITIZENSHIP_EVIDENCE", { titles: ["citizenship evidence", "Certificate of Live Birth"] });
+set("TRANSFER_EVIDENCE", { titles: ["transfer evidence", "Wire Transfer Confirmation"] });
+set("LEASE_CONSENT", { titles: ["lease consent", "Consent to Assignment of Lease"] });
+set("NON_COMPETE", { titles: ["non compete", "Non-Competition Agreement"] });
