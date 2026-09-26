@@ -7,16 +7,19 @@ export function DecisionForm({
   action,
   children,
   className,
+  id,
 }: {
   action: (data: FormData) => Promise<void>;
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
   const router = useRouter();
   return (
     <form
+      id={id}
       className={className}
       onSubmit={async (event) => {
         event.preventDefault();

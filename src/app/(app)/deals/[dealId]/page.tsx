@@ -57,7 +57,11 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
             <div className="row flex items-center justify-between gap-5" key={q.key}>
               <div>
                 <h3>{q.title}</h3>
-                <p>Please help us clarify the information supplied.</p>
+                <p>
+                  {q.kind === "choice"
+                    ? "The documents give different values. Choose one, or tell us you're not sure."
+                    : "These details need a short explanation from you."}
+                </p>
               </div>
               <Link className="button primary" href={`${base}/questions/${q.key}`}>
                 Answer
@@ -180,7 +184,18 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
         <p className="mt-2">
           {p.mapped.ready
             ? "Everything needed to prepare this file is complete. The lender's decision comes later."
-            : "We're still collecting documents, clarifying answers or checking what was sent."}
+            : `Still needed: ${
+                [
+                  waiting
+                    ? `documents from ${numberWord(waiting).toLowerCase()} ${waiting === 1 ? "person" : "people"}`
+                    : "",
+                  questions.length
+                    ? `${numberWord(questions.length).toLowerCase()} ${questions.length === 1 ? "answer" : "answers"} from you`
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" and ") || "our review of what was sent"
+              }.`}
         </p>
         <p className="muted mt-2">{p.data.preparation.policy}</p>
         {!p.data.preparation.current && (
@@ -197,7 +212,11 @@ export default async function Overview({ params }: { params: Promise<{ dealId: s
                   ? "Waived"
                   : row.status === "not_applicable"
                     ? "Not applicable"
-                    : "Still outstanding"}
+                    : row.status === "tracking"
+                      ? "Recorded, not yet received"
+                      : row.status === "needs_review"
+                        ? "Status not recorded yet"
+                        : "Still outstanding"}
             </p>
           ))}
         </div>

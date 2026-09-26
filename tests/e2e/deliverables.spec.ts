@@ -54,7 +54,7 @@ async function screenshots(page: Page, name: string) {
     PortalTaskFiles: /^Your bank statements$/,
     PortalCantSend: /^Can't send this right now\?$/,
     PortalChecking: /^We're reading your document$/,
-    PortalChecked: /^Thanks, Kiel. One small thing.$/,
+    PortalChecked: /^Kiel, please check this document$/,
     ClientOverview: /^Varnholt Climate Services LLC$/,
     QuestionForYou: /^Which purchase price is right\?$/,
   };
@@ -147,9 +147,11 @@ test("Kiel uploads the wrong year, sees a gentle note and sends the correction",
     page.getByRole("heading", { name: "We're reading your document", exact: true }),
   ).toBeVisible();
   await screenshots(page, "PortalChecking");
-  await expect(page.getByRole("heading", { name: "Thanks, Kiel. One small thing." })).toBeVisible({
-    timeout: 30000,
-  });
+  await expect(page.getByRole("heading", { name: "Kiel, please check this document" })).toBeVisible(
+    {
+      timeout: 30000,
+    },
+  );
   await expect(page.getByText(/This is your 2023 document/)).toBeVisible();
   await screenshots(page, "PortalChecked");
   await page.unrouteAll({ behavior: "wait" });

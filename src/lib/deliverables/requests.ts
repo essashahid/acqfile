@@ -7,6 +7,7 @@ import type { SessionContext } from "@/lib/workspace";
 import { buildIndex } from "./index-build";
 import type { Rule } from "@/lib/rules/schema";
 import { attributeName, documentName, factValue } from "@/lib/staff/labels";
+import { checksFromMessage } from "@/lib/staff/explain";
 
 type Finding = typeof schema.findings.$inferSelect;
 type Detail = {
@@ -28,6 +29,8 @@ export type DraftItem = {
   because: string;
   /** Each side of a disagreement, named and sourced. */
   sides: { value: string; source: string }[];
+  /** False when the item asks for an answer or a status, not a document. */
+  document?: boolean;
 };
 
 export function draftItems(
@@ -74,6 +77,72 @@ export function draftItems(
             (s, i, all) => all.findIndex((o) => o.value === s.value && o.source === s.source) === i,
           ),
       };
+    const open = rule?.checks ? checksFromMessage(rule, details.message) : [];
+    const noteKey = (type: string) =>
+      rule?.checks.find(
+        (c) => c.type === type && open.some((o) => o.type === type && o.message === c.message),
+      )?.note_key;
+    const manual = open.some((c) => c.type === "manual_confirmation");
+    const tracking = open.some((c) => c.type === "tracking");
+    // A missing record or discussion is a question, never a request for a replacement document.
+    if (manual) {
+      const key = noteKey("manual_confirmation") ?? "";
+      const later = tracking
+        ? " If it is required, please also tell us when it has been ordered and received."
+        : "";
+      const asks: Record<string, DraftItem> = {
+        personal_license: {
+          ask: `Please tell us whether ${who ? subject : "the business"} operates under the seller's personal license.`,
+          because:
+            "We have the license on file. We need your answer to record how the license will be handled with the lender.",
+          sides: [],
+        },
+        citizenship_handling: {
+          ask: `Please tell us how you want citizenship evidence handled${who}.`,
+          because:
+            "We need your instructions to record this in the file. No new document is requested.",
+          sides: [],
+        },
+        valuation_required: {
+          ask: "Please confirm whether an independent business valuation is required for this loan.",
+          because: `We need your answer to record it in the file.${later}`,
+          sides: [],
+        },
+      };
+      return {
+        ...(asks[key] ?? {
+          ask: `Please contact us about the ${midSentence(rule!.title)}${who}.`,
+          because:
+            "We need your answer to record a check in the file. No new document is requested.",
+          sides: [],
+        }),
+        document: false,
+      };
+    }
+    if (tracking)
+      return {
+        ask: `Please tell us the status of the ${midSentence(rule!.title)}: not yet ordered, ordered, or received.`,
+        because:
+          "We track this lender-ordered item in the file. No document is needed from the borrower.",
+        sides: [],
+        document: false,
+      };
+    const signature = rule?.checks?.find(
+      (c) => c.type === "signed_and_dated" && open.some((o) => o.message === c.message),
+    );
+    if (signature) {
+      const failed = open.some((o) => o.message === signature.message && o.result === "fail");
+      const what2 = signature.signed_only ? "signed" : "signed and dated";
+      return {
+        ask: failed
+          ? `Please send a ${what2} copy of the ${what}${who}.`
+          : `Please send a copy of the ${what}${who} that clearly shows the ${signature.signed_only ? "signature" : "signature and date"}.`,
+        because: failed
+          ? `The copy we have is not ${what2}.`
+          : `We could not confirm the ${signature.signed_only ? "signature" : "signature and date"} on the copy we have.`,
+        sides: [],
+      };
+    }
     if (f.type === "missing")
       return {
         ask: `Please send the ${what}${who}.`,
@@ -131,7 +200,10 @@ export function draftBody(
   const asks = findings.filter((f) => f.type !== "info" && f.severity !== "info");
   const items = draftItems(asks, rules, partyOf, documentOf, valueOf);
   const lines = [
-    `Documents needed for ${deal.name}`,
+    // A message that asks only for answers or status is not headed as a document request.
+    items.some((i) => i.document !== false)
+      ? `Documents needed for ${deal.name}`
+      : `Information needed for ${deal.name}`,
     "",
     "Hello,",
     "",
@@ -177,6 +249,17 @@ export async function buildDrafts(context: SessionContext, dealId: string) {
     .sort((a, b) => a.findingKey.localeCompare(b.findingKey));
   const recipient = (f: Finding) => {
     const rule = rules.get(f.ruleId);
+    // A handling question for the lender goes to the lender, whoever supplies the document.
+    const open = checksFromMessage(rule, (f.detailsJson as { message: string }).message);
+    if (
+      open.length &&
+      open.every(
+        (o) =>
+          o.type === "manual_confirmation" &&
+          rule?.checks.find((c) => c.message === o.message)?.note_key === "citizenship_handling",
+      )
+    )
+      return "lender";
     return rule?.scope.startsWith("per_")
       ? `${f.responsibleRole} · ${partyName(f.scopeKey)}`
       : f.responsibleRole;

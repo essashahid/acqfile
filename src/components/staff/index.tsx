@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { VALUE_LABEL } from "@/lib/staff/labels";
 
 /** Page title, one line of context, and the actions that belong to the page. */
 export function PageHead({
@@ -105,13 +106,27 @@ const TONES: Record<string, string> = {
   duplicate: "pill-quiet",
 };
 
-/** The one coloured element. Raw database values become sentence case; the value stays in the tooltip. */
-export function Pill({ value, title }: { value: string | null | undefined; title?: string }) {
+/** The one coloured element. Stored values read as words; the value stays in the tooltip. */
+export function Pill({
+  value,
+  title,
+  label,
+  tone,
+}: {
+  value: string | null | undefined;
+  title?: string;
+  label?: string;
+  tone?: string;
+}) {
   if (!value) return <span className="meta">—</span>;
-  const label = value.replaceAll("_", " ").replace(/^./, (c) => c.toUpperCase());
+  const text =
+    label ?? VALUE_LABEL[value] ?? value.replaceAll("_", " ").replace(/^./, (c) => c.toUpperCase());
   return (
-    <span className={cn("pill", TONES[value] ?? "pill-quiet")} title={title ?? value}>
-      {label}
+    <span
+      className={cn("pill", tone ? `pill-${tone}` : (TONES[value] ?? "pill-quiet"))}
+      title={title ?? value}
+    >
+      {text}
     </span>
   );
 }

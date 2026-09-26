@@ -7,6 +7,32 @@ export const knownResponsibility = (role: string | undefined) =>
   !!role?.trim() && !/^(unknown|unassigned|none|needs assignment)\b/i.test(role.trim());
 const closed = (status: string) => ["satisfied", "waived", "not_applicable"].includes(status);
 
+/** How one applicable row affects preparation. Screens explain a row with this same test. */
+export function rowPreparationEffect(
+  row: Pick<IndexRow, "status" | "responsible">,
+  rule: Rule | undefined,
+) {
+  if (row.status === "not_applicable") return { unconfigured: false, outstanding: false };
+  return {
+    unconfigured:
+      stageOf(rule) === "unknown" || !knownResponsibility(row.responsible ?? rule?.responsible),
+    outstanding:
+      stageOf(rule) !== "later_lender" && rule?.required !== false && !closed(row.status),
+  };
+}
+
+/** Whether an open or requested finding stops preparation. Unknown rules are reviewed even if informational. */
+export function findingStopsPreparation(
+  finding: { status: string; severity: string; type: string; responsibleRole?: string },
+  rule: Rule | undefined,
+) {
+  return (
+    stageOf(rule) === "unknown" ||
+    !knownResponsibility(finding.responsibleRole ?? rule?.responsible) ||
+    (stageOf(rule) !== "later_lender" && finding.severity !== "info" && finding.type !== "info")
+  );
+}
+
 export type PreparationReadiness = {
   ready: boolean;
   current: boolean;
@@ -48,9 +74,10 @@ export function preparationReadiness({
   if (!index.length) unresolved.push("No evaluated preparation requirements.");
   for (const row of applicable) {
     const rule = rules.get(row.item_id);
-    if (stageOf(rule) === "unknown" || !knownResponsibility(row.responsible ?? rule?.responsible))
+    const effect = rowPreparationEffect(row, rule);
+    if (effect.unconfigured)
       unresolved.push(`${row.item}: staff must confirm the submission stage and responsibility.`);
-    if (stageOf(rule) !== "later_lender" && rule?.required !== false && !closed(row.status))
+    if (effect.outstanding)
       unresolved.push(
         `${row.item} · ${row.party}${row.period ? ` · ${row.period}` : ""}: ${row.status}`,
       );
@@ -60,12 +87,7 @@ export function preparationReadiness({
     if (finding.ruleId === "PACK-01" && finding.type === "info" && finding.severity === "info")
       continue;
     const rule = rules.get(finding.ruleId);
-    // Unknown rules are reviewed even if their severity is informational.
-    if (
-      stageOf(rule) === "unknown" ||
-      !knownResponsibility(finding.responsibleRole ?? rule?.responsible) ||
-      (stageOf(rule) !== "later_lender" && finding.severity !== "info" && finding.type !== "info")
-    )
+    if (findingStopsPreparation(finding, rule))
       unresolved.push(`${rule?.title ?? finding.ruleId}: unresolved ${finding.type}.`);
   }
   const ready = unresolved.length === 0;

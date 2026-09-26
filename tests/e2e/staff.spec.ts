@@ -120,7 +120,7 @@ for (const [role, account, heading] of [
         role === "admin"
           ? "File oversight"
           : role === "operator"
-            ? "Move the file forward"
+            ? "Prepare the file"
             : "Evidence and decisions",
       ],
       ["documents", "/documents", "Documents"],
@@ -156,7 +156,7 @@ for (const [role, account, heading] of [
     if (role === "reviewer")
       await expect(page.getByRole("button", { name: "File manually" })).toHaveCount(0);
     await page.goto(base + "/documents");
-    await page.getByRole("link", { name: "Inspect values", exact: true }).first().click();
+    await page.getByRole("link", { name: "View values", exact: true }).first().click();
     await expect(page.getByRole("heading", { name: "Decided values" })).toBeVisible();
     await page
       .getByRole("button", { name: /Show page/ })
@@ -213,7 +213,7 @@ test("Operator decisions target one requirement, persist notes, and preserve imm
   await row
     .getByLabel("waiver reason")
     .fill("Synthetic staff browser proof: requirement waived after review.");
-  await row.getByRole("button", { name: "Waive row" }).click();
+  await row.getByRole("button", { name: "Waive requirement" }).click();
   await expect(
     page.getByTestId(key!).getByRole("status").filter({ hasText: "Saved" }),
   ).toBeVisible();

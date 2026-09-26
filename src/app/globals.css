@@ -902,3 +902,35 @@ body {
 .staff .work > .pill {
   align-self: flex-start;
 }
+
+/* A requirement opened from a link: keep it clear of the sticky header and mark it. */
+.staff tr.is-focus > td {
+  background: var(--accent-soft);
+}
+.staff [id^="confirm-"],
+.staff [id^="tracking-"],
+.staff tr[id] {
+  scroll-margin-top: 96px;
+}
+
+/* Narrow screens: a requirement row reads top to bottom so its next step stays reachable. */
+@media (max-width: 700px) {
+  .staff table.grid.stack,
+  .staff table.grid.stack tbody,
+  .staff table.grid.stack tr,
+  .staff table.grid.stack td {
+    display: block;
+    width: 100%;
+  }
+  .staff table.grid.stack thead {
+    display: none;
+  }
+  .staff table.grid.stack tr {
+    border-top: 1px solid var(--line);
+  }
+  .staff table.grid.stack td {
+    border: 0;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}

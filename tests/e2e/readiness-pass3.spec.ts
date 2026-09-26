@@ -78,19 +78,19 @@ test("finishes preparation on screen and downloads a file with later lender work
     .filter({ has: page.locator(`input[name="scope_key"][value="${partyId}"]`) })
     .filter({
       has: page.getByRole("button", {
-        name: "Save confirmation",
+        name: "Save check record",
         exact: true,
         includeHidden: true,
       }),
     });
   const decisions = page.locator("details").filter({ has: form });
-  await decisions.getByText("Checks and decisions", { exact: true }).click();
-  await form.getByLabel("Confirmation", { exact: true }).selectOption("true");
+  await decisions.getByText("All checks and actions", { exact: true }).click();
+  await form.getByLabel("Check status", { exact: true }).selectOption("true");
   await form
-    .getByLabel("manual_confirmation reason")
+    .getByLabel("Check note")
     .fill("Inspected the supplied synthetic evidence and completed this preparation check.");
-  await form.getByRole("button", { name: "Save confirmation", exact: true }).click();
-  await expect(decisions.getByText("Confirmed by an operator", { exact: true })).toBeVisible();
+  await form.getByRole("button", { name: "Save check record", exact: true }).click();
+  await expect(decisions.getByText(/^Recorded as completed:/)).toBeVisible();
   await page.goto(`/staff/deals/${dealId}/lender-file`);
   await expect(page.getByText("Prepared for lender review", { exact: true })).toBeVisible();
   await expect(
@@ -103,7 +103,7 @@ test("finishes preparation on screen and downloads a file with later lender work
   await customer.goto(`/deals/${dealId}`);
   await expect(customer.getByRole("heading", { name: "Prepared for lender review" })).toBeVisible();
   await expect(
-    customer.getByText("Credit reports: Still outstanding", { exact: true }),
+    customer.getByText("Credit reports: Recorded, not yet received", { exact: true }),
   ).toBeVisible();
   const downloaded = customer.waitForEvent("download");
   await customer.getByRole("link", { name: "Download the lender file", exact: true }).click();

@@ -122,8 +122,8 @@ export default async function Documents({
           </p>
         ) : (
           <p className="meta mb-4">
-            Inspect the current library and masked source evidence. Filing and processing are
-            managed by an operator.
+            View the current library and masked source evidence. Filing and processing are managed
+            by an operator.
           </p>
         )}
         {attention.length ? (
@@ -243,7 +243,7 @@ export default async function Documents({
                             className="link"
                             href={`${base}/documents/${s.documentVersionId}/values/${s.id}`}
                           >
-                            Inspect values
+                            View values
                           </Link>
                         )}
                       </td>

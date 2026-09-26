@@ -1,68 +1,41 @@
 import { PRODUCT_NAME } from "@/lib/product";
 import Link from "next/link";
-import { GitBranch, Lock, ShieldCheck, UserCheck } from "lucide-react";
+import { env } from "@/lib/env";
 import { Card, PageHead } from "@/components/staff";
 
-const PRINCIPLES = [
-  {
-    icon: ShieldCheck,
-    title: "No citation, no value",
-    body: "Every extracted fact cites a source block or an image region and quotes it. Text quotes are checked verbatim in code; image reads are marked as not verbatim.",
-  },
-  {
-    icon: UserCheck,
-    title: "A second model checks the first",
-    body: "An independent verifier re-reads the evidence on a different model without seeing the extractor's confidence.",
-  },
-  {
-    icon: GitBranch,
-    title: "Code scores, people decide",
-    body: "Confidence is a weighted sum of measured components, never a model's opinion. Below the bar, or on any image read, a person decides.",
-  },
-  {
-    icon: Lock,
-    title: "Nothing is overwritten",
-    body: "Files, filing records, facts and decisions create new versions with an audit event. Stale edits are rejected.",
-  },
-];
-
 const STEPS = [
+  ["Set up the deal", "Enter the parties, ownership and transaction terms on the deal profile."],
+  ["Upload documents", "Add files or a ZIP. Exact duplicates are recognized and not added twice."],
   [
-    "Deal",
-    "Create a deal from its profile: parties, roles, ownership and transaction terms. The rule pack follows the expected loan-number date.",
+    "Confirm filing",
+    "Check each document's type, person or business, period and signature on Documents.",
   ],
   [
-    "Intake",
-    "Upload a folder or ZIP as a numbered batch. Files are hashed; exact duplicates create no version and no model call.",
+    "Check values",
+    "Compare values read from each document with its page. Accept or correct them with a note.",
   ],
   [
-    "Parse and file",
-    "Text layers, form fields, paragraphs and cells become source blocks. Documents are classified by signature first, by a model only when cues are inconclusive, and bundles are confirmed by an operator.",
+    "Work through Requirements and Review",
+    "Each open item says what is missing or unconfirmed and links to the screen that resolves it. Record manual checks and lender tracking there.",
   ],
+  ["Send follow-ups", "Copy a prepared message and send it yourself. AcqFile does not send email."],
   [
-    "Read",
-    "Each confirmed document is read by its method: official form fields directly, text through the extractor and verifier, image-only pages through two independent reads. Facts route to auto-accept, review or blocked.",
-  ],
-  [
-    "Review",
-    "One screen per document shows the page beside every pending value with its confidence breakdown and the verifier's reason. Accept, edit, reject, ask for a better copy or reclassify.",
-  ],
-  [
-    "Evaluate",
-    "After filing, review or a profile change the rule engine runs on current rows. The deal page shows checklist, finding and review counts.",
+    "Download the lender file",
+    "When nothing stops preparation, create a version and download it. Later lender work stays listed.",
   ],
 ];
 
 export default function HowItWorksPage() {
+  const mock = env().LLM_PROVIDER === "mock";
   return (
     <>
       <PageHead
         title="How it works"
-        subtitle={`${PRODUCT_NAME} prepares an acquisition loan file from supplied documents. Flags are preparation aids for lender review, not determinations.`}
+        subtitle={`${PRODUCT_NAME} helps you prepare an acquisition loan file. It does not approve loans or decide eligibility; the lender does.`}
       />
       <div className="space-y-5">
-        <Card title="From intake to evaluation">
-          <ol className="space-y-3">
+        <Card title="The workflow">
+          <ol className="space-y-2.5">
             {STEPS.map(([title, body], i) => (
               <li key={title}>
                 <span className="font-semibold">
@@ -73,19 +46,36 @@ export default function HowItWorksPage() {
             ))}
           </ol>
         </Card>
-        <div className="grid gap-5 md:grid-cols-2">
-          {PRINCIPLES.map(({ icon: Icon, title, body }) => (
-            <Card key={title}>
-              <div className="flex items-start gap-3">
-                <Icon size={18} aria-hidden className="mt-0.5 shrink-0 text-[var(--accent)]" />
-                <div>
-                  <h3>{title}</h3>
-                  <p className="meta mt-1">{body}</p>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <Card title="How values are read">
+          <p>
+            {mock
+              ? "This demo uses prepared sample readings. No AI model reads the documents here; each prepared value still cites its page, and a person confirms it."
+              : "Values are read from form fields directly and from text or scans by a model, then checked against the quoted source. Anything uncertain waits for a person."}
+          </p>
+          <p className="meta mt-2">
+            Every value cites its page. Corrections and decisions are saved as new versions with
+            your name; nothing is overwritten.
+          </p>
+        </Card>
+        <details className="reveal">
+          <summary>Technical detail</summary>
+          <Card className="mt-2">
+            <ul className="meta list-disc space-y-1.5 pl-5">
+              <li>
+                Text quotes are checked word for word in code. Values read from scans are marked as
+                not verbatim.
+              </li>
+              <li>
+                With a live model, a second model re-reads each value without seeing the first
+                model&apos;s score. Scores are computed in code, not taken from a model.
+              </li>
+              <li>
+                The rules run again after any filing, value decision or profile change. Rule packs
+                are illustrative and have not been verified by a lender.
+              </li>
+            </ul>
+          </Card>
+        </details>
         <p>
           <Link href="/staff/deals" className="link">
             Open the deals

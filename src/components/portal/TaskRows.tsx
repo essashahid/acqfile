@@ -16,7 +16,7 @@ export function TaskRows({ tasks, base }: { tasks: Task[]; base: string }) {
             className={`button shrink-0 ${t.state === "To do" ? "primary" : "secondary"}`}
             href={`${base}/tasks/${t.key}`}
           >
-            {t.state === "To do" ? "Upload" : "Show"}
+            {t.state === "To do" ? "Upload" : "View"}
           </Link>
         </div>
       ))}

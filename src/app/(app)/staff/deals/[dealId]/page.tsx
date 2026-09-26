@@ -54,7 +54,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
           ctx.workspace.role === "admin"
             ? "File oversight"
             : editable
-              ? "Move the file forward"
+              ? "Prepare the file"
               : "Evidence and decisions"
         }
         eyebrow={staffRole(ctx.workspace.role)}
@@ -76,7 +76,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
           }
           description={
             actionable.length
-              ? "Most consequential first. Each item opens the evidence behind it."
+              ? "Top-priority items first. Each one opens the item and its evidence."
               : undefined
           }
           flush={actionable.length > 0}
@@ -94,11 +94,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
                       <p className="meta mt-1">{w.party}</p>
                     </div>
                     <Link className="btn btn-sm self-center" href={w.href}>
-                      {editable
-                        ? w.action
-                        : w.kind === "review"
-                          ? "Inspect values"
-                          : "Inspect evidence"}
+                      {editable ? w.action : w.kind === "review" ? "View values" : "View evidence"}
                       <ArrowRight size={13} aria-hidden />
                     </Link>
                   </li>
@@ -128,7 +124,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
         {!editable ? (
           <Card
             title="Review the record"
-            description="Inspect current coverage and the reasons behind completed decisions. No changes can be made from this account."
+            description="View current coverage and the reasons behind completed decisions. No changes can be made from this account."
           >
             <div className="flex flex-wrap gap-3">
               <Link className="btn" href={`${base}/requirements?show=all`}>
@@ -276,11 +272,7 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
                     <p className="meta mt-1">{w.party}</p>
                   </div>
                   <Link className="link self-center" href={w.href}>
-                    {editable
-                      ? w.action
-                      : w.kind === "review"
-                        ? "Inspect values"
-                        : "Inspect evidence"}
+                    {editable ? w.action : w.kind === "review" ? "View values" : "View evidence"}
                   </Link>
                 </li>
               ))}

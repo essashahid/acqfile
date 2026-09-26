@@ -18,7 +18,7 @@ export default async function TaskPage({
   if (!task) notFound();
   const { replace } = await searchParams;
   if (replace && !task.versions.includes(replace)) notFound();
-  const help = instructions(task.type),
+  const help = instructions(task.type, task.periods),
     files = p.data.versions.filter((v) => task.versions.includes(v.id));
   return (
     <Shell

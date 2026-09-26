@@ -60,7 +60,7 @@ export function Receipt({
       <p className="muted">Your {result.title.toLowerCase()}</p>
       <h1>
         {result.state === "noticed"
-          ? `Thanks, ${first}. One small thing.`
+          ? `${first}, please check this document`
           : result.state === "checking"
             ? "We're reading your document"
             : "Your document is with us for review"}
@@ -101,15 +101,14 @@ export function Receipt({
             />
           </div>
           <p className="muted mt-7">
-            If you tell us it&apos;s right, a person on our team will take a look and get back to
-            you.
+            If you tell us it&apos;s right, our team will review it and update your list.
           </p>
         </>
       ) : (
         <div className="aside-panel my-8">
           <p>
-            We&apos;ve saved your document. A person on our team will take a look. You can carry on
-            with your day.
+            We&apos;ve saved your document. Our team will review it and update your list. You
+            don&apos;t need to wait here.
           </p>
         </div>
       )}

@@ -23,8 +23,8 @@ export function staffFocus(role: WorkspaceRole) {
     };
   return {
     title: "Files to review",
-    description: "Inspect evidence, coverage and recorded decisions. Your access is read-only.",
+    description: "View evidence, coverage and recorded decisions. Your access is read-only.",
     entry: "/review",
-    action: "Inspect evidence",
+    action: "View evidence",
   };
 }

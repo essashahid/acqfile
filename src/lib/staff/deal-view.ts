@@ -6,6 +6,7 @@ import { listRequests, ageInDays } from "@/lib/deliverables/requests";
 import { listSnapshots } from "@/lib/deliverables/snapshot";
 import { PENDING } from "@/lib/evaluation/run";
 import { documentName, findingHeadline, reviewSubject } from "./labels";
+import { explainItem, stageEffect } from "./explain";
 
 export type WorkItem = {
   key: string;
@@ -110,6 +111,26 @@ export async function dealView(dealId: string) {
         : key
       : built.partyName(key);
 
+  // The same specific sentence Review shows, so the overview never says only "needs review".
+  const why = (f: (typeof built.findings)[number]) => {
+    const rule = built.rules.get(f.ruleId);
+    const row = built.index.find(
+      (r) =>
+        r.item_id === f.ruleId && r.scope_key === f.scopeKey && (r.period || null) === f.period,
+    );
+    if (!rule) return (f.detailsJson as { message: string }).message;
+    const summary = explainItem({
+      rule,
+      status: row?.status ?? "needs_review",
+      checks: row?.checks ?? [],
+      findingType: f.type,
+      findingMessage: (f.detailsJson as { message: string }).message,
+      parameters: built.pack.parameters,
+    }).summary;
+    const effect = row ? stageEffect(rule, row).text : "";
+    return effect ? `${summary} ${effect}` : summary;
+  };
+
   // Follow-ups still to prepare: open findings not yet covered by a recorded request.
   const toPrepare = built.findings.filter(
     (f) => f.status === "open" && f.type !== "info" && f.severity !== "info",
@@ -128,7 +149,7 @@ export async function dealView(dealId: string) {
         built.rules.get(f.ruleId)?.title ??
           findingHeadline(f.type, (f.detailsJson as { message: string }).message),
       ),
-      why: "Blocks the lender file until it is resolved, dismissed or waived.",
+      why: why(f),
       party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
       href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
       action: "Review evidence",
@@ -153,7 +174,7 @@ export async function dealView(dealId: string) {
         built.rules.get(f.ruleId)?.title ??
           findingHeadline(f.type, (f.detailsJson as { message: string }).message),
       ),
-      why: `${f.type.replaceAll("_", " ")} · responsible: ${f.responsibleRole}`,
+      why: `${why(f)} Responsible: ${f.responsibleRole}.`,
       party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
       href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
       action: "Review evidence",
@@ -246,13 +267,13 @@ export function requirementGroups(
   const group = (r: IndexRow) => {
     const rule = rules.get(r.item_id);
     if (!rule) return r.party;
-    if (rule.checks.some((c) => c.type === "tracking")) return "Lender-ordered";
+    if (rule.checks.some((c) => c.type === "tracking")) return "Lender-ordered work";
     if (rule.scope === "buyer_entity") return "Buyer entity";
     if (rule.scope === "target_business") return "Target business";
     if (rule.scope === "deal") return "Transaction";
     return r.party;
   };
-  const order = ["Transaction", "Buyer entity", "Target business", "Lender-ordered"];
+  const order = ["Transaction", "Buyer entity", "Target business", "Lender-ordered work"];
   const names = [...new Set(index.map(group))].sort(
     (a, b) =>
       (order.indexOf(a) < 0 ? order.length : order.indexOf(a)) -

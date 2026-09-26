@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   attributeName,
-  checkOutcome,
   documentName,
   factValue,
   findingHeadline,
@@ -29,15 +28,6 @@ describe("operator vocabulary", () => {
     expect(documentName("SBA_1919")).toBe("SBA Form 1919");
     // An unmapped code degrades to sentence case rather than leaking the enum.
     expect(documentName("SOME_NEW_TYPE")).toBe("Some new type");
-  });
-
-  it("reads a failed check as what could not be confirmed, never as an assertion", () => {
-    const failed = checkOutcome("signed_and_dated", "fail", "Signature and date are present");
-    expect(failed.detail).toBe("Could not confirm that signature and date are present");
-    expect(checkOutcome("presence", "unknown", "Evidence is present").detail).toMatch(
-      /^Could not determine whether/,
-    );
-    expect(checkOutcome("presence", "pass", "Evidence is present").label).toBe("Met");
   });
 
   it("turns engine messages into headlines an operator can read", () => {

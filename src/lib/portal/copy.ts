@@ -37,7 +37,7 @@ export const labels: Record<string, string> = {
   PROJECTIONS: "Business forecast",
   ADDBACK_SCHEDULE: "Adjusted earnings schedule",
   EQUIPMENT_LIST: "Equipment list",
-  LICENSE: "Business licence",
+  LICENSE: "Business license",
   NON_COMPETE: "Non-compete agreement",
   SBA_155: "Standby agreement",
   TRANSFER_EVIDENCE: "Money transfer evidence",
@@ -67,34 +67,40 @@ export const numberWord = (n: number) =>
   String(n);
 export const customerBanned =
   /\b(error|invalid|failed|rejected|flags?|exceptions?|conflicts?|mismatch|stale|requests?|packages?|findings?|needs_review|received_with_issues|segments?|attestations?|evaluations?|overlays?|snapshots?|hash(?:es)?|sha(?:256)?|acroform|vision|idempot\w*|confidence|mock|approved|pre-approved|eligible|ineligible|qualifies|compliant)\b|meets SBA requirements|checklist item|accepted by the lender|on track|\b(?:CON|GUA|TGT|ENT|TXN)-\d|\b\d{2}:\d{2}:\d{2}\b/i;
-export const instructions = (type: string) => {
+/** Why and what for one task, using the periods this task actually needs. */
+export const instructions = (type: string, periods: string[] = []) => {
+  const named = periods.filter(Boolean).map((p) => periodLabel(p));
+  const list =
+    named.length <= 1 ? (named[0] ?? "") : `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
   if (type === "TAX_PERSONAL")
     return {
-      why: "The lender asks for the last three years of tax returns for each owner of the business.",
+      why: list
+        ? `Your adviser needs your federal tax returns for ${list} for the loan file.`
+        : "Your adviser needs your recent federal tax returns for the loan file.",
       what: "Please send every page of your federal return (Form 1040), including the schedules. A PDF from your accountant is best.",
     };
   if (type === "BANK_STATEMENT")
     return {
-      why: "The lender wants to see where your share of the down payment is coming from.",
-      what: "Please send every numbered page of each monthly statement for the account the money will come from.",
+      why: "This shows where your share of the down payment is coming from.",
+      what: `Please send every numbered page of ${list ? `the ${list} statement${named.length === 1 ? "" : "s"}` : "each monthly statement"} for the account the money will come from.`,
     };
   if (type === "SBA_413")
     return {
-      why: "This helps the lender understand your personal finances.",
+      why: "It shows the lender your personal finances.",
       what: "Please send a current personal financial statement (Form 413), signed and dated.",
     };
   if (type === "SBA_1919")
     return {
-      why: "This gives the lender the borrower information needed to prepare the loan file.",
+      why: "The lender uses this form for borrower information.",
       what: "Please complete the borrower information form (Form 1919), then sign and date it.",
     };
   if (type === "CITIZENSHIP_EVIDENCE")
     return {
-      why: "The lender needs evidence of citizenship for the people involved in the business.",
+      why: "Your adviser has asked for citizenship evidence for the loan file.",
       what: "Please send a passport, birth certificate or naturalization certificate.",
     };
   return {
-    why: "This helps the team prepare a complete loan file for the lender.",
+    why: `Your adviser has asked for this${list ? ` for ${list}` : ""} for the loan file.`,
     what: "Please send a complete, readable copy, including every numbered page.",
   };
 };

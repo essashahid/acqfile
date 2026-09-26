@@ -1,17 +1,29 @@
 import { DecisionForm } from "@/components/staff/DecisionForm";
 import Link from "next/link";
+import { eq } from "drizzle-orm";
+import { getDb, schema } from "@/lib/db/client";
 import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
 import { mutationAllowed } from "@/lib/access";
 import { dealView } from "@/lib/staff/deal-view";
+import { requirementEvidence } from "@/lib/staff/evidence";
+import { findingStopsPreparation, stageOf } from "@/lib/deliverables/readiness";
 import {
-  FINDING_MEANING,
   documentName,
   factValue,
   findingHeadline,
   attributeName,
   reviewSubject,
 } from "@/lib/staff/labels";
+import {
+  PRIORITY,
+  PRIORITY_HELP,
+  actionHref,
+  checksFromMessage,
+  explainItem,
+  profileDependencies,
+  stageEffect,
+} from "@/lib/staff/explain";
 import { decisionAction } from "../../deliverable-actions";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
@@ -42,6 +54,7 @@ export default async function Review({
   await requireDeal(ctx, dealId);
   const v = await dealView(dealId);
   const editable = mutationAllowed(ctx);
+  const base = `/staff/deals/${dealId}`;
   const show = q.show === "history" ? "history" : q.show === "info" ? "info" : "open";
   const list = v.findings
     .filter((f) =>
@@ -78,29 +91,128 @@ export default async function Review({
         details: [],
       })
     : null;
-  // Evidence the engine cited. Page-less entries are the declared profile, not a document page.
-  const cited = (d?.details ?? [])
-    .filter((x) => x.fact_id !== null || x.page !== null)
+  const openItems = v.findings.filter(
+    (f) => !CLOSED.includes(f.status) && f.type !== "info" && f.severity !== "info",
+  );
+  const stopping = openItems.filter((f) => findingStopsPreparation(f, v.rules.get(f.ruleId)));
+  const closedCount = v.findings.filter((f) => CLOSED.includes(f.status)).length;
+
+  // Everything below describes the selected item only.
+  const rule = selected ? v.rules.get(selected.ruleId) : undefined;
+  const row = selected
+    ? v.index.find(
+        (r) =>
+          r.item_id === selected.ruleId &&
+          r.scope_key === selected.scopeKey &&
+          (r.period || null) === selected.period,
+      )
+    : undefined;
+  const rowKey = row ? `${row.item_id}|${row.scope_key}|${row.period}` : undefined;
+  const closed = selected ? CLOSED.includes(selected.status) : false;
+  const attestations =
+    selected && rule
+      ? await getDb()
+          .select()
+          .from(schema.attestations)
+          .where(eq(schema.attestations.dealId, dealId))
+          .then((all) =>
+            all.filter(
+              (a) =>
+                a.ruleId === selected.ruleId &&
+                a.scopeKey === selected.scopeKey &&
+                (a.period ?? "") === (selected.period ?? ""),
+            ),
+          )
+      : [];
+  // A closed item is described as it was recorded, never with today's check results.
+  const ex =
+    selected && rule && d
+      ? explainItem({
+          rule,
+          status: closed
+            ? selected.type === "missing"
+              ? "missing"
+              : "needs_review"
+            : (row?.status ?? "needs_review"),
+          checks: closed || !row ? checksFromMessage(rule, d.message) : row.checks,
+          findingType: selected.type,
+          findingMessage: d.message,
+          parameters: v.pack.parameters,
+          saved: closed ? [] : attestations.map((a) => ({ ...a, key: a.key ?? "" })),
+        })
+      : null;
+  // Consistency rules have no requirement row; the finding itself carries the preparation effect.
+  const effect =
+    selected && row
+      ? stageEffect(rule, row)
+      : selected && !closed
+        ? findingStopsPreparation(selected, rule)
+          ? { blocks: true, text: "Must be resolved before the file can be prepared." }
+          : {
+              blocks: false,
+              text: "Later lender work. It does not stop the file from being prepared.",
+            }
+        : null;
+  const sourceLink = (versionId: string, page: number | null) =>
+    `${base}/documents/${versionId}?page=${page ?? 1}&finding=${encodeURIComponent(selected!.findingKey)}&from=review&returnTo=${encodeURIComponent(`${base}/review${keep({ finding: selected!.findingKey })}`)}`;
+  // Values the check cited, with the value recorded on the item rather than today's value.
+  const facts = (d?.details ?? [])
+    .filter((x) => x.fact_id !== null)
     .filter(
       (x, i, all) =>
         all.findIndex(
-          (y) =>
-            y.fact_id === x.fact_id &&
-            y.file === x.file &&
-            y.page === x.page &&
-            JSON.stringify(y.value) === JSON.stringify(x.value),
+          (y) => y.fact_id === x.fact_id && JSON.stringify(y.value) === JSON.stringify(x.value),
         ) === i,
     );
-  const fromProfile = d?.details.some((x) => x.page === null) ?? false;
-  const resolvedSegments = selected?.resolvedByJson
-    ? ((selected.resolvedByJson as { segment_ids: string[] }).segment_ids ?? [])
-    : [];
+  const metadata = (d?.details ?? []).filter((x) => x.fact_id === null && x.page !== null);
+  const onFile =
+    row && !closed
+      ? requirementEvidence(v, row)
+      : metadata.map((m) => ({ id: `${m.file}:${m.page}`, versionId: m.file, page: m.page! }));
+  const firstFact = facts
+    .map((x) => v.sourceFacts.find((f) => f.id === x.fact_id))
+    .find((f) => f && v.segments.some((s) => s.id === f.segmentId));
+  const firstFactSegment = firstFact
+    ? v.segments.find((s) => s.id === firstFact.segmentId)
+    : undefined;
+  const firstDoc = onFile[0];
+  const href =
+    ex && !closed
+      ? actionHref(ex.action.kind, base, {
+          rowKey,
+          noteKey: ex.action.noteKey,
+          findingKey: selected?.findingKey,
+          document: firstFactSegment
+            ? {
+                versionId: firstFactSegment.documentVersionId,
+                page: firstFactSegment.pageStart,
+                segmentId: firstFactSegment.id,
+              }
+            : firstDoc
+              ? {
+                  versionId: firstDoc.versionId,
+                  page: firstDoc.page,
+                  segmentId: v.segments.find((s) => s.id === firstDoc.id)?.id,
+                }
+              : undefined,
+        })
+      : null;
+  const recordOnly = ex ? ["manual", "tracking"].includes(ex.family) : false;
+  const dependencies = profileDependencies(rule);
+  const title = (f: (typeof list)[number]) =>
+    reviewSubject(v.rules.get(f.ruleId)?.title ?? "") ||
+    findingHeadline(f.type, (f.detailsJson as { message: string }).message);
   return (
     <>
       <PageHead
         title="Review"
-        subtitle={`${v.counts.findingsOpen} open, including ${v.counts.blockers} blocker${v.counts.blockers === 1 ? "" : "s"}. ${v.counts.findingsTotal - v.counts.findingsOpen} closed findings are kept in history.`}
+        subtitle={`${openItems.length} open: ${stopping.length} must be resolved before the file can be prepared${openItems.length - stopping.length ? `, ${openItems.length - stopping.length} ${openItems.length - stopping.length === 1 ? "is" : "are"} later lender work` : ""}. ${closedCount} closed items are kept in history.`}
       />
+      {!v.preparation.current ? (
+        <p className="meta mb-3" role="note">
+          These results are from the last check. Newer evidence is waiting to be checked.
+        </p>
+      ) : null}
       <Card className="mb-5">
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -115,10 +227,7 @@ export default async function Review({
               className={`btn btn-sm ${show === "history" ? "btn-primary" : ""}`}
               href={keep({ show: "history", finding: undefined })}
             >
-              History{" "}
-              <span className="num">
-                {v.findings.filter((f) => CLOSED.includes(f.status)).length}
-              </span>
+              History <span className="num">{closedCount}</span>
             </Link>
             <Link
               className={`btn btn-sm ${show === "info" ? "btn-primary" : ""}`}
@@ -129,12 +238,14 @@ export default async function Review({
           </div>
           <form className="flex flex-wrap items-end gap-3">
             <input type="hidden" name="show" value={show} />
-            <label className="flex flex-col gap-1">
-              <span className="eyebrow">Severity</span>
+            <label className="flex flex-col gap-1" title={PRIORITY_HELP}>
+              <span className="eyebrow">Priority</span>
               <select name="severity" defaultValue={q.severity ?? ""}>
                 <option value="">Any</option>
                 {[...new Set(v.findings.map((f) => f.severity))].sort().map((s) => (
-                  <option key={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {PRIORITY[s] ?? s}
+                  </option>
                 ))}
               </select>
             </label>
@@ -147,7 +258,7 @@ export default async function Review({
                 ))}
               </select>
             </label>
-            <button className="btn btn-sm">Apply</button>
+            <button className="btn btn-sm">Apply filters</button>
           </form>
           <span className="meta ml-auto self-center">{list.length} shown</span>
         </div>
@@ -165,12 +276,9 @@ export default async function Review({
                 aria-current={selected?.findingKey === f.findingKey ? "true" : undefined}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <p className="font-semibold leading-snug">
-                    {reviewSubject(v.rules.get(f.ruleId)?.title ?? "") ||
-                      findingHeadline(f.type, (f.detailsJson as { message: string }).message)}
-                  </p>
+                  <p className="font-semibold leading-snug">{title(f)}</p>
                   {f.severity === "blocker" && !CLOSED.includes(f.status) ? (
-                    <span className="pill pill-bad shrink-0">Blocker</span>
+                    <Pill value="blocker" />
                   ) : null}
                 </div>
                 <p className="meta mt-1">
@@ -180,20 +288,22 @@ export default async function Review({
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   <Pill value={f.type} />
                   {CLOSED.includes(f.status) ? <Pill value={f.status} /> : null}
+                  {!CLOSED.includes(f.status) &&
+                  stageOf(v.rules.get(f.ruleId)) === "later_lender" ? (
+                    <Pill value="later_lender" label="Later lender work" tone="quiet" />
+                  ) : null}
                 </div>
               </Link>
             ))}
           </Card>
 
           {selected && d ? (
-            <div className="space-y-5">
+            // Keyed by item so unsaved notes never carry over to another selection.
+            <div className="space-y-5" key={selected.findingKey}>
               <Card>
                 <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
                   <div className="min-w-0">
-                    <h2 className="text-[19px]">
-                      {reviewSubject(v.rules.get(selected.ruleId)?.title ?? "") ||
-                        findingHeadline(selected.type, d.message)}
-                    </h2>
+                    <h2 className="text-[19px]">{title(selected)}</h2>
                     <p className="meta mt-1">
                       {v.party(selected.scopeKey)}
                       {selected.period ? ` · ${selected.period}` : ""} · responsible{" "}
@@ -201,175 +311,227 @@ export default async function Review({
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Pill value={selected.type} />
-                    <Pill value={selected.severity} />
                     <Pill value={selected.status} />
+                    <Pill value={selected.severity} title={PRIORITY_HELP} />
                   </div>
                 </div>
-                <p className="mt-3">
-                  {CLOSED.includes(selected.status)
-                    ? `This finding was ${selected.status}. Its evidence and recorded decisions remain here.`
-                    : (FINDING_MEANING[selected.type] ?? "")}
-                </p>
-                {v.index
-                  .filter(
-                    (r) =>
-                      r.item_id === selected.ruleId &&
-                      r.scope_key === selected.scopeKey &&
-                      (r.period || null) === selected.period,
-                  )
-                  .map((r) => (
-                    <p key={r.item_id} className="mt-3">
-                      <Link
-                        className="link"
-                        href={`../${dealId}/requirements?show=all#${encodeURIComponent(`${r.item_id}|${r.scope_key}|${r.period}`)}`}
-                      >
-                        Requirement: {r.item}
-                      </Link>
-                    </p>
-                  ))}
-                {selected.reason ? (
-                  <p className="meta mt-2">
-                    <span className="eyebrow">Operator reason</span> {selected.reason}
+                {closed ? (
+                  <p className="mt-3">
+                    This item was {selected.status}.{" "}
+                    {ex?.summary ? `When it was open: ${ex.summary}` : ""}
                   </p>
-                ) : null}
-              </Card>
-
-              <Card
-                title="Evidence"
-                description={
-                  cited.length
-                    ? "Values cited by the check. Compare each value with its source."
-                    : "No document page was cited for this finding."
-                }
-                flush={cited.length > 0}
-              >
-                {cited.length ? (
-                  <table className="grid">
-                    <thead>
-                      <tr>
-                        <th className="w-[28%]">Field and value</th>
-                        <th className="w-[30%]">Source</th>
-                        <th>Quoted</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {cited.map((s, i) => {
-                        const fact = v.sourceFacts.find((f) => f.id === s.fact_id);
-                        return (
-                          <tr key={i}>
-                            <td>
-                              <p className="meta">
-                                {fact
-                                  ? attributeName(fact.attribute)
-                                  : s.page === null
-                                    ? "Declared value"
-                                    : "Document information"}
-                              </p>
-                              <p className="font-semibold">
-                                {factValue(
+                ) : (
+                  <div className="mt-3 space-y-1.5">
+                    <p className="text-[15px]">
+                      {ex?.family === "disagreement" && facts.length > 1
+                        ? `The sources give different values: ${[
+                            ...new Set(
+                              facts.map((x) => {
+                                const fact = v.sourceFacts.find((f) => f.id === x.fact_id);
+                                return factValue(
                                   fact?.attribute ?? "",
                                   fact?.unit ?? "text",
-                                  fact?.valueJson ?? s.value,
-                                )}
-                              </p>
-                              <p className="meta">
-                                {fact?.method === "manual"
-                                  ? "Operator confirmed"
-                                  : s.page === null
-                                    ? "Declared"
-                                    : "Extracted"}
-                              </p>
-                            </td>
-                            <td>
-                              {v.versions.some((x) => x.id === s.file) ? (
-                                <>
-                                  <Link
-                                    className="link"
-                                    href={`/staff/deals/${dealId}/documents/${s.file}?page=${s.page}&returnTo=${encodeURIComponent(`/staff/deals/${dealId}/review${keep({ finding: selected.findingKey })}`)}`}
-                                  >
-                                    {documentName(
-                                      v.segments.find(
-                                        (x) =>
-                                          x.documentVersionId === s.file &&
-                                          s.page !== null &&
-                                          x.pageStart <= s.page &&
-                                          x.pageEnd >= s.page,
-                                      )?.docType ?? "",
-                                    ) || "Supplied document"}
-                                  </Link>
-                                  <p className="meta">Page {s.page}</p>
-                                </>
-                              ) : (
-                                <span className="meta">Deal profile</span>
-                              )}
-                            </td>
-                            <td className="italic">{s.quote}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                ) : (
-                  <Empty>
-                    {fromProfile
-                      ? "This finding was determined from the declared deal profile and the rule parameters."
-                      : "No cited evidence."}
-                  </Empty>
+                                  x.value,
+                                );
+                              }),
+                            ),
+                          ].join(", ")}. AcqFile does not decide which is right.`
+                        : (ex?.summary ?? d.message)}
+                    </p>
+                    {ex?.open[0]?.saved ? <p className="meta">{ex.open[0].saved}</p> : null}
+                    {ex?.note ? <p className="meta">{ex.note}</p> : null}
+                    {ex?.open.slice(1).map((l, i) => (
+                      <p key={i} className="meta">
+                        Also: {l.text}
+                      </p>
+                    ))}
+                    {effect?.text ? (
+                      <p className="meta font-medium text-[var(--fg)]">{effect.text}</p>
+                    ) : null}
+                  </div>
                 )}
-                {fromProfile ? (
-                  <p className="meta px-[18px] py-3">
-                    This check also reads declared transaction terms.{" "}
-                    <Link className="link" href={`/staff/deals/${dealId}/profile`}>
-                      Inspect profile
-                    </Link>
+                {selected.reason ? (
+                  <p className="meta mt-2">
+                    <span className="eyebrow">Recorded reason</span> {selected.reason}
                   </p>
                 ) : null}
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  {href && ex?.action.label ? (
+                    <Link className="btn btn-primary btn-sm" href={href}>
+                      {ex.action.label}
+                    </Link>
+                  ) : null}
+                  {rowKey ? (
+                    <Link
+                      className="link"
+                      href={`${base}/requirements?show=all&focus=${encodeURIComponent(rowKey)}#${encodeURIComponent(rowKey)}`}
+                    >
+                      Open requirement: {row!.item}
+                    </Link>
+                  ) : null}
+                </div>
               </Card>
 
-              {resolvedSegments.length ? (
+              {recordOnly || ex?.family === "missing" || ex?.family === "proposed" ? (
                 <Card
-                  title="Referenced evidence"
-                  description="Documents current when this finding stopped being raised. The system does not record which one caused it."
-                  flush
+                  title="Documents on file"
+                  description={
+                    ex?.family === "tracking"
+                      ? "The lender supplies this. No borrower document is requested."
+                      : ex?.family === "manual"
+                        ? "These are on file for this requirement. They do not show that the open check was done; record it with the check itself."
+                        : undefined
+                  }
+                  flush={onFile.length > 0}
                 >
-                  <ul>
-                    {resolvedSegments.slice(0, 6).map((id) => {
-                      const segment = v.segments.find((s) => s.id === id);
-                      return segment ? (
-                        <li key={id} className="rowline">
-                          <Link
-                            className="link"
-                            href={`/staff/deals/${dealId}/documents/${segment.documentVersionId}?page=${segment.pageStart}`}
-                          >
-                            {v.originalPath(segment.documentVersionId)}
+                  {onFile.length ? (
+                    <ul>
+                      {onFile.map((s) => (
+                        <li key={s.id} className="rowline">
+                          <Link className="link" href={sourceLink(s.versionId, s.page)}>
+                            View{" "}
+                            {documentName(
+                              v.segments.find(
+                                (x) =>
+                                  x.documentVersionId === s.versionId &&
+                                  x.pageStart <= s.page &&
+                                  x.pageEnd >= s.page,
+                              )?.docType ?? "",
+                            ) || "supplied document"}
                           </Link>
-                          <span className="meta"> · page {segment.pageStart}</span>
+                          <span className="meta"> · page {s.page}</span>
                         </li>
-                      ) : null;
-                    })}
-                    {resolvedSegments.length > 6 ? (
-                      <li className="rowline meta">
-                        and {resolvedSegments.length - 6} more current at that time
-                      </li>
-                    ) : null}
-                  </ul>
+                      ))}
+                    </ul>
+                  ) : (
+                    <Empty>
+                      {ex?.family === "missing"
+                        ? "Nothing accepted is on file for this requirement yet."
+                        : "No document is needed to answer this check."}
+                    </Empty>
+                  )}
                 </Card>
+              ) : (
+                <Card
+                  title="Values the check used"
+                  description={
+                    facts.length
+                      ? "Each value as recorded on this item, with its source. Compare them before correcting anything."
+                      : "No value was cited for this item."
+                  }
+                  flush={facts.length > 0}
+                >
+                  {facts.length ? (
+                    <table className="grid">
+                      <thead>
+                        <tr>
+                          <th className="w-[30%]">Value</th>
+                          <th className="w-[28%]">Source</th>
+                          <th>Quoted</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {facts.map((s, i) => {
+                          const fact = v.sourceFacts.find((f) => f.id === s.fact_id);
+                          return (
+                            <tr key={i}>
+                              <td>
+                                <p className="meta">
+                                  {fact ? attributeName(fact.attribute) : "Value"}
+                                </p>
+                                <p className="font-semibold">
+                                  {factValue(fact?.attribute ?? "", fact?.unit ?? "text", s.value)}
+                                </p>
+                                <p className="meta">
+                                  {fact?.method === "manual"
+                                    ? "Entered by staff"
+                                    : "Read from the document"}
+                                </p>
+                              </td>
+                              <td>
+                                {v.versions.some((x) => x.id === s.file) ? (
+                                  <>
+                                    <Link className="link" href={sourceLink(s.file, s.page)}>
+                                      View{" "}
+                                      {documentName(
+                                        v.segments.find(
+                                          (x) =>
+                                            x.documentVersionId === s.file &&
+                                            s.page !== null &&
+                                            x.pageStart <= s.page &&
+                                            x.pageEnd >= s.page,
+                                        )?.docType ?? "",
+                                      ) || "supplied document"}
+                                    </Link>
+                                    <p className="meta">Page {s.page}</p>
+                                  </>
+                                ) : (
+                                  <span className="meta">Source not on file</span>
+                                )}
+                              </td>
+                              <td className="italic">{s.quote}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ) : ex?.family === "document" && metadata.length ? (
+                    <ul className="space-y-2">
+                      {metadata.map((m, i) => (
+                        <li key={i}>
+                          <p className="meta">Document details as filed</p>
+                          <p className="font-semibold">{factValue("", "text", m.value)}</p>
+                          <p className="italic">{m.quote}</p>
+                          <Link className="link" href={sourceLink(m.file, m.page)}>
+                            View document, page {m.page}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <Empty>
+                      {ex?.open.length
+                        ? "The value this check needs has not been read yet."
+                        : "No cited evidence."}
+                    </Empty>
+                  )}
+                  {facts.length && ex?.family === "document" && metadata.length ? (
+                    <p className="meta px-[18px] py-3">
+                      Document details as filed:{" "}
+                      {metadata.map((m) => factValue("", "text", m.value)).join("; ")}
+                    </p>
+                  ) : null}
+                </Card>
+              )}
+              {dependencies.length ? (
+                <p className="meta">
+                  This check also compares against the deal profile: {dependencies.join(", ")}.{" "}
+                  <Link className="link" href={`${base}/profile`}>
+                    Open profile
+                  </Link>
+                </p>
               ) : null}
 
-              {editable && !CLOSED.includes(selected.status) ? (
-                <Card title="Decide">
-                  <p className="meta mb-3">
-                    Dismissing records that this finding does not apply. Waiving also waives the
-                    requirement row. Both need a reason and are recorded against your name. Neither
-                    changes the evidence.
-                  </p>
+              {editable && !closed ? (
+                <Card title="Other options">
+                  <ul className="meta mb-3 list-disc space-y-1 pl-5">
+                    <li>
+                      Dismiss: closes this review item with your reason. The requirement keeps its
+                      status until its checks pass or it is waived
+                      {effect?.blocks ? ", so it still stops the file from being prepared" : ""}.
+                    </li>
+                    <li>
+                      Waive: marks the requirement as waived with your reason. It counts as waived,
+                      not satisfied. It is not lender approval.
+                    </li>
+                    <li>Both are recorded with your name. Neither changes any evidence.</li>
+                  </ul>
                   <DecisionForm
                     action={decisionAction.bind(null, dealId)}
                     className="flex flex-wrap items-end gap-2"
                   >
                     <input type="hidden" name="finding_key" value={selected.findingKey} />
-                    <label className="flex min-w-[18rem] flex-1 flex-col gap-1">
+                    <label className="flex min-w-[16rem] flex-1 flex-col gap-1">
                       <span className="eyebrow">Reason (required)</span>
                       <input name="reason" aria-label="Decision reason" required />
                     </label>
@@ -400,12 +562,19 @@ export default async function Review({
                       <dd className="break-words font-mono text-[13px]">{selected.scopeKey}</dd>
                     </div>
                     <div>
+                      <dt className="eyebrow">Stored values</dt>
+                      <dd className="text-[13px]">
+                        type {selected.type} · severity {selected.severity} · status{" "}
+                        {selected.status}
+                      </dd>
+                    </div>
+                    <div className="sm:col-span-2">
                       <dt className="eyebrow">Raw check result</dt>
                       <dd className="text-[13px]">{d.message}</dd>
                     </div>
                   </dl>
                   <details className="reveal mt-4">
-                    <summary>All cited evidence and rule inputs</summary>
+                    <summary>All recorded evidence and rule inputs</summary>
                     <pre className="mt-3 overflow-auto whitespace-pre-wrap text-sm">
                       {JSON.stringify(d.details, null, 2)}
                     </pre>
@@ -418,7 +587,7 @@ export default async function Review({
       ) : (
         <Card>
           <Empty>
-            {show === "open" ? "No open findings match these filters." : "No closed findings yet."}
+            {show === "open" ? "No open items match these filters." : "No closed items yet."}
           </Empty>
         </Card>
       )}

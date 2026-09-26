@@ -54,8 +54,8 @@ export function QuestionView({
       ) : null}
       <p className="muted mt-5">
         {question.kind === "staff_review"
-          ? "Your adviser will review these details and decide what happens next."
-          : "Your answer goes to the team for review. We'll let you know if a document needs updating."}
+          ? "Your adviser reviews these details. Nothing is needed from you yet."
+          : "Your answer goes to the team. If a document then needs correcting, it appears as a to-do for whoever supplied it."}
       </p>
       {question.history.length > 0 ? (
         <section className="mt-9">

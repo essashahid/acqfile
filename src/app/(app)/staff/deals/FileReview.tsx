@@ -138,7 +138,7 @@ export function FileReview({
               manual_filing: unreadable,
               force_current: force,
             });
-            setMessage("Filing saved");
+            setMessage("Document details saved. The file has been checked again.");
             router.refresh();
           } catch (e) {
             setMessage(e instanceof Error ? e.message : "Could not save");
@@ -148,7 +148,17 @@ export function FileReview({
         }}
       >
         <div className="card-head">
-          <h2 className="text-[17px]">{unreadable ? "Manual filing" : "Documents in this file"}</h2>
+          <div className="min-w-0">
+            <h2 className="text-[17px]">
+              {unreadable ? "Manual filing" : "Edit document details"}
+            </h2>
+            {editable && !unreadable ? (
+              <p className="meta mt-1">
+                Type, person, period and signature as filed. Change them only if they were read
+                wrongly; saving keeps the earlier version.
+              </p>
+            ) : null}
+          </div>
           <span className="pill pill-quiet">
             {rows.length} {rows.length === 1 ? "document" : "documents"}
           </span>
@@ -367,7 +377,7 @@ export function FileReview({
               />
             </label>
             <button disabled={busy} className="btn btn-primary">
-              {busy ? "Saving…" : unreadable ? "File manually" : "Confirm segments"}
+              {busy ? "Saving…" : unreadable ? "File manually" : "Save document details"}
             </button>
             <p role="status" className="meta min-h-[1.2em]" aria-live="polite">
               {message}

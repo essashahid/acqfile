@@ -15,8 +15,8 @@ const DOCUMENT_NAMES: Partial<Record<DocumentType, string>> = {
   IRS_4506C: "IRS Form 4506-C",
   FIN_YEAR_END: "Year-end financial statements",
   FIN_INTERIM: "Interim financial statements",
-  AGING_AR: "Accounts receivable ageing",
-  AGING_AP: "Accounts payable ageing",
+  AGING_AR: "Accounts receivable aging",
+  AGING_AP: "Accounts payable aging",
   DEBT_SCHEDULE: "Debt schedule",
   LOI: "Letter of intent",
   PURCHASE_AGREEMENT: "Purchase agreement",
@@ -34,7 +34,7 @@ const DOCUMENT_NAMES: Partial<Record<DocumentType, string>> = {
   VALUATION: "Business valuation",
   QOE: "Quality of earnings report",
   RESUME: "Résumé",
-  CREDIT_AUTH: "Credit report authorisation",
+  CREDIT_AUTH: "Credit report authorization",
   FORMATION_DOC: "Formation documents",
   GOOD_STANDING: "Certificate of good standing",
   OWNERSHIP_CHART: "Ownership chart",
@@ -42,7 +42,7 @@ const DOCUMENT_NAMES: Partial<Record<DocumentType, string>> = {
   PROJECTIONS: "Financial projections",
   ADDBACK_SCHEDULE: "Add-back schedule",
   EQUIPMENT_LIST: "Equipment list",
-  LICENSE: "Licence",
+  LICENSE: "License",
   FRANCHISE_AGREEMENT: "Franchise agreement",
   FRANCHISE_DISCLOSURE: "Franchise disclosure document",
   CIM: "Confidential information memorandum",
@@ -75,20 +75,6 @@ export const KNOWN_DOCUMENT_TYPES = DOCUMENT_TYPES.map((t) => ({
 })).sort((a, b) => a.name.localeCompare(b.name));
 
 /**
- * A check message is authored as the condition that should hold, so a failure reads as its
- * negation. "Signature and date are present" failing means they could not be confirmed, which is
- * what the evidence supports; it is not an assertion that they are absent.
- */
-export function checkOutcome(type: string, result: string, message: string) {
-  const condition = message.replace(/^(fail|pass|unknown):\s*/i, "").trim();
-  if (result === "pass") return { label: "Met", detail: condition };
-  const lower = condition.charAt(0).toLowerCase() + condition.slice(1);
-  if (result === "unknown")
-    return { label: "Not determined", detail: `Could not determine whether ${lower}` };
-  return { label: "Not met", detail: `Could not confirm that ${lower}` };
-}
-
-/**
  * A finding headline an operator can read. The engine states the condition that should hold and
  * marks it failed, so the readable form is its negation, phrased as what could not be confirmed
  * rather than as an assertion about the document.
@@ -107,25 +93,27 @@ export function findingHeadline(type: string, message: string): string {
   return sentence;
 }
 
-/** Status sentences an operator can act on, rather than an enum. */
+/** Status sentences an operator can act on, rather than an enum. The row's own open check says more. */
 export const STATUS_MEANING: Record<string, string> = {
-  satisfied: "Evidence on file meets this requirement.",
-  received_with_issues: "Evidence is on file but a check did not pass.",
+  satisfied: "Evidence on file meets every check.",
+  received_with_issues: "Evidence is on file, but a check is not met.",
   missing: "No accepted evidence is on file.",
-  needs_review: "Something could not be determined without a person.",
+  needs_review: "Evidence or a record is on file, but a check is not confirmed yet.",
   not_applicable: "This deal's profile excludes this requirement.",
-  waived: "An operator waived this requirement with a reason.",
-  tracking: "Lender-ordered work tracked by hand.",
+  waived: "Waived with a recorded reason.",
+  tracking: "Lender-ordered work, tracked by hand.",
 };
 
-export const FINDING_MEANING: Record<string, string> = {
-  missing: "Expected evidence is not on file.",
-  stale: "Evidence is older than the rule allows.",
-  incomplete: "Evidence is on file but something required is not confirmed.",
-  conflict:
-    "The supplied information does not meet this comparison. Inspect the cited fields and the requirement.",
-  needs_review: "A person has to decide.",
-  info: "Context for the file. No action is required by the current rules.",
+/** Words for stored values shown in pills. The stored value stays in the tooltip. */
+export const VALUE_LABEL: Record<string, string> = {
+  tracking: "Lender tracking",
+  requested: "Follow-up sent",
+  stale: "Out of date",
+  conflict: "Sources disagree",
+  info: "For information",
+  blocker: "Top priority",
+  major: "High priority",
+  minor: "Normal priority",
 };
 
 /** Money, dates and percentages read from the attribute's own unit rather than being guessed. */
@@ -190,7 +178,7 @@ export function attributeName(attribute: string): string {
     note: "Seller note",
     lease: "Lease",
     gift: "Gift",
-    aging: "Ageing",
+    aging: "Aging",
     debt: "Debt schedule",
     ownership: "Ownership",
     agent: "Paid agent",
@@ -213,5 +201,8 @@ export const sourceLabel = (file: string, page: number | null, resolved: string)
 
 /** Neutral subject: a rule's positive condition must not read as a passed finding. */
 export function reviewSubject(title: string) {
-  return title.replace(/\s+agrees?\b.*$/i, "").replace(/\s+equals?\b.*$/i, " comparison");
+  return title
+    .replace(/:\s*for lender review$/i, "")
+    .replace(/\s+agrees?\b.*$/i, "")
+    .replace(/\s+equals?\b.*$/i, " comparison");
 }

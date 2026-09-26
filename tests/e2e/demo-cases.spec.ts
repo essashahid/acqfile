@@ -50,14 +50,14 @@ async function preparation(page: Page, dealId: string) {
     if (!["GUA-05", "TGT-09", "TXN-08"].includes(rule)) continue;
     const detail = form.locator("xpath=ancestor::details[1]");
     if ((await detail.getAttribute("open")) === null) await detail.locator("summary").click();
-    await form.getByLabel("Confirmation", { exact: true }).selectOption("true");
+    await form.getByLabel("Check status", { exact: true }).selectOption("true");
     await form
-      .getByLabel("manual_confirmation reason")
+      .getByLabel("Check note")
       .fill(
         "Reviewed the supplied synthetic source and completed this illustrative preparation check.",
       );
-    await form.getByRole("button", { name: "Save confirmation", exact: true }).click();
-    await expect(detail.getByText("Confirmed by an operator", { exact: true })).toBeVisible();
+    await form.getByRole("button", { name: "Save check record", exact: true }).click();
+    await expect(detail.getByText(/^Recorded as completed:/)).toBeVisible();
   }
   const tracking = page
     .locator("form")
@@ -95,8 +95,10 @@ async function confirmFile(page: Page, dealId: string, versionId: string, signed
   await page
     .getByLabel("Review note")
     .fill("Inspected the supplied synthetic pages, boundaries, identity and signature.");
-  await page.getByRole("button", { name: "Confirm segments", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Filing saved" })).toBeVisible();
+  await page.getByRole("button", { name: "Save document details", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Document details saved" }),
+  ).toBeVisible();
 }
 test("D01 completes actual preparation through screens, exports and preserves progress when switching", async ({
   page,
@@ -253,7 +255,7 @@ test("D08 adviser downloads preparation with deferred work; a new price blocker 
   await later.locator("xpath=ancestor::details[1]").locator("summary").click();
   await later.getByLabel("Tracking state").selectOption("ordered");
   await later
-    .getByLabel("tracking reason")
+    .getByLabel("Tracking note")
     .fill("Illustrative lender-owned report ordered; explicitly deferred until later.");
   await later.getByRole("button", { name: "Save tracking", exact: true }).click();
   await expect(later.getByRole("status")).toContainText("Saved.");
@@ -422,8 +424,10 @@ test("D02 confirms mixed ranges, excludes unrelated evidence and receives correc
     .fill(
       "Checked all six pages: agreement 1–2; Alex supplemental statement 3–4; Bea supplemental statement 5–6. Full official forms are separate.",
     );
-  await page.getByRole("button", { name: "Confirm segments", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Filing saved" })).toBeVisible();
+  await page.getByRole("button", { name: "Save document details", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Document details saved" }),
+  ).toBeVisible();
   const unrelated = versions.find((v) => v.sourceFilename === "return.pdf")!;
   await page.goto(`/staff/deals/${dealId}/documents/${unrelated.id}`);
   await page.waitForLoadState("networkidle");
@@ -433,8 +437,10 @@ test("D02 confirms mixed ranges, excludes unrelated evidence and receives correc
     .fill(
       "The source names a separate business, Varnholt Climate Parts LLC. Excluded from this acquisition's required evidence.",
     );
-  await page.getByRole("button", { name: "Confirm segments", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Filing saved" })).toBeVisible();
+  await page.getByRole("button", { name: "Save document details", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Document details saved" }),
+  ).toBeVisible();
   const [assignment] = await getDb()
     .select()
     .from(schema.findings)
@@ -548,7 +554,9 @@ test("D07 retries the real failed job, replaces the protected file and deduplica
       "Protected original retained for history; the accessible replacement is the reviewed formation evidence.",
     );
   await page.getByRole("button", { name: "File manually", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Filing saved" })).toBeVisible();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Document details saved" }),
+  ).toBeVisible();
   await upload(page, dealId, "fixtures/demo/generated/D07/round-2.zip");
   expect(
     await getDb()
@@ -651,8 +659,10 @@ test("U01 reaches manual filing and an incomplete export without prepared answer
       .fill(
         "Manually inspected the unfamiliar synthetic source and assigned its document type, subject and stated period. No prepared extraction lookup.",
       );
-    await page.getByRole("button", { name: "Confirm segments", exact: true }).click();
-    await expect(page.getByRole("status").filter({ hasText: "Filing saved" })).toBeVisible();
+    await page.getByRole("button", { name: "Save document details", exact: true }).click();
+    await expect(
+      page.getByRole("status").filter({ hasText: "Document details saved" }),
+    ).toBeVisible();
   }
   const agreement = versions.find((v) => v.sourceFilename === "signed-copy.pdf")!;
   const [segment] = await getDb()
