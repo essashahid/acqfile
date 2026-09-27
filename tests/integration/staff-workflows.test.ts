@@ -105,9 +105,23 @@ it("writes follow-up text a recipient can read, and keeps informational findings
 it("records a follow-up as sent without implying the system delivered it", async () => {
   const before = await buildDrafts(ctx, dealId);
   const group = before[0]!;
+  const edited = `${group.body}\n\nPlease reply to Operator Example directly.`;
   await unlimited();
-  const request = await markRequestSent(ctx, dealId, group.responsible);
+  await expect(
+    markRequestSent(ctx, dealId, group.responsible, {
+      body: edited,
+      findingKeys: group.findingKeys,
+      confirmedAllFindings: false,
+    }),
+  ).rejects.toThrow(/confirm.*every linked item/i);
+  await unlimited();
+  const request = await markRequestSent(ctx, dealId, group.responsible, {
+    body: edited,
+    findingKeys: group.findingKeys,
+    confirmedAllFindings: true,
+  });
   expect(request.status).toBe("sent");
+  expect(request.body).toBe(edited);
   const v = await dealView(dealId);
   for (const key of group.findingKeys)
     expect(v.findings.find((f) => f.findingKey === key)?.status).toBe("requested");
@@ -203,5 +217,11 @@ it("refuses every state-changing action to a viewer", async () => {
     }),
   ).rejects.toThrow(/read-only/i);
   await expect(createSnapshot(viewer, dealId)).rejects.toThrow(/read-only/i);
-  await expect(markRequestSent(viewer, dealId, "buyer")).rejects.toThrow(/read-only/i);
+  await expect(
+    markRequestSent(viewer, dealId, "buyer", {
+      body: "Viewer must not record this.",
+      findingKeys: [],
+      confirmedAllFindings: true,
+    }),
+  ).rejects.toThrow(/read-only/i);
 });

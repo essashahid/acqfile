@@ -290,12 +290,22 @@ export async function markRequestSent(
   context: SessionContext,
   dealId: string,
   responsible: string,
+  input: { body: string; findingKeys: string[]; confirmedAllFindings: boolean },
 ) {
   await assertMutation(context, "deal-request");
   await requireDeal(context, dealId);
+  if (!input.body.trim()) throw Error("Enter the message that was sent");
+  if (input.body.length > 20_000) throw Error("The follow-up message is too long");
+  if (!input.confirmedAllFindings)
+    throw Error("Confirm that the message still asks for every linked item");
   const drafts = await buildDrafts(context, dealId);
   const draft = drafts.find((d) => d.responsible === responsible);
   if (!draft || !draft.findingKeys.length) throw Error("No open findings for that party");
+  if (
+    input.findingKeys.length !== draft.findingKeys.length ||
+    input.findingKeys.some((key, index) => key !== draft.findingKeys[index])
+  )
+    throw Error("The linked findings changed. Refresh the page and review the draft again.");
   const db = getDb();
   return db.transaction(async (tx) => {
     const now = new Date();
@@ -304,7 +314,7 @@ export async function markRequestSent(
       .values({
         dealId,
         responsible,
-        body: draft.body,
+        body: input.body,
         findingKeys: draft.findingKeys,
         status: "sent",
         sentAt: now,
@@ -322,7 +332,11 @@ export async function markRequestSent(
       action: "request_marked_sent",
       entityType: "request",
       entityId: request!.id,
-      maskedAfter: { responsible, findings: draft.findingKeys.length },
+      maskedAfter: {
+        responsible,
+        findings: draft.findingKeys.length,
+        messageEdited: input.body !== draft.body,
+      },
     });
     return request!;
   });

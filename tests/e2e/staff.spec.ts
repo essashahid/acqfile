@@ -139,6 +139,12 @@ for (const [role, account, heading] of [
       await shot(page, `${role}-${name}`);
       if (name === "excluded")
         await expect(page.getByText("Requirement waived", { exact: true })).toHaveCount(0);
+      if (name === "follow-ups" && role === "reviewer") {
+        await expect(page.getByLabel("Draft message")).toHaveCount(0);
+        await expect(page.getByRole("button", { name: "Record as sent", exact: true })).toHaveCount(
+          0,
+        );
+      }
     }
     for (const [path, title] of [
       ["rulepacks", "Rule packs"],
@@ -228,15 +234,23 @@ test("Operator decisions target one requirement, persist notes, and preserve imm
   await page.goto(base + "/follow-ups");
   const first = page
     .locator("section.card")
-    .filter({ has: page.getByRole("button", { name: "Record as sent", exact: true }) })
+    .filter({ has: page.getByLabel("Draft message") })
     .first();
-  const draft = await first.locator("pre").innerText();
+  const draft = await first.getByLabel("Draft message").inputValue();
   expect(draft).not.toMatch(
     /page null|\b(?:needs_review|received_with_issues|fact_id|scope_key)\b|rule parameters|[a-f0-9]{64}/,
   );
+  const changed = `${draft}\n\nPlease reply to Mara Example directly.`;
+  await first.getByLabel("Draft message").fill(changed);
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await first.getByRole("button", { name: "Copy draft", exact: true }).click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(changed);
   await first.getByRole("button", { name: "Record as sent", exact: true }).click();
-  await page.getByRole("button", { name: "Yes, record it", exact: true }).click();
+  await first.getByRole("checkbox").check();
+  await first.getByRole("button", { name: "Yes, record this exact message", exact: true }).click();
   await expect(page.getByText("Recorded message").first()).toBeVisible();
+  await page.getByText("Recorded message").first().click();
+  await expect(page.getByText(changed, { exact: true })).toBeVisible();
   await page.goto(base + "/lender-file");
   for (let number = 1; number <= 2; number++) {
     await page.getByRole("button", { name: "Create a version while work is outstanding" }).click();

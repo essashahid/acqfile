@@ -23,8 +23,19 @@ export async function decisionAction(dealId: string, data: FormData) {
   await decideFinding(await requireStaff(), dealId, Object.fromEntries(data));
   revalidatePath(`/staff/deals/${dealId}`, "layout");
 }
-export async function sentAction(dealId: string, responsible: string) {
-  await markRequestSent(await requireStaff(), dealId, responsible);
+export async function sentAction(
+  dealId: string,
+  responsible: string,
+  findingKeys: string[],
+  data: FormData,
+) {
+  const body = data.get("body");
+  if (typeof body !== "string") throw Error("Follow-up message is required");
+  await markRequestSent(await requireStaff(), dealId, responsible, {
+    body,
+    findingKeys,
+    confirmedAllFindings: data.get("confirm_findings") === "on",
+  });
   revalidatePath(`/staff/deals/${dealId}`, "layout");
 }
 export async function snapshotAction(dealId: string) {

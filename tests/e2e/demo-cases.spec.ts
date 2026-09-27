@@ -335,12 +335,15 @@ test("D04 keeps the recipient task through review, a signed replacement, and acc
   await confirmFile(page, dealId, initial!.documentVersionId, false);
   await page.goto(`/staff/deals/${dealId}/follow-ups`);
   const message = page
-    .locator("section, article, div.card")
-    .filter({ has: page.locator("pre").filter({ hasText: /signed|signature/i }) })
-    .last();
+    .locator("section.card")
+    .filter({ has: page.getByLabel("Draft message") })
+    .first();
   if (await message.getByRole("button", { name: "Record as sent", exact: true }).count()) {
     await message.getByRole("button", { name: "Record as sent", exact: true }).click();
-    await message.getByRole("button", { name: "Yes, record it", exact: true }).click();
+    await message.getByRole("checkbox").check();
+    await message
+      .getByRole("button", { name: "Yes, record this exact message", exact: true })
+      .click();
   }
   await borrower.reload();
   expect((await task()).state).toBe("To do");
@@ -466,13 +469,20 @@ test("D02 confirms mixed ranges, excludes unrelated evidence and receives correc
   }
   await page.goto(`/staff/deals/${dealId}/follow-ups`);
   await expect(page.getByText(/2025/).first()).toBeVisible();
-  const request = page
-    .locator("section.card")
-    .filter({ has: page.getByRole("button", { name: "Record as sent", exact: true }) })
-    .filter({ hasText: "2025" })
-    .first();
+  const draftMessages = page.getByLabel("Draft message");
+  let request = page.locator("section.card").filter({ has: draftMessages.first() });
+  for (let index = 0; index < (await draftMessages.count()); index++) {
+    const candidate = draftMessages.nth(index);
+    if ((await candidate.inputValue()).includes("2025")) {
+      request = candidate.locator("xpath=ancestor::section[contains(@class, 'card')]");
+      break;
+    }
+  }
   await request.getByRole("button", { name: "Record as sent", exact: true }).click();
-  await page.getByRole("button", { name: "Yes, record it", exact: true }).click();
+  await request.getByRole("checkbox").check();
+  await request
+    .getByRole("button", { name: "Yes, record this exact message", exact: true })
+    .click();
   await expect(page.getByText("Recorded message").first()).toBeVisible();
   await upload(page, dealId, "fixtures/demo/generated/D02/round-2.zip");
   for (const version of await getDb()

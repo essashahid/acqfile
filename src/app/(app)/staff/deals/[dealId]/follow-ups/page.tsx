@@ -5,8 +5,7 @@ import { buildDrafts, ageInDays } from "@/lib/deliverables/requests";
 import { dealView } from "@/lib/staff/deal-view";
 import { findingHeadline, responsibleName } from "@/lib/staff/labels";
 import { sentAction } from "../../deliverable-actions";
-import { CopyDraft } from "../../CopyDraft";
-import { RecordSent } from "../../RecordSent";
+import { EditableDraft } from "../../EditableDraft";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
 export default async function FollowUps({ params }: { params: Promise<{ dealId: string }> }) {
@@ -23,7 +22,7 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
     <>
       <PageHead
         title="Follow-ups"
-        subtitle="One draft per responsible party, built from the open findings. AcqFile never sends anything; you copy the message and send it yourself."
+        subtitle="One draft per responsible party, built from the open findings. Edit and copy the message, send it yourself, then record exactly what you sent. AcqFile never sends anything."
       />
       <div className="space-y-5">
         {drafts.map((d) => (
@@ -31,22 +30,21 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
             key={d.responsible}
             title={responsibleName(d.responsible)}
             description={`${d.findingKeys.length - d.informational} request${d.findingKeys.length - d.informational === 1 ? "" : "s"}${d.informational ? ` · ${d.informational} informational finding kept out of the message` : ""}`}
-            actions={
-              <>
-                <CopyDraft body={d.body} />
-                {editable ? (
-                  <RecordSent action={sentAction.bind(null, dealId, d.responsible)} />
-                ) : null}
-              </>
-            }
           >
             <p className="meta mb-2">
               This is what the recipient reads. Internal evidence stays on the Review screen.
             </p>
-            {/* The draft is what gets copied and sent, so it is never cut off mid-sentence. */}
-            <pre className="whitespace-pre-wrap rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6">
-              {d.body}
-            </pre>
+            {editable ? (
+              <EditableDraft
+                initialBody={d.body}
+                findingCount={d.findingKeys.length}
+                action={sentAction.bind(null, dealId, d.responsible, d.findingKeys)}
+              />
+            ) : (
+              <pre className="whitespace-pre-wrap rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6">
+                {d.body}
+              </pre>
+            )}
           </Card>
         ))}
         {!drafts.length ? (

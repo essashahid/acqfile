@@ -81,7 +81,11 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
     );
   const seller = drafts.find((d) => d.responsible === "seller")!;
   expect(seller).toBeDefined();
-  await markRequestSent(ctx, d.id, "seller");
+  await markRequestSent(ctx, d.id, "seller", {
+    body: seller.body,
+    findingKeys: seller.findingKeys,
+    confirmedAllFindings: true,
+  });
   for (const f of (await buildIndex(d.id)).findings.filter((f) =>
     seller.findingKeys.includes(f.findingKey),
   ))
@@ -190,7 +194,13 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
   expect((third.diffJson as SnapshotDiff).dismissals).toHaveLength(1);
   const viewer = { ...ctx, workspace: { ...ctx.workspace, role: "viewer" as const } };
   await expect(createSnapshot(viewer, d.id)).rejects.toThrow("read-only");
-  await expect(markRequestSent(viewer, d.id, "buyer")).rejects.toThrow("read-only");
+  await expect(
+    markRequestSent(viewer, d.id, "buyer", {
+      body: "Viewer must not record this.",
+      findingKeys: [],
+      confirmedAllFindings: true,
+    }),
+  ).rejects.toThrow("read-only");
   await expect(
     decideFinding(viewer, d.id, {
       finding_key: finding.findingKey,
