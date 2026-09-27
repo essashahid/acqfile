@@ -134,6 +134,7 @@ it("Phase 5: lifecycle, request ownership, immutable snapshots, unchanged packag
   expect(html).not.toMatch(BANNED_TERMS);
   expect(html).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b|\b\d{2}-\d{7}\b/);
   const book = XLSX.read(await zip.file("00_Package_Workbook.xlsx")!.async("nodebuffer"));
+  expect(book.Props?.Author).toBe("LoanDocket");
   expect(book.SheetNames).toEqual([
     "Index",
     "Missing items",

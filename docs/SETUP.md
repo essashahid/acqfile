@@ -1,6 +1,6 @@
 # Local setup
 
-How to get AcqFile running on your own machine. Every step below was run from a clean database on 2026-09-20. Allow about fifteen minutes.
+How to get LoanDocket running on your own machine. Every step below was run from a clean database on 2026-09-20. Allow about fifteen minutes.
 
 Everything here uses invented people and companies. `REAL_DATA_MODE=false` is mandatory and the app refuses to start if you combine it with the public demo.
 

@@ -5,6 +5,7 @@ import { deterministicSegments, assignParty, validateBoundaries } from "@/lib/de
 import { classifyFile } from "@/lib/deals/classifier";
 import { parseArrival } from "@/lib/deals/parse";
 import { CLASSIFIER_PROMPT } from "@/lib/deals/classifier-prompt";
+import { PRODUCT_NAME } from "@/lib/product";
 import { plans } from "../../fixtures/lib/plans";
 import { documents } from "../../fixtures/lib/truth";
 const key = "SYNTHETIC-CLASSIFIER-TEST-HMAC-KEY-ONLY";
@@ -14,7 +15,8 @@ it("classifier prompt remains verbatim from the specification", () => {
       .readFileSync("docs/SPEC.md", "utf8")
       .split("**Classifier system prompt.**")[1]!
       .split("```text\n")[1]!
-      .split("\n```")[0],
+      .split("\n```")[0]!
+      .replaceAll("AcqFile", PRODUCT_NAME),
   );
 });
 it("signatures and mock fallbacks match all document metadata", async () => {

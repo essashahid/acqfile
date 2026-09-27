@@ -5,6 +5,7 @@ import { validateCandidates } from "@/lib/extract/validate";
 import { score, classificationConfidence } from "@/lib/extract/confidence";
 import { decodeModelValue, agreement } from "@/lib/extract/values";
 import { EXTRACTOR_SYSTEM_PROMPT, VERIFIER_SYSTEM_PROMPT } from "@/lib/extract/prompts";
+import { PRODUCT_NAME } from "@/lib/product";
 import type { Candidate, Validation, Verdict } from "@/lib/extract/candidate";
 import type { Source } from "@/lib/deals/parse";
 import fs from "node:fs";
@@ -75,7 +76,7 @@ describe("A38 schemas come from the catalog and the packs", () => {
     expect(expectedAttributes("LOI")).not.toContain("party.legal_name");
   });
   it("uses the A37 prompts verbatim", () => {
-    const phase = fs.readFileSync("docs/PHASE_4.md", "utf8");
+    const phase = fs.readFileSync("docs/PHASE_4.md", "utf8").replaceAll("AcqFile", PRODUCT_NAME);
     expect(phase).toContain(EXTRACTOR_SYSTEM_PROMPT);
     expect(phase).toContain(VERIFIER_SYSTEM_PROMPT);
   });

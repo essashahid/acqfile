@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { getStorage } from "@/lib/storage";
 import { scrubIdentifiers } from "@/lib/domain/evidence";
+import { PRODUCT_NAME } from "@/lib/product";
 import type { SnapshotContent, SnapshotDiff } from "./snapshot";
 
 import { sha256 } from "@/lib/hash";
@@ -142,7 +143,7 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
   const book = XLSX.utils.book_new();
   book.Props = {
     Title: `${content.deal.code} snapshot ${content.number}`,
-    Author: "AcqFile",
+    Author: PRODUCT_NAME,
     CreatedDate: FIXED_DATE,
     ModifiedDate: FIXED_DATE,
   };

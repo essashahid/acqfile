@@ -1,9 +1,10 @@
 /** A37 prompts, verbatim apart from the structured-output wrappers built in the user messages. */
 import type { FactDefinition } from "@/lib/domain/registry";
+import { PRODUCT_NAME } from "@/lib/product";
 import { MODEL_VALUE_DESCRIPTIONS } from "./schema";
 export const EXTRACT_PROMPT_VERSION = "acqfile-extract-v2";
 export const VERIFY_PROMPT_VERSION = "acqfile-verify-v2";
-export const EXTRACTOR_SYSTEM_PROMPT = `You are AcqFile Extractor. You extract specific facts from one document in a
+export const EXTRACTOR_SYSTEM_PROMPT = `You are ${PRODUCT_NAME} Extractor. You extract specific facts from one document in a
 small-business acquisition loan file.
 
 Rules:
@@ -24,7 +25,7 @@ Rules:
    ambiguity. A percentage is a number from 0 to 100.
 7. For SSNs, EINs and account numbers return only the last four digits.
 8. Return only JSON matching the schema. No commentary.`;
-export const VERIFIER_SYSTEM_PROMPT = `You are AcqFile Verifier. You independently check a candidate value against its
+export const VERIFIER_SYSTEM_PROMPT = `You are ${PRODUCT_NAME} Verifier. You independently check a candidate value against its
 cited evidence and the surrounding source.
 
 Do not trust the candidate because another model produced it. Use only the

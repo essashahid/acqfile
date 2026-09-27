@@ -95,7 +95,7 @@ const MANUAL: Record<
     brief: "Lender to say how to handle it",
     action: "Record lender response",
     done: "Completed means the lender's response is written in the note. It is not a decision about citizenship or eligibility.",
-    note: "AcqFile does not decide citizenship or eligibility. The rule pack says this rule was reported as under legal challenge; that is an unverified configuration note, not a statement of current law.",
+    note: "LoanDocket does not decide citizenship or eligibility. The rule pack says this rule was reported as under legal challenge; that is an unverified configuration note, not a statement of current law.",
   },
   valuation_required: {
     task: "Ask the lender whether an independent business valuation is required, and record the answer.",

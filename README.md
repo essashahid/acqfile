@@ -1,4 +1,4 @@
-# AcqFile
+# LoanDocket
 
 A sample-data portal for collecting documents and preparing a business-acquisition loan file. People get a personal link and a short list; advisers see questions, people and the lender file; staff keep the existing review tools. The lender makes every lending decision. `REAL_DATA_MODE=false` is mandatory.
 

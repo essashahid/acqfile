@@ -20,7 +20,7 @@ The generated corpus stores one shared baseline and a few variants, with manifes
 
 Corrections are in `fixtures/demo/generated/Dxx/corrections/` and `round-2.zip` (plus D06 `round-3.zip`). Do not upload a correction ZIP until the script reaches that step. Ordered PNG pages for the photo exercise are stored separately. Generated sample pages contain synthetic notices. D02's six-page mixed packet has an agreement on original pages 1–2 and supplemental personal statements on 3–4 and 5–6. Full official six-page Form 413s are supplied separately; supplements do not silently replace the official forms.
 
-To open adviser view, use the existing `/deals/{dealId}` navigation with an authorized account. Create/reissue **one** person's link using **Manage this person's link and reminder**. Copy it when shown, and open it in a separate browser profile. Never copy all tokens into a shared document. No email is sent by AcqFile.
+To open adviser view, use the existing `/deals/{dealId}` navigation with an authorized account. Create/reissue **one** person's link using **Manage this person's link and reminder**. Copy it when shown, and open it in a separate browser profile. Never copy all tokens into a shared document. No email is sent by LoanDocket.
 
 ## Reset exactly one case
 

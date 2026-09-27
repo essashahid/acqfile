@@ -8,6 +8,7 @@ import { sentAction } from "../../deliverable-actions";
 import { EditableDraft } from "../../EditableDraft";
 import { FollowUpTabs } from "../../FollowUpTabs";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
+import { PRODUCT_NAME } from "@/lib/product";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const day = (d: Date) => `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
@@ -41,7 +42,7 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
     <>
       <PageHead
         title="Follow-ups"
-        subtitle="One draft per recipient. Copy it, send it yourself, then record exactly what you sent. AcqFile never sends anything."
+        subtitle={`One draft per recipient. Copy it, send it yourself, then record exactly what you sent. ${PRODUCT_NAME} never sends anything.`}
       />
       <div className="space-y-5">
         {drafts.length ? (
@@ -109,7 +110,7 @@ export default async function FollowUps({ params }: { params: Promise<{ dealId: 
 
         <Card
           title="Recorded as sent"
-          description="A person recorded that they sent this. AcqFile delivered nothing."
+          description={`A person recorded that they sent this. ${PRODUCT_NAME} delivered nothing.`}
           flush={v.requests.length > 0}
         >
           {v.requests.length ? (

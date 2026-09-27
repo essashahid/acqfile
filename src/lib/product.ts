@@ -1,1 +1,1 @@
-export const PRODUCT_NAME = "AcqFile";
+export const PRODUCT_NAME = "LoanDocket";

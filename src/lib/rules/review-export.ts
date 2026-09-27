@@ -1,5 +1,6 @@
 import * as XLSX from "xlsx";
 import { stableStringify } from "@/lib/hash";
+import { PRODUCT_NAME } from "@/lib/product";
 import type { ResolvedPack } from "./schema";
 export const footer = (pack: ResolvedPack) =>
   `Prepared from documents supplied by the parties. Flags are preparation aids for lender review. They are not credit, legal, tax or eligibility determinations. Rule pack: ${pack.pack} ${pack.version}. Rules marked unverified have not been confirmed by a lender.`;
@@ -65,6 +66,6 @@ export function exportReview(packs: ResolvedPack[]) {
   });
   return {
     xlsx: XLSX.write(book, { type: "buffer", bookType: "xlsx", compression: true }) as Buffer,
-    html: `<!doctype html><html lang="en"><meta charset="utf-8"><title>AcqFile rule review</title><style>body{font:14px system-ui;margin:24px;color:#172b36}table{border-collapse:collapse}td,th{border:1px solid #cad5db;padding:8px;text-align:left;vertical-align:top}th{background:#edf5f3}footer{margin:24px 0}section{margin-bottom:48px}</style><h1>AcqFile rule review</h1>${sections.join("")}</html>`,
+    html: `<!doctype html><html lang="en"><meta charset="utf-8"><title>${PRODUCT_NAME} rule review</title><style>body{font:14px system-ui;margin:24px;color:#172b36}table{border-collapse:collapse}td,th{border:1px solid #cad5db;padding:8px;text-align:left;vertical-align:top}th{background:#edf5f3}footer{margin:24px 0}section{margin-bottom:48px}</style><h1>${PRODUCT_NAME} rule review</h1>${sections.join("")}</html>`,
   };
 }

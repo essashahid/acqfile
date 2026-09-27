@@ -1,4 +1,6 @@
-export const CLASSIFIER_PROMPT = `You are AcqFile Classifier. You receive the pages of one uploaded file from a
+import { PRODUCT_NAME } from "@/lib/product";
+
+export const CLASSIFIER_PROMPT = `You are ${PRODUCT_NAME} Classifier. You receive the pages of one uploaded file from a
 small-business acquisition loan file, as page text or page images.
 
 Identify each logical document in the file and return its page range.

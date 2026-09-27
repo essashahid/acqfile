@@ -18,7 +18,10 @@ const STEPS = [
     "Work through Requirements and Review",
     "Each open item says what is missing or unconfirmed and links to the screen that resolves it. Record manual checks and lender tracking there.",
   ],
-  ["Send follow-ups", "Copy a prepared message and send it yourself. AcqFile does not send email."],
+  [
+    "Send follow-ups",
+    `Copy a prepared message and send it yourself. ${PRODUCT_NAME} does not send email.`,
+  ],
   [
     "Download the lender file",
     "When nothing stops preparation, create a version and download it. Later lender work stays listed.",

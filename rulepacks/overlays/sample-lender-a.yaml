@@ -32,7 +32,7 @@ operations:
       source_ref:
         class: lender_convention
         citation:
-          "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
+          "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
           non-compete"
       verified: false
   - op: add
@@ -56,7 +56,7 @@ operations:
       source_ref:
         class: lender_convention
         citation:
-          "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
+          "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Sample Lender A synthetic lender addition:
           add-back support"
       verified: false
   - op: add
@@ -79,7 +79,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+        citation: LoanDocket SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
       verified: false
   - op: add
     collection: items
@@ -101,7 +101,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+        citation: LoanDocket SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
       verified: false
   - op: add
     collection: items
@@ -123,7 +123,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+        citation: LoanDocket SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
       verified: false
   - op: add
     collection: items
@@ -145,7 +145,7 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+        citation: LoanDocket SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
       verified: false
   - op: add
     collection: items
@@ -167,5 +167,5 @@ operations:
           facts: []
       source_ref:
         class: lender_convention
-        citation: AcqFile SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
+        citation: LoanDocket SPEC Section 13 optional overlay seed; inactive unless a lender configuration explicitly requires it.
       verified: false

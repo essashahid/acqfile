@@ -61,7 +61,7 @@ items:
             - as_of: true
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed letter of intent"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Signed letter of intent"
     verified: false
   - id: TXN-02
     submission_stage: preparation
@@ -142,7 +142,7 @@ items:
         tolerance_param: money_tolerance
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Sources and uses"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Sources and uses"
     verified: false
   - id: TXN-04
     submission_stage: preparation
@@ -168,7 +168,7 @@ items:
           - note.full_standby
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller note or term sheet"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Seller note or term sheet"
     verified: false
   - id: TXN-05
     submission_stage: later_lender
@@ -223,7 +223,7 @@ items:
           - consulting.term_months
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Seller consulting or transition agreement"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Seller consulting or transition agreement"
     verified: false
   - id: TXN-07
     submission_stage: preparation
@@ -310,7 +310,7 @@ items:
       class: secondary
       citation:
         "StatementsReady, How to Fill Out SBA Form 1919: revision 02/2025 and owner entries; the 100% ownership total
-        and every-owner comparison are AcqFile seed conventions, stronger than the form’s minimum listing coverage."
+        and every-owner comparison are LoanDocket seed conventions, stronger than the form’s minimum listing coverage."
       url: https://statementsready.com/blog/how-to-fill-out-sba-form-1919
     verified: false
   - id: ENT-02
@@ -379,7 +379,7 @@ items:
           - party.identifier
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): EIN confirmation letter"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): EIN confirmation letter"
     verified: false
   - id: ENT-05
     submission_stage: preparation
@@ -399,7 +399,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Buyer good standing; no inference from the
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Buyer good standing; no inference from the
         secondary article citation to 13 CFR 120.420"
     verified: false
   - id: ENT-06
@@ -420,7 +420,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Includes indirect owners; manual facts
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Includes indirect owners; manual facts
         permitted"
     verified: false
   - id: ENT-07a
@@ -440,7 +440,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Business plan"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Business plan"
     verified: false
   - id: ENT-07b
     submission_stage: preparation
@@ -459,7 +459,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Projections with assumptions"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Projections with assumptions"
     verified: false
   - id: GUA-01
     submission_stage: preparation
@@ -542,7 +542,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Resume or management profile"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Resume or management profile"
     verified: false
   - id: GUA-04
     submission_stage: preparation
@@ -568,7 +568,7 @@ items:
             - as_of: true
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Government photo identification"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Government photo identification"
     verified: false
   - id: GUA-05
     submission_stage: preparation
@@ -591,7 +591,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Evidence and manual lender discussion only;
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Evidence and manual lender discussion only;
         this is not a citizenship determination. Section A Ch.1 F differs between versions and later notices; see
         RULE_CANDIDATES.md."
     verified: false
@@ -645,7 +645,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Two latest completed calendar months per
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Two latest completed calendar months per
         declared cash source account; stronger than the cited 30-day evidence practice"
     verified: false
     period_requirement: last_two_months
@@ -935,7 +935,7 @@ items:
                 - FIN_INTERIM
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Receivables aging"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Receivables aging"
     verified: false
   - id: TGT-04b
     submission_stage: preparation
@@ -965,7 +965,7 @@ items:
                 - FIN_INTERIM
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Payables aging"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Payables aging"
     verified: false
   - id: TGT-05
     submission_stage: preparation
@@ -1016,7 +1016,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Signed 4506-C; 120-day signature window is a
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Signed 4506-C; 120-day signature window is a
         synthetic seed convention, not a claim about IRS validity"
     verified: false
   - id: TGT-07a
@@ -1068,7 +1068,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Lease assignment, consent or new terms"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Lease assignment, consent or new terms"
     verified: false
   - id: TGT-08a
     submission_stage: preparation
@@ -1087,7 +1087,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Equipment list"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Equipment list"
     verified: false
   - id: TGT-08b
     submission_stage: preparation
@@ -1106,7 +1106,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Inventory summary"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Inventory summary"
     verified: false
   - id: TGT-09
     submission_stage: preparation
@@ -1128,7 +1128,7 @@ items:
         note_key: personal_license
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Operating licenses and permits"
     verified: false
   - id: TGT-10a
     submission_stage: preparation
@@ -1180,7 +1180,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Franchise disclosure document"
     verified: false
   - id: RE-01
     submission_stage: preparation
@@ -1203,7 +1203,7 @@ items:
         facts: []
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate purchase contract"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Real estate purchase contract"
     verified: false
   - id: RE-02
     submission_stage: later_lender
@@ -1225,7 +1225,7 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Real estate appraisal"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Real estate appraisal"
     verified: false
   - id: RE-03
     submission_stage: later_lender
@@ -1247,7 +1247,7 @@ items:
         message: Lender-ordered item received
     source_ref:
       class: lender_convention
-      citation: "AcqFile synthetic seed convention (SPEC Section 13; unverified): Environmental review"
+      citation: "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Environmental review"
     verified: false
   - id: LND-01
     submission_stage: later_lender
@@ -1265,7 +1265,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-02
@@ -1284,7 +1284,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-03
@@ -1303,7 +1303,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
   - id: LND-04
@@ -1322,7 +1322,7 @@ items:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Always-visible lender work tracking; no
         borrower evidence requested"
     verified: false
 consistency:
@@ -1356,7 +1356,7 @@ consistency:
           - IRS_4506C
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-02
@@ -1384,7 +1384,7 @@ consistency:
         tolerance_param: percent_tolerance
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-03
@@ -1412,7 +1412,7 @@ consistency:
         tolerance_param: price_tolerance
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-04
@@ -1437,7 +1437,7 @@ consistency:
         tolerance_param: money_tolerance
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-05
@@ -1489,7 +1489,7 @@ consistency:
           - SOURCES_USES
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-06
@@ -1557,7 +1557,7 @@ consistency:
     source_ref:
       class: sop
       citation:
-        SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129); fixed 10% baseline is the AcqFile seed
+        SOP 50 10 8, Section B Ch.1 C.2, Equity Requirements (C begins p.129); fixed 10% baseline is the LoanDocket seed
         convention. Pagination is the section-start page in the official DOCX table of contents; see
         docs/RULE_SOURCES.md.
       url: https://legacy.sba.gov/sites/default/files/2025-05/SOP%2050%2010%208%20Technical%20Updates%20effective%206.1.2025.docx
@@ -1589,7 +1589,7 @@ consistency:
               select: latest
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-09
@@ -1622,7 +1622,7 @@ consistency:
         tolerance_param: cash_tolerance
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-10
@@ -1663,7 +1663,7 @@ consistency:
                 - param: revenue_fraction
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
     period_requirement: last_three_tax_years
@@ -1688,7 +1688,7 @@ consistency:
             - fact: deal.structure
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-12
@@ -1718,7 +1718,7 @@ consistency:
           - PURCHASE_AGREEMENT
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-13
@@ -1753,7 +1753,7 @@ consistency:
     source_ref:
       class: lender_convention
       citation:
-        "AcqFile synthetic seed convention (SPEC Section 13; unverified): Ten-year review horizon; not a universal
+        "LoanDocket synthetic seed convention (SPEC Section 13; unverified): Ten-year review horizon; not a universal
         lease term determination"
     verified: false
     finding_type: conflict
@@ -1820,7 +1820,7 @@ consistency:
                 - profile: target_submission_date
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: conflict
   - id: CON-16
@@ -1839,6 +1839,6 @@ consistency:
         mode: party_assignment
     source_ref:
       class: internal_consistency
-      citation: "AcqFile SPEC Section 13: internal consistency comparison; no lending determination."
+      citation: "LoanDocket SPEC Section 13: internal consistency comparison; no lending determination."
     verified: false
     finding_type: needs_review
