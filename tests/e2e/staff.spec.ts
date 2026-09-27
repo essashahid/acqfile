@@ -189,7 +189,7 @@ for (const [role, account, heading] of [
     await page.goto(`/staff/deals/${deals()["deal-b"]!.id}/documents`);
     const pending = page.getByRole("link", { name: /to review/ }).first();
     await pending.click();
-    await expect(page.getByRole("heading", { name: "Pending values" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "To review" })).toBeVisible();
     await shot(page, `${role}-pending-values`);
     if (role === "reviewer")
       await expect(page.getByRole("button", { name: "Accept", exact: true })).toHaveCount(0);

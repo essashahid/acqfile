@@ -141,6 +141,7 @@ test("D03 inspects raw forms and reopens a decided reading with retained history
     `/staff/deals/${dealId}/documents/${fact!.documentVersionId}/values/${fact!.segmentId}`,
   );
   const group = page.getByRole("group", { name: "Decision pfs.cash", exact: true });
+  await group.getByRole("button", { name: "Change", exact: true }).click();
   await group
     .getByLabel("Decision reason pfs.cash", { exact: true })
     .fill("Rechecking the decided reading against the revised personal statement.");
@@ -460,6 +461,7 @@ test("D02 confirms mixed ranges, excludes unrelated evidence and receives correc
     );
   if (assignment) {
     await page.goto(`/staff/deals/${dealId}/review?finding=${assignment.findingKey}`);
+    await page.getByText("Dismiss or waive, with a reason", { exact: true }).click();
     await page
       .getByLabel("Decision reason", { exact: true })
       .fill(
@@ -469,13 +471,15 @@ test("D02 confirms mixed ranges, excludes unrelated evidence and receives correc
     await expect(page.getByRole("status").filter({ hasText: "Saved" })).toBeVisible();
   }
   await page.goto(`/staff/deals/${dealId}/follow-ups`);
-  await expect(page.getByText(/2025/).first()).toBeVisible();
   const draftMessages = page.getByLabel("Draft message");
+  await expect(draftMessages.first()).toBeAttached();
   let request = page.locator("section.card").filter({ has: draftMessages.first() });
   for (let index = 0; index < (await draftMessages.count()); index++) {
     const candidate = draftMessages.nth(index);
     if ((await candidate.inputValue()).includes("2025")) {
       request = candidate.locator("xpath=ancestor::section[contains(@class, 'card')]");
+      // Each recipient's draft is its own tab; open the one that holds this message.
+      await page.locator(`[role=tab][aria-controls="${await request.getAttribute("id")}"]`).click();
       break;
     }
   }
@@ -707,6 +711,7 @@ test("U01 files unfamiliar sources, records prices, resolves the disagreement an
     );
   expect(priceFinding).toBeDefined();
   await page.goto(`/staff/deals/${dealId}/review?finding=${priceFinding!.findingKey}`);
+  await page.getByText("Dismiss or waive, with a reason", { exact: true }).click();
   await page
     .getByLabel("Decision reason", { exact: true })
     .fill(

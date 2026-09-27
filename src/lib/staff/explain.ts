@@ -39,6 +39,8 @@ export type ActionKind =
 export type Explanation = {
   /** The single most useful sentence about this item. */
   summary: string;
+  /** The same point in a few words, for a work-list row. */
+  brief: string;
   /** Checks that are not met or not confirmed, failed ones first. */
   open: CheckLine[];
   passed: CheckLine[];
@@ -78,25 +80,32 @@ const joinAnd = (items: string[]) =>
 const field = (attribute: string) => lowerFirst(attributeName(attribute).split(" · ").at(-1)!);
 
 /** Manual checks the packs define, each in words that describe the actual task. */
-const MANUAL: Record<string, { task: string; action: string; done: string; note?: string }> = {
+const MANUAL: Record<
+  string,
+  { task: string; brief: string; action: string; done: string; note?: string }
+> = {
   personal_license: {
     task: "Confirm whether the business uses the seller's personal license. Record what you agreed with the lender.",
+    brief: "Seller's personal license? Record the answer",
     action: "Record license review",
     done: "Completed means you checked whose license the business operates under and discussed it with the lender. Write the answer and the arrangement in the note. It is not a yes or no about the license.",
   },
   citizenship_handling: {
     task: "Confirm with the lender how they want citizenship evidence handled for this person, and record their response.",
+    brief: "Lender to say how to handle it",
     action: "Record lender response",
     done: "Completed means the lender's response is written in the note. It is not a decision about citizenship or eligibility.",
     note: "AcqFile does not decide citizenship or eligibility. The rule pack says this rule was reported as under legal challenge; that is an unverified configuration note, not a statement of current law.",
   },
   valuation_required: {
     task: "Ask the lender whether an independent business valuation is required, and record the answer.",
+    brief: "Ask the lender whether it is required",
     action: "Record lender answer",
     done: "Completed means the lender's answer is written in the note.",
   },
   franchise_directory: {
     task: "Check the brand against the current SBA Franchise Directory and record what you found.",
+    brief: "Check the SBA Franchise Directory",
     action: "Record directory check",
     done: "Completed means the directory check is done and the result is written in the note.",
   },
@@ -269,8 +278,58 @@ export function describeCheck(
 
 const RELATIONSHIP = ["arithmetic", "fact_comparison", "date_order"];
 
+/** Fact attributes a check reads, for naming what is still unconfirmed. */
+function factsOf(check: Partial<Check> | undefined): string[] {
+  const found: string[] = [...(check?.facts ?? []), ...(check?.fact ? [check.fact] : [])];
+  const walk = (e: Expr | undefined) => {
+    if (!e || typeof e !== "object" || Array.isArray(e)) return;
+    if ("fact" in e) found.push(e.fact);
+    if ("op" in e) e.args.forEach(walk);
+  };
+  walk(check?.expr);
+  return [...new Set(found)];
+}
+
+function briefOf(e: Omit<Explanation, "brief">, rule: Rule, status: string): string {
+  const first = e.open[0];
+  switch (e.family) {
+    case "closed":
+      return status === "waived"
+        ? "Waived"
+        : status === "not_applicable"
+          ? "Not applicable"
+          : "Met";
+    case "info":
+      return "For information";
+    case "proposed":
+      return "Filing not confirmed";
+    case "applicability":
+      return "Depends on deal details not known yet";
+    case "missing":
+      return "Not on file";
+    case "manual":
+      return MANUAL[first?.noteKey ?? ""]?.brief ?? "Record the outcome";
+    case "tracking":
+      return first && first.label !== "Not recorded" ? first.label : "Not tracked yet";
+    case "disagreement":
+    case "relationship":
+      return "Sources disagree";
+    case "value": {
+      const fields = factsOf(rule.checks.find((c) => c.type === first?.type)).map(field);
+      return fields.length ? `${upperFirst(joinAnd(fields))} not confirmed` : e.summary;
+    }
+    default:
+      return first?.text ?? e.summary;
+  }
+}
+
 /** The row-level explanation shared by Requirements, Review and the document context panel. */
-export function explainItem({
+export function explainItem(input: Parameters<typeof explainCore>[0]): Explanation {
+  const core = explainCore(input);
+  return { ...core, brief: briefOf(core, input.rule, input.status) };
+}
+
+function explainCore({
   rule,
   status,
   checks,
@@ -286,7 +345,7 @@ export function explainItem({
   findingMessage?: string;
   parameters?: Record<string, unknown>;
   saved?: SavedAttestation[];
-}): Explanation {
+}): Omit<Explanation, "brief"> {
   const docs = joinOr(rule.accepts.map((t) => lowerFirst(documentName(t))));
   const lines = checks.map((c, i) => {
     const def =

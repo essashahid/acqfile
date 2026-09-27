@@ -1,6 +1,7 @@
 import { DecisionForm } from "@/components/staff/DecisionForm";
 import Link from "next/link";
 import { eq } from "drizzle-orm";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { getDb, schema } from "@/lib/db/client";
 import { requireStaff } from "@/lib/workspace";
 import { requireDeal } from "@/lib/deals/service";
@@ -8,6 +9,7 @@ import { mutationAllowed } from "@/lib/access";
 import { dealView } from "@/lib/staff/deal-view";
 import { requirementEvidence } from "@/lib/staff/evidence";
 import { findingStopsPreparation, stageOf } from "@/lib/deliverables/readiness";
+import { draftRecipient } from "@/lib/deliverables/requests";
 import {
   documentName,
   factValue,
@@ -23,19 +25,23 @@ import {
   checksFromMessage,
   explainItem,
   profileDependencies,
-  stageEffect,
 } from "@/lib/staff/explain";
+import { comparisonSentence, comparisonSides, valueGroups, type Detail } from "@/lib/staff/compare";
 import { decisionAction } from "../../deliverable-actions";
-import { Card, Empty, PageHead, Pill } from "@/components/staff";
+import { AutoFilter } from "../../AutoFilter";
+import { Card, Empty, PageHead } from "@/components/staff";
 
-type Detail = {
-  fact_id: string | null;
-  value: unknown;
-  file: string;
-  page: number | null;
-  quote: string;
-};
 const CLOSED = ["resolved", "dismissed", "waived"];
+type Stage = "blocks" | "waiting" | "lender";
+const STAGE: Record<Stage, string> = {
+  blocks: "Blocks the file",
+  waiting: "Holds up preparation",
+  lender: "Later lender work",
+};
+const SEVERITY = { blocker: 0, major: 1, minor: 2 } as Record<string, number>;
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (d: Date | null | undefined) =>
+  d ? `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}` : "";
 
 export default async function Review({
   params,
@@ -47,6 +53,7 @@ export default async function Review({
     show?: string;
     severity?: string;
     responsible?: string;
+    from?: string;
   }>;
 }) {
   const { dealId } = await params;
@@ -57,6 +64,18 @@ export default async function Review({
   const editable = mutationAllowed(ctx);
   const base = `/staff/deals/${dealId}`;
   const show = q.show === "history" ? "history" : q.show === "info" ? "info" : "open";
+  const from = q.from === "overview" ? "overview" : undefined;
+  const stageOfFinding = (f: (typeof v.findings)[number]): Stage =>
+    stageOf(v.rules.get(f.ruleId)) === "later_lender"
+      ? "lender"
+      : f.severity === "blocker"
+        ? "blocks"
+        : "waiting";
+  const title = (f: (typeof v.findings)[number]) =>
+    reviewSubject(v.rules.get(f.ruleId)?.title ?? "") ||
+    findingHeadline(f.type, (f.detailsJson as { message: string }).message);
+  const turn = (f: (typeof v.findings)[number]) =>
+    responsibleName(draftRecipient(f, v.rules.get(f.ruleId), v.partyName).split("·")[0]!);
   const list = v.findings
     .filter((f) =>
       show === "history"
@@ -68,19 +87,26 @@ export default async function Review({
     )
     .filter((f) => !q.severity || f.severity === q.severity)
     .filter((f) => !q.responsible || f.responsibleRole === q.responsible)
-    .sort(
-      (a, b) =>
-        Number(b.severity === "blocker") - Number(a.severity === "blocker") ||
-        a.ruleId.localeCompare(b.ruleId) ||
-        (a.period ?? "").localeCompare(b.period ?? ""),
+    .sort((a, b) =>
+      show === "open"
+        ? Object.keys(STAGE).indexOf(stageOfFinding(a)) -
+            Object.keys(STAGE).indexOf(stageOfFinding(b)) ||
+          (SEVERITY[a.severity] ?? 3) - (SEVERITY[b.severity] ?? 3) ||
+          title(a).localeCompare(title(b)) ||
+          v.party(a.scopeKey).localeCompare(v.party(b.scopeKey))
+        : Number(b.severity === "blocker") - Number(a.severity === "blocker") ||
+          a.ruleId.localeCompare(b.ruleId) ||
+          (a.period ?? "").localeCompare(b.period ?? ""),
     );
   const selected = list.find((f) => f.findingKey === q.finding) ?? list[0];
+  const at = selected ? list.indexOf(selected) : -1;
   const keep = (extra: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
     for (const [k, val] of Object.entries({
       show,
       severity: q.severity,
       responsible: q.responsible,
+      from,
       ...extra,
     }))
       if (val && !(k === "show" && val === "open")) p.set(k, val);
@@ -92,10 +118,6 @@ export default async function Review({
         details: [],
       })
     : null;
-  const openItems = v.findings.filter(
-    (f) => !CLOSED.includes(f.status) && f.type !== "info" && f.severity !== "info",
-  );
-  const stopping = openItems.filter((f) => findingStopsPreparation(f, v.rules.get(f.ruleId)));
   const closedCount = v.findings.filter((f) => CLOSED.includes(f.status)).length;
 
   // Everything below describes the selected item only.
@@ -142,18 +164,7 @@ export default async function Review({
           saved: closed ? [] : attestations.map((a) => ({ ...a, key: a.key ?? "" })),
         })
       : null;
-  // Consistency rules have no requirement row; the finding itself carries the preparation effect.
-  const effect =
-    selected && row
-      ? stageEffect(rule, row)
-      : selected && !closed
-        ? findingStopsPreparation(selected, rule)
-          ? { blocks: true, text: "Must be resolved before the file can be prepared." }
-          : {
-              blocks: false,
-              text: "Later lender work. It does not stop the file from being prepared.",
-            }
-        : null;
+  const stops = selected && !closed ? findingStopsPreparation(selected, rule) : false;
   const sourceLink = (versionId: string, page: number | null) =>
     `${base}/documents/${versionId}?page=${page ?? 1}&finding=${encodeURIComponent(selected!.findingKey)}&from=review&returnTo=${encodeURIComponent(`${base}/review${keep({ finding: selected!.findingKey })}`)}`;
   // Values the check cited, with the value recorded on the item rather than today's value.
@@ -200,147 +211,208 @@ export default async function Review({
       : null;
   const recordOnly = ex ? ["manual", "tracking"].includes(ex.family) : false;
   const dependencies = profileDependencies(rule);
-  const title = (f: (typeof list)[number]) =>
-    reviewSubject(v.rules.get(f.ruleId)?.title ?? "") ||
-    findingHeadline(f.type, (f.detailsJson as { message: string }).message);
+  const sides =
+    ex && ["disagreement", "relationship"].includes(ex.family) && d
+      ? comparisonSides(rule, d.details ?? [], {
+          segments: v.segments,
+          facts: v.sourceFacts,
+          versions: v.versions,
+          parameters: v.pack.parameters,
+        })
+      : [];
+  const sentence = comparisonSentence(sides);
+  // Several documents reading one field: one card per value, listing the documents that give it.
+  const grouped =
+    sides.length > 2 &&
+    sides.every((x) => x.source === "document") &&
+    new Set(sides.map((x) => x.field)).size === 1
+      ? valueGroups(sides)
+      : null;
+  const docName = (versionId: string, page: number | null) =>
+    documentName(
+      v.segments.find(
+        (x) =>
+          x.documentVersionId === versionId &&
+          page !== null &&
+          x.pageStart <= page &&
+          x.pageEnd >= page,
+      )?.docType ?? "",
+    ) || "Supplied document";
+  const request = selected?.requestId ? v.requests.find((r) => r.id === selected.requestId) : null;
+
+  const pick = (f: (typeof list)[number]) => (
+    <Link
+      key={f.findingKey}
+      href={keep({ finding: f.findingKey })}
+      scroll={false}
+      className={`pick ${selected?.findingKey === f.findingKey ? "is-active" : ""}`}
+      aria-current={selected?.findingKey === f.findingKey ? "true" : undefined}
+    >
+      <span className={`mk mk-${show === "open" ? stageOfFinding(f) : "info"}`} aria-hidden />
+      <span className="pick-title">{title(f)}</span>
+      <span className="pick-turn">{show === "open" ? turn(f) : null}</span>
+      <span className="pick-sub">
+        {v.party(f.scopeKey)}
+        {f.period ? ` · ${f.period}` : ""}
+        {" · "}
+        {CLOSED.includes(f.status) ? f.status : typeLabel(f.type)}
+      </span>
+    </Link>
+  );
+
   return (
     <>
       <PageHead
         title="Review"
-        subtitle={`${openItems.length} open: ${stopping.length} must be resolved before the file can be prepared${openItems.length - stopping.length ? `, ${openItems.length - stopping.length} ${openItems.length - stopping.length === 1 ? "is" : "are"} later lender work` : ""}. ${closedCount} closed items are kept in history.`}
+        actions={
+          <nav className="seg" aria-label="Show">
+            <Link
+              href={keep({ show: "open", finding: undefined })}
+              aria-current={show === "open" ? "page" : undefined}
+            >
+              Open <span className="num">{v.counts.findingsOpen - v.counts.informational}</span>
+            </Link>
+            <Link
+              href={keep({ show: "history", finding: undefined })}
+              aria-current={show === "history" ? "page" : undefined}
+            >
+              History <span className="num">{closedCount}</span>
+            </Link>
+            <Link
+              href={keep({ show: "info", finding: undefined })}
+              aria-current={show === "info" ? "page" : undefined}
+            >
+              For information <span className="num">{v.counts.informational}</span>
+            </Link>
+          </nav>
+        }
       />
       {!v.preparation.current ? (
         <p className="meta mb-3" role="note">
           These results are from the last check. Newer evidence is waiting to be checked.
         </p>
       ) : null}
-      <Card className="mb-5">
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="eyebrow mr-1">Show</span>
-            <Link
-              className={`btn btn-sm ${show === "open" ? "btn-primary" : ""}`}
-              href={keep({ show: "open", finding: undefined })}
-            >
-              Open <span className="num">{v.counts.findingsOpen - v.counts.informational}</span>
-            </Link>
-            <Link
-              className={`btn btn-sm ${show === "history" ? "btn-primary" : ""}`}
-              href={keep({ show: "history", finding: undefined })}
-            >
-              History <span className="num">{closedCount}</span>
-            </Link>
-            <Link
-              className={`btn btn-sm ${show === "info" ? "btn-primary" : ""}`}
-              href={keep({ show: "info", finding: undefined })}
-            >
-              For information <span className="num">{v.counts.informational}</span>
-            </Link>
-          </div>
-          <form className="flex flex-wrap items-end gap-3">
-            <input type="hidden" name="show" value={show} />
-            <label className="flex flex-col gap-1" title={PRIORITY_HELP}>
-              <span className="eyebrow">Priority</span>
-              <select name="severity" defaultValue={q.severity ?? ""}>
-                <option value="">Any</option>
-                {[...new Set(v.findings.map((f) => f.severity))].sort().map((s) => (
-                  <option key={s} value={s}>
-                    {PRIORITY[s] ?? s}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="eyebrow">Responsible</span>
-              <select name="responsible" defaultValue={q.responsible ?? ""}>
-                <option value="">Anyone</option>
+
+      {list.length || q.severity || q.responsible ? (
+        <div className="review-split">
+          <nav className="card review-list" aria-label="Items">
+            <AutoFilter className="review-filters">
+              <input type="hidden" name="show" value={show} />
+              {from ? <input type="hidden" name="from" value={from} /> : null}
+              <select
+                name="responsible"
+                defaultValue={q.responsible ?? ""}
+                aria-label="Responsible"
+              >
+                <option value="">All parties</option>
                 {[...new Set(v.findings.map((f) => f.responsibleRole))].sort().map((s) => (
                   <option key={s} value={s}>
                     {responsibleName(s)}
                   </option>
                 ))}
               </select>
-            </label>
-            <button className="btn btn-sm">Apply filters</button>
-          </form>
-          <span className="meta ml-auto self-center">{list.length} shown</span>
-        </div>
-      </Card>
-
-      {list.length ? (
-        <div className="split">
-          <Card flush className="max-h-[70vh] overflow-auto">
-            {list.map((f) => (
-              <Link
-                key={f.findingKey}
-                href={keep({ finding: f.findingKey })}
-                scroll={false}
-                className={`pick ${selected?.findingKey === f.findingKey ? "is-active" : ""}`}
-                aria-current={selected?.findingKey === f.findingKey ? "true" : undefined}
+              <select
+                name="severity"
+                defaultValue={q.severity ?? ""}
+                aria-label="Priority"
+                title={PRIORITY_HELP}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <p className="font-semibold leading-snug">{title(f)}</p>
-                  {f.severity === "blocker" && !CLOSED.includes(f.status) ? (
-                    <Pill value="blocker" />
-                  ) : null}
-                </div>
-                <p className="meta mt-1">
-                  {v.party(f.scopeKey)}
-                  {f.period ? ` · ${f.period}` : ""}
-                </p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  <Pill value={f.type} />
-                  {CLOSED.includes(f.status) ? <Pill value={f.status} /> : null}
-                  {!CLOSED.includes(f.status) &&
-                  stageOf(v.rules.get(f.ruleId)) === "later_lender" ? (
-                    <Pill value="later_lender" label="Later lender work" tone="quiet" />
-                  ) : null}
-                </div>
-              </Link>
-            ))}
-          </Card>
+                <option value="">All priorities</option>
+                {[...new Set(v.findings.map((f) => f.severity))].sort().map((s) => (
+                  <option key={s} value={s}>
+                    {PRIORITY[s] ?? s}
+                  </option>
+                ))}
+              </select>
+            </AutoFilter>
+            <div className="review-items">
+              {show === "open"
+                ? (Object.keys(STAGE) as Stage[]).map((stage) => {
+                    const items = list.filter((f) => stageOfFinding(f) === stage);
+                    if (!items.length) return null;
+                    return (
+                      <div key={stage} role="group" aria-label={STAGE[stage]}>
+                        <p className="pick-group">
+                          <span className={`mk mk-${stage}`} aria-hidden />
+                          {STAGE[stage]} <span className="num">{items.length}</span>
+                        </p>
+                        {items.map(pick)}
+                      </div>
+                    );
+                  })
+                : list.map(pick)}
+              {!list.length ? (
+                <p className="meta px-4 py-3">No items match these filters.</p>
+              ) : null}
+            </div>
+          </nav>
 
           {selected && d ? (
             // Keyed by item so unsaved notes never carry over to another selection.
-            <div className="space-y-5" key={selected.findingKey}>
-              <Card>
-                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-                  <div className="min-w-0">
-                    <h2 className="text-[19px]">{title(selected)}</h2>
-                    <p className="meta mt-1">
-                      {v.party(selected.scopeKey)}
-                      {selected.period ? ` · ${selected.period}` : ""} · responsible:{" "}
-                      {responsibleName(selected.responsibleRole)}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Pill value={selected.status} />
-                    <Pill value={selected.severity} title={PRIORITY_HELP} />
-                  </div>
-                </div>
+            <article className="card review-detail" key={selected.findingKey}>
+              <div className="detail-nav">
+                {from === "overview" ? (
+                  <Link className="q-link" href={base}>
+                    <ArrowLeft size={14} aria-hidden />
+                    Back to Next up
+                  </Link>
+                ) : null}
+                <span className="meta ml-auto">
+                  {at + 1} of {list.length}
+                </span>
+                {at > 0 ? (
+                  <Link
+                    className="btn btn-sm"
+                    href={keep({ finding: list[at - 1]!.findingKey })}
+                    scroll={false}
+                    aria-label={`Previous: ${title(list[at - 1]!)}`}
+                  >
+                    <ChevronLeft size={15} aria-hidden />
+                  </Link>
+                ) : null}
+                {at < list.length - 1 ? (
+                  <Link
+                    className="btn btn-sm"
+                    href={keep({ finding: list[at + 1]!.findingKey })}
+                    scroll={false}
+                    aria-label={`Next: ${title(list[at + 1]!)}`}
+                  >
+                    Next
+                    <ChevronRight size={15} aria-hidden />
+                  </Link>
+                ) : null}
+              </div>
+
+              <div className="detail-body">
+                <header className="space-y-1">
+                  <p className={`detail-status ${closed ? "" : `is-${stageOfFinding(selected)}`}`}>
+                    <span
+                      className={`mk mk-${closed ? "info" : stageOfFinding(selected)}`}
+                      aria-hidden
+                    />
+                    {closed
+                      ? `${selected.status.charAt(0).toUpperCase()}${selected.status.slice(1)}`
+                      : STAGE[stageOfFinding(selected)]}
+                  </p>
+                  <h2 className="detail-title">{title(selected)}</h2>
+                  <p className="meta">
+                    {v.party(selected.scopeKey)}
+                    {selected.period ? ` · ${selected.period}` : ""} · Responsible:{" "}
+                    {responsibleName(selected.responsibleRole)} ·{" "}
+                    <span title={PRIORITY_HELP}>
+                      {PRIORITY[selected.severity] ?? selected.severity}
+                    </span>
+                  </p>
+                </header>
+
                 {closed ? (
-                  <p className="mt-3">
+                  <p>
                     This item was {selected.status}.{" "}
                     {ex?.summary ? `When it was open: ${ex.summary}` : ""}
                   </p>
                 ) : (
-                  <div className="mt-3 space-y-1.5">
-                    <p className="text-[15px]">
-                      {ex?.family === "disagreement" && facts.length > 1
-                        ? `The sources give different values: ${[
-                            ...new Set(
-                              facts.map((x) => {
-                                const fact = v.sourceFacts.find((f) => f.id === x.fact_id);
-                                return factValue(
-                                  fact?.attribute ?? "",
-                                  fact?.unit ?? "text",
-                                  x.value,
-                                );
-                              }),
-                            ),
-                          ].join(", ")}. AcqFile does not decide which is right.`
-                        : (ex?.summary ?? d.message)}
-                    </p>
+                  <div className="space-y-1">
+                    <p className="detail-issue">{sentence || ex?.summary || d.message}</p>
                     {ex?.open[0]?.saved ? <p className="meta">{ex.open[0].saved}</p> : null}
                     {ex?.note ? <p className="meta">{ex.note}</p> : null}
                     {ex?.open.slice(1).map((l, i) => (
@@ -348,210 +420,242 @@ export default async function Review({
                         Also: {l.text}
                       </p>
                     ))}
-                    {effect?.text ? (
-                      <p className="meta font-medium text-[var(--fg)]">{effect.text}</p>
-                    ) : null}
                   </div>
                 )}
                 {selected.reason ? (
-                  <p className="meta mt-2">
+                  <p className="meta">
                     <span className="eyebrow">Recorded reason</span> {selected.reason}
                   </p>
                 ) : null}
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  {href && ex?.action.label ? (
-                    <Link className="btn btn-primary btn-sm" href={href}>
-                      {ex.action.label}
-                    </Link>
-                  ) : null}
-                  {rowKey ? (
-                    <Link
-                      className="link"
-                      href={`${base}/requirements?show=all&focus=${encodeURIComponent(rowKey)}#${encodeURIComponent(rowKey)}`}
-                    >
-                      Open requirement: {row!.item}
-                    </Link>
-                  ) : null}
-                </div>
-              </Card>
 
-              {recordOnly || ex?.family === "missing" || ex?.family === "proposed" ? (
-                <Card
-                  title="Documents on file"
-                  description={
-                    ex?.family === "tracking"
-                      ? "The lender supplies this. No borrower document is requested."
-                      : ex?.family === "manual"
-                        ? "These are on file for this requirement. They do not show that the open check was done; record it with the check itself."
-                        : undefined
-                  }
-                  flush={onFile.length > 0}
-                >
-                  {onFile.length ? (
-                    <ul>
-                      {onFile.map((s) => (
-                        <li key={s.id} className="rowline">
-                          <Link className="link" href={sourceLink(s.versionId, s.page)}>
-                            View{" "}
-                            {documentName(
-                              v.segments.find(
-                                (x) =>
-                                  x.documentVersionId === s.versionId &&
-                                  x.pageStart <= s.page &&
-                                  x.pageEnd >= s.page,
-                              )?.docType ?? "",
-                            ) || "supplied document"}
-                          </Link>
-                          <span className="meta"> · page {s.page}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <Empty>
-                      {ex?.family === "missing"
-                        ? "Nothing accepted is on file for this requirement yet."
-                        : "No document is needed to answer this check."}
-                    </Empty>
-                  )}
-                </Card>
-              ) : (
-                <Card
-                  title="Values the check used"
-                  description={
-                    facts.length
-                      ? "Each value as recorded on this item, with its source. Compare them before correcting anything."
-                      : "No value was cited for this item."
-                  }
-                  flush={facts.length > 0}
-                >
-                  {facts.length ? (
-                    <table className="grid">
-                      <thead>
-                        <tr>
-                          <th className="w-[30%]">Value</th>
-                          <th className="w-[28%]">Source</th>
-                          <th>Quoted</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                {sides.length ? (
+                  <div className="compare" role="group" aria-label="Values compared">
+                    {grouped
+                      ? grouped.map((g, i) => (
+                          <section key={i} className="side">
+                            <p className="eyebrow">{g.names}</p>
+                            <p className="side-value">{g.value}</p>
+                            {g.sides[0]!.quote ? (
+                              <blockquote>“{g.sides[0]!.quote}”</blockquote>
+                            ) : null}
+                            <ul className="side-sources">
+                              {g.sides.map((x, j) => (
+                                <li key={j}>
+                                  {x.versionId ? (
+                                    <Link
+                                      className="link"
+                                      href={sourceLink(x.versionId, x.page ?? 1)}
+                                    >
+                                      {x.filename ?? x.label}
+                                    </Link>
+                                  ) : (
+                                    <span>{x.filename ?? x.label}</span>
+                                  )}
+                                  <span className="meta">
+                                    {" "}
+                                    · {x.label.toLowerCase()} · page {x.page}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </section>
+                        ))
+                      : sides.map((s, i) => (
+                          <section key={i} className="side">
+                            <p className="eyebrow">
+                              {s.source === "limit"
+                                ? "Configured in the rule pack"
+                                : `${s.label}${s.page ? ` · page ${s.page}` : ""}`}
+                            </p>
+                            <p className="side-value">
+                              {s.source === "document" && sides.some((x) => x.field !== s.field)
+                                ? `${s.field}: ${s.value}`
+                                : s.value}
+                            </p>
+                            {s.quote ? <blockquote>“{s.quote}”</blockquote> : null}
+                            <p className="meta">
+                              {s.source === "profile"
+                                ? "Declared by the operator"
+                                : s.source === "limit"
+                                  ? `${s.field}, unverified`
+                                  : [s.filename, s.signed].filter(Boolean).join(" · ")}
+                            </p>
+                            {s.source === "profile" ? (
+                              <Link className="link side-link" href={`${base}/profile`}>
+                                Open profile
+                              </Link>
+                            ) : s.versionId ? (
+                              <Link
+                                className="link side-link"
+                                href={sourceLink(s.versionId, s.page ?? 1)}
+                              >
+                                View page {s.page}
+                              </Link>
+                            ) : null}
+                          </section>
+                        ))}
+                  </div>
+                ) : recordOnly || ex?.family === "missing" || ex?.family === "proposed" ? (
+                  <section className="detail-block">
+                    <h3>Documents on file</h3>
+                    {ex?.family === "tracking" ? (
+                      <p className="meta">
+                        The lender supplies this. No borrower document is requested.
+                      </p>
+                    ) : ex?.family === "manual" ? (
+                      <p className="meta">
+                        On file for this requirement. They do not show that the open check was done;
+                        record it with the check itself.
+                      </p>
+                    ) : null}
+                    {onFile.length ? (
+                      <ul className="mt-2 space-y-1">
+                        {onFile.map((s) => (
+                          <li key={s.id}>
+                            <Link className="link" href={sourceLink(s.versionId, s.page)}>
+                              View {docName(s.versionId, s.page)}
+                            </Link>
+                            <span className="meta"> · page {s.page}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <Empty>
+                        {ex?.family === "missing"
+                          ? "Nothing accepted is on file for this requirement yet."
+                          : "No document is needed to answer this check."}
+                      </Empty>
+                    )}
+                  </section>
+                ) : (
+                  <section className="detail-block">
+                    <h3>Values the check used</h3>
+                    {facts.length ? (
+                      <ul className="values-used">
                         {facts.map((s, i) => {
                           const fact = v.sourceFacts.find((f) => f.id === s.fact_id);
                           return (
-                            <tr key={i}>
-                              <td>
-                                <p className="meta">
-                                  {fact ? attributeName(fact.attribute) : "Value"}
-                                </p>
-                                <p className="font-semibold">
-                                  {factValue(fact?.attribute ?? "", fact?.unit ?? "text", s.value)}
-                                </p>
-                                <p className="meta">
-                                  {fact?.method === "manual"
-                                    ? "Entered by staff"
-                                    : "Read from the document"}
-                                </p>
-                              </td>
-                              <td>
-                                {v.versions.some((x) => x.id === s.file) ? (
-                                  <>
-                                    <Link className="link" href={sourceLink(s.file, s.page)}>
-                                      View{" "}
-                                      {documentName(
-                                        v.segments.find(
-                                          (x) =>
-                                            x.documentVersionId === s.file &&
-                                            s.page !== null &&
-                                            x.pageStart <= s.page &&
-                                            x.pageEnd >= s.page,
-                                        )?.docType ?? "",
-                                      ) || "supplied document"}
-                                    </Link>
-                                    <p className="meta">Page {s.page}</p>
-                                  </>
-                                ) : (
-                                  <span className="meta">Source not on file</span>
-                                )}
-                              </td>
-                              <td className="italic">{s.quote}</td>
-                            </tr>
+                            <li key={i}>
+                              <p className="meta">
+                                {fact ? attributeName(fact.attribute) : "Value"} ·{" "}
+                                {fact?.method === "manual"
+                                  ? "entered by staff"
+                                  : "read from the document"}
+                              </p>
+                              <p className="font-semibold">
+                                {factValue(fact?.attribute ?? "", fact?.unit ?? "text", s.value)}
+                              </p>
+                              {s.quote ? <blockquote>“{s.quote}”</blockquote> : null}
+                              {v.versions.some((x) => x.id === s.file) ? (
+                                <Link className="link" href={sourceLink(s.file, s.page)}>
+                                  View {docName(s.file, s.page)}, page {s.page}
+                                </Link>
+                              ) : (
+                                <span className="meta">Source not on file</span>
+                              )}
+                            </li>
                           );
                         })}
-                      </tbody>
-                    </table>
-                  ) : ex?.family === "document" && metadata.length ? (
-                    <ul className="space-y-2">
-                      {metadata.map((m, i) => (
-                        <li key={i}>
-                          <p className="meta">Document details as filed</p>
-                          <p className="font-semibold">{factValue("", "text", m.value)}</p>
-                          <p className="italic">{m.quote}</p>
-                          <Link className="link" href={sourceLink(m.file, m.page)}>
-                            View document, page {m.page}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <Empty>
-                      {ex?.open.length
-                        ? "The value this check needs has not been read yet."
-                        : "No cited evidence."}
-                    </Empty>
-                  )}
-                  {facts.length && ex?.family === "document" && metadata.length ? (
-                    <p className="meta px-[18px] py-3">
-                      Document details as filed:{" "}
-                      {metadata.map((m) => factValue("", "text", m.value)).join("; ")}
-                    </p>
-                  ) : null}
-                </Card>
-              )}
-              {dependencies.length ? (
-                <p className="meta">
-                  This check also compares against the deal profile: {dependencies.join(", ")}.{" "}
-                  <Link className="link" href={`${base}/profile`}>
-                    Open profile
-                  </Link>
+                      </ul>
+                    ) : ex?.family === "document" && metadata.length ? (
+                      <ul className="values-used">
+                        {metadata.map((m, i) => (
+                          <li key={i}>
+                            <p className="meta">Document details as filed</p>
+                            <p className="font-semibold">{factValue("", "text", m.value)}</p>
+                            <blockquote>“{m.quote}”</blockquote>
+                            <Link className="link" href={sourceLink(m.file, m.page)}>
+                              View document, page {m.page}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <Empty>
+                        {ex?.open.length
+                          ? "The value this check needs has not been read yet."
+                          : "No cited evidence."}
+                      </Empty>
+                    )}
+                  </section>
+                )}
+                {dependencies.length && !sides.some((s) => s.source === "profile") ? (
+                  <p className="meta">
+                    Also compared with the deal profile: {dependencies.join(", ")}.{" "}
+                    <Link className="link" href={`${base}/profile`}>
+                      Open profile
+                    </Link>
+                  </p>
+                ) : null}
+
+                {!closed ? (
+                  <section className="resolve" aria-label="Resolve">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {editable && href && ex?.action.label ? (
+                        <Link className="btn btn-primary" href={href}>
+                          {ex.action.label}
+                        </Link>
+                      ) : null}
+                      {editable && sides.some((s) => s.source === "profile") ? (
+                        <Link className="btn" href={`${base}/profile?edit=1#edit`}>
+                          Correct profile
+                        </Link>
+                      ) : null}
+                      {!editable && href ? (
+                        <Link className="btn" href={href}>
+                          View evidence
+                        </Link>
+                      ) : null}
+                      {rowKey ? (
+                        <Link
+                          className="link ml-1"
+                          href={`${base}/requirements?show=all&focus=${encodeURIComponent(rowKey)}#${encodeURIComponent(rowKey)}`}
+                        >
+                          Requirement: {row!.item}
+                        </Link>
+                      ) : null}
+                    </div>
+                    {editable ? (
+                      <details className="decide">
+                        <summary>Dismiss or waive, with a reason</summary>
+                        <p className="meta mt-2">
+                          Dismiss closes this item; the requirement still counts until met or waived
+                          {stops ? ", so it still stops the file from being prepared" : ""}. Waive
+                          counts as waived, not satisfied, and is not lender approval. Both are
+                          recorded with your name and change no evidence.
+                        </p>
+                        <DecisionForm
+                          action={decisionAction.bind(null, dealId)}
+                          className="mt-3 flex flex-wrap items-end gap-2"
+                        >
+                          <input type="hidden" name="finding_key" value={selected.findingKey} />
+                          <label className="flex min-w-[16rem] flex-1 flex-col gap-1">
+                            <span className="eyebrow">Reason (required)</span>
+                            <input name="reason" aria-label="Decision reason" required />
+                          </label>
+                          <button className="btn" name="action" value="dismiss">
+                            Dismiss finding
+                          </button>
+                          <button className="btn" name="action" value="waive">
+                            Waive requirement
+                          </button>
+                        </DecisionForm>
+                      </details>
+                    ) : null}
+                  </section>
+                ) : null}
+
+                <p className="detail-foot">
+                  {request
+                    ? `Follow-up recorded as sent ${day(request.sentAt)}`
+                    : selected.status === "requested"
+                      ? "Follow-up recorded as sent"
+                      : "Not yet requested"}
                 </p>
-              ) : null}
 
-              {editable && !closed ? (
-                <Card title="Other options">
-                  <ul className="meta mb-3 list-disc space-y-1 pl-5">
-                    <li>
-                      Dismiss: closes this review item with your reason. The requirement keeps its
-                      status until its checks pass or it is waived
-                      {effect?.blocks ? ", so it still stops the file from being prepared" : ""}.
-                    </li>
-                    <li>
-                      Waive: marks the requirement as waived with your reason. It counts as waived,
-                      not satisfied. It is not lender approval.
-                    </li>
-                    <li>Both are recorded with your name. Neither changes any evidence.</li>
-                  </ul>
-                  <DecisionForm
-                    action={decisionAction.bind(null, dealId)}
-                    className="flex flex-wrap items-end gap-2"
-                  >
-                    <input type="hidden" name="finding_key" value={selected.findingKey} />
-                    <label className="flex min-w-[16rem] flex-1 flex-col gap-1">
-                      <span className="eyebrow">Reason (required)</span>
-                      <input name="reason" aria-label="Decision reason" required />
-                    </label>
-                    <button className="btn" name="action" value="dismiss">
-                      Dismiss finding
-                    </button>
-                    <button className="btn" name="action" value="waive">
-                      Waive requirement
-                    </button>
-                  </DecisionForm>
-                </Card>
-              ) : null}
-
-              <details className="reveal">
-                <summary>Technical detail</summary>
-                <Card className="mt-2">
-                  <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                <details className="reveal">
+                  <summary>Technical detail</summary>
+                  <dl className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
                     <div>
                       <dt className="eyebrow">Rule</dt>
                       <dd className="font-mono text-[13px]">{selected.ruleId}</dd>
@@ -582,9 +686,9 @@ export default async function Review({
                       {JSON.stringify(d.details, null, 2)}
                     </pre>
                   </details>
-                </Card>
-              </details>
-            </div>
+                </details>
+              </div>
+            </article>
           ) : null}
         </div>
       ) : (
@@ -597,3 +701,13 @@ export default async function Review({
     </>
   );
 }
+
+const TYPE_LABEL: Record<string, string> = {
+  conflict: "sources disagree",
+  missing: "missing",
+  needs_review: "needs review",
+  incomplete: "incomplete",
+  stale: "out of date",
+  info: "for information",
+};
+const typeLabel = (type: string) => TYPE_LABEL[type] ?? type.replaceAll("_", " ");

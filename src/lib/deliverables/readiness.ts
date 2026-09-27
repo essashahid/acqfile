@@ -46,6 +46,14 @@ export type PreparationReadiness = {
   later: { item: string; title: string; subject: string; responsible: string; status: string }[];
 };
 
+/** The rows the "N of M" preparation count is made of, so any view of them uses the same set. */
+export function requiredPreparationRows(index: IndexRow[], rules: Map<string, Rule>) {
+  return index
+    .filter((r) => r.status !== "not_applicable")
+    .filter((r) => stageOf(rules.get(r.item_id)) !== "later_lender")
+    .filter((r) => rules.get(r.item_id)?.required !== false);
+}
+
 /** One preparation boundary for staff, adviser and frozen exports. Ownership never sets the stage. */
 export function preparationReadiness({
   index,
@@ -67,8 +75,7 @@ export function preparationReadiness({
   reviewIssues?: string[];
 }): PreparationReadiness {
   const applicable = index.filter((r) => r.status !== "not_applicable");
-  const preparation = applicable.filter((r) => stageOf(rules.get(r.item_id)) !== "later_lender");
-  const required = preparation.filter((r) => rules.get(r.item_id)?.required !== false);
+  const required = requiredPreparationRows(index, rules);
   const unresolved = [...reviewIssues];
   if (!current) unresolved.unshift("Current evidence is awaiting evaluation.");
   if (!index.length) unresolved.push("No evaluated preparation requirements.");

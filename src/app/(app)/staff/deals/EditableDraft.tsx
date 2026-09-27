@@ -26,7 +26,7 @@ export function EditableDraft({
         id={draftId}
         name="body"
         value={body}
-        rows={16}
+        rows={14}
         className="w-full resize-y rounded-[10px] border border-[var(--line)] bg-[var(--surface-sunken)] p-4 font-sans text-[13.5px] leading-6"
         onChange={(event) => {
           setBody(event.target.value);
@@ -34,9 +34,7 @@ export function EditableDraft({
           setCopyMessage("");
         }}
       />
-      <p className="meta">
-        Edits are kept only on this page until you record the message. AcqFile does not send it.
-      </p>
+      <p className="meta">Edits stay on this page until you record the message.</p>
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
@@ -54,7 +52,11 @@ export function EditableDraft({
           {copied ? "Copied" : "Copy draft"}
         </button>
         {!confirming ? (
-          <button type="button" className="btn btn-sm" onClick={() => setConfirming(true)}>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={() => setConfirming(true)}
+          >
             Record as sent
           </button>
         ) : null}

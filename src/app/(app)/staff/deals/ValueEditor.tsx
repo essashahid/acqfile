@@ -108,10 +108,10 @@ export function SourceEditor({
   label: string;
 }) {
   return (
-    <fieldset className="mt-3 grid gap-2">
-      <legend className="eyebrow">Supporting source</legend>
-      <label>
-        Page
+    <fieldset className="source-edit">
+      <legend className="eyebrow">Where it is on the page</legend>
+      <label className="flex flex-col gap-1">
+        <span className="text-[12.5px] font-semibold">Page</span>
         <input
           aria-label={`Supporting page ${label}`}
           type="number"
@@ -121,28 +121,32 @@ export function SourceEditor({
           onChange={(e) => onChange({ ...value, page: Number(e.target.value) })}
         />
       </label>
-      <label>
-        Source text type
+      <label className="flex flex-col gap-1">
+        <span className="text-[12.5px] font-semibold">Source text</span>
         <select
           aria-label={`Source text type ${label}`}
           value={value.kind}
           onChange={(e) => onChange({ ...value, kind: e.target.value as SourceDraft["kind"] })}
         >
-          <option value="quote">Exact source quote</option>
-          <option value="transcription">Transcription from the page (not verbatim)</option>
+          <option value="quote">Exact quote</option>
+          <option value="transcription">Transcription, not verbatim</option>
         </select>
       </label>
-      <label>
-        Quote or transcription
+      <label className="source-edit-wide flex flex-col gap-1">
+        <span className="text-[12.5px] font-semibold">
+          {value.kind === "quote" ? "Quote" : "Transcription"}
+        </span>
         <textarea
           aria-label={`Source quote ${label}`}
+          rows={2}
+          placeholder="Text as it appears on the page"
           value={value.quote}
           onChange={(e) => onChange({ ...value, quote: e.target.value })}
         />
       </label>
       {value.kind === "transcription" ? (
-        <label>
-          Source region
+        <label className="source-edit-wide flex flex-col gap-1">
+          <span className="text-[12.5px] font-semibold">Region on the page</span>
           <input
             aria-label={`Source region ${label}`}
             value={value.region}
@@ -150,9 +154,6 @@ export function SourceEditor({
           />
         </label>
       ) : null}
-      <p className="meta">
-        Use the reason field for your explanation. It is separate from the source text.
-      </p>
     </fieldset>
   );
 }

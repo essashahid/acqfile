@@ -31,6 +31,7 @@ test("a negative purchase price correction stays in review", async ({ page }) =>
     `/staff/deals/${dealId}/documents/${fact!.documentVersionId}/values/${fact!.segmentId}`,
   );
   const decision = page.getByRole("group", { name: "Decision deal.purchase_price", exact: true });
+  await decision.getByRole("button", { name: "Change", exact: true }).click();
   await decision.getByRole("button", { name: "Correct value", exact: true }).click();
   await decision.getByLabel("Edit value deal.purchase_price", { exact: true }).fill("($25,000)");
   await decision

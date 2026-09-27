@@ -226,6 +226,31 @@ export function draftBody(
   return scrubPayload(lines.join("\n"));
 }
 
+/**
+ * Who a finding's follow-up is addressed to: the draft it lands in. Screens that say whose turn an
+ * item is read this, so they always name the same party the Follow-ups draft does.
+ */
+export function draftRecipient(
+  f: Pick<Finding, "ruleId" | "scopeKey" | "responsibleRole" | "detailsJson">,
+  rule: Rule | undefined,
+  partyName: (key: string) => string,
+) {
+  // A handling question for the lender goes to the lender, whoever supplies the document.
+  const open = checksFromMessage(rule, (f.detailsJson as { message: string }).message);
+  if (
+    open.length &&
+    open.every(
+      (o) =>
+        o.type === "manual_confirmation" &&
+        rule?.checks.find((c) => c.message === o.message)?.note_key === "citizenship_handling",
+    )
+  )
+    return "lender";
+  return rule?.scope.startsWith("per_")
+    ? `${f.responsibleRole} · ${partyName(f.scopeKey)}`
+    : f.responsibleRole;
+}
+
 /** Rebuild one draft per responsible party from the currently open findings. */
 export async function buildDrafts(context: SessionContext, dealId: string) {
   await requireDeal(context, dealId);
@@ -247,23 +272,7 @@ export async function buildDrafts(context: SessionContext, dealId: string) {
   const open = findings
     .filter((f) => f.status === "open" && f.type !== "info" && f.severity !== "info")
     .sort((a, b) => a.findingKey.localeCompare(b.findingKey));
-  const recipient = (f: Finding) => {
-    const rule = rules.get(f.ruleId);
-    // A handling question for the lender goes to the lender, whoever supplies the document.
-    const open = checksFromMessage(rule, (f.detailsJson as { message: string }).message);
-    if (
-      open.length &&
-      open.every(
-        (o) =>
-          o.type === "manual_confirmation" &&
-          rule?.checks.find((c) => c.message === o.message)?.note_key === "citizenship_handling",
-      )
-    )
-      return "lender";
-    return rule?.scope.startsWith("per_")
-      ? `${f.responsibleRole} · ${partyName(f.scopeKey)}`
-      : f.responsibleRole;
-  };
+  const recipient = (f: Finding) => draftRecipient(f, rules.get(f.ruleId), partyName);
   const parties = [...new Set(open.map(recipient))].sort();
   return parties.map((responsible) => {
     const mine = open.filter((f) => recipient(f) === responsible);

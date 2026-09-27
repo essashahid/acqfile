@@ -7,8 +7,15 @@ import { DealEditor } from "../../DealEditor";
 import { formatValue } from "@/components/staff";
 import { Card, Empty, PageHead, Pill } from "@/components/staff";
 
-export default async function Profile({ params }: { params: Promise<{ dealId: string }> }) {
+export default async function Profile({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ dealId: string }>;
+  searchParams: Promise<{ edit?: string }>;
+}) {
   const { dealId } = await params;
+  const { edit } = await searchParams;
   const ctx = await requireStaff();
   const { deal, parties, ownership } = await readDeal(ctx, dealId);
   const editable = mutationAllowed(ctx);
@@ -173,7 +180,7 @@ export default async function Profile({ params }: { params: Promise<{ dealId: st
             title="Edit profile"
             description="Saving re-evaluates the deal, so requirements and findings can change."
           >
-            <details className="reveal">
+            <details className="reveal" id="edit" open={edit === "1" || undefined}>
               <summary>Open the editor</summary>
               <div className="mt-4">
                 <DealEditor

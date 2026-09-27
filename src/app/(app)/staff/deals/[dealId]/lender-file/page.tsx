@@ -17,6 +17,19 @@ const readable = (issue: string) =>
     (s) => s.replaceAll("_", " "),
   );
 
+const STAGE_NAME = {
+  blocks: "Blocks the file",
+  yours: "Your review",
+  waiting: "Waiting on others",
+} as const;
+const LATER_LABEL: Record<string, string> = {
+  satisfied: "Done",
+  waived: "Waived",
+  missing: "Missing",
+  not_applicable: "Not applicable",
+  tracking: "Lender tracking",
+};
+
 const DIFF_LABEL: Record<keyof SnapshotDiff, string> = {
   newly_satisfied: "Requirements newly satisfied",
   new_findings: "New findings",
@@ -49,7 +62,7 @@ export default async function LenderFile({
     <>
       <PageHead
         title="Lender file"
-        subtitle="The organised set of documents and review results you hand to the lender. Creating or downloading a version does not send it anywhere."
+        subtitle="What you hand to the lender. Creating or downloading a version sends nothing."
       />
       <div className="space-y-5">
         <Card title="Preparation status" description={v.preparation.policy}>
@@ -57,9 +70,7 @@ export default async function LenderFile({
             <span className={`pill ${complete ? "pill-ok" : "pill-warn"}`}>
               {v.preparation.label}
             </span>
-            <p className="meta">
-              This status covers the agreed preparation work. The lender makes its own decisions.
-            </p>
+            <p className="meta">Covers preparation only; the lender makes its own decisions.</p>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
             <div>
@@ -85,21 +96,55 @@ export default async function LenderFile({
             </div>
           </div>
           {!complete ? (
-            <ul className="mt-4 space-y-2 border-t border-[var(--line)] pt-4">
-              {v.preparation.unresolved.map((issue) => (
-                <li key={issue}>{readable(issue)}</li>
-              ))}
-            </ul>
+            <div className="mt-4 border-t border-[var(--line)] pt-3">
+              {(["blocks", "yours", "waiting"] as const).map((stage) => {
+                const items = v.work.filter((w) => w.stage === stage);
+                if (!items.length) return null;
+                return (
+                  <div key={stage} className="lf-group">
+                    <p className="lf-group-name">
+                      <span className={`mk mk-${stage}`} aria-hidden />
+                      {STAGE_NAME[stage]} <span className="num">{items.length}</span>
+                    </p>
+                    <ul>
+                      {items.map((w) => (
+                        <li key={w.key}>
+                          <Link className="link" href={w.href}>
+                            {w.title}
+                          </Link>
+                          <span className="meta">{w.subject}</span>
+                          <span className="lf-issue">{w.issue}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+              {/* Anything readiness counts that the work list does not name is still shown. */}
+              {v.preparation.unresolved
+                .filter(
+                  (issue) =>
+                    !v.work.some((w) => ["blocks", "yours", "waiting"].includes(w.stage)) ||
+                    /^(Current evidence|No evaluated)|staff must confirm/.test(issue),
+                )
+                .map((issue) => (
+                  <p key={issue} className="meta mt-2">
+                    {readable(issue)}
+                  </p>
+                ))}
+            </div>
           ) : null}
           <div className="mt-5 border-t border-[var(--line)] pt-4">
             <h3 className="mb-1">Later lender work</h3>
-            <p className="meta mb-3">
-              Outside the preparation boundary. These do not hold up a lender-file version.
-            </p>
+            <p className="meta mb-3">Listed, not waived. These do not hold up a version.</p>
             <ul className="space-y-1.5">
               {v.preparation.later.map((row) => (
                 <li key={row.item} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <Pill value={row.status} />
+                  <Pill
+                    value={row.status}
+                    label={LATER_LABEL[row.status] ?? "Open"}
+                    tone={row.status === "satisfied" ? "ok" : "quiet"}
+                  />
                   <span className="font-medium">{row.title}</span>
                   <span className="meta">{responsibleName(row.responsible)}</span>
                 </li>

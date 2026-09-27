@@ -1,23 +1,47 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
-import { stageOf } from "@/lib/deliverables/readiness";
+import { requiredPreparationRows, stageOf } from "@/lib/deliverables/readiness";
 import { buildIndex, type IndexRow } from "@/lib/deliverables/index-build";
-import { listRequests, ageInDays } from "@/lib/deliverables/requests";
+import { listRequests, ageInDays, draftRecipient } from "@/lib/deliverables/requests";
 import { listSnapshots } from "@/lib/deliverables/snapshot";
 import { PENDING } from "@/lib/evaluation/run";
-import { documentName, findingHeadline, reviewSubject } from "./labels";
-import { explainItem, stageEffect } from "./explain";
+import {
+  attentionKind,
+  attributeName,
+  documentName,
+  factValue,
+  findingHeadline,
+  responsibleName,
+  reviewSubject,
+} from "./labels";
+import { actionHref, checksFromMessage, explainItem } from "./explain";
+import { comparisonLine, comparisonSides, type Detail } from "./compare";
 
+/**
+ * Where an item sits in the operator's queue. The order is the order of work: what stops the
+ * file, what the operator can finish now, what waits on another party, then lender tracking.
+ * Grouping is display only; readiness and each item's status are computed elsewhere.
+ */
+export type Stage = "blocks" | "yours" | "waiting" | "lender" | "info";
+export const STAGES: Stage[] = ["blocks", "yours", "waiting", "lender", "info"];
 export type WorkItem = {
   key: string;
-  /** blocker first, then work that needs another party, then information. */
-  rank: number;
-  kind: "blocker" | "unresolved" | "processing" | "review" | "follow-up" | "info";
+  stage: Stage;
+  kind: "finding" | "processing" | "values" | "filing";
   title: string;
-  why: string;
-  party: string;
+  /** The person or business the item is about. */
+  subject: string;
+  /** What is wrong, in a few words. */
+  issue: string;
+  /** Whose turn it is: "You", or the party the follow-up draft is addressed to. */
+  turn: string;
   href: string;
+  /** The step's own verb. */
   action: string;
+  /** Read-only accounts see what the link shows instead of a verb they cannot perform. */
+  view: string;
+  /** Order inside its group: higher priority first. */
+  order: number;
 };
 
 /** Counts an operator can act on. Each one means a different thing and none of them are merged. */
@@ -35,6 +59,8 @@ export type DealCounts = {
   documentsNeedingAttention: number;
   pendingValues: number;
   followUpsToPrepare: number;
+  /** Follow-up drafts waiting to be sent: one per recipient, as Follow-ups builds them. */
+  drafts: number;
   requestsRecorded: number;
   oldestRequestDays: number | null;
   versions: number;
@@ -47,7 +73,7 @@ export type DealCounts = {
 export async function dealView(dealId: string) {
   const db = getDb();
   const built = await buildIndex(dealId);
-  const [requests, snapshots, arrivals, openReviews, pendingFacts, runs, sourceFacts] =
+  const [requests, snapshots, arrivals, openReviews, pendingFacts, runs, sourceFacts, allSegments] =
     await Promise.all([
       listRequests(dealId),
       listSnapshots(dealId),
@@ -88,6 +114,8 @@ export async function dealView(dealId: string) {
         ),
       db.select().from(schema.processingRuns).where(eq(schema.processingRuns.status, "failed")),
       db.select().from(schema.facts).where(eq(schema.facts.dealId, dealId)),
+      // Proposed filings are not in the filed set but a filing decision still needs their names.
+      db.select().from(schema.segments).where(eq(schema.segments.dealId, dealId)),
     ]);
 
   const ready = built.preparation;
@@ -111,24 +139,27 @@ export async function dealView(dealId: string) {
         : key
       : built.partyName(key);
 
-  // The same specific sentence Review shows, so the overview never says only "needs review".
-  const why = (f: (typeof built.findings)[number]) => {
+  // The explanation Review shows. Consistency rules have no requirement row, so their checks come
+  // from the finding itself, as on Review; otherwise the summary would fall back to "not on file".
+  const explain = (f: (typeof built.findings)[number]) => {
     const rule = built.rules.get(f.ruleId);
+    if (!rule) return null;
     const row = built.index.find(
       (r) =>
         r.item_id === f.ruleId && r.scope_key === f.scopeKey && (r.period || null) === f.period,
     );
-    if (!rule) return (f.detailsJson as { message: string }).message;
-    const summary = explainItem({
-      rule,
-      status: row?.status ?? "needs_review",
-      checks: row?.checks ?? [],
-      findingType: f.type,
-      findingMessage: (f.detailsJson as { message: string }).message,
-      parameters: built.pack.parameters,
-    }).summary;
-    const effect = row ? stageEffect(rule, row).text : "";
-    return effect ? `${summary} ${effect}` : summary;
+    const message = (f.detailsJson as { message: string }).message;
+    return {
+      row,
+      ex: explainItem({
+        rule,
+        status: row?.status ?? "needs_review",
+        checks: row ? row.checks : checksFromMessage(rule, message),
+        findingType: f.type,
+        findingMessage: message,
+        parameters: built.pack.parameters,
+      }),
+    };
   };
 
   // Follow-ups still to prepare: open findings not yet covered by a recorded request.
@@ -138,87 +169,175 @@ export async function dealView(dealId: string) {
   const outstanding = requests.filter((r) =>
     built.findings.some((f) => r.findingKeys.includes(f.findingKey) && f.status === "requested"),
   );
+  const recipientOf = (f: (typeof built.findings)[number]) =>
+    draftRecipient(f, built.rules.get(f.ruleId), built.partyName);
 
   const work: WorkItem[] = [];
-  for (const f of blockers)
-    work.push({
+  const findingItem = (f: (typeof built.findings)[number], stage: Stage): WorkItem => {
+    const rule = built.rules.get(f.ruleId);
+    const e = explain(f);
+    const details = ((f.detailsJson as { details?: Detail[] }).details ?? []) as Detail[];
+    const line =
+      e && ["disagreement", "relationship"].includes(e.ex.family)
+        ? comparisonLine(
+            comparisonSides(rule, details, {
+              segments: built.segments,
+              facts: sourceFacts,
+              versions: built.versions,
+              parameters: built.pack.parameters,
+            }),
+          )
+        : "";
+    const review = `${base}/review?finding=${encodeURIComponent(f.findingKey)}&from=overview`;
+    const rowKey = e?.row ? `${e.row.item_id}|${e.row.scope_key}|${e.row.period}` : undefined;
+    const record =
+      e && ["confirm", "tracking"].includes(e.ex.action.kind)
+        ? actionHref(e.ex.action.kind, base, { rowKey, noteKey: e.ex.action.noteKey })
+        : null;
+    const verb = !e
+      ? "Open item"
+      : ["disagreement", "relationship"].includes(e.ex.family)
+        ? "Compare sources"
+        : e.ex.family === "missing"
+          ? "Prepare request"
+          : record
+            ? e.ex.action.label
+            : "Open item";
+    return {
       key: `finding:${f.findingKey}`,
-      rank: 0,
-      kind: "blocker",
+      stage,
+      kind: "finding",
       title: reviewSubject(
-        built.rules.get(f.ruleId)?.title ??
-          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
+        rule?.title ?? findingHeadline(f.type, (f.detailsJson as { message: string }).message),
       ),
-      why: why(f),
-      party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
-      href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
-      action: "Review evidence",
-    });
+      subject: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
+      issue:
+        line ||
+        e?.ex.brief ||
+        findingHeadline(f.type, (f.detailsJson as { message: string }).message),
+      turn: responsibleName(recipientOf(f).split("·")[0]!),
+      href: record ?? review,
+      action: verb,
+      view: "View evidence",
+      order: { blocker: 0, major: 1, minor: 2 }[f.severity] ?? 3,
+    };
+  };
+  for (const f of blockers) work.push(findingItem(f, "blocks"));
+
+  // Work the operator can finish now: unreadable files, filing decisions and values to confirm.
+  const failedVersions = new Set(failedFiles.map((r) => r.version.id));
   for (const r of failedFiles)
     work.push({
       key: `file:${r.version.id}`,
-      rank: 1,
+      stage: "yours",
       kind: "processing",
-      title: `${r.arrival.originalPath.split("/").pop()} could not be processed`,
-      why: "A file that cannot be read supplies no evidence, so any requirement it was meant to meet stays open.",
-      party: "Intake",
+      title: "Could not be read",
+      subject: r.arrival.originalPath.split("/").pop() ?? "Source file",
+      issue: "Supplies no evidence until it is read or replaced",
+      turn: "You",
       href: `${base}/documents/${r.version.id}`,
       action: "See options",
+      view: "View file",
+      order: 0,
     });
-  for (const f of open.filter((x) => x.severity !== "blocker" && !informational.includes(x)))
-    work.push({
-      key: `finding:${f.findingKey}`,
-      rank: 2,
-      kind: "unresolved",
-      title: reviewSubject(
-        built.rules.get(f.ruleId)?.title ??
-          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
-      ),
-      why: `${why(f)} Responsible: ${f.responsibleRole}.`,
-      party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
-      href: `${base}/review?finding=${encodeURIComponent(f.findingKey)}`,
-      action: "Review evidence",
-    });
+  const filename = (versionId: string) =>
+    built.versions.find((x) => x.id === versionId)?.sourceFilename ?? "Source file";
   const segmentsPending = new Set(pendingFacts.map((f) => f.segmentId));
   for (const id of segmentsPending) {
     const segment = built.segments.find((s) => s.id === id);
     if (!segment) continue;
+    const mine = pendingFacts.filter((f) => f.segmentId === id);
+    const one = mine.length === 1 ? mine[0]! : null;
     work.push({
       key: `segment:${id}`,
-      rank: 3,
-      kind: "review",
-      title: `Confirm values read from ${documentName(segment.docType)}`,
-      why: `${pendingFacts.filter((f) => f.segmentId === id).length} value(s) await a person.`,
-      party: built.partyName(segment.partyId),
-      href: `${base}/documents/${segment.documentVersionId}/values/${id}`,
-      action: "Review values",
+      stage: "yours",
+      kind: "values",
+      title: one
+        ? attributeName(one.attribute).split(" · ").at(-1)!
+        : `${mine.length} values to confirm`,
+      subject: `${documentName(segment.docType)} · ${filename(segment.documentVersionId)}`,
+      issue: one
+        ? `Reads ${factValue(one.attribute, one.unit, one.valueJson)} · confirm or correct`
+        : mine
+            .map((f) => attributeName(f.attribute).split(" · ").at(-1)!)
+            .slice(0, 3)
+            .join(", "),
+      turn: "You",
+      href: `${base}/documents/${segment.documentVersionId}/values/${id}?from=overview`,
+      action: mine.length === 1 ? "Review value" : "Review values",
+      view: "View values",
+      order: 1,
     });
   }
-  if (toPrepare.length)
+  // One row per document waiting on a filing decision; its separate intake checks travel together.
+  const reviewsByVersion = new Map<string, typeof openReviews>();
+  for (const r of openReviews) {
+    if (failedVersions.has(r.documentVersionId)) continue;
+    reviewsByVersion.set(r.documentVersionId, [
+      ...(reviewsByVersion.get(r.documentVersionId) ?? []),
+      r,
+    ]);
+  }
+  for (const [versionId, reviews] of reviewsByVersion) {
+    const gap = reviews.find((r) => r.type === "extraction_gap" && r.segmentId);
+    const named = reviews.find((r) => r.segmentId)?.segmentId;
+    const segment =
+      allSegments.find((s) => s.id === (gap?.segmentId ?? named)) ??
+      allSegments.find((s) => s.documentVersionId === versionId && s.isCurrent);
+    const replacement = reviews.find((r) => ["version_conflict", "duplicate"].includes(r.type));
+    const others = segment
+      ? built.segments
+          .filter(
+            (s) =>
+              s.documentVersionId !== versionId &&
+              s.docType === segment.docType &&
+              (s.partyId ?? null) === (segment.partyId ?? null),
+          )
+          .map((s) => filename(s.documentVersionId))
+      : [];
+    const type = (replacement ?? gap ?? reviews[0]!).type;
+    const onlyGaps = reviews.every((r) => r.type === "extraction_gap");
     work.push({
-      key: "follow-ups",
-      rank: 4,
-      kind: "follow-up",
-      title: `Prepare ${toPrepare.length} follow-up ${toPrepare.length === 1 ? "item" : "items"}`,
-      why: "Nothing has been recorded as sent for these yet.",
-      party: [...new Set(toPrepare.map((f) => f.responsibleRole))].join(", "),
-      href: `${base}/follow-ups`,
-      action: "Open follow-ups",
+      key: `filing:${versionId}`,
+      stage: "yours",
+      kind: onlyGaps ? "values" : "filing",
+      title:
+        type === "version_conflict"
+          ? "Possible replacement"
+          : onlyGaps && gap?.attribute
+            ? attributeName(gap.attribute).split(" · ").at(-1)!
+            : attentionKind(type),
+      subject: `${segment ? `${documentName(segment.docType)} · ` : ""}${filename(versionId)}`,
+      issue:
+        replacement && others.length
+          ? `Same type, parties and date as ${[...new Set(others)].join(", ")}`
+          : onlyGaps
+            ? `${reviews.length === 1 ? "No value read" : `${reviews.length} values not read`}`
+            : reviews[0]!.reason,
+      turn: "You",
+      href:
+        onlyGaps && gap?.segmentId
+          ? `${base}/documents/${versionId}/values/${gap.segmentId}?from=overview`
+          : `${base}/documents/${versionId}`,
+      action: onlyGaps ? "Enter value" : "Review filing",
+      view: onlyGaps ? "View values" : "View filing",
+      order: onlyGaps ? 1 : 2,
     });
-  for (const f of informational)
+  }
+  for (const f of open.filter((x) => !blockers.includes(x) && !informational.includes(x)))
+    work.push(
+      findingItem(f, stageOf(built.rules.get(f.ruleId)) === "later_lender" ? "lender" : "waiting"),
+    );
+  for (const f of informational) {
+    const item = findingItem(f, "info");
     work.push({
-      key: `finding:${f.findingKey}`,
-      rank: 5,
-      kind: "info",
-      title: reviewSubject(
-        built.rules.get(f.ruleId)?.title ??
-          findingHeadline(f.type, (f.detailsJson as { message: string }).message),
-      ),
-      why: "Context for the file. The current rules do not require a document for this.",
-      party: party(f.scopeKey) + (f.period ? ` · ${f.period}` : ""),
+      ...item,
+      issue: "Context for the file; nothing is requested",
       href: `${base}/review?show=info&finding=${encodeURIComponent(f.findingKey)}`,
       action: "See finding",
     });
+  }
+  const strip = requiredPreparationRows(built.index, built.rules).map((r) => r.status);
 
   const counts: DealCounts = {
     required: { done: ready.satisfied + ready.waived, applicable: ready.applicable },
@@ -239,6 +358,7 @@ export async function dealView(dealId: string) {
     ]).size,
     pendingValues: pendingFacts.length,
     followUpsToPrepare: toPrepare.length,
+    drafts: new Set(toPrepare.map(recipientOf)).size,
     requestsRecorded: requests.filter((r) => r.status === "sent").length,
     oldestRequestDays: outstanding.length ? ageInDays(outstanding[0]!.sentAt) : null,
     versions: snapshots.length,
@@ -246,7 +366,15 @@ export async function dealView(dealId: string) {
   return {
     ...built,
     counts,
-    work: work.sort((a, b) => a.rank - b.rank),
+    work: work.sort(
+      (a, b) =>
+        STAGES.indexOf(a.stage) - STAGES.indexOf(b.stage) ||
+        a.order - b.order ||
+        a.title.localeCompare(b.title) ||
+        a.subject.localeCompare(b.subject),
+    ),
+    /** Status of each row in the preparation count, in index order, for the completeness strip. */
+    strip,
     arrivals,
     failedFiles,
     openReviews,

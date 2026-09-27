@@ -243,6 +243,7 @@ test("the adviser answers a price question, then sees it reopen after a staff co
     name: "Decision deal.purchase_price",
     exact: true,
   });
+  await decision.getByRole("button", { name: "Change", exact: true }).click();
   await decision.getByRole("button", { name: "Correct value", exact: true }).click();
   await decision.getByLabel("Edit value deal.purchase_price", { exact: true }).fill("2400000");
   await decision

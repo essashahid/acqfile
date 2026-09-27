@@ -1,23 +1,41 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, FileWarning, Info, ListChecks, Send } from "lucide-react";
+import { ArrowRight, Upload } from "lucide-react";
 import { requireStaff } from "@/lib/workspace";
 import { readDeal } from "@/lib/deals/service";
-import { dealView } from "@/lib/staff/deal-view";
+import { dealView, type Stage, type WorkItem } from "@/lib/staff/deal-view";
 import { mutationAllowed } from "@/lib/access";
-import { staffRole } from "@/lib/staff/roles";
-import { Card, Empty, PageHead, Pill } from "@/components/staff";
+import { Card, Empty, PageHead } from "@/components/staff";
 
-const MARK = {
-  blocker: { icon: AlertTriangle, className: "text-[var(--bad,#9c2c34)]" },
-  processing: { icon: FileWarning, className: "text-[var(--warn)]" },
-  unresolved: { icon: ListChecks, className: "text-[var(--warn)]" },
-  review: { icon: ListChecks, className: "text-[var(--accent)]" },
-  "follow-up": { icon: Send, className: "text-[var(--accent)]" },
-  info: { icon: Info, className: "text-[var(--muted)]" },
-} as const;
+const GROUP: Record<Stage, { name: string; note?: string }> = {
+  blocks: { name: "Blocks the file" },
+  yours: { name: "Your review" },
+  waiting: { name: "Waiting on others" },
+  lender: { name: "Later lender work", note: "doesn’t hold up a version" },
+  info: { name: "For information", note: "nothing is requested" },
+};
+const SHOW: Record<string, Stage[]> = {
+  preparation: ["blocks", "yours", "waiting"],
+  lender: ["lender"],
+  all: ["blocks", "yours", "waiting", "lender"],
+};
+const STRIP: Record<string, string> = {
+  satisfied: "done",
+  waived: "done",
+  missing: "missing",
+};
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const when = (d: Date) =>
+  `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}, ${d.toISOString().slice(11, 16)}`;
 
-export default async function DealOverview({ params }: { params: Promise<{ dealId: string }> }) {
+export default async function DealOverview({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ dealId: string }>;
+  searchParams: Promise<{ show?: string }>;
+}) {
   const { dealId } = await params;
+  const q = await searchParams;
   const ctx = await requireStaff();
   const { deal } = await readDeal(ctx, dealId);
   if (deal.rulePackVersion === "unknown")
@@ -34,19 +52,48 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
   const v = await dealView(dealId);
   const c = v.counts;
   const base = `/staff/deals/${dealId}`;
-  const position = `${v.preparation.label}. ${v.preparation.policy}.`;
   const editable = mutationAllowed(ctx);
-  const actionable = v.work.filter(
-    (w) => w.kind !== "info" && (editable || w.kind !== "follow-up"),
+  const show = q.show && SHOW[q.show] ? q.show : "preparation";
+  const inStage = (stages: Stage[]) => v.work.filter((w) => stages.includes(w.stage));
+  const queue = inStage(SHOW[show]!);
+  const preparation = inStage(SHOW.preparation!);
+  const blocking = inStage(["blocks"]);
+  const informational = inStage(["info"]);
+  const tab = (key: string, label: string, count: number) => (
+    <Link
+      key={key}
+      href={key === "preparation" ? base : `${base}?show=${key}`}
+      aria-current={show === key ? "page" : undefined}
+      scroll={false}
+    >
+      {label} <span className="num">{count}</span>
+    </Link>
   );
-  if (ctx.workspace.role === "reviewer")
-    actionable.sort(
-      (a, b) =>
-        Number(["processing", "review"].includes(b.kind)) -
-        Number(["processing", "review"].includes(a.kind)),
-    );
-  const priorities = actionable.slice(0, 6);
-  const informational = v.work.filter((w) => w.kind === "info");
+  const row = (w: WorkItem, first: boolean) => (
+    <li key={w.key} className="q-row">
+      <span className={`mk mk-${w.stage}`} aria-hidden />
+      <div className="q-item">
+        <p className="q-title">{w.title}</p>
+        <p className="q-sub">{w.subject}</p>
+      </div>
+      <p className="q-issue">{w.issue}</p>
+      <p className={`q-turn ${w.turn === "You" ? "is-you" : ""}`}>
+        <span className="sr-only">Whose turn: </span>
+        {w.turn}
+      </p>
+      <div className="q-act">
+        <Link
+          className={first ? "btn btn-primary btn-sm" : "q-link"}
+          href={w.href}
+          aria-label={`${editable ? w.action : w.view}: ${w.title}, ${w.subject}`}
+        >
+          {editable ? w.action : w.view}
+          <ArrowRight size={13} aria-hidden />
+        </Link>
+      </div>
+    </li>
+  );
+  const stagesShown = SHOW[show]!;
   return (
     <>
       <PageHead
@@ -57,227 +104,160 @@ export default async function DealOverview({ params }: { params: Promise<{ dealI
               ? "Prepare the file"
               : "Evidence and decisions"
         }
-        eyebrow={staffRole(ctx.workspace.role)}
-        subtitle={position}
         actions={
-          <Link className="btn" href={`${base}/lender-file`}>
-            Lender file
-          </Link>
+          <>
+            {editable ? (
+              <Link className="btn" href={`${base}/documents#intake`}>
+                <Upload size={15} aria-hidden />
+                Upload documents
+              </Link>
+            ) : null}
+            <Link className="btn" href={`${base}/lender-file`}>
+              Lender file
+            </Link>
+          </>
         }
       />
       <div className="space-y-5">
-        <Card
-          title={
-            actionable.length
-              ? editable
-                ? "Current priorities"
-                : "Focus your review"
-              : "No current issues"
-          }
-          description={
-            actionable.length
-              ? "Top-priority items first. Each one opens the item and its evidence."
-              : undefined
-          }
-          flush={actionable.length > 0}
-        >
-          {actionable.length ? (
-            <ul>
-              {priorities.map((w) => {
-                const m = MARK[w.kind];
+        <section className="card ready" aria-label="Readiness">
+          <div className="ready-head">
+            <span className={`pill ${v.preparation.ready ? "pill-ok" : "pill-warn"}`}>
+              {v.preparation.label}
+            </span>
+            <p>
+              {preparation.length ? (
+                <>
+                  <b>{preparation.length} open</b>
+                  {blocking.length
+                    ? ` · ${blocking.length} ${blocking.length === 1 ? "blocks" : "block"} the file`
+                    : " · nothing blocks the file"}
+                </>
+              ) : (
+                "Nothing open for preparation"
+              )}
+            </p>
+          </div>
+          <div className="ready-grid">
+            <Link className="ready-cell" href={`${base}/requirements`}>
+              <span className="meta">Preparation</span>
+              <span className="big">
+                {c.required.done} of {c.required.applicable}
+              </span>
+              <span
+                className="strip"
+                role="img"
+                aria-label={`${c.required.done} satisfied or waived, ${
+                  v.strip.filter((s) => s === "missing").length
+                } missing, ${
+                  v.strip.filter((s) => !STRIP[s]).length
+                } need review, of ${v.strip.length}`}
+              >
+                {v.strip.map((s, i) => (
+                  <i key={i} className={STRIP[s] ?? "review"} />
+                ))}
+              </span>
+            </Link>
+            <Link className="ready-cell" href={blocking[0] ? blocking[0].href : `${base}/review`}>
+              <span className="meta">Blocks the file</span>
+              <span className={`big ${blocking.length ? "is-bad" : ""}`}>{blocking.length}</span>
+              <span className="ready-note">{blocking[0]?.title ?? "Nothing blocking"}</span>
+            </Link>
+            <Link className="ready-cell" href={`${base}/documents`}>
+              <span className="meta">Documents</span>
+              <span className="big">
+                {c.documentsNeedingAttention} <small>need you</small>
+              </span>
+              <span className="ready-note">{c.filed} filed</span>
+            </Link>
+            <Link className="ready-cell" href={`${base}/follow-ups`}>
+              <span className="meta">Follow-ups</span>
+              <span className="big">
+                {c.drafts} <small>{c.drafts === 1 ? "draft" : "drafts"}</small>
+              </span>
+              <span className="ready-note">
+                {c.requestsRecorded ? `${c.requestsRecorded} recorded as sent` : "none sent"}
+              </span>
+            </Link>
+          </div>
+          <p className="ready-foot">
+            {v.evaluation ? `Checked ${when(v.evaluation.createdAt)} · ` : "Not checked yet · "}
+            {v.pack.version}
+            {v.pack.overlay ? ` · ${v.pack.overlay}` : ""} ·{" "}
+            <Link className="link" href={`${base}/profile`}>
+              rules unverified
+            </Link>{" "}
+            · {v.preparation.policy}
+          </p>
+        </section>
+
+        <section className="card queue" aria-labelledby="next-up">
+          <div className="queue-head">
+            <h2 id="next-up">Next up</h2>
+            <nav className="seg" aria-label="Show">
+              {tab("preparation", "Preparation", preparation.length)}
+              {tab("lender", "Lender tracking", inStage(["lender"]).length)}
+              {tab("all", "All", inStage(SHOW.all!).length)}
+            </nav>
+          </div>
+          {queue.length ? (
+            <>
+              <div className="q-cols" aria-hidden>
+                <span />
+                <span>Item</span>
+                <span>What is wrong</span>
+                <span>Whose turn</span>
+                <span>Next step</span>
+              </div>
+              {stagesShown.map((stage) => {
+                const items = queue.filter((w) => w.stage === stage);
+                if (!items.length) return null;
                 return (
-                  <li key={w.key} className="work">
-                    <m.icon size={17} aria-hidden className={`work-mark ${m.className}`} />
-                    <div className="min-w-0 flex-1">
-                      <p className="work-title">{w.title}</p>
-                      <p className="work-why">{w.why}</p>
-                      <p className="meta mt-1">{w.party}</p>
-                    </div>
-                    <Link className="btn btn-sm self-center" href={w.href}>
-                      {editable ? w.action : w.kind === "review" ? "View values" : "View evidence"}
-                      <ArrowRight size={13} aria-hidden />
-                    </Link>
-                  </li>
+                  <div key={stage} role="group" aria-label={GROUP[stage].name}>
+                    <p className="q-group">
+                      <span className={`mk mk-${stage}`} aria-hidden />
+                      <b>{GROUP[stage].name}</b>
+                      <span className="num">{items.length}</span>
+                      {GROUP[stage].note ? <span className="meta">{GROUP[stage].note}</span> : null}
+                    </p>
+                    <ul>{items.map((w) => row(w, editable && w === queue[0]))}</ul>
+                  </div>
                 );
               })}
-            </ul>
+            </>
           ) : (
-            <Empty>
-              No blockers, unresolved findings, unprocessed files or values awaiting a person.
-            </Empty>
+            <p className="q-empty">
+              {show === "lender"
+                ? "No later lender work is open."
+                : "Nothing open. Every preparation item is resolved, waived or not applicable."}
+            </p>
           )}
-        </Card>
-
-        {actionable.length > priorities.length ? (
-          <p className="meta">
-            Showing {priorities.length} current priorities.{" "}
-            <Link className="link" href={`${base}/review`}>
-              See all current findings
-            </Link>{" "}
-            or{" "}
-            <Link className="link" href={`${base}/documents`}>
-              open documents
-            </Link>
-            .
-          </p>
-        ) : null}
-        {!editable ? (
-          <Card
-            title="Review the record"
-            description="View current coverage and the reasons behind completed decisions. No changes can be made from this account."
-          >
-            <div className="flex flex-wrap gap-3">
-              <Link className="btn" href={`${base}/requirements?show=all`}>
-                Evidence coverage
-              </Link>
-              <Link className="btn" href={`${base}/review?show=history`}>
-                Decision history
-              </Link>
-              <Link className="btn" href={`${base}/lender-file`}>
-                Version contents
-              </Link>
-            </div>
-          </Card>
-        ) : null}
-        <div className="grid gap-5 lg:grid-cols-2">
-          <Card
-            title="Preparation requirements"
-            description="Applicable preparation requirements only."
-            actions={
-              <Link className="link" href={`${base}/requirements`}>
-                Open
-              </Link>
-            }
-          >
-            <p className="text-[22px] font-semibold tabular-nums text-[var(--fg)]">
-              {c.required.done} of {c.required.applicable}
-            </p>
-            <p className="meta">
-              satisfied or waived · {c.notApplicable} not applicable, excluded from this count
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 border-t border-[var(--line)] pt-3">
-              {[
-                "satisfied",
-                "waived",
-                "received_with_issues",
-                "missing",
-                "needs_review",
-                "tracking",
-              ]
-                .filter((s) => c.byStatus[s])
-                .map((s) => (
-                  <li key={s} className="flex items-center gap-1.5">
-                    <Pill value={s} />
-                    <span className="num font-semibold">{c.byStatus[s]}</span>
-                  </li>
-                ))}
-            </ul>
-          </Card>
-
-          <Card
-            title="Findings"
-            description="Current findings. Resolved history is kept separately."
-            actions={
-              <Link className="link" href={`${base}/review`}>
-                Open
-              </Link>
-            }
-          >
-            <p className="text-[22px] font-semibold tabular-nums text-[var(--fg)]">
-              {c.findingsOpen} open
-            </p>
-            <p className="meta">
-              {c.blockers} blocker{c.blockers === 1 ? "" : "s"} · {c.informational} informational ·{" "}
-              {c.findingsTotal - c.findingsOpen} closed, in history
-            </p>
-            <p className="meta mt-4 border-t border-[var(--line)] pt-3">
-              {c.followUpsToPrepare
-                ? `${c.followUpsToPrepare} open item${c.followUpsToPrepare === 1 ? " has" : "s have"} no follow-up recorded as sent.`
-                : c.requestsRecorded
-                  ? `${c.requestsRecorded} follow-up${c.requestsRecorded === 1 ? "" : "s"} recorded as sent${c.oldestRequestDays !== null ? `, oldest ${c.oldestRequestDays} days ago` : ""}.`
-                  : "No follow-ups recorded as sent."}
-            </p>
-          </Card>
-
-          <Card
-            title="Documents"
-            description="Source files that arrived, and the documents filed from them."
-            actions={
-              <Link className="link" href={`${base}/documents`}>
-                Open
-              </Link>
-            }
-          >
-            <div className="flex flex-wrap gap-x-8 gap-y-3">
-              <div>
-                <p className="text-[22px] font-semibold tabular-nums text-[var(--fg)]">
-                  {c.arrivals}
-                </p>
-                <p className="meta">source files received</p>
-              </div>
-              <div>
-                <p className="text-[22px] font-semibold tabular-nums text-[var(--fg)]">{c.filed}</p>
-                <p className="meta">documents filed from them</p>
-              </div>
-              <div>
-                <p className="text-[22px] font-semibold tabular-nums text-[var(--fg)]">
-                  {c.documentsNeedingAttention}
-                </p>
-                <p className="meta">need attention</p>
-              </div>
-            </div>
-            <p className="meta mt-4 border-t border-[var(--line)] pt-3">
-              A filed document is not by itself a satisfied requirement.
-            </p>
-          </Card>
-
-          <Card
-            title="Evaluation"
-            description={
-              v.evaluation
-                ? `Last run ${v.evaluation.createdAt.toISOString().replace("T", " ").slice(0, 16)}`
-                : "Not evaluated yet"
-            }
-          >
-            <p className="meta">
-              Rule pack {v.pack.version} · overlay {v.pack.overlay ?? "base"} · as of{" "}
-              {deal.asOfDate}
-            </p>
-            <p className="meta mt-2">
-              {c.pendingValues
-                ? `${c.pendingValues} extracted value${c.pendingValues === 1 ? "" : "s"} await a person.`
-                : "No extracted values await confirmation."}
-            </p>
-            <p className="mt-4 border-t border-[var(--line)] pt-3 text-[13px]">
-              Every rule in this pack is unverified: no lender has confirmed it.{" "}
-              <Link className="link" href={`${base}/profile`}>
-                Profile and rules
-              </Link>
-            </p>
-          </Card>
-        </div>
+        </section>
 
         {informational.length ? (
-          <Card
-            title="For information"
-            description="Recorded context. The current rules do not require a document for these."
-            flush
-          >
-            <ul>
-              {informational.map((w) => (
-                <li key={w.key} className="work">
-                  <Info size={17} aria-hidden className="work-mark text-[var(--muted)]" />
-                  <div className="min-w-0 flex-1">
-                    <p className="work-title">{w.title}</p>
-                    <p className="meta mt-1">{w.party}</p>
-                  </div>
-                  <Link className="link self-center" href={w.href}>
-                    {editable ? w.action : w.kind === "review" ? "View values" : "View evidence"}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Card>
+          <details className="card info-group">
+            <summary>
+              For information <span className="num">{informational.length}</span>
+              <span className="meta">nothing is requested</span>
+            </summary>
+            <ul>{informational.map((w) => row(w, false))}</ul>
+          </details>
+        ) : null}
+
+        {!editable ? (
+          <p className="meta">
+            View only.{" "}
+            <Link className="link" href={`${base}/requirements?show=all`}>
+              Evidence coverage
+            </Link>{" "}
+            ·{" "}
+            <Link className="link" href={`${base}/review?show=history`}>
+              Decision history
+            </Link>{" "}
+            ·{" "}
+            <Link className="link" href={`${base}/lender-file`}>
+              Version contents
+            </Link>
+          </p>
         ) : null}
       </div>
     </>
