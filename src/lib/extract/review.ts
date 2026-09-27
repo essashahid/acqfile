@@ -5,7 +5,7 @@ import { getDb, schema } from "@/lib/db/client";
 import { assertMutation } from "@/lib/access";
 import { requireDeal } from "@/lib/deals/service";
 import { maskIdentifier, VALUE_SCHEMAS } from "@/lib/domain/evidence";
-import { FACTS } from "@/lib/domain/registry";
+import { FactAttributeSchema, FACTS } from "@/lib/domain/registry";
 import { piiKey, scrubPayload } from "@/lib/deals/identifiers";
 import type { SessionContext } from "@/lib/workspace";
 import { SourceInput, validateManual } from "./manual";
@@ -182,6 +182,105 @@ export const GapSchema = z.object({
   quote: z.string().min(1).max(500).optional(),
   comment: z.string().trim().min(1).max(1000),
 });
+export const ManualFactSchema = z.object({
+  attribute: FactAttributeSchema,
+  value: z.unknown(),
+  source: SourceInput,
+  comment: z.string().trim().min(1).max(1000),
+});
+
+/** Add a source-backed catalog value that extraction did not propose or leave as a gap. */
+export async function enterManualFact(
+  context: SessionContext,
+  dealId: string,
+  segmentId: string,
+  raw: unknown,
+) {
+  await assertMutation(context, "fact-review");
+  await requireDeal(context, dealId);
+  const input = ManualFactSchema.parse(raw);
+  const db = getDb();
+  const result = await db.transaction(async (tx) => {
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${dealId},0))`);
+    const [segment] = await tx
+      .select()
+      .from(schema.segments)
+      .where(and(eq(schema.segments.id, segmentId), eq(schema.segments.dealId, dealId)));
+    if (!segment || !segment.isCurrent || segment.status !== "confirmed")
+      throw new ReviewInputError("File this current segment before adding a value.");
+    const def = FACTS[input.attribute];
+    if (!def) throw new ReviewInputError("Unknown attribute");
+    if (!(def.producers as string[]).includes(segment.docType))
+      throw new ReviewInputError("That value does not belong to this document type.");
+    const existing = await tx
+      .select({ id: schema.facts.id })
+      .from(schema.facts)
+      .where(
+        and(
+          eq(schema.facts.segmentId, segment.id),
+          eq(schema.facts.attribute, input.attribute),
+          eq(schema.facts.isCurrent, true),
+        ),
+      );
+    if (existing.length)
+      throw new ReviewInputError("A current value already exists. Reload and correct it instead.");
+    const value = operatorValue(input.attribute, input.value);
+    const manual = await validateManual(tx, segment, input.attribute, value, input.source);
+    const [event] = await tx
+      .insert(schema.events)
+      .values({
+        dealId,
+        actorId: context.user.id,
+        action: "fact_entered",
+        entityType: "segment",
+        entityId: segment.id,
+        maskedAfter: scrubPayload({
+          attribute: input.attribute,
+          comment: input.comment,
+          source: manual.locator,
+          value,
+        }),
+      })
+      .returning();
+    const [prior] = await tx
+      .select({ v: sql<number>`coalesce(max(${schema.facts.recordVersion}),0)` })
+      .from(schema.facts)
+      .where(
+        and(eq(schema.facts.segmentId, segment.id), eq(schema.facts.attribute, input.attribute)),
+      );
+    const [fact] = await tx
+      .insert(schema.facts)
+      .values({
+        dealId,
+        segmentId: segment.id,
+        subjectPartyId: def.subject_kind === "deal" ? null : segment.partyId,
+        attribute: input.attribute,
+        valueJson: value as object,
+        normalizedValueJson: normalizeFact(input.attribute, value) as object,
+        unit: def.unit,
+        period: segment.period,
+        method: "manual",
+        locatorJson: manual.locator,
+        confidence: manual.confidence,
+        confidenceComponents: manual.components,
+        validatorsPassed: manual.validation.score > 0,
+        validationJson: manual.validation.messages,
+        routingStatus: "accepted",
+        actorId: context.user.id,
+        auditEventId: event!.id,
+        recordVersion: Number(prior?.v ?? 0) + 1,
+        isCurrent: true,
+        documentVersionId: segment.documentVersionId,
+        reviewNote: input.comment,
+      })
+      .returning();
+    if (input.attribute === "ownership.members")
+      await resolveOwnership(tx, dealId, segment.partyId, segment.documentVersionId, segment.id);
+    return { factId: fact!.id, eventId: event!.id };
+  });
+  await requestEvaluation(dealId);
+  return result;
+}
 /** Resolve an extraction gap: enter the value from the page (a manual fact, A14) or record that the document does not state it. */
 export async function resolveGap(context: SessionContext, dealId: string, raw: unknown) {
   await assertMutation(context, "fact-review");

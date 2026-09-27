@@ -64,6 +64,68 @@ export function comparable(input: string) {
       .replace(/(\d),(?=\d{3}(?!\d))/g, "$1"),
   );
 }
+function statesValue(source: string, candidate: unknown) {
+  const expected = comparable(valueText(candidate));
+  if (!expected) return false;
+  const text = comparable(source);
+  if (typeof candidate !== "number") return text.includes(expected);
+  const escaped = expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:^|[^0-9])${escaped}(?:$|[^0-9])`).test(text);
+}
+
+/** Deterministic stand-in for a verifier reading the meaning of a yes/no clause. */
+function booleanClause(attribute: string, source: string): boolean | null {
+  const text = comparable(source);
+  if (text === "yes" || text === "true") return true;
+  if (text === "no" || text === "false") return false;
+  const matches = (pattern: RegExp) => pattern.test(text);
+  switch (attribute) {
+    case "deal.allocation_present":
+      if (matches(/\b(no allocation|not allocated|allocation (?:is )?absent)\b/)) return false;
+      if (matches(/\b(shall be allocated|allocation (?:table|schedule)|allocated among)\b/))
+        return true;
+      break;
+    case "deal.signed_by_both":
+    case "agent.both_signed":
+      if (matches(/\b(not signed by both|unsigned|buyer only|seller only|applicant only)\b/))
+        return false;
+      if (
+        matches(/\b(signed by both|both parties signed|agent and applicant signatures?)\b/) ||
+        (matches(/\bagreed and accepted\b/) && matches(/\bbuyer\b/) && matches(/\bseller\b/))
+      )
+        return true;
+      break;
+    case "deal.executed":
+      if (matches(/\b(not executed|unexecuted|unsigned|draft only)\b/)) return false;
+      if (matches(/\b(fully executed|executed by|has been executed)\b/)) return true;
+      break;
+    case "pfs.spouse_signed":
+      if (matches(/\b(spouse (?:has )?not signed|spouse signature (?:is )?missing)\b/))
+        return false;
+      if (matches(/\b(spouse signed|spouse signature present)\b/)) return true;
+      break;
+    case "note.full_standby":
+      if (matches(/\b(payments? may be made|not (?:on )?full standby|after the standby period)\b/))
+        return false;
+      if (
+        (matches(/\bno payment of principal or interest\b/) &&
+          matches(/\bfor the life of the (?:sba )?loan\b/)) ||
+        matches(/\bfull standby for the life of the (?:sba )?loan\b/)
+      )
+        return true;
+      break;
+    case "gift.no_repayment":
+      if (matches(/\b(repayment (?:is )?required|must be repaid|repayable)\b/)) return false;
+      if (matches(/\b(no repayment|not be repaid|repayment is not expected)\b/)) return true;
+      break;
+    case "lease.assignment_present":
+      if (matches(/\b(has not been assigned|may not assign|no assignment)\b/)) return false;
+      if (matches(/\b(consents? to (?:the )?assignment|may assign|assignment clause)\b/))
+        return true;
+      break;
+  }
+  return null;
+}
 let cache: TruthFile[] | null = null;
 export function loadTruthFiles(root = path.join(process.cwd(), "fixtures/deals")) {
   if (cache) return cache;
@@ -191,14 +253,55 @@ export function createMockExtractionProvider(): ExtractionProvider {
           };
         }
         const candidate = JSON.parse(item.candidate) as unknown;
-        // Yes/no facts are stated as clauses ("No repayment is expected"), not the words Yes or No,
-        // so a real verifier judges the cited clause; the mock checks the clause is on the page.
-        const text = typeof candidate === "boolean" ? "" : comparable(valueText(candidate));
+        // Yes/no facts are usually clauses rather than the words Yes or No. Read the clause's
+        // meaning so the same citation cannot support both answers.
         const quoteText = comparable(item.evidence_quote ?? "");
         const citedText = comparable(item.cited_blocks.map((b) => b.text).join(" "));
         const contextText = comparable(item.context.map((b) => b.text).join(" "));
         const imageOnly = item.cited_blocks.some((b) => b.image_only);
-        if (imageOnly || (quoteText && citedText.includes(quoteText) && quoteText.includes(text)))
+        if (typeof candidate === "boolean") {
+          const quoteMeaning = booleanClause(item.attribute, item.evidence_quote ?? "");
+          const citedMeaning = booleanClause(item.attribute, citedText);
+          const contextMeaning = booleanClause(item.attribute, contextText);
+          const direct = quoteText && citedText.includes(quoteText) ? quoteMeaning : null;
+          const meaning = direct ?? citedMeaning ?? contextMeaning;
+          if (meaning === candidate)
+            return {
+              index: item.index,
+              status:
+                direct === candidate ? ("SUPPORTED" as const) : ("PARTIALLY_SUPPORTED" as const),
+              corrected_value: item.candidate,
+              contradiction_detected: false,
+              evidence_specificity: direct === candidate ? 1 : 0.75,
+              reason:
+                direct === candidate
+                  ? "The cited clause states the yes/no value."
+                  : "The surrounding source states the yes/no value.",
+            };
+          if (meaning !== null)
+            return {
+              index: item.index,
+              status: "UNSUPPORTED" as const,
+              corrected_value: JSON.stringify(meaning),
+              contradiction_detected: true,
+              evidence_specificity: direct !== null ? 1 : 0.75,
+              reason: "The cited source states the opposite yes/no value.",
+            };
+          return {
+            index: item.index,
+            status: "UNSUPPORTED" as const,
+            corrected_value: null,
+            contradiction_detected: false,
+            evidence_specificity: 0,
+            reason: "The cited source does not state the yes/no value.",
+          };
+        }
+        if (
+          imageOnly ||
+          (quoteText &&
+            citedText.includes(quoteText) &&
+            statesValue(item.evidence_quote ?? "", candidate))
+        )
           return {
             index: item.index,
             status: "SUPPORTED" as const,
@@ -209,7 +312,7 @@ export function createMockExtractionProvider(): ExtractionProvider {
               ? "The value is legible in the cited page region."
               : "The cited quote states the value.",
           };
-        if (text && (citedText.includes(text) || contextText.includes(text)))
+        if (statesValue(citedText, candidate) || statesValue(contextText, candidate))
           return {
             index: item.index,
             status: "PARTIALLY_SUPPORTED" as const,

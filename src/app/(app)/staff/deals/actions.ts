@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/workspace";
 import { saveDeal } from "@/lib/deals/service";
 import { processDealRun, extractAfterReview } from "@/lib/deals/process";
-import { reviewFact, resolveGap, reclassifySegment } from "@/lib/extract/review";
+import { enterManualFact, reviewFact, resolveGap, reclassifySegment } from "@/lib/extract/review";
 import { reviewFile, undoSupersession } from "@/lib/deals/filing";
 import { assertMutation } from "@/lib/access";
 import { getDb, schema } from "@/lib/db/client";
@@ -99,6 +99,19 @@ export async function resolveGapAction(dealId: string, input: unknown) {
     await resolveGap(ctx, dealId, input);
     revalidatePath(`/staff/deals/${dealId}`, "layout");
     return { saved: true };
+  } catch (error) {
+    if (error instanceof ReviewInputError) return { error: error.message };
+    if (error instanceof ZodError)
+      return { error: "Enter a reason, valid value, and supporting source fields before saving." };
+    throw error;
+  }
+}
+export async function enterManualFactAction(dealId: string, segmentId: string, input: unknown) {
+  const ctx = await requireStaff();
+  try {
+    const result = await enterManualFact(ctx, dealId, segmentId, input);
+    revalidatePath(`/staff/deals/${dealId}`, "layout");
+    return result;
   } catch (error) {
     if (error instanceof ReviewInputError) return { error: error.message };
     if (error instanceof ZodError)

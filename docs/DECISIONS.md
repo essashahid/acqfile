@@ -261,3 +261,8 @@ Additional official dependency references checked on 2026-09-19: [Drizzle Postgr
 - "Other, not required" material (brochures, a reference letter) carries no type title and goes to the classifier, as irrelevant material would. Mock classification returns the same answer, and the deterministic-classification thresholds hold.
 - The byte-drift in the protected formation PDF that failed `pnpm fixtures:generate --check` since Pass 1 is resolved by regenerating it with the current renderer; regeneration is now byte-identical for all three deals and reproducible for all eight demo cases.
 - Official SBA Form 1919 pages that are unsigned still parse signed/dated as unknown rather than false. That path is unchanged by A98 and predates it.
+
+## U01 manual fallback follow-up (2026-09-27)
+
+169. A filed, current document may receive an operator-entered fact even without an extraction gap, but only from the existing fact catalog entries produced by that document type. The entry reuses typed validation, page/quote or transcription validation, audit history, role checks and re-evaluation; one current value per segment and attribute is enforced under the deal lock.
+170. The mock verifier treats numeric support as an exact numeric token, not a substring, and interprets boolean evidence by the meaning of the cited clause for the catalogued boolean attribute. Unknown wording remains unsupported rather than being guessed.

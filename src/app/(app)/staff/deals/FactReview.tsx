@@ -2,7 +2,12 @@
 import { SourceEditor, ValueEditor, type SourceDraft } from "./ValueEditor";
 import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
-import { reviewFactAction, resolveGapAction, reclassifyAction } from "./actions";
+import {
+  enterManualFactAction,
+  reviewFactAction,
+  resolveGapAction,
+  reclassifyAction,
+} from "./actions";
 import { PdfPage } from "./PdfPage";
 import { Pill } from "@/components/staff";
 import { attentionKind, attributeName, factValue } from "@/lib/staff/labels";
@@ -81,6 +86,7 @@ export function FactReview({
   facts,
   history = [],
   gaps,
+  availableAttributes,
   editable,
 }: {
   dealId: string;
@@ -94,6 +100,7 @@ export function FactReview({
   facts: ReviewFact[];
   history?: ReviewFact[];
   gaps: ReviewGap[];
+  availableAttributes: string[];
   editable: boolean;
 }) {
   const router = useRouter();
@@ -104,6 +111,7 @@ export function FactReview({
   const [comments, setComments] = useState<Record<string, string>>({});
   const [sources, setSources] = useState<Record<string, SourceDraft>>({});
   const [correcting, setCorrecting] = useState<string | null>(null);
+  const [manualAttribute, setManualAttribute] = useState("");
   const sourceFor = (id: string): SourceDraft =>
     sources[id] ?? { page, quote: "", kind: "quote", region: "" };
   const sourceInput = (id: string) => ({
@@ -129,8 +137,10 @@ export function FactReview({
         throw Error(String(result.error));
       setMessage(label);
       router.refresh();
+      return true;
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Could not save");
+      return false;
     } finally {
       setBusy(false);
     }
@@ -443,6 +453,84 @@ export function FactReview({
                   ) : null}
                 </fieldset>
               ))}
+            </div>
+          </section>
+        ) : null}
+
+        {editable && availableAttributes.length ? (
+          <section className="card">
+            <div className="card-head">
+              <h2 className="text-[17px]">Add a value from this document</h2>
+            </div>
+            <div className="card-body">
+              <p className="meta mb-3">
+                Use this when the filed document states a relevant value but no open item was
+                created for it. The page and source text are required.
+              </p>
+              <fieldset disabled={busy} className="space-y-3" aria-label="Add document value">
+                <label className="flex flex-col gap-1">
+                  <span className="eyebrow">Value to add</span>
+                  <select
+                    aria-label="Value to add"
+                    value={manualAttribute}
+                    onChange={(e) => setManualAttribute(e.target.value)}
+                  >
+                    <option value="">Choose a value from this document</option>
+                    {availableAttributes.map((attribute) => (
+                      <option key={attribute} value={attribute}>
+                        {attributeName(attribute)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {manualAttribute ? (
+                  <>
+                    <ValueEditor
+                      attribute={manualAttribute}
+                      label="Value"
+                      value={edits[`manual-${manualAttribute}`] ?? ""}
+                      onChange={(value) =>
+                        setEdits({ ...edits, [`manual-${manualAttribute}`]: value })
+                      }
+                    />
+                    {sourceEditor(`manual-${manualAttribute}`, manualAttribute)}
+                    <label className="flex flex-col gap-1">
+                      <span className="eyebrow">Reason (required)</span>
+                      <input
+                        aria-label={`Manual value reason ${manualAttribute}`}
+                        value={comments[`manual-${manualAttribute}`] ?? ""}
+                        onChange={(e) =>
+                          setComments({
+                            ...comments,
+                            [`manual-${manualAttribute}`]: e.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {
+                        const attribute = manualAttribute;
+                        const key = `manual-${attribute}`;
+                        void (async () => {
+                          const saved = await run("Value entered", () =>
+                            enterManualFactAction(dealId, segmentId, {
+                              attribute,
+                              value: edits[key],
+                              source: sourceInput(key),
+                              comment: comments[key] ?? "",
+                            }),
+                          );
+                          if (saved) setManualAttribute("");
+                        })();
+                      }}
+                    >
+                      Save value from document
+                    </button>
+                  </>
+                ) : null}
+              </fieldset>
             </div>
           </section>
         ) : null}

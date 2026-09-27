@@ -10,6 +10,7 @@ import { PENDING } from "@/lib/evaluation/run";
 import { FactReview, type ReviewFact, type ReviewGap } from "../../../../../FactReview";
 import { documentName } from "@/lib/staff/labels";
 import { PageHead, Pill } from "@/components/staff";
+import { FACT_CATALOG } from "@/lib/domain/registry";
 export default async function SegmentReviewPage({
   params,
 }: {
@@ -78,6 +79,12 @@ export default async function SegmentReviewPage({
   const currentIds = new Set(facts.filter((f) => f.isCurrent).map((f) => f.id));
   const rows = allRows.filter((f) => currentIds.has(f.id));
   const history = allRows.filter((f) => !currentIds.has(f.id));
+  const currentAttributes = new Set(rows.map((f) => f.attribute));
+  const availableAttributes = FACT_CATALOG.filter(
+    (definition) =>
+      (definition.producers as string[]).includes(segment.docType) &&
+      !currentAttributes.has(definition.attribute),
+  ).map((definition) => definition.attribute);
   const gapRows: ReviewGap[] = gaps.map((g) => ({
     id: g.id,
     type: g.type,
@@ -125,6 +132,7 @@ export default async function SegmentReviewPage({
         facts={rows}
         history={history}
         gaps={gapRows}
+        availableAttributes={availableAttributes}
         editable={mutationAllowed(ctx)}
       />
     </div>

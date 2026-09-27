@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import JSZip from "jszip";
+import * as XLSX from "xlsx";
 import { and, eq } from "drizzle-orm";
 import { getDb, schema, closeDb } from "../../src/lib/db/client";
 import { portalData } from "../../src/lib/portal/service";
@@ -581,55 +582,34 @@ test("D07 retries the real failed job, replaces the protected file and deduplica
   await expect(page.getByText("Prepared for lender review", { exact: true })).toHaveCount(0);
 });
 
-test("U01 reaches manual filing and an incomplete export without prepared answers; price entry remains unsupported", async ({
+test("U01 files unfamiliar sources, records prices, resolves the disagreement and exports the decisions", async ({
   page,
 }) => {
   await login(page);
   await page.goto("/staff/deals/new");
   await page.waitForLoadState("networkidle");
-  await page.getByText("Advanced: import a profile", { exact: true }).click();
-  await page.getByLabel("Profile JSON").fill(
-    JSON.stringify({
-      code: `Holdout-U01-${crypto.randomUUID().slice(0, 8)}`,
-      name: "Ostrelyva Fitness LLC",
-      as_of: "2026-09-15",
-      profile: {
-        transaction_category: "initial_acquisition",
-        structure: "asset",
-        purchase_price: 780000,
-        total_project_cost: 900000,
-        real_estate_included: "no",
-        premises: "none",
-        franchise: "no",
-        franchise_brand: "unknown",
-        seller_note: "unknown",
-        gift_funds: "unknown",
-        minority_investor_equity: "unknown",
-        seller_staying: "unknown",
-        target_lender: "unknown",
-        expected_loan_number_date: "2026-09-15",
-        target_submission_date: "unknown",
-        paid_agents: [],
-        equity_sources: "unknown",
-      },
-      parties: [
-        {
-          id: "buyer",
-          kind: "entity",
-          roles: ["buyer_entity"],
-          legal_name: "Quenby Acquisition LLC",
-        },
-        {
-          id: "target",
-          kind: "entity",
-          roles: ["seller_entity"],
-          legal_name: "Ostrelyva Fitness LLC",
-        },
-      ],
-      ownership: [],
-    }),
-  );
-  await page.getByRole("button", { name: "Load JSON", exact: true }).click();
+  await page
+    .getByLabel("deal.code", { exact: true })
+    .fill(`Holdout-U01-${crypto.randomUUID().slice(0, 8)}`);
+  await page.getByLabel("deal.name", { exact: true }).fill("Ostrelyva Fitness LLC");
+  await page
+    .getByLabel("deal.profile.transaction_category", { exact: true })
+    .selectOption("initial_acquisition");
+  await page.getByLabel("deal.profile.structure", { exact: true }).selectOption("asset");
+  await page
+    .getByLabel("deal.profile.expected_loan_number_date", { exact: true })
+    .fill("2026-09-15");
+  await page.getByRole("button", { name: "Add Parties", exact: true }).click();
+  await page.getByRole("button", { name: "Add Parties", exact: true }).click();
+  for (const [index, id, role, name] of [
+    [0, "buyer", "buyer_entity", "Quenby Acquisition LLC"],
+    [1, "target", "seller_entity", "Ostrelyva Fitness LLC"],
+  ] as const) {
+    await page.getByLabel(`deal.parties.${index}.id`, { exact: true }).fill(id);
+    await page.getByLabel(`deal.parties.${index}.kind`, { exact: true }).selectOption("entity");
+    await page.getByLabel(`deal.parties.${index}.roles.0`, { exact: true }).selectOption(role);
+    await page.getByLabel(`deal.parties.${index}.legal_name`, { exact: true }).fill(name);
+  }
   await page.getByRole("button", { name: "Save deal", exact: true }).click();
   await expect(page).toHaveURL(/\/staff\/deals\/[a-f0-9-]+$/);
   const dealId = page.url().split("/").at(-1)!;
@@ -678,20 +658,65 @@ test("U01 reaches manual filing and an incomplete export without prepared answer
     ).toBeVisible();
   }
   const agreement = versions.find((v) => v.sourceFilename === "signed-copy.pdf")!;
-  const [segment] = await getDb()
+  const worksheet = versions.find((v) => v.sourceFilename === "book2.xlsx")!;
+  const enterPrice = async (versionId: string, amount: string, quote: string) => {
+    const [segment] = await getDb()
+      .select()
+      .from(schema.segments)
+      .where(
+        and(eq(schema.segments.documentVersionId, versionId), eq(schema.segments.isCurrent, true)),
+      );
+    await page.goto(`/staff/deals/${dealId}/documents/${versionId}/values/${segment!.id}`);
+    const add = page.getByRole("group", { name: "Add document value", exact: true });
+    await add.getByLabel("Value to add", { exact: true }).selectOption("deal.purchase_price");
+    await add.getByLabel("Value deal.purchase_price", { exact: true }).fill(amount);
+    await add.getByLabel("Supporting page deal.purchase_price", { exact: true }).fill("1");
+    await add
+      .getByLabel("Source text type deal.purchase_price", { exact: true })
+      .selectOption("quote");
+    await add.getByLabel("Source quote deal.purchase_price", { exact: true }).fill(quote);
+    await add
+      .getByLabel("Manual value reason deal.purchase_price", { exact: true })
+      .fill("Read the stated price from this unfamiliar synthetic source.");
+    await add.getByRole("button", { name: "Save value from document", exact: true }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Value entered" })).toBeVisible();
+  };
+  await enterPrice(agreement.id, "780000", "US dollars ($780,000). Other costs are separate.");
+  await enterPrice(worksheet.id, "805000", "805000");
+  const question = (await portalData(dealId)).mapped.openQuestions.find(
+    (q) => q.title === "Which purchase price is right?",
+  );
+  expect(question).toBeDefined();
+  expect(question!.values).toEqual(expect.arrayContaining(["780,000", "805,000"]));
+  await page.goto(`/deals/${dealId}/questions/${question!.key}`);
+  await page.getByLabel("780,000", { exact: true }).check();
+  await page.getByRole("button", { name: "Send my answer", exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`/deals/${dealId}$`));
+  expect(
+    (await portalData(dealId)).mapped.questions.find((q) => q.key === question!.key)?.answered,
+  ).toBe(true);
+  const [priceFinding] = await getDb()
     .select()
-    .from(schema.segments)
+    .from(schema.findings)
     .where(
-      and(eq(schema.segments.documentVersionId, agreement.id), eq(schema.segments.isCurrent, true)),
+      and(
+        eq(schema.findings.dealId, dealId),
+        eq(schema.findings.ruleId, "CON-03"),
+        eq(schema.findings.status, "open"),
+      ),
     );
-  await page.goto(`/staff/deals/${dealId}/documents/${agreement.id}/values/${segment!.id}`);
-  await expect(page.getByRole("heading", { name: "Open items", exact: true })).toBeVisible();
-  // The current generic fallback only creates rule-required presence gaps here, not a price-entry control.
-  // Preserve this observed limitation; do not insert the missing fact in test setup or use an answer key.
-  await expect(
-    page.getByRole("group", { name: "Gap deal.purchase_price", exact: true }),
-  ).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Decided values", exact: true })).toBeVisible();
+  expect(priceFinding).toBeDefined();
+  await page.goto(`/staff/deals/${dealId}/review?finding=${priceFinding!.findingKey}`);
+  await page
+    .getByLabel("Decision reason", { exact: true })
+    .fill(
+      "The adviser selected the agreement price after reviewing both cited synthetic sources; the differing worksheet remains in history.",
+    );
+  await page.getByRole("button", { name: "Dismiss finding", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Saved" })).toBeVisible();
+  expect((await portalData(dealId)).mapped.openQuestions.map((q) => q.key)).not.toContain(
+    question!.key,
+  );
   await page.goto(`/staff/deals/${dealId}/lender-file`);
   await page
     .getByRole("button", { name: "Create a version while work is outstanding", exact: true })
@@ -706,5 +731,22 @@ test("U01 reaches manual filing and an incomplete export without prepared answer
   expect(report).toContain("Ostrelyva Fitness LLC");
   expect(report).toContain("Unresolved preparation work");
   expect(report).toContain("2025");
+  const workbook = XLSX.read(await zip.file("00_Package_Workbook.xlsx")!.async("nodebuffer"), {
+    type: "buffer",
+  });
+  const sourceRecord = XLSX.utils
+    .sheet_to_json<string[]>(workbook.Sheets["Source record"]!, { header: 1 })
+    .flat()
+    .join(" | ");
+  expect(sourceRecord).toContain("deal.purchase_price");
+  expect(sourceRecord).toContain("780000");
+  expect(sourceRecord).toContain("805000");
+  expect(sourceRecord).toContain("manual");
+  const changeLog = XLSX.utils
+    .sheet_to_json<string[]>(workbook.Sheets["Change log"]!, { header: 1 })
+    .flat()
+    .join(" | ");
+  expect(changeLog).toContain("CON-03");
+  expect(changeLog).toContain("reviewer corrections | 2");
   expect((await portalData(dealId)).mapped.ready).toBe(false);
 });

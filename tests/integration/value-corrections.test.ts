@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { beforeAll, expect, it } from "vitest";
 import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
-import { reviewFact, resolveGap } from "@/lib/extract/review";
+import { enterManualFact, reviewFact, resolveGap } from "@/lib/extract/review";
 import { buildEngineInput, latestEvaluation, requestEvaluation } from "@/lib/evaluation/run";
 import { fixtureDeal, unlimited } from "../helpers/deal-proof";
 import { seeded, makePdf } from "./helpers";
@@ -256,4 +256,53 @@ it("rejects bad source references, read-only roles, and concurrent stale edits",
   expect(
     String((results.find((r) => r.status === "rejected") as PromiseRejectedResult).reason),
   ).toContain("Stale");
+});
+it("adds a scoped manual value without a gap, audits it, re-evaluates, and blocks duplicates", async () => {
+  const [segment] = await db()
+    .insert(schema.segments)
+    .values({
+      dealId,
+      documentVersionId: versionId,
+      metadataLocator: { file: versionId, page: 1, source_block: "page-1", quote: "SYNTHETIC" },
+      pageStart: 1,
+      pageEnd: 2,
+      docType: "PURCHASE_AGREEMENT",
+      classificationMethod: "manual",
+      classificationConfidence: "1",
+      status: "confirmed",
+    })
+    .returning();
+  await requestEvaluation(dealId);
+  const before = await latestEvaluation(dealId);
+  const input = {
+    attribute: "deal.purchase_price",
+    value: "$25,000.50",
+    source,
+    comment: "Entered the stated price from the filed agreement",
+  };
+  const saved = await enterManualFact(ctx, dealId, segment!.id, input);
+  const [row] = await db().select().from(schema.facts).where(eq(schema.facts.id, saved.factId));
+  expect(row).toMatchObject({
+    segmentId: segment!.id,
+    attribute: "deal.purchase_price",
+    valueJson: 25000.5,
+    normalizedValueJson: 25000.5,
+    method: "manual",
+    routingStatus: "accepted",
+    actorId: ctx.user.id,
+    auditEventId: saved.eventId,
+    isCurrent: true,
+  });
+  expect(row!.locatorJson).toMatchObject({ page: 2, quote: source.quote, verbatim: true });
+  expect((await latestEvaluation(dealId))!.id).not.toBe(before!.id);
+  await expect(enterManualFact(ctx, dealId, segment!.id, input)).rejects.toThrow(
+    "current value already exists",
+  );
+  await expect(
+    enterManualFact(ctx, dealId, segment!.id, {
+      ...input,
+      attribute: "funding.sources",
+    }),
+  ).rejects.toThrow("does not belong");
+  await expect(enterManualFact(viewer, dealId, segment!.id, input)).rejects.toThrow();
 });

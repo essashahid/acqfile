@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { deterministicSegments } from "@/lib/deals/classification";
 import { parseArrival } from "@/lib/deals/parse";
-import { comparable } from "@/lib/extract/mock";
+import { comparable, createMockExtractionProvider } from "@/lib/extract/mock";
 import { normalizeText } from "@/lib/text";
 import { plans } from "../../fixtures/lib/plans";
 import { documents } from "../../fixtures/lib/truth";
@@ -13,11 +13,62 @@ describe("realistic fixture documents (A98)", () => {
   it("compares printed amounts and dates as a reader would", () => {
     const states = (quote: string, value: string) => comparable(quote).includes(comparable(value));
     expect(states("Total uses $3,700,000", "3700000")).toBe(true);
-    expect(states("Total uses $3,700,000", "370000")).toBe(true); // substring, as before
     expect(states("Ending balance on July 31, 2026 $180,000.00", "180000")).toBe(true);
     expect(states("Aged as of April 18, 2026", "2026-04-18")).toBe(true);
     expect(states("4b EXP 12/31/2030", "2030-12-31")).toBe(true);
     expect(states("Aged as of April 19, 2026", "2026-04-18")).toBe(false);
+  });
+
+  it("does not verify a shorter amount embedded inside a different amount", async () => {
+    const quote = "Total uses $3,700,000";
+    const result = await createMockExtractionProvider().verify({
+      hash: "unregistered-regression-source",
+      pageStart: 1,
+      pdf: null,
+      items: ["370000", "3700000"].map((candidate, index) => ({
+        index,
+        attribute: "deal.purchase_price",
+        candidate,
+        evidence_quote: quote,
+        cited_blocks: [{ source_block_id: "page-1", page: 1, text: quote }],
+        context: [],
+      })),
+    });
+    expect(result.output.items[0]).toMatchObject({
+      status: "UNSUPPORTED",
+      contradiction_detected: false,
+    });
+    expect(result.output.items[1]).toMatchObject({
+      status: "SUPPORTED",
+      contradiction_detected: false,
+    });
+  });
+
+  it("verifies a yes/no candidate from what its cited clause says", async () => {
+    const quote =
+      "No payment of principal or interest shall be made on this Note for the life of the SBA loan";
+    const result = await createMockExtractionProvider().verify({
+      hash: "unregistered-regression-source",
+      pageStart: 1,
+      pdf: null,
+      items: [true, false].map((candidate, index) => ({
+        index,
+        attribute: "note.full_standby",
+        candidate: JSON.stringify(candidate),
+        evidence_quote: quote,
+        cited_blocks: [{ source_block_id: "page-1", page: 1, text: quote }],
+        context: [],
+      })),
+    });
+    expect(result.output.items[0]).toMatchObject({
+      status: "SUPPORTED",
+      contradiction_detected: false,
+    });
+    expect(result.output.items[1]).toMatchObject({
+      status: "UNSUPPORTED",
+      corrected_value: "true",
+      contradiction_detected: true,
+    });
   });
 
   it("recognises an official IRS page despite the spacing PDF extraction inserts", async () => {
