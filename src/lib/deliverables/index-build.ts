@@ -55,6 +55,59 @@ export function packageFilename(
   );
 }
 
+/** Package filename for a document no checklist row uses. A current, confirmed filing is an
+ * additional supporting document (or explicitly not required) and keeps its known type, person
+ * and period; only a document without a confirmed filing is unfiled. A bundle covering several
+ * people or periods says so rather than being given to one of them. */
+export function outsideChecklistName(
+  pack: ResolvedPack,
+  version: { sourceFilename: string; contentHash: string },
+  history: {
+    isCurrent: boolean;
+    status: string;
+    docType: string;
+    partyId: string | null;
+    period: string | null;
+  }[],
+  historical: boolean,
+  partyName: (id: string | null) => string,
+) {
+  const extension = version.sourceFilename.match(/\.[A-Za-z0-9]+$/)?.[0] ?? "";
+  const filed = history.filter(
+    (s) => s.isCurrent && s.status === "confirmed" && s.docType !== "UNREADABLE",
+  );
+  const one = (values: string[], several: string) =>
+    new Set(values).size === 1 ? values[0]! : several;
+  const hash = version.contentHash.slice(0, 8);
+  if (historical || !filed.length)
+    return packageFilename(pack, {
+      item_id: "UNFILED",
+      doc_label: clean(version.sourceFilename.replace(/\.[^.]+$/, "")),
+      party: "unassigned",
+      period: hash,
+      original_extension: extension,
+    });
+  const notRequired = filed.every((s) => s.docType === "OTHER_NOT_REQUIRED");
+  return packageFilename(pack, {
+    item_id: notRequired ? "NOT_REQUIRED" : "SUPPORTING",
+    doc_label: notRequired
+      ? "OTHER"
+      : one(
+          filed.map((s) => s.docType),
+          "MIXED",
+        ),
+    party: one(
+      filed.map((s) => partyName(s.partyId)),
+      "Several-people",
+    ),
+    period: `${one(
+      filed.map((s) => s.period ?? "no-period"),
+      "several-periods",
+    )}_${hash}`,
+    original_extension: extension,
+  });
+}
+
 export type IndexRow = {
   item_id: string;
   item: string;
@@ -275,9 +328,8 @@ export async function buildIndex(dealId: string) {
       ),
     );
     if (historical && !cited) continue;
-    const extension = version.sourceFilename.match(/\.[A-Za-z0-9]+$/)?.[0] ?? "";
-    const path = `${historical ? "Z_History" : "Z_Unfiled_or_Not_Required"}/${packageFilename(pack, { item_id: "UNFILED", doc_label: clean(version.sourceFilename.replace(/\.[^.]+$/, "")), party: "unassigned", period: version.contentHash.slice(0, 8), original_extension: extension })}`;
-    paths.set(path, version.id);
+    const name = outsideChecklistName(pack, version, history, historical, partyName);
+    paths.set(`${historical ? "Z_History" : "Z_Unfiled_or_Not_Required"}/${name}`, version.id);
   }
   const reviews = await db
     .select()
@@ -340,6 +392,7 @@ export async function buildIndex(dealId: string) {
     rules,
     findings,
     reviewIssues,
+    subjectOf: scopeLabel,
     current:
       !!evaluation &&
       evaluation.rulePackHash === pack.content_hash &&

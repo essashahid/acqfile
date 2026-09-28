@@ -10,7 +10,7 @@ import type { FilingRecord } from "@/lib/deals/filing";
 import { FileReview } from "../../../FileReview";
 import { documentName } from "@/lib/staff/labels";
 import { dealView } from "@/lib/staff/deal-view";
-import { actionHref, explainItem, safeReturn } from "@/lib/staff/explain";
+import { actionHref, explainItem, itemChecks, safeReturn } from "@/lib/staff/explain";
 import { Card, PageHead, Pill } from "@/components/staff";
 
 export default async function FilePage({
@@ -105,12 +105,13 @@ export default async function FilePage({
       ).filter(
         (a) => a.ruleId === rule.id && a.scopeKey === scope && (a.period ?? "") === (period ?? ""),
       );
+      const findingMessage = (finding?.detailsJson as { message?: string } | undefined)?.message;
       const ex = explainItem({
         rule,
         status: row?.status ?? "needs_review",
-        checks: row?.checks ?? [],
+        checks: itemChecks(rule, row, findingMessage),
         findingType: finding?.type,
-        findingMessage: (finding?.detailsJson as { message?: string } | undefined)?.message,
+        findingMessage,
         parameters: v.pack.parameters,
         saved: attestations.map((a) => ({ ...a, key: a.key ?? "" })),
       });

@@ -14,7 +14,7 @@ import {
   responsibleName,
   reviewSubject,
 } from "./labels";
-import { actionHref, checksFromMessage, explainItem } from "./explain";
+import { actionHref, explainItem, itemChecks } from "./explain";
 import { comparisonLine, comparisonSides, type Detail } from "./compare";
 
 /**
@@ -154,7 +154,7 @@ export async function dealView(dealId: string) {
       ex: explainItem({
         rule,
         status: row?.status ?? "needs_review",
-        checks: row ? row.checks : checksFromMessage(rule, message),
+        checks: itemChecks(rule, row, message),
         findingType: f.type,
         findingMessage: message,
         parameters: built.pack.parameters,

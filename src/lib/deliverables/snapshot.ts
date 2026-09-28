@@ -1,15 +1,20 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { assertMutation } from "@/lib/access";
 import { requireDeal } from "@/lib/deals/service";
 import { requestEvaluation } from "@/lib/evaluation/run";
 import type { SessionContext } from "@/lib/workspace";
 import { buildIndex, footer, type IndexRow, type SourceRow } from "./index-build";
+import { frozenAnswers, type FrozenAnswer } from "./answers";
+import { actionLabel } from "./labels";
 
 import { questionPolicy } from "@/lib/portal/map";
 import type { PreparationReadiness } from "./readiness";
 
 export type SnapshotContent = {
+  /** 2: readable report with recorded answers and grouped outstanding work.
+   * Absent on versions created earlier, which keep their original rendering. */
+  format?: 2;
   number: number;
   deal: { code: string; name: string; pack: string; version: string; overlay: string | null };
   created_at: string;
@@ -32,6 +37,8 @@ export type SnapshotContent = {
     status: string;
     message: string;
     reason: string | null;
+    /** The answer recorded when this version was created. Absent on older versions. */
+    answer?: FrozenAnswer | null;
     sides: {
       value: string;
       file: string;
@@ -50,7 +57,7 @@ export type SnapshotContent = {
     package_path: string;
   }[];
   source_record: SourceRow[];
-  change_log: { at: string; action: string; detail: string }[];
+  change_log: { at: string; action: string; label?: string; detail: string }[];
   manifest: { package_path: string; original_filename: string; sha256: string; bytes: number }[];
 };
 
@@ -87,10 +94,34 @@ export async function createSnapshot(
       );
       return `${newer?.docType ?? "Document"}: ${older ? built.originalPath(older.documentVersionId) : "prior copy"} → ${newer ? built.originalPath(newer.documentVersionId) : "current copy"}`;
     }
+    if (e.action === "portal_answer") {
+      const after = (e.maskedAfter ?? {}) as { taskKey?: string; choice?: string; note?: string };
+      const answer = after.taskKey ? answers.get(after.taskKey) : undefined;
+      const choice = { unsure: "Not sure yet", neither: "Neither value" }[after.choice ?? ""];
+      return `${answer?.question ?? "Question"}: ${choice ?? after.choice ?? ""}${after.note ? ` — “${after.note}”` : ""}`.slice(
+        0,
+        300,
+      );
+    }
     return JSON.stringify(e.maskedAfter ?? {}).slice(0, 300);
   };
+  const [responses, users] = await Promise.all([
+    db
+      .select()
+      .from(schema.portalResponses)
+      .where(eq(schema.portalResponses.dealId, dealId))
+      .orderBy(schema.portalResponses.createdAt),
+    (() => {
+      const actors = [...new Set(events.map((e) => e.actorId).filter((id): id is string => !!id))];
+      return actors.length
+        ? db.select().from(schema.appUsers).where(inArray(schema.appUsers.id, actors))
+        : Promise.resolve([]);
+    })(),
+  ]);
+  const answers = frozenAnswers(built, responses, events, users);
   const priorEvents = new Set(previous ? (previous.contentJson as SnapshotContent).event_ids : []);
   const content: SnapshotContent = {
+    format: 2,
     number: (previous?.number ?? 0) + 1,
     deal: {
       code: built.deal.code,
@@ -138,6 +169,7 @@ export async function createSnapshot(
           status: f.status,
           message: details.message,
           reason: f.reason,
+          answer: answers.get(f.findingKey) ?? null,
           sides: details.details.map((d) => ({
             value: show(d.value),
             file: built.versions.some((v) => v.id === d.file) ? built.originalPath(d.file) : d.file,
@@ -168,6 +200,7 @@ export async function createSnapshot(
       .map((e) => ({
         at: e.createdAt.toISOString(),
         action: e.action,
+        label: actionLabel(e.action),
         detail: eventDetail(e),
       })),
     manifest: [...built.paths.entries()]

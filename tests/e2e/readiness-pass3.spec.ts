@@ -120,7 +120,7 @@ test("finishes preparation on screen and downloads a file with later lender work
     expect.objectContaining({
       Section: "Later lender work",
       Item: "Credit reports",
-      "Status / detail": "tracking",
+      "Status / detail": "Tracking",
     }),
   );
   await adviser.close();

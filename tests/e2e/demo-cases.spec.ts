@@ -752,6 +752,6 @@ test("U01 files unfamiliar sources, records prices, resolves the disagreement an
     .flat()
     .join(" | ");
   expect(changeLog).toContain("CON-03");
-  expect(changeLog).toContain("reviewer corrections | 2");
+  expect(changeLog).toContain("Reviewer corrections | 2");
   expect((await portalData(dealId)).mapped.ready).toBe(false);
 });

@@ -96,8 +96,8 @@ it("permits the authorized adviser to download preparation while later lender wo
     expect.objectContaining({
       Section: "Later lender work",
       Item: "Credit reports",
-      Responsible: "lender",
-      "Status / detail": "tracking",
+      Responsible: "Lender",
+      "Status / detail": "Tracking",
     }),
   );
   expect(await zip.file("00_Package_Report.html")!.async("string")).toContain(
@@ -337,9 +337,9 @@ it("exports readable issues, actual providers and the three original bundle rang
       r["Output page end"],
     ]),
   ).toEqual([
-    ["GOV_ID", 1, 2, 1, 2],
-    ["RESUME", 3, 4, 3, 4],
-    ["CREDIT_AUTH", 5, 6, 5, 6],
+    ["Government photo ID", 1, 2, 1, 2],
+    ["Résumé", 3, 4, 3, 4],
+    ["Credit report authorization", 5, 6, 5, 6],
   ]);
   for (const location of locations)
     expect(await zip.file(String(location["Package path"]))!.async("nodebuffer")).toEqual(bytes);
@@ -347,15 +347,15 @@ it("exports readable issues, actual providers and the three original bundle rang
     expect.objectContaining({
       Item: "GUA-04",
       "Applies to": party.legalName,
-      Responsible: "broker",
+      Responsible: "Broker",
     }),
   );
   const conflict = rows(book, "Conflicts").filter(
-    (r) => r.Rule === "CON-03" && r.Status === "open",
+    (r) => r.Rule === "CON-03" && r.Status === "Open",
   );
   expect(conflict.length).toBeGreaterThan(1);
-  expect(conflict.map((r) => r.Value).join(" ")).toContain("3700000");
-  expect(conflict.map((r) => r.Value).join(" ")).toContain("3600000");
+  expect(conflict.map((r) => r.Value).join(" ")).toContain("3,700,000");
+  expect(conflict.map((r) => r.Value).join(" ")).toContain("3,600,000");
   for (const side of conflict) {
     expect(side["Issue title"]).toMatch(/purchase price/i);
     expect(String(side["Description / question"]).length).toBeGreaterThan(10);

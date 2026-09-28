@@ -629,6 +629,16 @@ export function checksFromMessage(rule: Rule | undefined, message: string): Chec
     });
 }
 
+/** The checks that explain an item. A consistency finding has no requirement row, so its checks
+ * come from the finding's own message; empty checks would read as "no documents on file". */
+export function itemChecks(
+  rule: Rule | undefined,
+  row: { checks: CheckResult[] } | undefined,
+  findingMessage: string | undefined,
+): CheckResult[] {
+  return row ? row.checks : checksFromMessage(rule, findingMessage ?? "");
+}
+
 /** Only a path inside this deal's Review or Requirements screen is used as a way back. */
 export function safeReturn(base: string, raw: string | undefined) {
   if (!raw) return null;

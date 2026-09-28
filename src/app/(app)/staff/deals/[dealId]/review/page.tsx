@@ -27,6 +27,8 @@ import {
   profileDependencies,
 } from "@/lib/staff/explain";
 import { comparisonSentence, comparisonSides, valueGroups, type Detail } from "@/lib/staff/compare";
+import { questionPolicy } from "@/lib/portal/map";
+import { portalData } from "@/lib/portal/service";
 import { decisionAction } from "../../deliverable-actions";
 import { AutoFilter } from "../../AutoFilter";
 import { Card, Empty, PageHead } from "@/components/staff";
@@ -132,6 +134,14 @@ export default async function Review({
     : undefined;
   const rowKey = row ? `${row.item_id}|${row.scope_key}|${row.period}` : undefined;
   const closed = selected ? CLOSED.includes(selected.status) : false;
+  // The deal's existing question for this item, answered on the adviser page. Staff who may
+  // change the file reach it from here; nothing about who may answer changes.
+  const question =
+    selected && !closed && editable && questionPolicy[selected.ruleId]
+      ? (await portalData(dealId)).mapped.questions.find(
+          (x) => x.key === selected.findingKey && x.kind !== "staff_review",
+        )
+      : undefined;
   const attestations =
     selected && rule
       ? await getDb()
@@ -596,6 +606,14 @@ export default async function Review({
                           {ex.action.label}
                         </Link>
                       ) : null}
+                      {question ? (
+                        <Link
+                          className="btn"
+                          href={`/deals/${dealId}/questions/${encodeURIComponent(question.key)}`}
+                        >
+                          {question.answer ? "View recorded answer" : "Record an answer"}
+                        </Link>
+                      ) : null}
                       {editable && sides.some((s) => s.source === "profile") ? (
                         <Link className="btn" href={`${base}/profile?edit=1#edit`}>
                           Correct profile
@@ -615,6 +633,15 @@ export default async function Review({
                         </Link>
                       ) : null}
                     </div>
+                    {question?.answer ? (
+                      <p className="meta mt-2">
+                        Answer recorded:{" "}
+                        {{ unsure: "not sure yet", neither: "neither value" }[
+                          String(question.answer.payload.choice)
+                        ] ?? String(question.answer.payload.choice)}
+                        . The documents are unchanged; this stays open until they agree.
+                      </p>
+                    ) : null}
                     {editable ? (
                       <details className="decide">
                         <summary>Dismiss or waive, with a reason</summary>
