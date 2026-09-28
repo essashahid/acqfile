@@ -1,0 +1,5 @@
+# Takes, retained lender packages, cards, audio and render intermediates (several GB).
+# Rebuild with the scripts; see README.
+work/
+# The rendered video is not committed.
+loandocket-explainer.mp4

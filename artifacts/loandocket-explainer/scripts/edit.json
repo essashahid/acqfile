@@ -1,0 +1,189 @@
+{
+  "take": "r2-clean",
+  "expect": {
+    "dealCode": "VCS-2026-015",
+    "dealName": "Varnholt Climate Services LLC",
+    "packageVersion": 1
+  },
+  "voice": "say-samantha-168",
+  "fps": 30,
+  "crossfade": 0.35,
+  "duration": { "min": 75, "max": 90 },
+  "note": "Shot times are recording markers (+/- seconds). crop = [x, y, width] in the 1440x810 CSS layout; height is width*920/1920 (app area above the caption band). hold = seconds to freeze the last frame. Caption cues start 'at' seconds into their shot.",
+  "opening": { "duration": 8.5, "step": 0, "label": "Documents arrive from everywhere" },
+  "closing": {
+    "duration": 8.0,
+    "lines": [
+      "Organized documents. Clear follow-ups.",
+      "An organized file, with outstanding work clearly recorded."
+    ]
+  },
+  "steps": {
+    "0": "The problem",
+    "1": "Step 1 · Collect",
+    "2": "Step 2 · What needs attention",
+    "3": "Step 3 · Review and follow up",
+    "4": "Step 4 · The lender file"
+  },
+  "shots": [
+    {
+      "id": "upload",
+      "from": "s2-choose-0.4",
+      "to": "s2-received+3.2",
+      "crop": [250, 245, 1180],
+      "step": 1,
+      "label": "New documents arrive"
+    },
+    {
+      "id": "library",
+      "from": "s2-library+1.8",
+      "to": "s2-filtered",
+      "crop": [250, 50, 1180],
+      "step": 1,
+      "label": "Filed by person and business"
+    },
+    {
+      "id": "library-kiel",
+      "from": "s2-filtered",
+      "to": "s2-filtered+2.6",
+      "crop": [270, 269, 1130],
+      "step": 1,
+      "label": "Filed by person and business"
+    },
+    {
+      "id": "overview",
+      "from": "s3-overview+0.2",
+      "to": "s3-compare-nav",
+      "crop": [270, 200, 1140],
+      "step": 2,
+      "label": "What still needs attention"
+    },
+    {
+      "id": "review",
+      "from": "s3-review+0.1",
+      "to": "s3-source-nav+0.3",
+      "crop": [600, 120, 820],
+      "step": 2,
+      "label": "Two purchase prices disagree"
+    },
+    {
+      "id": "document",
+      "from": "s3-document-0.2",
+      "to": "s3-values-nav+0.3",
+      "crop": [270, 30, 1140],
+      "step": 2,
+      "label": "Opened from the review"
+    },
+    {
+      "id": "source",
+      "from": "s3-source-0.2",
+      "to": "s3-source+2.4",
+      "crop": [270, 100, 1150],
+      "step": 2,
+      "label": "Each figure links to its page"
+    },
+    {
+      "id": "source-close",
+      "from": "s3-source+2.4",
+      "to": "s3-source+5.6",
+      "crop": [700, 300, 690],
+      "step": 2,
+      "label": "Each figure links to its page"
+    },
+    {
+      "id": "question",
+      "from": "s4-question",
+      "to": "s4-question+1.5",
+      "crop": [345, 60, 1080],
+      "step": 3,
+      "label": "Reviewer records a preferred price"
+    },
+    {
+      "id": "answer",
+      "from": "s4-question+2.8",
+      "to": "s4-send+0.9",
+      "crop": [380, 340, 960],
+      "step": 3,
+      "label": "Reviewer records a preferred price"
+    },
+    {
+      "id": "recorded",
+      "from": "s4-recorded+0.2",
+      "to": "s4-reopen-nav+0.2",
+      "crop": [620, 290, 790],
+      "step": 3,
+      "label": "Saved; the disagreement stays open"
+    },
+    {
+      "id": "reopened",
+      "from": "s4-reopened",
+      "to": "s4-reopened+2.4",
+      "crop": [345, 300, 1000],
+      "step": 3,
+      "label": "Saved; the disagreement stays open"
+    },
+    {
+      "id": "followups",
+      "from": "s4-followups",
+      "to": "s4-draft+0.4",
+      "crop": [270, 120, 1150],
+      "step": 3,
+      "label": "One draft per recipient"
+    },
+    {
+      "id": "draft",
+      "from": "s4-draft+0.4",
+      "to": "s4-copied+0.5",
+      "crop": [540, 300, 880],
+      "step": 3,
+      "label": "Edit the draft, then copy it"
+    },
+    {
+      "id": "lender",
+      "from": "s5-lender",
+      "to": "s5-lender+3.8",
+      "crop": [270, 110, 1150],
+      "step": 4,
+      "label": "Outstanding work listed"
+    },
+    {
+      "id": "version",
+      "from": "s5-confirm-0.3",
+      "to": "s5-downloaded+0.5",
+      "crop": [240, 40, 1200],
+      "step": 4,
+      "label": "Save a version, download it"
+    },
+    {
+      "id": "report",
+      "from": "s5-report+0.3",
+      "to": "s5-report+3.6",
+      "crop": [0, 0, 1440],
+      "step": 4,
+      "label": "Outstanding work in the report"
+    },
+    {
+      "id": "report-answer",
+      "from": "s5-answer",
+      "to": "s5-answer+5.2",
+      "hold": 0.4,
+      "crop": [0, 0, 1440],
+      "step": 4,
+      "label": "Preferred price, reason, sources"
+    }
+  ],
+  "captions": [
+    { "id": "n1", "shot": "opening", "at": 0.7 },
+    { "id": "n2", "shot": "upload", "at": 0.5 },
+    { "id": "n3", "shot": "library", "at": 1.0 },
+    { "id": "n4", "shot": "overview", "at": 0.4 },
+    { "id": "n5", "shot": "review", "at": 0.2 },
+    { "id": "n6", "shot": "source", "at": 1.4 },
+    { "id": "n7", "shot": "question", "at": 0.5 },
+    { "id": "n8", "shot": "followups", "at": 0.6 },
+    { "id": "n9", "shot": "lender", "at": 0.4 },
+    { "id": "n10", "shot": "version", "at": 0.2 },
+    { "id": "n11", "shot": "report", "at": 0.4 },
+    { "id": "n12", "shot": "closing", "at": 0.9, "overlay": false }
+  ]
+}
