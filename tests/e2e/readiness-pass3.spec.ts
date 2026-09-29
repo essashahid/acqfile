@@ -120,7 +120,9 @@ test("finishes preparation on screen and downloads a file with later lender work
     expect.objectContaining({
       Section: "Later lender work",
       Item: "Credit reports",
-      "Status / detail": "Tracking",
+      // Recorded as ordered: said as such, never as received.
+      "Status / detail":
+        "Ordered — Ordered by the lender; not yet received. Not included in this preparation package.",
     }),
   );
   await adviser.close();

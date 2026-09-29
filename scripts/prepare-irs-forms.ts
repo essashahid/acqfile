@@ -8,6 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { PDFDocument, PDFName } from "pdf-lib";
+import { FIXTURE_PRODUCER, IRS_PAGE_PRODUCER } from "../fixtures/lib/producer";
 
 type Box = [x: number, y: number, w: number, h: number];
 type Source = { key: string; url: string; page: number; kind: "1040" | "1120s" | "4868" | "4506c" };
@@ -293,8 +294,8 @@ async function trim(bytes: Buffer, pageNo: number) {
   const fixed = new Date("2026-09-15T12:00:00Z");
   out.setCreationDate(fixed);
   out.setModificationDate(fixed);
-  out.setProducer("AcqFile synthetic fixtures (official IRS page, fields removed)");
-  out.setCreator("AcqFile synthetic fixtures");
+  out.setProducer(IRS_PAGE_PRODUCER);
+  out.setCreator(FIXTURE_PRODUCER);
   return Buffer.from(await out.save({ useObjectStreams: false }));
 }
 

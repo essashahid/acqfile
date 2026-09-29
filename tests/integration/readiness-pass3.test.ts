@@ -97,7 +97,9 @@ it("permits the authorized adviser to download preparation while later lender wo
       Section: "Later lender work",
       Item: "Credit reports",
       Responsible: "Lender",
-      "Status / detail": "Tracking",
+      // Recorded as ordered: said as such, never as received.
+      "Status / detail":
+        "Ordered — Ordered by the lender; not yet received. Not included in this preparation package.",
     }),
   );
   expect(await zip.file("00_Package_Report.html")!.async("string")).toContain(

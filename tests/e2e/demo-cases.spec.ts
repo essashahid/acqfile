@@ -744,14 +744,18 @@ test("U01 files unfamiliar sources, records prices, resolves the disagreement an
     .flat()
     .join(" | ");
   expect(sourceRecord).toContain("deal.purchase_price");
-  expect(sourceRecord).toContain("780000");
-  expect(sourceRecord).toContain("805000");
+  expect(sourceRecord).toContain("$780,000");
+  expect(sourceRecord).toContain("$805,000");
   expect(sourceRecord).toContain("manual");
   const changeLog = XLSX.utils
     .sheet_to_json<string[]>(workbook.Sheets["Change log"]!, { header: 1 })
     .flat()
     .join(" | ");
-  expect(changeLog).toContain("CON-03");
-  expect(changeLog).toContain("Reviewer corrections | 2");
+  // The first version has no previous one to compare with; its history names each decision.
+  expect(changeLog).toContain("This is the first version of this lender file");
+  expect(changeLog).toContain(
+    "Purchase prices (CON-03 · Transaction): Dismissed — “The adviser selected the agreement price",
+  );
+  expect(changeLog.match(/Value entered by hand/g)).toHaveLength(2);
   expect((await portalData(dealId)).mapped.ready).toBe(false);
 });

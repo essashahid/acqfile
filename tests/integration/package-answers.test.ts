@@ -2,7 +2,7 @@ import { beforeAll, expect, it } from "vitest";
 import fs from "node:fs";
 import JSZip from "jszip";
 import * as XLSX from "xlsx";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db/client";
 import { intake } from "@/lib/deals/intake";
 import { processDealRun } from "@/lib/deals/process";
@@ -98,7 +98,18 @@ it("freezes a current answer beside the open disagreement without changing any s
   const first = await createSnapshot(ctx, dealId);
   firstId = first.id;
   firstContent = first.contentJson as SnapshotContent;
-  expect(firstContent.format).toBe(2);
+  expect(firstContent.format).toBe(3);
+  expect(firstContent.previous_version).toBeNull();
+  // Only the compared prices, in the rule's document order, and the declared price.
+  const price = priceFinding(firstContent);
+  expect(price.problem_title).toBe("Purchase prices do not agree");
+  expect(price.sides.map((s) => [s.source, s.display])).toEqual([
+    ["Letter of intent", "$1,000,000"],
+    ["Purchase agreement", "$1,050,000"],
+    ["Funding plan", "$1,000,000"],
+    ["Deal profile", "$1,000,000"],
+  ]);
+  expect(price.evidence_consulted!.map((e) => e.kind)).toContain("Document details");
   const answer = priceFinding(firstContent).answer!;
   expect(answer).toMatchObject({
     state: "current",
@@ -124,13 +135,19 @@ it("freezes a current answer beside the open disagreement without changing any s
   expect(html).toContain("Corrections still needed");
   expect(html).toContain("No. The documents still disagree; the answer does not change them.");
   expect(html).not.toMatch(/needs_review|received_with_issues|later_lender|party_id/);
+  expect(html).toContain("<h3>Purchase prices do not agree</h3>");
+  expect(html).toContain(
+    "Required action: Correct the letter of intent and funding plan, or provide updated documents, so the cited sources show the same purchase price.",
+  );
+  expect(html).not.toMatch(/Purchase prices agree|Values agree across the named sources/);
+  expect(html).toContain("<h2>Initial version</h2>");
   expect(rows(workbook, "Recorded answers")[0]).toMatchObject({
     "Answer status": "Current",
     "Recorded selection": "1,050,000",
     "Supporting documents corrected": "No",
     "Disagreement status": "Open",
   });
-  const log = rows(workbook, "Change log").filter((r) => r["Action code"] === "portal_answer");
+  const log = rows(workbook, "Change log").filter((r) => r.Action === "Answer recorded");
   expect(log).toHaveLength(1);
   expect(log[0]!.Action).toBe("Answer recorded");
   expect(String(log[0]!.Detail)).toBe(
@@ -199,6 +216,90 @@ it("shows an answer as not current once the evidence changes, and leaves the old
     .where(eq(schema.snapshots.id, firstId));
   expect(stored!.contentJson).toEqual(firstContent);
   expect((await packageZip(dealId, firstId)).bytes.equals(firstBytes)).toBe(true);
+});
+
+it("exports no internal record id, account id or finding key, and names the reviewer", async () => {
+  const db = getDb();
+  // Every id this deal's records carry, from every table that belongs to a deal, plus the
+  // accounts and workspace behind them and the findings' keys.
+  const tables = (await db.execute(
+    sql`select table_name from information_schema.columns where table_schema = 'public' and column_name = 'deal_id'`,
+  )) as unknown as { table_name: string }[];
+  const ids = new Set<string>([dealId, ctx.workspace.workspaceId]);
+  for (const { table_name } of tables) {
+    const has = (await db.execute(
+      sql`select 1 from information_schema.columns where table_schema = 'public' and table_name = ${table_name} and column_name = 'id'`,
+    )) as unknown as unknown[];
+    if (!has.length) continue;
+    const found = (await db.execute(
+      sql`select id::text as id from ${sql.identifier(table_name)} where deal_id = ${dealId}`,
+    )) as unknown as { id: string }[];
+    for (const r of found) ids.add(r.id);
+  }
+  for (const u of await db.select({ id: schema.appUsers.id }).from(schema.appUsers)) ids.add(u.id);
+  for (const f of await db
+    .select({ key: schema.findings.findingKey })
+    .from(schema.findings)
+    .where(eq(schema.findings.dealId, dealId)))
+    ids.add(f.key);
+  expect(ids.size).toBeGreaterThan(100);
+
+  // The reviewer accepts the reopened letter-of-intent price: a value with a named reviewer.
+  const [loi] = await db
+    .select({ fact: schema.facts })
+    .from(schema.facts)
+    .innerJoin(schema.segments, eq(schema.segments.id, schema.facts.segmentId))
+    .where(
+      and(
+        eq(schema.facts.dealId, dealId),
+        eq(schema.facts.attribute, "deal.purchase_price"),
+        eq(schema.facts.isCurrent, true),
+        eq(schema.segments.docType, "LOI"),
+      ),
+    );
+  await reviewFact(ctx, dealId, {
+    fact_id: loi!.fact.id,
+    expected_record_version: loi!.fact.recordVersion,
+    action: "accept",
+    comment: "Letter of intent rechecked.",
+  });
+  await createSnapshot(ctx, dealId);
+
+  const versions = await db
+    .select()
+    .from(schema.snapshots)
+    .where(eq(schema.snapshots.dealId, dealId));
+  const current = versions.filter((v) => (v.contentJson as SnapshotContent).format === 3);
+  expect(current.length).toBeGreaterThanOrEqual(3);
+  for (const version of current) {
+    const zip = await JSZip.loadAsync((await packageZip(dealId, version.id)).bytes);
+    const parts = [Object.keys(zip.files).join("\n")];
+    parts.push(await zip.file("00_Package_Report.html")!.async("string"));
+    const workbook = await JSZip.loadAsync(
+      await zip.file("00_Package_Workbook.xlsx")!.async("nodebuffer"),
+    );
+    for (const entry of Object.values(workbook.files))
+      if (!entry.dir) parts.push(await entry.async("string"));
+    const text = parts.join("\n");
+    // Braced GUIDs are Office Open XML schema constants SheetJS writes, not records.
+    const uuid = /(?<!\{)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.exec(text);
+    expect(uuid && text.slice(uuid.index - 120, uuid.index + 40)).toBeNull();
+    for (const id of ids) expect(text, `${id} in version ${version.number}`).not.toContain(id);
+    // Identifier facts are stored with a keyed hash; the package shows only the last four.
+    expect(text).not.toMatch(/hmac/i);
+  }
+
+  // The accepted letter-of-intent price names the reviewer who accepted it.
+  const latest = current.sort((a, b) => b.number - a.number)[0]!;
+  const { workbook } = await book((await packageZip(dealId, latest.id)).bytes);
+  const reviewed = rows(workbook, "Source record").filter((r) => r.Reviewer);
+  expect(reviewed.length).toBeGreaterThan(0);
+  expect(new Set(reviewed.map((r) => r.Reviewer))).toEqual(
+    new Set(["Demo Reviewer (reviewer@example.com)"]),
+  );
+  // The internal record keeps the account id.
+  const record = (latest.contentJson as SnapshotContent).source_record.find((r) => r.reviewer)!;
+  expect(record.reviewer).toBe(ctx.user.id);
 });
 
 it("renders a version frozen before answers existed without inventing one", async () => {

@@ -8,8 +8,33 @@ import { PRODUCT_NAME } from "@/lib/product";
 import { documentName, responsibleName } from "@/lib/staff/labels";
 import type { SnapshotContent, SnapshotDiff } from "./snapshot";
 import type { FrozenAnswer, FrozenSource } from "./answers";
-import { actionLabel, checkSentence, dateTimeLabel, statusLabel } from "./labels";
+import {
+  ANSWER_MEANING,
+  actionLabel,
+  dateTimeLabel,
+  laterWorkDetail,
+  laterWorkStatus,
+  problemTitle,
+  statusLabel,
+  typedValue,
+} from "./labels";
+import { FACTS } from "@/lib/domain/registry";
+
+/** A stored fact value as the reader sees it: typed, with keyed hashes and references left out. */
+const sourceValue = (attribute: string, stored: string) => {
+  let value: unknown = stored;
+  try {
+    const parsed: unknown = JSON.parse(stored);
+    if (typeof parsed !== "string") value = parsed;
+  } catch {
+    /* plain text */
+  }
+  return typedValue(value, FACTS[attribute]?.value_type);
+};
 import { packageReportV1, packageWorkbookV1 } from "./package-v1";
+import { packageReportV2, packageWorkbookV2 } from "./package-v2";
+import { layoutSheet, polishWorkbook, type SheetShape } from "./workbook-layout";
+import { withoutInternalIds } from "./event-detail";
 
 import { sha256 } from "@/lib/hash";
 const FIXED_DATE = new Date("2026-09-15T12:00:00.000Z");
@@ -22,9 +47,9 @@ const escape = (v: unknown) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const table = (headers: string[], rows: unknown[][], empty = "None.") =>
+const table = (headers: string[], rows: unknown[][], empty = "None.", className = "") =>
   rows.length
-    ? `<table><thead><tr>${headers.map((h) => `<th>${escape(h)}</th>`).join("")}</tr></thead><tbody>${rows
+    ? `<table${className ? ` class="${className}"` : ""}><thead><tr>${headers.map((h) => `<th>${escape(h)}</th>`).join("")}</tr></thead><tbody>${rows
         .map((r) => `<tr>${r.map((c) => `<td>${escape(c)}</td>`).join("")}</tr>`)
         .join("")}</tbody></table>`
     : `<p>${escape(empty)}</p>`;
@@ -100,6 +125,57 @@ const diffRows = (diff: SnapshotDiff, count = false) =>
 const sourceText = (s: FrozenSource) =>
   `${s.document}: ${s.value} — ${s.original_file}${s.page ? `, page ${s.page}` : ""}${s.package_path ? ` (${s.package_path})` : ""}`;
 
+type Finding = SnapshotContent["findings"][number];
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+const listOf = (items: string[]) =>
+  items.length <= 1 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`;
+const digits = (s: string) => s.replace(/[^\d.]/g, "");
+const isQuestion = (f: Finding) =>
+  (f.type === "conflict" && ["open", "requested"].includes(f.status)) ||
+  (!!f.answer && ["open", "requested"].includes(f.status));
+
+/** What must happen for the finding to close, from its frozen status and answer. A preferred
+ * value never closes a disagreement; only documents that agree do. */
+export function requiredAction(f: Finding): string {
+  if (f.status === "resolved")
+    return f.type === "conflict" ? "None. The cited sources now agree." : "None. Resolved.";
+  if (f.status === "dismissed") return `None. Dismissed${f.reason ? `: ${f.reason}` : "."}`;
+  if (f.status === "waived") return `None. Waived${f.reason ? `: ${f.reason}` : "."}`;
+  const same = f.compared
+    ? `so the cited sources show the same ${f.compared}`
+    : "so the cited sources agree";
+  const target = f.compared ?? "value";
+  const differ = `then correct the documents that differ, or provide updated documents, ${same}.`;
+  const a = f.answer;
+  if (a?.state === "current" && a.selected_value) {
+    // In the order the comparison lists them, which is the order the rule names the documents.
+    const order = f.sides.map((s) => s.source);
+    const documents = [
+      ...new Set(
+        [...a.corrections_needed]
+          .sort(
+            (x, y) => (order.indexOf(x.document) + 1 || 99) - (order.indexOf(y.document) + 1 || 99),
+          )
+          .map((s) => lowerFirst(s.document)),
+      ),
+    ];
+    if (documents.length)
+      return `Correct the ${listOf(documents)}, or provide updated documents, ${same}.`;
+    if (
+      f.sides.some(
+        (s) => s.source === "Deal profile" && digits(s.display ?? s.value) !== digits(a.selection),
+      )
+    )
+      return `Update the deal profile, or provide updated documents, ${same}.`;
+    return `Confirm the cited sources, ${same}.`;
+  }
+  if (a?.state === "current")
+    return `No value was chosen. Confirm the correct ${target}, ${differ}`;
+  if (a)
+    return `The recorded answer refers to earlier evidence. Confirm the correct ${target} against the current documents, ${differ}`;
+  return `Confirm which ${target} is correct, ${differ}`;
+}
+
 function answerHtml(answer: FrozenAnswer | null | undefined) {
   if (!answer)
     return `<p class="answer none">No answer was recorded for this question when this version was created.</p>`;
@@ -140,18 +216,47 @@ const kindOfPath = (path: string) => {
   return "filed";
 };
 
+type Group = NonNullable<NonNullable<SnapshotContent["preparation"]>["groups"]>[number];
+/** An outstanding group as the reader sees it: a disagreement by its problem and action. */
+const groupRow = (g: Group, findings: Map<string, Finding>) => {
+  const f = g.finding_key ? findings.get(g.finding_key) : undefined;
+  if (f?.type === "conflict")
+    return {
+      title: f.problem_title ?? problemTitle(g.title, f.status),
+      status: statusLabel(f.type),
+      reasons: [requiredAction(f)],
+    };
+  return { title: g.title, status: g.status, reasons: g.reasons };
+};
+
+/** What a missing or incomplete row needs; later lender work reads from its tracking. */
+const rowNeeds = (r: SnapshotContent["index"][number]) =>
+  r.submission_stage === "later_lender" && r.tracking !== undefined
+    ? laterWorkDetail({
+        status: r.status,
+        tracking: r.tracking,
+        checks: r.checks,
+        filed: r.package_paths.length > 0,
+        decision_reason: r.decision_reason,
+      })
+    : r.checks
+        .filter((c) => c.result !== "pass")
+        .map((c) => c.message)
+        .join("; ");
+
+const INITIAL =
+  "This is the first version of this lender file, so there is no previous version to compare with.";
+
 /** Printable multi-page report. Sources remain the original, unchanged files in this ZIP. */
 export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
-  if (content.format !== 2) return packageReportV1(content, diff);
+  if (!content.format) return packageReportV1(content, diff);
+  if (content.format === 2) return packageReportV2(content, diff);
   const status = content.preparation;
+  const byKey = new Map(content.findings.map((f) => [f.finding_key, f]));
   const missing = content.index.filter((r) =>
     ["missing", "received_with_issues", "needs_review"].includes(r.status),
   );
-  const questions = content.findings.filter(
-    (f) =>
-      (f.type === "conflict" && ["open", "requested"].includes(f.status)) ||
-      (f.answer && ["open", "requested"].includes(f.status)),
-  );
+  const questions = content.findings.filter(isQuestion);
   const index = content.index.flatMap((r) =>
     (r.segments.length ? r.segments : [null]).map((segment, i) => [
       r.item_id,
@@ -178,57 +283,63 @@ export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
     not_required: "Not required",
     unfiled: "Unfiled",
   } as Record<string, string>;
-  const groups =
-    status?.groups ??
-    (status?.unresolved ?? []).map((u) => ({
-      title: u,
-      subject: "",
-      period: "",
-      status: "",
-      reasons: [] as string[],
-    }));
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(content.deal.code)} lender file version ${content.number}</title><style>@page{size:A3 landscape;margin:14mm}body{font:14px system-ui;margin:24px;color:#111}h1{font-size:24px}h2{font-size:19px;margin-top:28px}h3{font-size:16px;margin-top:22px}table{border-collapse:collapse;width:100%;table-layout:auto}td,th{border:1px solid #ccc;padding:7px;text-align:left;vertical-align:top;overflow-wrap:anywhere}thead{display:table-header-group}tr{break-inside:avoid}.answer{border-left:4px solid #12355b;background:#f4f6f9;padding:10px 14px;margin:12px 0}.answer.none{border-color:#ccc;background:#fafafa}dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:8px 0 0}dt{font-weight:600}dd{margin:0}footer{margin-top:24px;font-size:12px}</style></head><body>
+  const groups = (status?.groups ?? []).map((g) => groupRow(g, byKey));
+  const initial = content.previous_version == null;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(content.deal.code)} lender file version ${content.number}</title><style>@page{size:A3 landscape;margin:14mm}body{font:14px system-ui;margin:24px;color:#111}h1{font-size:24px}h2{font-size:19px;margin-top:28px}h3{font-size:16px;margin-top:22px}table{border-collapse:collapse;width:100%;table-layout:auto}td,th{border:1px solid #ccc;padding:7px;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#eef1f5;overflow-wrap:normal}table.compare td:nth-child(2){white-space:nowrap}thead{display:table-header-group}tr{break-inside:avoid}.answer{border-left:4px solid #12355b;background:#f4f6f9;padding:10px 14px;margin:12px 0}.answer.none{border-color:#ccc;background:#fafafa}dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:8px 0 0}dt{font-weight:600}dd{margin:0}.action{font-weight:600}footer{margin-top:24px;font-size:12px}</style></head><body>
 <h1>${escape(content.deal.code)} · ${escape(content.deal.name)} · Version ${content.number}</h1>
-<p>Created ${escape(dateTimeLabel(content.created_at))} · ${escape(status?.policy ?? "Historical version; preparation boundary was not recorded")}</p>
-<h2>${escape(status?.label ?? "Historical preparation status not assessed")}</h2>
+<p>Created ${escape(dateTimeLabel(content.created_at))} · ${escape(status?.policy ?? "Preparation boundary was not recorded")}${initial ? " · Initial version" : ` · Compared with version ${content.previous_version}`}</p>
+<h2>${escape(status?.label ?? "Preparation status not assessed")}</h2>
 <p>Preparation requirements: ${status?.satisfied ?? content.readiness.satisfied} satisfied; ${status?.waived ?? "not recorded"} waived; ${content.readiness.applicable} applicable. Not applicable: ${status?.notApplicable ?? "not recorded"}. All rules unverified.</p>
 <h2>Unresolved preparation work</h2>${table(
     ["Item", "Applies to", "Period", "Status", "What is needed"],
-    groups.map((g) => [g.title, g.subject, g.period, g.status, g.reasons.join("\n")]),
+    (status?.groups ?? []).map((g, i) => [
+      groups[i]!.title,
+      g.subject,
+      g.period,
+      groups[i]!.status,
+      groups[i]!.reasons.join("\n"),
+    ]),
     "No outstanding preparation work.",
   )}
-<h2>Later lender work</h2>${table(
-    ["Item", "Title", "Subject", "Responsible", "Status"],
+<h2>Later lender work</h2><p>Items the lender orders or obtains itself. They do not hold up preparation.</p>${table(
+    ["Item", "Title", "Subject", "Responsible", "Status", "What is needed"],
     (status?.later ?? []).map((r) => [
       r.item,
       r.title,
       r.subject,
       who(r.responsible),
-      statusLabel(r.status),
+      r.tracking_label ?? laterWorkStatus(r.status, r.tracking),
+      r.detail ?? "",
     ]),
   )}
 <h2>Questions and recorded answers — for lender review</h2>
-<p>A recorded answer says which value the file should use. It does not change any document and does not settle the disagreement: that happens only when the documents themselves are corrected and agree.</p>${
+<p>${escape(ANSWER_MEANING)}</p>${
     questions
-      .map(
-        (f) =>
-          `<h3>${escape(f.title ?? f.message ?? f.rule_id)}</h3><p>${escape(f.description ?? "")}</p><p>${escape(f.rule_id)} · ${escape(f.party)}${f.period ? ` · ${escape(f.period)}` : ""} · Responsible: ${escape(who(f.responsible))} · ${escape(statusLabel(f.status))}</p><p>${escape(checkSentence(f.message).join(" "))}</p>${table(
-            [
-              "Value in the document",
-              "Original file",
-              "Supporting page",
-              "Quoted evidence",
-              "Exported path",
-            ],
-            f.sides.map((side) => [
-              readableValue(side.value),
-              side.file,
-              side.page,
-              side.quote,
-              side.package_path ?? "",
-            ]),
-          )}${answerHtml(f.answer)}${f.reason ? `<p>Reviewer note: ${escape(f.reason)}</p>` : ""}`,
-      )
+      .map((f) => {
+        const heading = f.problem_title ?? f.title ?? f.message ?? f.rule_id;
+        return `<h3>${escape(heading)}</h3><p>${escape(f.rule_id)} · ${escape(f.party)}${f.period ? ` · ${escape(f.period)}` : ""} · Responsible: ${escape(who(f.responsible))} · ${escape(statusLabel(f.status))} · ${escape(statusLabel(f.type))}</p>${
+          f.title && f.title !== heading ? `<p>Question asked: ${escape(f.title)}</p>` : ""
+        }<p class="action">Required action: ${escape(requiredAction(f))}</p>${table(
+          [
+            "Source",
+            "Value",
+            "Original file",
+            "Supporting page",
+            "Quoted evidence",
+            "Exported path",
+          ],
+          f.sides.map((side) => [
+            side.source ?? "",
+            side.display ?? readableValue(side.value),
+            side.file,
+            side.page ?? "",
+            side.quote,
+            side.package_path ?? "",
+          ]),
+          "No compared values were recorded.",
+          "compare",
+        )}${answerHtml(f.answer)}${f.reason ? `<p>Reviewer note: ${escape(f.reason)}</p>` : ""}`;
+      })
       .join("") || "<p>No open questions.</p>"
   }
 <h2>Missing and incomplete items</h2>${table(
@@ -249,11 +360,10 @@ export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
       who(r.responsible),
       r.period,
       statusLabel(r.submission_stage ?? "unknown"),
-      statusLabel(r.status),
-      r.checks
-        .filter((c) => c.result !== "pass")
-        .map((c) => c.message)
-        .join("; "),
+      r.submission_stage === "later_lender" && r.tracking !== undefined
+        ? laterWorkStatus(r.status, r.tracking)
+        : statusLabel(r.status),
+      rowNeeds(r),
     ]),
   )}
 <h2>Index</h2>${table(["Item", "Title", "Subject", "Period", "Status", "Decision reason", "Responsible", "Original source file", "Original pages", "Exported path"], index)}
@@ -289,13 +399,18 @@ export function packageReport(content: SnapshotContent, diff: SnapshotDiff) {
     ]),
   )}
 <h2>Files in this version</h2><ul>${content.manifest.map((m) => `<li><a href="${escape(m.package_path.split("/").map(encodeURIComponent).join("/"))}">${escape(m.package_path)}</a> — ${escape(m.original_filename)}</li>`).join("")}</ul>
-<h2>Changes since the previous version</h2>${table(["Change", "Detail"], diffRows(diff))}
+${
+  initial
+    ? `<h2>Initial version</h2><p>${escape(INITIAL)} The workbook’s Change log sheet keeps the file’s recorded history up to this version.</p>`
+    : `<h2>Changes since version ${content.previous_version}</h2>${table(["Change", "Detail"], diffRows(diff))}`
+}
 <p>The workbook includes the source record, supporting pages, recorded answers and review history. This version records the evidence at the date above; it does not assert the current deal is ready after later changes.</p><footer>${escape(content.footer)}</footer></body></html>`;
 }
 
 /** A47: tabs Index, Missing items, Conflicts, Source record, Change log, each ending with the footer. */
 export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
-  if (content.format !== 2) return packageWorkbookV1(content, diff);
+  if (!content.format) return packageWorkbookV1(content, diff);
+  if (content.format === 2) return packageWorkbookV2(content, diff);
   const book = XLSX.utils.book_new();
   book.Props = {
     Title: `${content.deal.code} lender file version ${content.number}`,
@@ -303,14 +418,22 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
     CreatedDate: FIXED_DATE,
     ModifiedDate: FIXED_DATE,
   };
-  const add = (name: string, headers: string[], rows: unknown[][]) => {
+  const shapes: SheetShape[] = [];
+  const byKey = new Map(content.findings.map((f) => [f.finding_key, f]));
+  const add = (name: string, headers: string[], rows: unknown[][], notes: string[] = []) => {
+    const cells = rows.map((r) =>
+      r.map((value) => (typeof value === "number" ? value : withoutInternalIds(mask(value)))),
+    );
     const sheet = XLSX.utils.aoa_to_sheet([
       headers,
-      ...rows.map((r) => r.map((value) => (typeof value === "number" ? value : mask(value)))),
+      ...cells,
       [],
+      ...notes.map((n) => [n]),
+      ...(notes.length ? [[]] : []),
       [content.footer],
     ]);
-    sheet["!cols"] = headers.map(() => ({ wch: 26 }));
+    layoutSheet(sheet, headers, cells);
+    shapes.push({ name, headers, rows: cells });
     XLSX.utils.book_append_sheet(book, sheet, name);
   };
   add(
@@ -367,11 +490,10 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
         who(r.responsible),
         r.party,
         r.period,
-        statusLabel(r.status),
-        r.checks
-          .filter((c) => c.result !== "pass")
-          .map((c) => c.message)
-          .join("; "),
+        r.submission_stage === "later_lender" && r.tracking !== undefined
+          ? laterWorkStatus(r.status, r.tracking)
+          : statusLabel(r.status),
+        rowNeeds(r),
       ]),
   );
   add(
@@ -382,49 +504,52 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Applies to",
       "Period",
       "Status",
+      "Issue title",
+      "Description / question",
+      "Source",
       "Value",
       "File",
       "Page",
       "Quote",
-      "Reviewer note",
-      "Issue title",
-      "Description / question",
-      "Responsible provider / role",
       "Package path",
+      "Required action",
       "Recorded answer",
       "Answer status",
+      "Reviewer note",
+      "Responsible provider / role",
     ],
     content.findings
       .filter((f) => f.type === "conflict")
-      .flatMap((f) =>
-        (f.sides.length ? f.sides : [{ value: "", file: "", page: null, quote: "" }]).map((s) => [
-          f.finding_key,
+      .flatMap((f, n) =>
+        (f.sides.length ? f.sides : [null]).map((s) => [
+          n + 1,
           f.rule_id,
           f.party,
           f.period ?? "",
           statusLabel(f.status),
-          s.value ? readableValue(s.value) : "",
-          s.file,
-          s.page,
-          s.quote,
-          f.reason ?? "",
+          f.problem_title ?? f.title ?? f.message,
           f.title ?? f.message,
-          f.description ?? f.message,
-          who(f.responsible),
-          "package_path" in s ? s.package_path : "",
+          s?.source ?? "",
+          s ? (s.display ?? readableValue(s.value)) : "",
+          s?.file ?? "",
+          s?.page ?? "",
+          s?.quote ?? "",
+          s?.package_path ?? "",
+          requiredAction(f),
           f.answer?.selection ?? "None recorded",
           f.answer
             ? f.answer.state === "current"
               ? "Answer recorded (current); documents not changed"
               : "Not current: earlier evidence"
             : "",
+          f.reason ?? "",
+          who(f.responsible),
         ]),
       ),
   );
   add(
     "Source record",
     [
-      "Fact id",
       "Subject",
       "Attribute",
       "Value",
@@ -440,41 +565,54 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Reviewed at",
       "File hash",
       "Record version",
-      "Audit event",
       "Support kind",
     ],
-    content.source_record.map((f) => [
-      f.fact_id,
-      f.subject,
-      f.attribute,
-      f.value,
-      f.period,
-      f.original_filename,
-      f.package_path,
-      f.page,
-      f.quote,
-      f.method,
-      f.confidence,
-      statusLabel(f.review_status),
-      f.reviewer,
-      dateTimeLabel(f.reviewed_at),
-      f.file_hash,
-      f.record_version ?? "",
-      f.audit_event ?? "",
-      f.support_kind ?? "",
-    ]),
+    [...content.source_record]
+      .sort(
+        (a, b) =>
+          a.package_path.localeCompare(b.package_path) ||
+          a.page - b.page ||
+          a.attribute.localeCompare(b.attribute) ||
+          a.value.localeCompare(b.value),
+      )
+      .map((f) => [
+        f.subject,
+        f.attribute,
+        sourceValue(f.attribute, f.value),
+        f.period,
+        f.original_filename,
+        f.package_path,
+        f.page,
+        f.quote,
+        f.method,
+        f.confidence,
+        statusLabel(f.review_status),
+        f.reviewer_name ?? (f.reviewer ? "Operator" : ""),
+        dateTimeLabel(f.reviewed_at),
+        f.file_hash,
+        f.record_version ?? "",
+        f.support_kind ?? "",
+      ]),
+    [
+      "Technical record: every value read from the documents, with where it was read and who reviewed it. Identifiers show only their last four digits. File hash is the SHA-256 of the original file.",
+    ],
   );
+  const initial = content.previous_version == null;
   add(
     "Change log",
-    ["At", "Action", "Detail", "Action code"],
+    ["At", "Action", "Detail"],
     [
-      ...diffRows(diff, true).map(([label, detail]) => ["", label, detail, ""]),
+      ...(initial ? [] : diffRows(diff, true).map(([label, detail]) => ["", label, detail])),
       ...content.change_log.map((e) => [
         dateTimeLabel(e.at),
         e.label ?? actionLabel(e.action),
         e.detail,
-        e.action,
       ]),
+    ],
+    [
+      initial
+        ? `${INITIAL} The rows above are the file’s recorded history up to this version.`
+        : `Summary rows compare this version with version ${content.previous_version}; the dated rows are what happened since.`,
     ],
   );
   add(
@@ -491,8 +629,8 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Output page end",
       "Kind",
     ],
-    (content.segment_locations ?? []).map((r) => [
-      r.id,
+    (content.segment_locations ?? []).map((r, n) => [
+      n + 1,
       documentName(r.type),
       r.subject,
       r.original_filename,
@@ -514,31 +652,36 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
     "Status summary",
     ["Section", "Item", "Subject", "Responsible", "Status / detail"],
     [
+      ["Policy", "", "", "", content.preparation?.policy ?? "Preparation boundary not recorded"],
       [
-        "Policy",
+        "Version",
+        content.number,
         "",
         "",
-        "",
-        content.preparation?.policy ?? "Historical preparation boundary not recorded",
+        `${dateTimeLabel(content.created_at)}${initial ? " · Initial version" : ` · Compared with version ${content.previous_version}`}`,
       ],
-      ["Version", content.number, "", "", dateTimeLabel(content.created_at)],
-      ["Preparation", "", "", "", content.preparation?.label ?? "Historical status not assessed"],
+      ["Preparation", "", "", "", content.preparation?.label ?? "Status not assessed"],
       ["Satisfied", "", "", "", content.preparation?.satisfied ?? content.readiness.satisfied],
       ["Waived", "", "", "", content.preparation?.waived ?? "not recorded"],
       ["Not applicable", "", "", "", content.preparation?.notApplicable ?? "not recorded"],
-      ...(content.preparation?.groups ?? []).map((g) => [
-        "Unresolved preparation",
-        g.title,
-        [g.subject, g.period].filter(Boolean).join(" · "),
-        "",
-        [g.status, ...g.reasons].filter(Boolean).join(" — "),
-      ]),
+      ...(content.preparation?.groups ?? []).map((g) => {
+        const row = groupRow(g, byKey);
+        return [
+          "Unresolved preparation",
+          row.title,
+          [g.subject, g.period].filter(Boolean).join(" · "),
+          "",
+          [row.status, ...row.reasons].filter(Boolean).join(" — "),
+        ];
+      }),
       ...(content.preparation?.later ?? []).map((r) => [
         "Later lender work",
         r.title,
         r.subject,
         who(r.responsible),
-        statusLabel(r.status),
+        [r.tracking_label ?? laterWorkStatus(r.status, r.tracking), r.detail]
+          .filter(Boolean)
+          .join(" — "),
       ]),
     ],
   );
@@ -557,6 +700,7 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
       "Corrections still needed",
       "Supporting documents corrected",
       "Disagreement status",
+      "Required action",
       "Summary",
     ],
     answered.map((f) => {
@@ -573,11 +717,35 @@ export function packageWorkbook(content: SnapshotContent, diff: SnapshotDiff) {
         a.corrections_needed.map(sourceText).join("\n"),
         a.documents_corrected ? "Yes" : a.corrections_needed.length ? "No" : "Not needed",
         statusLabel(f.status),
+        requiredAction(f),
         a.summary,
       ];
     }),
+    [ANSWER_MEANING],
   );
-  return XLSX.write(book, { type: "buffer", bookType: "xlsx", compression: true }) as Buffer;
+  add(
+    "Evidence consulted",
+    ["Finding", "Rule", "Kind", "Original file", "Page", "Quote", "Package path", "Detail"],
+    content.findings
+      .filter((f) => f.type === "conflict" || f.answer)
+      .flatMap((f) =>
+        (f.evidence_consulted ?? []).map((e) => [
+          f.problem_title ?? f.title ?? f.rule_id,
+          f.rule_id,
+          e.kind,
+          e.file,
+          e.page ?? "",
+          e.quote,
+          e.package_path,
+          e.detail,
+        ]),
+      ),
+    [
+      "What each disagreement's check also read, beyond the compared values: document signature details and the rule settings applied. For audit; the Conflicts sheet shows the comparison.",
+    ],
+  );
+  const bytes = XLSX.write(book, { type: "buffer", bookType: "xlsx", compression: true }) as Buffer;
+  return polishWorkbook(bytes, shapes);
 }
 
 /** A47: the ZIP is the report, the workbook and the folder tree of renamed copies. Original bytes are unchanged. */

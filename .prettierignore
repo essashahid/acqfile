@@ -7,3 +7,6 @@ docs/RULEPACK_REVIEW.html
 
 # Supplied reference HTML is retained verbatim.
 docs/design/*.html
+
+# Local explainer takes and intermediates (git-ignored).
+artifacts/*/work/

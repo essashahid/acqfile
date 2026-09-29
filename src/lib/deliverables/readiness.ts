@@ -1,6 +1,6 @@
 import type { Rule } from "@/lib/rules/schema";
 import type { IndexRow } from "./index-build";
-import { checkSentence, statusLabel } from "./labels";
+import { checkSentence, laterWorkDetail, laterWorkStatus, statusLabel } from "./labels";
 
 export const SAMPLE_BOUNDARY = "Illustrative checklist, awaiting lender review";
 export const stageOf = (rule: Rule | undefined) => rule?.submission_stage ?? "unknown";
@@ -47,7 +47,17 @@ export type PreparationReadiness = {
   /** Presentation of the same unresolved work, one entry per requirement, person and period.
    * Absent from versions frozen before it existed. Never used to decide readiness. */
   groups?: OutstandingGroup[];
-  later: { item: string; title: string; subject: string; responsible: string; status: string }[];
+  later: {
+    item: string;
+    title: string;
+    subject: string;
+    responsible: string;
+    status: string;
+    /** Recorded tracking state and what the item needs, in words. Absent before format 3. */
+    tracking?: string | null;
+    tracking_label?: string;
+    detail?: string;
+  }[];
 };
 
 export type OutstandingGroup = {
@@ -57,6 +67,8 @@ export type OutstandingGroup = {
   period: string;
   status: string;
   reasons: string[];
+  /** The finding this group reports, when it comes from one. Absent before format 3. */
+  finding_key?: string;
 };
 
 /** The rows the "N of M" preparation count is made of, so any view of them uses the same set. */
@@ -87,6 +99,7 @@ export function preparationReadiness({
     scopeKey?: string;
     period?: string | null;
     detailsJson?: unknown;
+    findingKey?: string;
   }[];
   current: boolean;
   reviewIssues?: string[];
@@ -166,6 +179,7 @@ export function preparationReadiness({
       );
       for (const reason of message ? checkSentence(message) : [statusLabel(finding.type)])
         group(key, row ?? groups.get(key)!, reason);
+      if (finding.findingKey) groups.get(key)!.finding_key = finding.findingKey;
     }
   }
   const ready = unresolved.length === 0;
@@ -198,6 +212,19 @@ export function preparationReadiness({
         responsible:
           r.responsible ?? rules.get(r.item_id)?.responsible ?? "Unassigned — needs assignment",
         status: r.status,
+        ...(r.tracking !== undefined
+          ? {
+              tracking: r.tracking,
+              tracking_label: laterWorkStatus(r.status, r.tracking),
+              detail: laterWorkDetail({
+                status: r.status,
+                tracking: r.tracking,
+                checks: r.checks,
+                filed: r.package_paths.length > 0,
+                decision_reason: r.decision_reason,
+              }),
+            }
+          : {}),
       })),
   };
 }

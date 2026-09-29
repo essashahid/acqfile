@@ -10,12 +10,30 @@ import { actionLabel } from "./labels";
 
 import { questionPolicy } from "@/lib/portal/map";
 import type { PreparationReadiness } from "./readiness";
+import { comparedLabel, comparison, type ConsultedEvidence } from "./comparison";
+import { problemTitle, statusLabel } from "./labels";
+import { documentName, reviewSubject } from "@/lib/staff/labels";
+import { eventDetail as readableEvent } from "./event-detail";
+
+/** How a package names a reviewer: "Name (email)", or "Operator" when the account is unknown. */
+export function reviewerName(
+  users: { id: string; displayName: string | null; email: string }[],
+  id: string,
+) {
+  const user = users.find((u) => u.id === id);
+  if (!user) return "Operator";
+  return user.displayName ? `${user.displayName} (${user.email})` : user.email;
+}
 
 export type SnapshotContent = {
   /** 2: readable report with recorded answers and grouped outstanding work.
-   * Absent on versions created earlier, which keep their original rendering. */
-  format?: 2;
+   * 3: a disagreement shows only the compared values and its problem and required action;
+   * later lender work reads from its recorded tracking; the first version says so.
+   * Absent on versions created before format 2. Each format keeps its own renderer. */
+  format?: 2 | 3;
   number: number;
+  /** Format 3: the number of the version this one is compared with; null for the first. */
+  previous_version?: number | null;
   deal: { code: string; name: string; pack: string; version: string; overlay: string | null };
   created_at: string;
   event_ids: string[];
@@ -27,6 +45,10 @@ export type SnapshotContent = {
     finding_key: string;
     rule_id: string;
     title?: string;
+    /** Format 3: the finding stated as what is wrong ("Purchase prices do not agree"). */
+    problem_title?: string;
+    /** Format 3: what the sources must show the same of ("purchase price"); null if not one value. */
+    compared?: string | null;
     description?: string;
     responsible?: string;
     submission_stage?: string;
@@ -45,7 +67,12 @@ export type SnapshotContent = {
       page: number | null;
       quote: string;
       package_path?: string;
+      /** Format 3: readable source name and value. */
+      source?: string;
+      display?: string;
     }[];
+    /** Format 3: what the check also consulted (signature details, rule settings), for audit. */
+    evidence_consulted?: ConsultedEvidence[];
   }[];
   segment_locations?: {
     id: string;
@@ -60,8 +87,6 @@ export type SnapshotContent = {
   change_log: { at: string; action: string; label?: string; detail: string }[];
   manifest: { package_path: string; original_filename: string; sha256: string; bytes: number }[];
 };
-
-const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
 
 /** Freeze the evaluation, the index and a manifest with file hashes. Immutable and numbered per deal. */
 export async function createSnapshot(
@@ -84,6 +109,7 @@ export async function createSnapshot(
     .where(eq(schema.events.dealId, dealId))
     .orderBy(schema.events.createdAt);
   const history = await db.select().from(schema.segments).where(eq(schema.segments.dealId, dealId));
+  const allFacts = await db.select().from(schema.facts).where(eq(schema.facts.dealId, dealId));
   const eventDetail = (e: (typeof events)[number]) => {
     if (e.action === "segment_superseded") {
       const older = history.find(
@@ -92,7 +118,7 @@ export async function createSnapshot(
       const newer = history.find(
         (s) => s.id === (e.maskedAfter as { segmentId: string })?.segmentId,
       );
-      return `${newer?.docType ?? "Document"}: ${older ? built.originalPath(older.documentVersionId) : "prior copy"} → ${newer ? built.originalPath(newer.documentVersionId) : "current copy"}`;
+      return `${newer ? documentName(newer.docType) : "Document"}: ${older ? built.originalPath(older.documentVersionId) : "prior copy"} → ${newer ? built.originalPath(newer.documentVersionId) : "current copy"}`;
     }
     if (e.action === "portal_answer") {
       const after = (e.maskedAfter ?? {}) as { taskKey?: string; choice?: string; note?: string };
@@ -103,7 +129,40 @@ export async function createSnapshot(
         300,
       );
     }
-    return JSON.stringify(e.maskedAfter ?? {}).slice(0, 300);
+    // A decision on a finding names the finding, not just its new status.
+    if (e.entityType === "finding" && e.action.startsWith("finding_")) {
+      const f = built.findings.find((x) => x.id === e.entityId);
+      if (f) {
+        const after = (e.maskedAfter ?? {}) as { status?: string; reason?: string };
+        const scope =
+          built.partyName(f.scopeKey) === "Unassigned" ? f.scopeKey : built.partyName(f.scopeKey);
+        const what = `${reviewSubject(built.rules.get(f.ruleId)?.title ?? f.ruleId)} (${f.ruleId} · ${scope === "deal" ? "Transaction" : scope}${f.period ? ` · ${f.period}` : ""})`;
+        const outcome = statusLabel(
+          after.status ?? (e.action === "finding_resolved" ? "resolved" : ""),
+        );
+        return `${what}: ${outcome}${after.reason ? ` — “${after.reason}”` : ""}`.slice(0, 300);
+      }
+    }
+    return readableEvent(e, {
+      file: (id) => (built.versions.some((v) => v.id === id) ? built.originalPath(id) : null),
+      segment: (id) => {
+        const s = history.find((x) => x.id === id);
+        return s ? { type: s.docType, file: built.originalPath(s.documentVersionId) } : null;
+      },
+      fact: (id) => {
+        const f = allFacts.find((x) => x.id === id);
+        const s = f ? history.find((x) => x.id === f.segmentId) : undefined;
+        return f
+          ? {
+              attribute: f.attribute,
+              value: f.valueJson,
+              file: s ? built.originalPath(s.documentVersionId) : null,
+            }
+          : null;
+      },
+      party: (id) => (id ? built.partyName(id) : "Not recorded"),
+      question: (taskKey) => answers.get(taskKey)?.question ?? null,
+    });
   };
   const [responses, users] = await Promise.all([
     db
@@ -112,7 +171,13 @@ export async function createSnapshot(
       .where(eq(schema.portalResponses.dealId, dealId))
       .orderBy(schema.portalResponses.createdAt),
     (() => {
-      const actors = [...new Set(events.map((e) => e.actorId).filter((id): id is string => !!id))];
+      const actors = [
+        ...new Set(
+          [...events.map((e) => e.actorId), ...built.sourceRecord.map((r) => r.reviewer)].filter(
+            (id): id is string => !!id,
+          ),
+        ),
+      ];
       return actors.length
         ? db.select().from(schema.appUsers).where(inArray(schema.appUsers.id, actors))
         : Promise.resolve([]);
@@ -120,9 +185,14 @@ export async function createSnapshot(
   ]);
   const answers = frozenAnswers(built, responses, events, users);
   const priorEvents = new Set(previous ? (previous.contentJson as SnapshotContent).event_ids : []);
+  const pathOf = (versionId: string) =>
+    [...built.paths].find(([, id]) => id === versionId)?.[0] ?? "";
+  const fileName = (id: string) =>
+    built.versions.some((v) => v.id === id) ? built.originalPath(id) : id;
   const content: SnapshotContent = {
-    format: 2,
+    format: 3,
     number: (previous?.number ?? 0) + 1,
+    previous_version: previous?.number ?? null,
     deal: {
       code: built.deal.code,
       name: built.deal.name,
@@ -151,6 +221,18 @@ export async function createSnapshot(
             quote: string;
           }[];
         }) ?? { message: "", details: [] };
+        const rule = built.rules.get(f.ruleId);
+        const compared = comparison({
+          rule,
+          details: details.details,
+          facts: built.facts,
+          segments: built.segments,
+          profile: built.deal.profileJson as Record<string, unknown>,
+          parameters: built.pack.parameters as Record<string, unknown>,
+          fileName,
+          packagePath: pathOf,
+          partyName: built.partyName,
+        });
         return {
           finding_key: f.findingKey,
           rule_id: f.ruleId,
@@ -158,6 +240,8 @@ export async function createSnapshot(
             questionPolicy[f.ruleId]?.title ??
             built.rules.get(f.ruleId)?.title ??
             "Staff review needed",
+          problem_title: problemTitle(rule?.title ?? f.ruleId, f.status),
+          compared: comparedLabel(rule),
           description: built.rules.get(f.ruleId)?.description ?? details.message,
           responsible: built.responsibility(f.responsibleRole),
           submission_stage: built.rules.get(f.ruleId)?.submission_stage ?? "unknown",
@@ -170,13 +254,8 @@ export async function createSnapshot(
           message: details.message,
           reason: f.reason,
           answer: answers.get(f.findingKey) ?? null,
-          sides: details.details.map((d) => ({
-            value: show(d.value),
-            file: built.versions.some((v) => v.id === d.file) ? built.originalPath(d.file) : d.file,
-            package_path: [...built.paths].find(([, id]) => id === d.file)?.[0] ?? "",
-            page: d.page,
-            quote: d.quote,
-          })),
+          sides: compared.sides,
+          evidence_consulted: compared.consulted,
         };
       })
       .sort((a, b) => a.finding_key.localeCompare(b.finding_key)),
@@ -188,13 +267,17 @@ export async function createSnapshot(
         original_filename: built.originalPath(s.documentVersionId),
         page_start: s.pageStart,
         page_end: s.pageEnd,
-        package_path: [...built.paths].find(([, id]) => id === s.documentVersionId)?.[0] ?? "",
+        package_path: pathOf(s.documentVersionId),
       }))
       .sort(
         (a, b) =>
           a.original_filename.localeCompare(b.original_filename) || a.page_start - b.page_start,
       ),
-    source_record: built.sourceRecord,
+    // The reviewer's account id stays in the frozen record; the package shows the name.
+    source_record: built.sourceRecord.map((r) => ({
+      ...r,
+      reviewer_name: r.reviewer ? reviewerName(users, r.reviewer) : "",
+    })),
     change_log: events
       .filter((e) => !priorEvents.has(e.id))
       .map((e) => ({
@@ -277,9 +360,13 @@ export function diffSnapshots(
       )
       .map((f) => label(f.finding_key))
       .sort(),
+    // Resolved since the previous version: open or requested there, resolved now. A finding
+    // raised and settled between versions (a document missing until intake finished) is not one.
     resolved_findings: after.findings
       .filter(
-        (f) => f.status === "resolved" && beforeFindings.get(f.finding_key)?.status !== "resolved",
+        (f) =>
+          f.status === "resolved" &&
+          ["open", "requested"].includes(beforeFindings.get(f.finding_key)?.status ?? ""),
       )
       .map((f) => label(f.finding_key))
       .sort(),

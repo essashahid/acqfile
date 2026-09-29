@@ -12,6 +12,7 @@ import { fingerprint, isIrs, templateOps, type PageOptions } from "./doc";
 import { irsPage } from "./doc/irs";
 import { businessPlanDocx, financialWorkbook } from "./doc/office";
 import { drawPdfKit, drawPdfLib, embedFonts } from "./doc/sheet";
+import { FIXTURE_PRODUCER, RASTER_PRODUCER } from "./producer";
 export const FIXED_DATE = new Date("2026-09-15T12:00:00.000Z");
 export const PASSWORD = "SYNTHETIC-FIXTURE-PASSWORD";
 export async function normalizedZip(bytes: Buffer) {
@@ -42,8 +43,8 @@ export async function textPdf(p: Plan, docs: Doc[], acro = false, o: PageOptions
   const pdf = await PDFDocument.create();
   pdf.setCreationDate(FIXED_DATE);
   pdf.setModificationDate(FIXED_DATE);
-  pdf.setCreator("AcqFile synthetic fixtures");
-  pdf.setProducer("AcqFile synthetic fixtures");
+  pdf.setCreator(FIXTURE_PRODUCER);
+  pdf.setProducer(FIXTURE_PRODUCER);
   pdf.setKeywords([fingerprint(docs)]);
   const fonts = await embedFonts(pdf);
   for (const d of docs) {
@@ -62,7 +63,7 @@ export async function protectedPdf(p: Plan, docs: Doc[]) {
       ownerPassword: "SYNTHETIC-OWNER-ONLY",
       info: {
         Title: "Synthetic formation document",
-        Author: "AcqFile",
+        Author: FIXTURE_PRODUCER,
         CreationDate: FIXED_DATE,
         ModDate: FIXED_DATE,
         Keywords: fingerprint(docs),
@@ -85,9 +86,18 @@ export async function docx(p: Plan, docs: Doc[]) {
 export async function xlsx(p: Plan, docs: Doc[]) {
   return normalizedZip(await financialWorkbook(p, docs));
 }
+/** Writes the generator's document information into an image-only PDF without touching its
+ * pages. Applied to every raster output, including a committed canonical scan, so the name can
+ * change without re-rasterizing; idempotent, and a no-op on bytes that already carry it. */
+export async function stampRaster(bytes: Buffer) {
+  const pdf = await PDFDocument.load(bytes, { updateMetadata: false });
+  pdf.setCreator(RASTER_PRODUCER);
+  pdf.setProducer(RASTER_PRODUCER);
+  return Buffer.from(await pdf.save({ useObjectStreams: false }));
+}
 // Poppler/fonts can differ by host. Committed image-only PDFs are canonical A22 artifacts.
 export async function rasterPdf(p: Plan, docs: Doc[]) {
-  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "acqfile-raster-"));
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "synthetic-raster-"));
   try {
     fs.writeFileSync(path.join(temp, "text.pdf"), await textPdf(p, docs));
     execFileSync(
@@ -98,8 +108,8 @@ export async function rasterPdf(p: Plan, docs: Doc[]) {
     const pdf = await PDFDocument.create();
     pdf.setCreationDate(FIXED_DATE);
     pdf.setModificationDate(FIXED_DATE);
-    pdf.setCreator("AcqFile synthetic raster fixtures");
-    pdf.setProducer("AcqFile synthetic raster fixtures");
+    pdf.setCreator(RASTER_PRODUCER);
+    pdf.setProducer(RASTER_PRODUCER);
     pdf.setKeywords([fingerprint(docs)]);
     for (const file of fs
       .readdirSync(temp)

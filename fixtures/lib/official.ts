@@ -4,6 +4,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { officialForm } from "../../src/lib/config/official-form-fields";
 import type { Doc, Plan } from "../plans/shared";
 import { display } from "./truth";
+import { FIXTURE_PRODUCER } from "./producer";
 export async function officialPdf(p: Plan, d: Doc) {
   const spec = officialForm(d.type);
   if (!spec) throw Error("Not an official type");
@@ -46,8 +47,8 @@ export async function officialPdf(p: Plan, d: Doc) {
   form.updateFieldAppearances();
   pdf.setCreationDate(new Date("2026-09-15T12:00:00Z"));
   pdf.setModificationDate(new Date("2026-09-15T12:00:00Z"));
-  pdf.setCreator("AcqFile synthetic fixtures");
-  pdf.setProducer("AcqFile synthetic fixtures");
+  pdf.setCreator(FIXTURE_PRODUCER);
+  pdf.setProducer(FIXTURE_PRODUCER);
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   for (const page of pdf.getPages()) {
     page.drawRectangle({

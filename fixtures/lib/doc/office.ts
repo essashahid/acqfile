@@ -26,6 +26,7 @@ import { buyerName, context, industry, lenderName, targetName } from "./kit";
 import { cue, metaLines, signatureLine } from "./quotes";
 import { Sheet, loadMetrics } from "./sheet";
 import { financialLines } from "./statements";
+import { FIXTURE_PRODUCER } from "../producer";
 
 const FIXED = new Date("2026-09-15T12:00:00.000Z");
 
@@ -163,7 +164,7 @@ export async function businessPlanDocx(p: Plan, docs: Doc[]) {
     });
   }
   const document = new Document({
-    creator: "AcqFile synthetic fixtures",
+    creator: FIXTURE_PRODUCER,
     title: cue(docs[0]!),
     description: "Synthetic business plan",
     sections,

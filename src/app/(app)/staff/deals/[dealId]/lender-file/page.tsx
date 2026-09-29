@@ -216,37 +216,47 @@ export default async function LenderFile({
                     their supplied contents.
                   </p>
                   <div className="mt-4 border-t border-[var(--line)] pt-4">
-                    <p className="eyebrow mb-2">Changed since the previous version</p>
-                    <ul className="space-y-1.5">
-                      {(Object.keys(DIFF_LABEL) as (keyof SnapshotDiff)[]).map((k) => {
-                        const value = diff[k];
-                        const empty = Array.isArray(value) ? !value.length : !value;
-                        if (empty) return null;
-                        return (
-                          <li key={k}>
-                            <span className="font-medium">{DIFF_LABEL[k]}:</span>{" "}
-                            <span className="meta">
-                              {Array.isArray(value)
-                                ? value
-                                    .map((entry) =>
-                                      entry.replace(
-                                        /^[A-Z]+-\d+[a-z]?/,
-                                        (id) => v.rules.get(id)?.title ?? id,
-                                      ),
-                                    )
-                                    .join("; ")
-                                : value}
-                            </span>
-                          </li>
-                        );
-                      })}
-                      {(Object.keys(DIFF_LABEL) as (keyof SnapshotDiff)[]).every((k) => {
-                        const value = diff[k];
-                        return Array.isArray(value) ? !value.length : !value;
-                      }) ? (
-                        <li className="meta">Nothing changed since the previous version.</li>
-                      ) : null}
-                    </ul>
+                    <p className="eyebrow mb-2">
+                      {latest.number === 1
+                        ? "Initial version"
+                        : `Changed since version ${latest.number - 1}`}
+                    </p>
+                    {latest.number === 1 ? (
+                      <p className="meta">
+                        This is the first version, so there is no previous version to compare with.
+                      </p>
+                    ) : (
+                      <ul className="space-y-1.5">
+                        {(Object.keys(DIFF_LABEL) as (keyof SnapshotDiff)[]).map((k) => {
+                          const value = diff[k];
+                          const empty = Array.isArray(value) ? !value.length : !value;
+                          if (empty) return null;
+                          return (
+                            <li key={k}>
+                              <span className="font-medium">{DIFF_LABEL[k]}:</span>{" "}
+                              <span className="meta">
+                                {Array.isArray(value)
+                                  ? value
+                                      .map((entry) =>
+                                        entry.replace(
+                                          /^[A-Z]+-\d+[a-z]?/,
+                                          (id) => v.rules.get(id)?.title ?? id,
+                                        ),
+                                      )
+                                      .join("; ")
+                                  : value}
+                              </span>
+                            </li>
+                          );
+                        })}
+                        {(Object.keys(DIFF_LABEL) as (keyof SnapshotDiff)[]).every((k) => {
+                          const value = diff[k];
+                          return Array.isArray(value) ? !value.length : !value;
+                        }) ? (
+                          <li className="meta">Nothing changed since the previous version.</li>
+                        ) : null}
+                      </ul>
+                    )}
                   </div>
                   <details className="reveal mt-4">
                     <summary>Included files and original details</summary>

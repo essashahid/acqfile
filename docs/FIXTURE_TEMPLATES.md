@@ -64,6 +64,15 @@ Extraction and evaluation read these documents exactly as they read real ones, s
 
 Check the rules end to end: `pnpm fixtures:generate --check` (byte-identical regeneration) and `pnpm fixtures:check` (oracles, text quotes, cues, lint).
 
+## Document properties
+
+Every generated file names a neutral generator in its properties, from `fixtures/lib/producer.ts`: "Synthetic fixture generator" (PDF Creator/Producer, the protected PDF's Author, the business plan's creator), "… (image-only pages)" for scans and "… (official IRS page, fields removed)" for the IRS pages. It is deliberately not a product name, so a rename never requires regenerating the corpus. Uploaded and exported documents are never rewritten.
+
+- `pnpm exec tsx scripts/prepare-irs-forms.ts` re-prepares the IRS pages offline once `.data/irs-originals` holds the downloaded originals; their SHA-256 must match `layout.json`.
+- `pnpm fixtures:generate` passes each committed canonical scan through `stampRaster`, which rewrites only its document information (pdf-lib load and save; the page images are unchanged and the step is idempotent), so scans need neither Poppler nor `--rebuild-scans` for a property change.
+- `pnpm demo:generate --rebuild-protected` re-renders only the demo's protected PDFs. PDFKit compresses with Node's own zlib, so protected-PDF bytes follow the Node version; the other formats use pako and do not.
+- `pnpm exec tsx scripts/check-product-name.ts [paths]` searches PDF information, XMP and text streams, Office parts and nested ZIPs (fixture batches, lender packages) for the former product name. It cannot read the encrypted properties of the password-protected PDFs; `tests/unit/protected-pdf-metadata.test.ts` does, decrypting each generated protected PDF with the synthetic password twice (PDF.js, and the standard security handler implemented in the test) and checking every Info field, the XMP packet and the page text.
+
 ## Not changed
 
 - The holdout case `fixtures/holdout/U01` keeps its deliberately informal wording; it tests live reading of unstructured files and is independent of these templates.

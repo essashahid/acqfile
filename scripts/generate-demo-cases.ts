@@ -44,10 +44,14 @@ async function main() {
         const file =
           original.batch > 1 ? `${c.id}/${original.path}` : `shared/${key.slice(0, 20)}.${ext}`;
         const target = path.join(root, file);
-        // Protected and raster files are canonical artifacts, independent of local raster/encryption randomness.
+        // Protected and raster files are canonical artifacts, independent of local raster/encryption
+        // randomness. --rebuild-protected re-renders only the protected files (PDFKit compresses
+        // with Node's zlib, so its bytes follow the Node version).
         const canonical =
           !process.argv.includes("--rebuild-scans") &&
-          ["scan_pdf", "protected_pdf"].includes(original.format) &&
+          (original.format === "scan_pdf" ||
+            (original.format === "protected_pdf" &&
+              !process.argv.includes("--rebuild-protected"))) &&
           fs.existsSync(target);
         const bytes = canonical ? fs.readFileSync(target) : await render(p, original, c.id);
         fs.mkdirSync(path.dirname(target), { recursive: true });

@@ -8,7 +8,7 @@ import { sourceUrl } from "@/lib/deals/source-url";
 import { mutationAllowed, originalAccessAllowed } from "@/lib/access";
 import type { FilingRecord } from "@/lib/deals/filing";
 import { FileReview } from "../../../FileReview";
-import { documentName } from "@/lib/staff/labels";
+import { documentName, reviewSubject } from "@/lib/staff/labels";
 import { dealView } from "@/lib/staff/deal-view";
 import { actionHref, explainItem, itemChecks, safeReturn } from "@/lib/staff/explain";
 import { Card, PageHead, Pill } from "@/components/staff";
@@ -129,7 +129,8 @@ export default async function FilePage({
                 : undefined,
             });
       context = {
-        title: rule.title,
+        // Neutral: "Purchase prices", not the condition "Purchase prices agree" above a disagreement.
+        title: reviewSubject(rule.title),
         subject: `${v.party(scope)}${period ? ` · ${period}` : ""}`,
         summary: ex.summary,
         saved: ex.open[0]?.saved,

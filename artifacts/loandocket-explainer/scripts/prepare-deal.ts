@@ -26,8 +26,8 @@ import { processDealRun } from "@/lib/deals/process";
 import { assertSampleKey } from "@/lib/deals/identifiers";
 import type { SessionContext } from "@/lib/workspace";
 
-const CODE = process.argv[2];
-if (!CODE || !/^[A-Za-z0-9][A-Za-z0-9-]{2,39}$/.test(CODE))
+const CODE = process.argv[2] ?? "";
+if (!/^[A-Za-z0-9][A-Za-z0-9-]{2,39}$/.test(CODE))
   throw Error("Usage: prepare-deal.ts <NEW-DEAL-CODE>");
 const CASE = "D08";
 /** Held back from the first batch and uploaded on camera, under these plain names. */

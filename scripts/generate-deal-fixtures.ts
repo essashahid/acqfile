@@ -6,7 +6,15 @@ import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { plans } from "../fixtures/lib/plans";
 import { groups, writeTruth, json } from "../fixtures/lib/truth";
-import { textPdf, protectedPdf, docx, xlsx, rasterPdf, FIXED_DATE } from "../fixtures/lib/render";
+import {
+  textPdf,
+  protectedPdf,
+  docx,
+  xlsx,
+  rasterPdf,
+  stampRaster,
+  FIXED_DATE,
+} from "../fixtures/lib/render";
 import { documentPages } from "../src/lib/config/official-form-fields";
 import { content } from "../fixtures/lib/content";
 import { hashObject } from "../src/lib/hash";
@@ -68,6 +76,7 @@ async function generate(p: Plan, root: string, rebuild: boolean) {
       );
       bytes = fs.readFileSync(path.join(committed, file));
       assert.equal(sha(bytes), previous.sha256, "Canonical scan hash mismatch");
+      bytes = await stampRaster(bytes); // pages unchanged; document information only
     } else
       switch (d.format) {
         case "text_pdf":

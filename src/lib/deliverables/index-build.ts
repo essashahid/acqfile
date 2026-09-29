@@ -135,6 +135,9 @@ export type IndexRow = {
   responsible?: string;
   submission_stage?: string;
   decision_reason?: string;
+  /** Lender tracking recorded by hand for a lender-ordered item; null when nothing is recorded.
+   * Absent on rows without a tracking check and on versions frozen before format 3. */
+  tracking?: string | null;
 };
 export type SourceRow = {
   fact_id: string;
@@ -149,7 +152,10 @@ export type SourceRow = {
   method: string;
   confidence: number;
   review_status: string;
+  /** The reviewer's account id: internal, never exported. */
   reviewer: string;
+  /** Format 3: the reviewer as the package names them. */
+  reviewer_name?: string;
   reviewed_at: string;
   file_hash: string;
   record_version?: number;
@@ -302,6 +308,13 @@ export async function buildIndex(dealId: string) {
         })),
         scope_key: r.scopeKey,
         folder,
+        ...(rule?.checks.some((c) => c.type === "tracking")
+          ? {
+              tracking:
+                input.tracking.find((t) => t.rule_id === r.itemId && t.scope_key === r.scopeKey)
+                  ?.state ?? null,
+            }
+          : {}),
       };
     })
     .sort(
