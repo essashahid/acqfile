@@ -5,7 +5,7 @@
     "dealName": "Varnholt Climate Services LLC",
     "packageVersion": 1
   },
-  "voice": "say-samantha-168",
+  "voice": "gemini-38-flash-tts-iapetus",
   "fps": 30,
   "crossfade": 0.35,
   "duration": { "min": 75, "max": 90 },
@@ -14,8 +14,8 @@
   "closing": {
     "duration": 8.0,
     "lines": [
-      "Organized documents. Clear follow-ups.",
-      "An organized file, with outstanding work clearly recorded."
+      "Scattered documents become one clear lender file.",
+      "Sources, missing items, and follow-ups stay visible."
     ]
   },
   "steps": {

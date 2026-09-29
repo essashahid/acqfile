@@ -43,6 +43,6 @@ Saving a version packages the renamed documents, an index, and a report, ready t
 The report lists the work still outstanding, then the preferred price, with its reason, its sources, and the corrections still needed.
 
 12
-00:01:21,567 --> 00:01:28,587
-Organized documents. Clear follow-ups. An organized file, with outstanding work clearly recorded.
+00:01:21,567 --> 00:01:28,422
+Scattered documents become one clear lender file. Sources, missing items, and follow-ups stay visible.
 

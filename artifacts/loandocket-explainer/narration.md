@@ -1,25 +1,26 @@
 # LoanDocket explainer: narration
 
-- **Final length:** 88.8 seconds, 200 spoken words in 12 cues.
-- **Voice (temporary):** macOS built-in `say`, voice "Samantha" (en_US), at 168 words per minute. It runs on the device; no network service, account or API key is used. This is a placeholder track. A later pass replaces it, and this is not the final voice.
-- **Pronunciation:** the product name is written "Loan Docket" in the spoken text so the voice reads it as two words. Amounts are written out ("one million, fifty thousand dollars"). The captions use "LoanDocket" and figures such as "$1,050,000"; otherwise they match the spoken words.
+- **Final length:** 88.8 seconds, 200 spoken words in 12 cues. Times below are when each cue is spoken.
+- **Voice:** Gemini API text-to-speech, model `gemini-3.8-flash-tts`, voice "Iapetus". Each cue was generated separately and then sped up by one uniform, pitch-preserving `atempo=1.16` for every cue, so the narration fits the existing picture. The picture was not re-rendered. Voice set: `work/audio/gemini-38-flash-tts-iapetus/` (the unadjusted takes are in `work/audio/gemini-3.8-flash-tts-iapetus/`). How it was made and checked: [README](README.md#current-voice-gemini-iapetus).
+- **Heard by a person:** yes. The user watched the complete final video, including the revised closing (n12), and approved all twelve cues and the closing card. LoanDocket, Kiel and McDermott were confirmed by ear to sound correct. No cue is awaiting a listening check.
+- **Pronunciation:** the spoken text writes the product name "Loan Docket" so it is read as two words, and the Gemini direction repeats this. It also asks for "Kiel" as "Keel" and "McDermott" as "Mick-DER-mott", and says to read the amounts as written ("one million, fifty thousand dollars"; "one million"). An earlier machine transcription spelled the product name "LoanDocIt" and "Kiel" "Cale". These were transcription artifacts, superseded by the listening check. The captions use "LoanDocket" and figures such as "$1,050,000"; otherwise they match the spoken words.
 - **Source of truth:** [narration.json](narration.json) holds each cue's spoken `text` and its `caption`. [captions.srt](captions.srt) is generated from it by `render.py`. Cue placement (`shot` and `at`) is in [scripts/edit.json](scripts/edit.json).
 
-| #   | Time        | Screen                                        | Narration                                                                                                                                                                |
-| --- | ----------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | 0:00.7–0:08 | Opening illustration                          | Preparing an acquisition loan file means collecting documents from several people, checking the details, and chasing what's missing.                                     |
-| 2   | 0:08.7–0:15 | Documents: upload of three files              | LoanDocket brings the documents into one file. Here, an amended purchase agreement and two personal documents arrive.                                                    |
-| 3   | 0:15.9–0:19 | Library filtered to Kiel McDermott            | Each one is filed under the person or business it belongs to.                                                                                                            |
-| 4   | 0:20.9–0:27 | Overview, "Next up"                           | The overview shows what still needs attention. Kiel McDermott's 2025 tax return is not on file.                                                                          |
-| 5   | 0:27.9–0:37 | Review card, then the document opened from it | And the documents disagree on the purchase price. The amended agreement says one million, fifty thousand dollars. The letter of intent and funding plan say one million. |
-| 6   | 0:37.7–0:41 | Agreement values beside page 1, clause 2.1    | From the review, each figure opens the page it came from.                                                                                                                |
-| 7   | 0:41.9–0:48 | Question page, answer, Review after saving    | The reviewer records a preferred price and the reason. The discrepancy stays open until the supporting documents are corrected.                                          |
-| —   | 0:48.5–0:53 | Review, then the answer reopened              | (pause: the screen shows "this stays open until they agree" and the saved answer)                                                                                        |
-| 8   | 0:53.8–1:01 | Follow-ups: Kiel McDermott's draft            | LoanDocket drafts one message per recipient. The reviewer adds a request for corrected copies, then copies the message to send themselves.                               |
-| 9   | 1:03.4–1:06 | Lender file: preparation status               | The lender file screen lists what is still outstanding.                                                                                                                  |
-| 10  | 1:06.6–1:12 | Create version, download ZIP                  | Saving a version packages the renamed documents, an index, and a report, ready to download.                                                                              |
-| 11  | 1:13.0–1:20 | Report from the downloaded ZIP                | The report lists the work still outstanding, then the preferred price, with its reason, its sources, and the corrections still needed.                                   |
-| 12  | 1:21.7–1:28 | Closing card                                  | Organized documents. Clear follow-ups. An organized file, with outstanding work clearly recorded.                                                                        |
+| #   | Time          | Screen                                        | Narration                                                                                                                                                                |
+| --- | ------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 0:00.7–0:07.2 | Opening illustration                          | Preparing an acquisition loan file means collecting documents from several people, checking the details, and chasing what's missing.                                     |
+| 2   | 0:08.7–0:14.9 | Documents: upload of three files              | LoanDocket brings the documents into one file. Here, an amended purchase agreement and two personal documents arrive.                                                    |
+| 3   | 0:15.9–0:19.4 | Library filtered to Kiel McDermott            | Each one is filed under the person or business it belongs to.                                                                                                            |
+| 4   | 0:20.9–0:26.8 | Overview, "Next up"                           | The overview shows what still needs attention. Kiel McDermott's 2025 tax return is not on file.                                                                          |
+| 5   | 0:27.9–0:37.0 | Review card, then the document opened from it | And the documents disagree on the purchase price. The amended agreement says one million, fifty thousand dollars. The letter of intent and funding plan say one million. |
+| 6   | 0:37.7–0:40.9 | Agreement values beside page 1, clause 2.1    | From the review, each figure opens the page it came from.                                                                                                                |
+| 7   | 0:41.9–0:48.4 | Question page, answer, Review after saving    | The reviewer records a preferred price and the reason. The discrepancy stays open until the supporting documents are corrected.                                          |
+| —   | 0:48.4–0:53.8 | Review, then the answer reopened              | (pause: the screen shows "this stays open until they agree" and the saved answer)                                                                                        |
+| 8   | 0:53.8–1:02.0 | Follow-ups: Kiel McDermott's draft            | LoanDocket drafts one message per recipient. The reviewer adds a request for corrected copies, then copies the message to send themselves.                               |
+| 9   | 1:03.4–1:06.2 | Lender file: preparation status               | The lender file screen lists what is still outstanding.                                                                                                                  |
+| 10  | 1:06.6–1:12.6 | Create version, download ZIP                  | Saving a version packages the renamed documents, an index, and a report, ready to download.                                                                              |
+| 11  | 1:13.0–1:20.0 | Report from the downloaded ZIP                | The report lists the work still outstanding, then the preferred price, with its reason, its sources, and the corrections still needed.                                   |
+| 12  | 1:21.7–1:28.0 | Closing card                                  | Scattered documents become one clear lender file. Sources, missing items, and follow-ups stay visible.                                                                   |
 
 ## Claims and what supports them
 
@@ -48,3 +49,14 @@ The narration does not say the conflict is resolved or that the file is complete
 - n11: "Outstanding items stay on the record, including the price question and its quoted sources" became the report line above, because the package now shows the preferred price.
 - n12 and the closing card: "A file prepared for lender review" became "An organized file, with outstanding work clearly recorded", because the package shown is incomplete.
 - n1, n5, n8 captions now follow the spoken words.
+
+## Voice replacement (2026-09-29)
+
+- The temporary macOS `say` voice "Samantha" was replaced by Gemini "Iapetus". Only the audio track changed. The video stream and the caption track (burned-in and embedded) are byte-for-byte those of the previous version, so each cue still starts where it did. `captions.srt` is unchanged.
+- The Samantha version is kept locally at `work/archive/loandocket-explainer-samantha-before-iapetus.mp4`, with its captions, this file and the README as they were.
+- The wording did not change. n8 was generated one sentence at a time and joined with about 0.2 s of silence, because the model repeated the whole cue when asked for it in one request.
+
+## Closing revision (2026-09-29)
+
+- n12 and the closing card: "Organized documents. Clear follow-ups. An organized file, with outstanding work clearly recorded." became "Scattered documents become one clear lender file. Sources, missing items, and follow-ups stay visible." The card shows the two sentences as its two lines.
+- Only the closing changed. n12 was generated one sentence at a time (like n8) and sped up by the same `atempo=1.16`. It starts where it did, at 81.7 s, and ends at 88.0 s. The closing card was re-rendered with `cards.mjs` (same logo, fonts, layout and disclaimer). Every frame up to the end of the crossfade into the card is unchanged, and cues n1–n11 and their captions are unchanged.
