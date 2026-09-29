@@ -37,6 +37,32 @@ export default function HowItWorksPage() {
         subtitle={`${PRODUCT_NAME} helps you prepare an acquisition loan file. It does not approve loans or decide eligibility; the lender does.`}
       />
       <div className="space-y-5">
+        <Card
+          title={`See ${PRODUCT_NAME} in action`}
+          description="Follow one synthetic acquisition file from document intake through review, follow-ups, and a lender package."
+        >
+          {/* Narration captions are part of the picture; the English track is optional and starts off. */}
+          <video
+            controls
+            preload="metadata"
+            playsInline
+            aria-label={`${PRODUCT_NAME} product walkthrough`}
+            className="block aspect-video w-full rounded-[var(--r-md)] border border-line bg-black"
+          >
+            <source src="/videos/loandocket-explainer.mp4" type="video/mp4" />
+            <track
+              src="/videos/loandocket-explainer.en.vtt"
+              kind="captions"
+              srcLang="en"
+              label="English"
+            />
+            Your browser cannot play this video.{" "}
+            <a href="/videos/loandocket-explainer.mp4">
+              Download the {PRODUCT_NAME} walkthrough (MP4)
+            </a>
+            .
+          </video>
+        </Card>
         <Card title="The workflow">
           <ol className="space-y-2.5">
             {STEPS.map(([title, body], i) => (
