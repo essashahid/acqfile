@@ -8,11 +8,17 @@
   "voice": "gemini-38-flash-tts-iapetus",
   "fps": 30,
   "crossfade": 0.35,
-  "duration": { "min": 75, "max": 90 },
-  "note": "Shot times are recording markers (+/- seconds). crop = [x, y, width] in the 1440x810 CSS layout; height is width*920/1920 (app area above the caption band). hold = seconds to freeze the last frame. Caption cues start 'at' seconds into their shot.",
-  "opening": { "duration": 8.5, "step": 0, "label": "Documents arrive from everywhere" },
+  "duration": {
+    "min": 75,
+    "max": 90
+  },
+  "note": "Shot times are recording markers (+/- seconds). crop = [x, y, width] in the 1440x810 CSS layout; height is width*1080/1920 (the footage fills the frame). hold = seconds to freeze the last frame; lead = seconds to hold the first frame before the shot plays. crop_y = optional [marker, y] keys: the crop's y eases (smoothstep) between keys and holds the first and last; the last must equal crop's y. Caption cues start 'at' seconds into their shot; every cue is spoken and in the optional caption track, and none is drawn into the picture. Each section (step 0 is the opening) gets one brief introduction: a dark lower band with the step name and one line, shown 'show' seconds after its first shot begins, for 'seconds', then gone. freeze = optional [marker, marker] ranges whose frames are replaced by the frame just before. transition = \"cut\" switches to the shot in one frame at the middle of the usual overlap (timing unchanged).",
+  "opening": {
+    "duration": 8.5,
+    "step": 0
+  },
   "closing": {
-    "duration": 8.0,
+    "duration": 4.5,
     "lines": [
       "Scattered documents become one clear lender file.",
       "Sources, missing items, and follow-ups stay visible."
@@ -21,146 +27,159 @@
   "steps": {
     "0": "The problem",
     "1": "Step 1 · Collect",
-    "2": "Step 2 · What needs attention",
+    "2": "Step 2 · Find what needs attention",
     "3": "Step 3 · Review and follow up",
     "4": "Step 4 · The lender file"
+  },
+  "intros": {
+    "show": 0.2,
+    "seconds": 3.2,
+    "text": {
+      "0": "Documents arrive from everywhere",
+      "1": "Filed by person and business",
+      "2": "A missing return, prices differ",
+      "3": "Record an answer and prepare requests",
+      "4": "Outstanding work stays visible"
+    }
   },
   "shots": [
     {
       "id": "upload",
-      "from": "s2-choose-0.4",
-      "to": "s2-received+3.2",
-      "crop": [250, 245, 1180],
-      "step": 1,
-      "label": "New documents arrive"
+      "from": "s2-documents-0.7",
+      "lead": 0.766667,
+      "to": "s2-received+1.08",
+      "crop": [250, 146, 1180],
+      "crop_y": [
+        ["s2-documents+0.1", 120],
+        ["s2-documents+1.8", 146]
+      ],
+      "step": 1
     },
     {
       "id": "library",
-      "from": "s2-library+1.8",
+      "from": "s2-library+2.8",
       "to": "s2-filtered",
-      "crop": [250, 50, 1180],
-      "step": 1,
-      "label": "Filed by person and business"
+      "crop": [250, 120, 1180],
+      "crop_y": [
+        ["s2-library+4.66", 50],
+        ["s2-library+4.69", 120]
+      ],
+      "freeze": [["s2-library+4.39", "s2-library+4.69"]],
+      "step": 1
     },
     {
       "id": "library-kiel",
       "from": "s2-filtered",
       "to": "s2-filtered+2.6",
-      "crop": [270, 269, 1130],
-      "step": 1,
-      "label": "Filed by person and business"
+      "crop": [270, 174, 1130],
+      "step": 1
     },
     {
       "id": "overview",
       "from": "s3-overview+0.2",
       "to": "s3-compare-nav",
-      "crop": [270, 200, 1140],
-      "step": 2,
-      "label": "What still needs attention"
+      "crop": [270, 169, 1140],
+      "step": 2
     },
     {
       "id": "review",
       "from": "s3-review+0.1",
-      "to": "s3-source-nav+0.3",
-      "crop": [600, 120, 820],
-      "step": 2,
-      "label": "Two purchase prices disagree"
+      "lead": 3.866667,
+      "to": "s3-source-nav+0.5",
+      "crop": [270, 50, 1120],
+      "step": 2
     },
     {
       "id": "document",
-      "from": "s3-document-0.2",
-      "to": "s3-values-nav+0.3",
+      "from": "s3-values-nav-0.883",
+      "to": "s3-values-nav+0.85",
       "crop": [270, 30, 1140],
-      "step": 2,
-      "label": "Opened from the review"
+      "step": 2
     },
     {
       "id": "source",
       "from": "s3-source-0.2",
-      "to": "s3-source+2.4",
+      "to": "s3-source+1.633",
       "crop": [270, 100, 1150],
-      "step": 2,
-      "label": "Each figure links to its page"
+      "step": 2
     },
     {
       "id": "source-close",
-      "from": "s3-source+2.4",
-      "to": "s3-source+5.6",
-      "crop": [700, 300, 690],
-      "step": 2,
-      "label": "Each figure links to its page"
+      "from": "s3-source+1.633",
+      "to": "s3-source+3.466",
+      "crop": [680, 240, 760],
+      "step": 2
     },
     {
       "id": "question",
-      "from": "s4-question",
-      "to": "s4-question+1.5",
-      "crop": [345, 60, 1080],
-      "step": 3,
-      "label": "Reviewer records a preferred price"
+      "from": "s4-question+0.4",
+      "to": "s4-question+1.2",
+      "crop": [345, 50, 1000],
+      "step": 3
     },
     {
       "id": "answer",
-      "from": "s4-question+2.8",
-      "to": "s4-send+0.9",
-      "crop": [380, 340, 960],
-      "step": 3,
-      "label": "Reviewer records a preferred price"
+      "from": "s4-question+0.85",
+      "to": "s4-send+1.1",
+      "crop": [345, 248, 1000],
+      "crop_y": [
+        ["s4-question+2.05", 50],
+        ["s4-question+2.85", 248]
+      ],
+      "transition": "cut",
+      "step": 3
     },
     {
       "id": "recorded",
-      "from": "s4-recorded+0.2",
+      "from": "s4-recorded+1.433",
       "to": "s4-reopen-nav+0.2",
-      "crop": [620, 290, 790],
-      "step": 3,
-      "label": "Saved; the disagreement stays open"
+      "crop": [600, 250, 840],
+      "transition": "cut",
+      "step": 3
     },
     {
       "id": "reopened",
       "from": "s4-reopened",
-      "to": "s4-reopened+2.4",
-      "crop": [345, 300, 1000],
-      "step": 3,
-      "label": "Saved; the disagreement stays open"
+      "to": "s4-reopened+2.145",
+      "crop": [390, 478, 590],
+      "transition": "cut",
+      "step": 3
     },
     {
       "id": "followups",
       "from": "s4-followups",
       "to": "s4-draft+0.4",
       "crop": [270, 120, 1150],
-      "step": 3,
-      "label": "One draft per recipient"
+      "transition": "cut",
+      "step": 3
     },
     {
       "id": "draft",
       "from": "s4-draft+0.4",
       "to": "s4-copied+0.5",
-      "crop": [540, 300, 880],
-      "step": 3,
-      "label": "Edit the draft, then copy it"
+      "crop": [480, 220, 960],
+      "step": 3
     },
     {
       "id": "lender",
       "from": "s5-lender",
       "to": "s5-lender+3.8",
       "crop": [270, 110, 1150],
-      "step": 4,
-      "label": "Outstanding work listed"
+      "step": 4
     },
     {
       "id": "version",
       "from": "s5-confirm-0.3",
       "to": "s5-downloaded+0.5",
       "crop": [240, 40, 1200],
-      "step": 4,
-      "label": "Save a version, download it"
+      "step": 4
     },
     {
       "id": "report",
       "from": "s5-report+0.3",
       "to": "s5-report+3.6",
       "crop": [0, 0, 1440],
-      "step": 4,
-      "label": "Outstanding work in the report"
+      "step": 4
     },
     {
       "id": "report-answer",
@@ -168,22 +187,69 @@
       "to": "s5-answer+5.2",
       "hold": 0.4,
       "crop": [0, 0, 1440],
-      "step": 4,
-      "label": "Preferred price, reason, sources"
+      "step": 4
     }
   ],
   "captions": [
-    { "id": "n1", "shot": "opening", "at": 0.7 },
-    { "id": "n2", "shot": "upload", "at": 0.5 },
-    { "id": "n3", "shot": "library", "at": 1.0 },
-    { "id": "n4", "shot": "overview", "at": 0.4 },
-    { "id": "n5", "shot": "review", "at": 0.2 },
-    { "id": "n6", "shot": "source", "at": 1.4 },
-    { "id": "n7", "shot": "question", "at": 0.5 },
-    { "id": "n8", "shot": "followups", "at": 0.6 },
-    { "id": "n9", "shot": "lender", "at": 0.4 },
-    { "id": "n10", "shot": "version", "at": 0.2 },
-    { "id": "n11", "shot": "report", "at": 0.4 },
-    { "id": "n12", "shot": "closing", "at": 0.9, "overlay": false }
+    {
+      "id": "n1",
+      "shot": "opening",
+      "at": 0.7
+    },
+    {
+      "id": "n2",
+      "shot": "upload",
+      "at": 0.5
+    },
+    {
+      "id": "n3",
+      "shot": "library",
+      "at": 0.0
+    },
+    {
+      "id": "n4",
+      "shot": "overview",
+      "at": 0.4
+    },
+    {
+      "id": "n5",
+      "shot": "review",
+      "at": 0.2
+    },
+    {
+      "id": "n6",
+      "shot": "document",
+      "at": 0.65
+    },
+    {
+      "id": "n7",
+      "shot": "question",
+      "at": 0.5
+    },
+    {
+      "id": "n7b",
+      "shot": "recorded",
+      "at": 0.08
+    },
+    {
+      "id": "n8",
+      "shot": "followups",
+      "at": 0.6
+    },
+    {
+      "id": "n9",
+      "shot": "lender",
+      "at": 0.4
+    },
+    {
+      "id": "n10",
+      "shot": "version",
+      "at": 0.2
+    },
+    {
+      "id": "n11",
+      "shot": "report",
+      "at": 0.4
+    }
   ]
 }

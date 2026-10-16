@@ -35,6 +35,11 @@
     "caption": "The reviewer records a preferred price and the reason. The discrepancy stays open until the supporting documents are corrected."
   },
   {
+    "id": "n7b",
+    "text": "The reviewer can reopen the saved answer and see the reason.",
+    "caption": "The reviewer can reopen the saved answer and see the reason."
+  },
+  {
     "id": "n8",
     "text": "Loan Docket drafts one message per recipient. The reviewer adds a request for corrected copies, then copies the message to send themselves.",
     "caption": "LoanDocket drafts one message per recipient. The reviewer adds a request for corrected copies, then copies the message to send themselves."
@@ -53,10 +58,5 @@
     "id": "n11",
     "text": "The report lists the work still outstanding, then the preferred price, with its reason, its sources, and the corrections still needed.",
     "caption": "The report lists the work still outstanding, then the preferred price, with its reason, its sources, and the corrections still needed."
-  },
-  {
-    "id": "n12",
-    "text": "Scattered documents become one clear lender file. Sources, missing items, and follow-ups stay visible.",
-    "caption": "Scattered documents become one clear lender file. Sources, missing items, and follow-ups stay visible."
   }
 ]

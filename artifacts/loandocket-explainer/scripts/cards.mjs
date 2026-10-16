@@ -1,5 +1,5 @@
-// Renders the opening illustration, closing card and all overlay PNGs (captions, labels,
-// disclosure) with the app's own fonts and colours. Deterministic: CSS animations are paused
+// Renders the opening illustration, closing card and the section introductions (one transparent
+// PNG per section: a dark lower band with the step name and one line) with the app's own fonts and colours. Deterministic: CSS animations are paused
 // and seeked frame by frame, so the output is identical on every run.
 // Fonts are the app's own (Public Sans, Source Serif 4; SIL OFL 1.1), committed in ../fonts.
 // Writes work/cards/manifest.json with a hash of every input; render.py refuses stale cards.
@@ -22,13 +22,11 @@ const FONT_FILES = [
 const INPUTS = [
   path.join(HERE, "scripts/cards.mjs"),
   path.join(HERE, "scripts/edit.json"),
-  path.join(HERE, "narration.json"),
   ...FONT_FILES.map((f) => path.join(FONT_DIR, f)),
 ];
 for (const f of INPUTS)
   if (!fs.existsSync(f)) throw Error(`Missing card input ${path.relative(HERE, f)}`);
 const edit = JSON.parse(fs.readFileSync(path.join(HERE, "scripts/edit.json"), "utf8"));
-const narration = JSON.parse(fs.readFileSync(path.join(HERE, "narration.json"), "utf8"));
 const FPS = edit.fps;
 
 const font = (f) => fs.readFileSync(path.join(FONT_DIR, f)).toString("base64");
@@ -54,7 +52,6 @@ const T = {
 const BASE_CSS = `${FONTS}
 * { box-sizing: border-box; margin: 0; }
 html, body { width: 1920px; height: 1080px; overflow: hidden; }
-.stage { height: 920px; }
 body { font-family: "Public Sans", system-ui, sans-serif; color: ${T.ink}; -webkit-font-smoothing: antialiased; }
 .serif { font-family: "Source Serif 4", Georgia, serif; }
 `;
@@ -124,12 +121,13 @@ h1 { position:absolute; left:160px; top:84px; font-size:68px; font-weight:600; l
 @keyframes rise { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform:none; } }
 @keyframes fade { from { opacity:0 } to { opacity:1 } }
 @keyframes pop { from { opacity:0; transform: scale(.85); } to { opacity:1; transform:none; } }
-</style></head><body>
+.frame { position:absolute; left:0; top:80px; width:1920px; height:920px; }
+</style></head><body><div class="frame">
 <h1 class="serif">Preparing an acquisition-loan file</h1>
 <div class="sub">Collect the documents. Check the details. Chase what's missing.</div>
 ${srcHtml}${docHtml}${flagHtml}
 <div class="note">Illustration</div>
-</body></html>`;
+</div></body></html>`;
 }
 
 // ── Closing card ────────────────────────────────────────────────────────────────
@@ -139,24 +137,22 @@ body { background:${T.bg}; display:grid; place-items:center; }
 .wrap { text-align:center; }
 .brand { display:inline-flex; align-items:center; gap:30px; font-size:96px; font-weight:600; letter-spacing:-.015em; animation: rise .8s ease-out .1s both; }
 .line { margin-top:56px; font-size:44px; line-height:1.4; color:${T.body}; animation: rise .8s ease-out .9s both; }
-.foot { position:absolute; left:0; right:0; bottom:64px; text-align:center; font-size:24px; color:${T.muted}; animation: fade .8s ease-out 1.6s both; }
 @keyframes rise { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform:none; } }
 @keyframes fade { from { opacity:0 } to { opacity:1 } }
 </style></head><body><div class="wrap">
 <div class="brand">${logo(112)}<span>LoanDocket</span></div>
 <div class="line serif">${edit.closing.lines.map(esc).join("<br>")}</div>
-</div><div class="foot">Prototype demonstration · Sample data · Supports document preparation and human review; lending decisions stay with the lender.</div></body></html>`;
+</div></body></html>`;
 }
 
 // ── Overlays: transparent full-frame PNGs ────────────────────────────────────────
-const BAND_TOP = 920; // app footage above, caption band below (drawn by render.py)
+// The band exists only while an introduction shows; render.py fades the whole PNG in and out.
+const BAND_TOP = 920;
 const overlayCss = `${BASE_CSS} html, body { background: transparent; } body { position: relative; }
-.cap { position:absolute; left:520px; right:64px; top:${BAND_TOP}px; height:134px; display:flex; align-items:center; color:#fff; font-size:34px; line-height:1.34; font-weight:500; text-wrap:pretty; }
-.label { position:absolute; left:64px; width:396px; top:${BAND_TOP}px; height:160px; display:flex; flex-direction:column; justify-content:center; gap:8px; color:#fff; }
+.band { position:absolute; left:0; right:0; top:${BAND_TOP}px; height:160px; background:${T.ink}; }
+.label { position:absolute; left:64px; top:${BAND_TOP}px; height:160px; display:flex; flex-direction:column; justify-content:center; gap:8px; color:#fff; white-space:nowrap; }
 .label .eyebrow { font-size:17px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#9DB0C3; }
 .label .text { font-size:28px; line-height:1.2; font-weight:600; }
-.rule { position:absolute; left:488px; top:${BAND_TOP + 34}px; width:1px; height:92px; background:rgba(255,255,255,.2); }
-.disc { position:absolute; left:520px; top:${BAND_TOP + 124}px; font-size:18px; letter-spacing:.02em; color:#9DB0C3; }
 `;
 const overlayHtml = (inner) =>
   `<!doctype html><html><head><style>${overlayCss}</style></head><body>${inner}</body></html>`;
@@ -167,8 +163,6 @@ const page = await browser.newPage({
   viewport: { width: 1920, height: 1080 },
   deviceScaleFactor: 1,
 });
-const clipFor = (name) =>
-  name === "opening" ? { x: 0, y: 0, width: 1920, height: 920 } : undefined;
 
 async function animate(name, html, seconds) {
   const dir = path.join(OUT, name);
@@ -185,7 +179,6 @@ async function animate(name, html, seconds) {
     );
     await page.screenshot({
       path: path.join(dir, `${String(i).padStart(4, "0")}.png`),
-      clip: clipFor(name),
     });
   }
   console.log(`${name}: ${n} frames`);
@@ -201,22 +194,13 @@ fs.mkdirSync(OUT, { recursive: true });
 await animate("opening", openingHtml(), edit.opening.duration);
 await animate("closing", closingHtml(), edit.closing.duration);
 
-for (const n of narration)
-  await still(`cap-${n.id}.png`, overlayHtml(`<div class="cap">${esc(n.caption)}</div>`));
-const labelled = [{ id: "opening", ...edit.opening }, ...edit.shots].filter((s) => s.label);
-for (const s of labelled)
+for (const [step, text] of Object.entries(edit.intros.text))
   await still(
-    `label-${s.id}.png`,
+    `intro-${step}.png`,
     overlayHtml(
-      `<div class="label"><span class="eyebrow">${esc(edit.steps[s.step])}</span><span class="text">${esc(s.label)}</span></div><div class="rule"></div>`,
+      `<div class="band"></div><div class="label"><span class="eyebrow">${esc(edit.steps[step])}</span><span class="text">${esc(text)}</span></div>`,
     ),
   );
-await still(
-  "disclosure.png",
-  overlayHtml(
-    `<div class="disc">Prototype demonstration · Sample data · Document readings prepared for this demo</div>`,
-  ),
-);
 await browser.close();
 const inputs = createHash("sha256");
 for (const f of INPUTS) inputs.update(fs.readFileSync(f));

@@ -39,9 +39,9 @@ export default function HowItWorksPage() {
       <div className="space-y-5">
         <Card
           title={`See ${PRODUCT_NAME} in action`}
-          description="Follow one synthetic acquisition file from document intake through review, follow-ups, and a lender package."
+          description="Follow one synthetic acquisition file from document intake through review, follow-ups, and a lender package. A prototype demonstration with sample data; the document readings were prepared for the demo."
         >
-          {/* Narration captions are part of the picture; the English track is optional and starts off. */}
+          {/* The narration is not drawn into the picture; the English caption track carries it and starts off. */}
           <video
             controls
             preload="metadata"
