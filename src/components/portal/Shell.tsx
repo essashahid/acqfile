@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
+import { demoProfilesEnabled } from "@/lib/auth/profiles";
 export type Stage = { title: string; note: string; done: boolean };
 export function Shell({
   firm,
@@ -22,6 +23,8 @@ export function Shell({
   account?: string;
   signOut?: () => Promise<void>;
 }) {
+  // Sample site: leaving lands on the profile picker, so the control says what it does.
+  const leave = demoProfilesEnabled() ? "Switch profile" : "Sign out";
   const current = Math.min(
     3,
     stages.findIndex((s) => !s.done) < 0 ? 3 : stages.findIndex((s) => !s.done),
@@ -39,7 +42,7 @@ export function Shell({
           <p className="muted hidden lg:block">Secure document portal</p>
           {account && signOut ? (
             <form action={signOut} className="lg:hidden">
-              <button className="text-link text-sm">Sign out</button>
+              <button className="text-link text-sm">{leave}</button>
             </form>
           ) : (
             <a className="text-link text-sm lg:hidden" href={`mailto:${email}`}>
@@ -51,7 +54,7 @@ export function Shell({
           <div className="mt-5 hidden lg:block">
             <p className="muted break-words">Signed in as {account}</p>
             <form action={signOut}>
-              <button className="text-link mt-1">Sign out</button>
+              <button className="text-link mt-1">{leave}</button>
             </form>
           </div>
         ) : null}

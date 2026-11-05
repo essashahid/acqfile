@@ -1921,3 +1921,41 @@ button.page-chip:hover {
   font-weight: 650;
   letter-spacing: 0;
 }
+
+/* One-click sample profiles on /login. Scoped under .portal so these win over `.portal button`. */
+.portal .profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  background: white;
+  color: #2c3a47;
+  border: 1px solid #c3c0b8;
+  border-radius: 12px;
+  font-weight: 400;
+  transition:
+    border-color 0.1s,
+    background-color 0.1s;
+}
+.portal .profile-card:hover {
+  border-color: #12355b;
+  background: #f8f7f4;
+}
+.portal .profile-card[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: progress;
+}
+.portal .profile-card .profile-title {
+  font-size: 18px;
+  font-weight: 650;
+  color: #14202b;
+}
+.portal .profile-card .profile-summary {
+  font-size: 15px;
+  line-height: 1.45;
+  color: #5b6873;
+}

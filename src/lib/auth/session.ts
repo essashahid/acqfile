@@ -5,6 +5,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env";
 import {
+  demoProfileCredentials,
+  demoProfilesEnabled,
+  type DemoProfileKey,
+} from "@/lib/auth/profiles";
+import {
   SESSION_COOKIE,
   authenticateLocal,
   loadUserById,
@@ -69,4 +74,20 @@ export async function signOut(): Promise<void> {
   }
   const store = await cookies();
   store.set(SESSION_COOKIE, "", { ...sessionCookieOptions(), maxAge: 0 });
+}
+
+/**
+ * Enter the sample workspace as a named profile. Nothing is guessed here, so the
+ * per-email attempt limit does not apply; a shared public link must not lock
+ * everyone out because the same profile was chosen often.
+ */
+export async function signInDemoProfile(key: DemoProfileKey): Promise<SignInResult> {
+  if (!demoProfilesEnabled())
+    return { ok: false, error: "Profiles are not available on this site." };
+  const creds = demoProfileCredentials(key);
+  const user = await authenticateLocal(creds.email, creds.password);
+  if (!user) return { ok: false, error: "This profile has not been set up on this site yet." };
+  const store = await cookies();
+  store.set(SESSION_COOKIE, signSession(user.id), sessionCookieOptions());
+  return { ok: true, user };
 }

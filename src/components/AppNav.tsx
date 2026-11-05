@@ -3,7 +3,7 @@ import { PRODUCT_NAME } from "@/lib/product";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, ShieldCheck } from "lucide-react";
+import { LogOut, ShieldCheck, UserRound } from "lucide-react";
 import { staffRole } from "@/lib/staff/roles";
 import type { WorkspaceRole } from "@/lib/workspace";
 import { FormButton } from "@/components/FormButton";
@@ -15,12 +15,15 @@ export function AppNav({
   role,
   workspaceName,
   isPublic,
+  profilesEnabled = false,
   signOutAction,
 }: {
   email: string;
   role: string;
   workspaceName: string;
   isPublic?: boolean;
+  /** Sample site: signing out lands on the profile picker, so the control says what it does. */
+  profilesEnabled?: boolean;
   signOutAction: () => Promise<void>;
 }) {
   const pathname = usePathname();
@@ -113,13 +116,23 @@ export function AppNav({
           ) : (
             <form action={signOutAction}>
               <FormButton
-                variant="ghost"
+                variant={profilesEnabled ? "secondary" : "ghost"}
                 size="sm"
-                pendingText="Signing out…"
-                title="Sign out of this workspace"
+                pendingText={profilesEnabled ? "Leaving…" : "Signing out…"}
+                title={
+                  profilesEnabled
+                    ? "Leave this profile and pick another"
+                    : "Sign out of this workspace"
+                }
               >
-                <LogOut size={14} aria-hidden />
-                <span className="sr-only sm:not-sr-only">Sign out</span>
+                {profilesEnabled ? (
+                  <UserRound size={14} aria-hidden />
+                ) : (
+                  <LogOut size={14} aria-hidden />
+                )}
+                <span className="sr-only sm:not-sr-only">
+                  {profilesEnabled ? "Switch profile" : "Sign out"}
+                </span>
               </FormButton>
             </form>
           )}

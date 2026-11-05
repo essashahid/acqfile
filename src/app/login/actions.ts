@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { signIn } from "@/lib/auth/session";
+import { demoProfile } from "@/lib/auth/profiles";
+import { signIn, signInDemoProfile } from "@/lib/auth/session";
 
 export type LoginState = { error: string | null };
 
@@ -17,4 +18,14 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
   const result = await signIn(email, password);
   if (!result.ok) return { error: result.error };
   redirect(next);
+}
+
+/** One-click entry as a sample profile. Lands on the profile's home unless a safe `next` was requested. */
+export async function enterProfileAction(formData: FormData): Promise<void> {
+  const profile = demoProfile(String(formData.get("profile") ?? ""));
+  if (!profile) redirect("/login?error=profile");
+  const result = await signInDemoProfile(profile.key);
+  if (!result.ok) redirect("/login?error=profile");
+  const next = safeNext(formData.get("next"));
+  redirect(next === "/" ? profile.home : next);
 }

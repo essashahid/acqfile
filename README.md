@@ -13,7 +13,7 @@ pnpm demo:seed
 pnpm dev
 ```
 
-The seed prints each personal link **once**; copy it locally. Rerunning reissues links and revokes the old ones. Sign in at `/login` as `adviser@example.com` / `acqfile-adviser`. Local staff accounts remain `admin@example.com` / `acqfile-admin` and `reviewer@example.com` / `acqfile-reviewer`, with tools at `/staff/deals`. These sample credentials are for local use only; hosted auth requires separately provisioned users.
+The seed prints each personal link **once**; copy it locally. Rerunning reissues links and revokes the old ones. Open `/login` and pick a profile: Adviser, Operator, Reviewer or Admin enter the sample workspace with one click (turn this off with `DEMO_PROFILES_ENABLED=false`). The password form still works: `adviser@example.com` / `acqfile-adviser`. Local staff accounts remain `admin@example.com` / `acqfile-admin` and `reviewer@example.com` / `acqfile-reviewer`, with tools at `/staff/deals`. These sample credentials are for local use only; hosted auth requires separately provisioned users.
 
 Three authored deals run through the real engine and pipeline. Kiel has things to do, Abe is waiting and Terrill is done. Deal A's second batch is withheld for the upload demonstration. `pnpm demo:b-ready` processes and reviews Deal B's authored corrections, producing a genuinely ready lender file without changing any gate.
 

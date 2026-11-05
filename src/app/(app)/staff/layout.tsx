@@ -2,6 +2,7 @@ import { env, jobsConfigured } from "@/lib/env";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AppNav } from "@/components/AppNav";
+import { demoProfilesEnabled } from "@/lib/auth/profiles";
 import { Notice } from "@/components/ui/panel";
 import { requireStaff } from "@/lib/workspace";
 import { signOutAction } from "../actions";
@@ -13,6 +14,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     <div className="staff flex min-h-screen flex-col">
       <AppNav
         isPublic={isPublic}
+        profilesEnabled={demoProfilesEnabled()}
         email={user.email}
         role={workspace.role}
         workspaceName={workspace.name}

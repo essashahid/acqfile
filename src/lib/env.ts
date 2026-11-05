@@ -57,6 +57,13 @@ const schema = z.object({
   DEMO_REVIEWER_PASSWORD: z.string().default("acqfile-reviewer"),
   DEMO_VIEWER_EMAIL: z.string().default("viewer@example.com"),
   DEMO_VIEWER_PASSWORD: z.string().default("acqfile-viewer"),
+  DEMO_ADVISER_EMAIL: z.string().default("adviser@example.com"),
+  DEMO_ADVISER_PASSWORD: z.string().default("acqfile-adviser"),
+  // One-click sample profiles on /login. On unless set to "false" or "0".
+  DEMO_PROFILES_ENABLED: z
+    .string()
+    .optional()
+    .transform((v) => v === undefined || v === "" || v === "1" || v === "true"),
 
   // Failure injection: "<step>" or "<step>:<attempts>" (applies to every new run; tests use run config instead)
   FAILURE_INJECTION_STEP: z.string().optional(),

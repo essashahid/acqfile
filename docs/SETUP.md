@@ -92,6 +92,8 @@ These sample accounts exist only on a local seeded database.
 | Operator | reviewer@example.com | acqfile-reviewer | Staff tools, can review and file                    |
 | Viewer   | viewer@example.com   | acqfile-viewer   | Read-only, cannot open original documents           |
 
+The sign-in page also offers Adviser, Operator, Reviewer and Admin as one-click profiles so a visitor can look around without a password. Set `DEMO_PROFILES_ENABLED=false` to show only the password form.
+
 The people who supply documents do not sign in. They use the `/p/<token>` links the seed printed. Open one in a private window so it does not collide with your staff session, and use a narrow phone-width viewport to see it the way they would.
 
 ## What to look at first
