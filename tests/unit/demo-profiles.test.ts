@@ -58,3 +58,16 @@ describe("demo profiles", () => {
     expect(demoProfilesEnabled()).toBe(false);
   });
 });
+
+describe("supabase key naming", () => {
+  it("accepts SUPABASE_SECRET_KEY when SUPABASE_SERVICE_ROLE_KEY is unset", async () => {
+    const { env } = await import("@/lib/env");
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.SUPABASE_SECRET_KEY = "sb_secret_example";
+    resetEnvCache();
+    expect(env().SUPABASE_SERVICE_ROLE_KEY).toBe("sb_secret_example");
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service_role_example";
+    resetEnvCache();
+    expect(env().SUPABASE_SERVICE_ROLE_KEY).toBe("service_role_example");
+  });
+});

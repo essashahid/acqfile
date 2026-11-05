@@ -17,6 +17,8 @@ const schema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().optional(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  // Supabase's newer name for the same server-only key (sb_secret_...). Used when SUPABASE_SERVICE_ROLE_KEY is unset.
+  SUPABASE_SECRET_KEY: z.string().optional(),
   SUPABASE_STORAGE_BUCKET: z.string().default("sources"),
 
   // OpenAI
@@ -96,6 +98,8 @@ export function env(): Env {
   const parsed = schema.safeParse(process.env);
   if (!parsed.success) throw new Error(`Invalid environment: ${parsed.error.message}`);
   const e = parsed.data;
+  if (!e.SUPABASE_SERVICE_ROLE_KEY && e.SUPABASE_SECRET_KEY)
+    e.SUPABASE_SERVICE_ROLE_KEY = e.SUPABASE_SECRET_KEY;
   if (
     typeof window === "undefined" &&
     e.LLM_PROVIDER === "openai" &&
