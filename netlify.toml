@@ -1,0 +1,14 @@
+# Netlify build settings for AcqFile (Next.js 16, pnpm 10, Node 22).
+# The Next.js Runtime turns every server-rendered route into a Netlify Function.
+# Without it Netlify serves the .next folder as static files and every path 404s.
+
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.30.0"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
